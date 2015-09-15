@@ -96,6 +96,17 @@ System.out.println(String.format("Reading information about vm: %s\n"
 ));
 ```
 
+#### Listing available VM sizes
+
+```java
+boolean supportingVM = true;
+boolean supportingCloudServices = false;
+
+System.out.println("Available VM sizes: " + Arrays.toString(
+	azure.sizes.list(supportingVM, supportingCloudServices)));
+```
+
+
 ### Virtual Networks
 
 #### Creating a virtual network with a default subnet
@@ -271,4 +282,13 @@ azure.storageAccounts.update("mystorage")
 	.withDescription("Updated")
 	.withLabel("Updated")
 	.apply();
+```
+
+### Listing available regions
+
+This returns regions supporting Virtual Machines specifically. For all regions, use the parameter-less overload.
+
+```java
+System.out.println("Available regions: " + Arrays.toString(
+	azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE)));
 ```
