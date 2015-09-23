@@ -1,10 +1,16 @@
 package com.microsoft.azure.shortcuts;
 
+import com.microsoft.azure.shortcuts.resources.AzureResources;
+import com.microsoft.azure.utility.AuthHelper;
+import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 
 public class Utils {
 	
@@ -132,5 +138,17 @@ public class Utils {
 		} else {
 			return new File(binDirectory, "keytool");
 		}
+	}
+
+	public static Configuration createConfiguration(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
+		String baseUri = AzureResources.ARM_URL;
+
+		return ManagementConfiguration.configure(
+				null,
+				baseUri != null ? new URI(baseUri) : null,
+				subscriptionId,
+				AuthHelper.getAccessTokenFromServicePrincipalCredentials(AzureResources.MANAGEMENT_URI, AzureResources.ARM_AAD_URL,
+						tenantId, clientId, clientKey)
+						.getAccessToken());
 	}
 }
