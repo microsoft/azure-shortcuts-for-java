@@ -20,7 +20,7 @@ public class Samples {
 			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 
 			// Test virtual machines
-			//testVirtualMachines(azure);
+			testVirtualMachines(azure);
 			
 			// Test virtual networks
 			//testVirtualNetworks(azure);
