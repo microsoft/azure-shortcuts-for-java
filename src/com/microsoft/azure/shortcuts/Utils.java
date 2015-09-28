@@ -212,12 +212,14 @@ public class Utils {
 		}
 	}
 
+	
+	
 	public static Configuration createConfiguration(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
-		String baseUri = AzureResources.ARM_URL;
+		URI baseUri = new URI(AzureResources.ARM_URL);
 
 		return ManagementConfiguration.configure(
 				null,
-				baseUri != null ? new URI(baseUri) : null,
+				baseUri.toString(),
 				subscriptionId,
 				AuthHelper.getAccessTokenFromServicePrincipalCredentials(AzureResources.MANAGEMENT_URI, AzureResources.ARM_AAD_URL,
 						tenantId, clientId, clientKey)

@@ -7,7 +7,7 @@ public interface OSImage extends Named {
 	String category();
 	String description();
 	String eula();
-	String iconUri();
+	URI iconUri();
 	String family();
 	String ioType();
 	String label();
@@ -20,7 +20,7 @@ public interface OSImage extends Named {
 	Calendar publishedDate();
 	String publisher();
 	String recommendedVMSize();
-	String smallIconUri();
+	URI smallIconUri();
 	boolean isPremium();
 	boolean isShownInGui();
 }
