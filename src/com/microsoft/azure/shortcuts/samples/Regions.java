@@ -19,14 +19,13 @@
 */
 package com.microsoft.azure.shortcuts.samples;
 
-import java.io.File;
 import java.util.Arrays;
 
 import com.microsoft.azure.shortcuts.Azure;
-import com.microsoft.azure.shortcuts.Utils;
 import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
 
-public class Samples {
+// Tests Regions
+public class Regions {
 	public static void main(String[] args) {
 		String publishSettingsPath = "my.publishsettings";
 		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
@@ -35,38 +34,14 @@ public class Samples {
 			// Instantiate Azure management class
 			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 
-			// Test virtual machines
-			VirtualMachines.test(azure);
-			
-			// Test virtual networks
-			VirtualNetworks.test(azure);
-			
-			// Test cloud services
-			CloudServices.test(azure);
-
-			// Test Azure storage
-			StorageAccounts.test(azure);
-			
-			// Test OS images
-			OSImages.test(azure);
-			
-			// List the sizes
-			Sizes.test(azure);
-
-			// List the regions
 			Regions.test(azure);
-			
-			// Test cert creation
-			File pfxFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.pfx");
-			File jdkFilePath = new File(System.getenv("JAVA_HOME"));
-			File cerFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.cer");
-			String password = "Abcd.1234", alias = "test";
-			
-			Utils.createCertPkcs12(pfxFile, jdkFilePath, alias, password, alias, 3650);
-			Utils.createCertPublicFromPkcs12(pfxFile, cerFile, jdkFilePath, alias, password);
-			
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
-		}		
+		}
+	}
+
+	public static void test(Azure azure) throws Exception {
+		System.out.println("Available regions: " + Arrays.toString(
+				azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE)));
 	}
 }
