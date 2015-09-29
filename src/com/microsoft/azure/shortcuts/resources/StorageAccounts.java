@@ -20,9 +20,7 @@
 
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
-import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.models.*;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.resources.creation.StorageAccountDefinitionBlank;
@@ -43,12 +41,10 @@ public class StorageAccounts implements
             SupportsReading<StorageAccount>,
             SupportsDeleting*/ {
 
-    private final StorageManagementClient storage;
-    private final ResourceManagementClient resources;
+    private final Azure azure;
 
-    StorageAccounts(StorageManagementClient storage, ResourceManagementClient resources) {
-        this.storage = storage;
-        this.resources = resources;
+    StorageAccounts(Azure azure) {
+        this.azure = azure;
     }
 
     // Starts a new storage account update
@@ -63,7 +59,7 @@ public class StorageAccounts implements
 
     // Deletes the specified storage account
     public void delete(String resourceGroup, String accountName) throws IOException, ServiceException {
-        storage.getStorageAccountsOperations().delete(resourceGroup, accountName);
+    	this.azure.storageManagementClient().getStorageAccountsOperations().delete(resourceGroup, accountName);
     }
     
     
@@ -72,7 +68,7 @@ public class StorageAccounts implements
     public String[] list() {
         ArrayList<StorageAccount> storageAccounts;
 		try {
-			storageAccounts = storage.getStorageAccountsOperations().list().getStorageAccounts();
+			storageAccounts = this.azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
 			String[] names = new String[storageAccounts.size()];
 			int i = 0;
 			for(StorageAccount store: storageAccounts) {
@@ -90,7 +86,7 @@ public class StorageAccounts implements
     public String[] listByResourceGroup(String resourceGroup) {
         ArrayList<StorageAccount> storageAccounts;
 		try {
-			storageAccounts = storage.getStorageAccountsOperations().listByResourceGroup(resourceGroup).getStorageAccounts();
+			storageAccounts = this.azure.storageManagementClient().getStorageAccountsOperations().listByResourceGroup(resourceGroup).getStorageAccounts();
 			String[] names = new String[storageAccounts.size()];
 			int i = 0;
 			for(StorageAccount store: storageAccounts) {
@@ -106,7 +102,7 @@ public class StorageAccounts implements
 
     // Gets storage account information
     public StorageAccount get(String resourceGroup, String name) throws Exception {
-        return storage.getStorageAccountsOperations().getProperties(resourceGroup, name).getStorageAccount();
+        return this.azure.storageManagementClient().getStorageAccountsOperations().getProperties(resourceGroup, name).getStorageAccount();
     }
 
     private class StorageAccountImpl
@@ -128,13 +124,13 @@ public class StorageAccounts implements
 
         // Creates a new storage account
         public StorageAccountImpl provision() throws Exception {
-            if (!resources.getResourceGroupsOperations().checkExistence(resourceGroup).isExists()) {
-                resources.getResourceGroupsOperations().createOrUpdate(resourceGroup, new ResourceGroup("West US"));
+            if (!azure.resourceManagementClient().getResourceGroupsOperations().checkExistence(resourceGroup).isExists()) {
+            	azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(resourceGroup, new ResourceGroup("West US"));
             }
             final StorageAccountCreateParameters params = new StorageAccountCreateParameters();
             params.setLocation(this.region);
             params.setAccountType((this.type == null) ? AccountType.STANDARDLRS : this.type);
-            storage.getStorageAccountsOperations().create(resourceGroup, name, params);
+            azure.storageManagementClient().getStorageAccountsOperations().create(resourceGroup, name, params);
             return this;
         }
 
@@ -144,13 +140,13 @@ public class StorageAccounts implements
             params.setAccountType(this.type);
             params.setCustomDomain(customDomain);
             params.setTags(tags);
-            storage.getStorageAccountsOperations().update(resourceGroup, name, params);
+            azure.storageManagementClient().getStorageAccountsOperations().update(resourceGroup, name, params);
             return this;
         }
 
         // Deletes this storage account
         public void delete() throws Exception {
-            storage.getStorageAccountsOperations().delete(resourceGroup, name);
+        	azure.storageManagementClient().getStorageAccountsOperations().delete(resourceGroup, name);
         }
 
         public StorageAccountImpl withRegion(String region) {

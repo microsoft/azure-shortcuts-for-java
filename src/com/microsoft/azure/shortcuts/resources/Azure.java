@@ -25,7 +25,6 @@ import com.microsoft.azure.management.network.NetworkResourceProviderClient;
 import com.microsoft.azure.management.network.NetworkResourceProviderService;
 import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementService;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.Utils;
@@ -53,23 +52,51 @@ public class Azure {
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
         this.configuration = Utils.createConfiguration(subscriptionId, tenantId, clientId, clientKey);
-
-        resourceManagementClient = ResourceManagementService.create(configuration);
-        storageManagementClient = StorageManagementService.create(configuration);
-        computeManagementClient = ComputeManagementService.create(configuration);
-        networkResourceProviderClient = NetworkResourceProviderService.create(configuration);
-
-        storageAccounts = new StorageAccounts(storageManagementClient, resourceManagementClient);
+        storageAccounts = new StorageAccounts(this);
     }
 
     public Azure(String publishSettingsPath, String subscriptionId) throws IOException, ServiceException, URISyntaxException {
         this.configuration = PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId);
-        resourceManagementClient = ResourceManagementService.create(configuration);
-        storageManagementClient = StorageManagementService.create(configuration);
-        computeManagementClient = ComputeManagementService.create(configuration);
-        networkResourceProviderClient = NetworkResourceProviderService.create(configuration);
+        storageAccounts = new StorageAccounts(this);
+    }
+    
+    
+    // Returns the compute management client, creating if needed
+    ComputeManagementClient computeManagementClient() {
+    	if(this.computeManagementClient == null) {
+    		this.computeManagementClient = ComputeManagementService.create(configuration);
+    	}
+    	
+    	return this.computeManagementClient;
+    }
+    
+    
+    // Returns the network management client, creating if needed
+    NetworkResourceProviderClient getNetworkManagementClient() {
+    	if(this.networkResourceProviderClient == null) {
+    		this.networkResourceProviderClient = NetworkResourceProviderService.create(configuration);
+    	}
+    	
+    	return this.networkResourceProviderClient;
+    }
+    
+    
+    // Returns the resource management client, creating if needed
+    ResourceManagementClient resourceManagementClient() {
+    	if(this.resourceManagementClient == null) {
+    		this.resourceManagementClient = ResourceManagementService.create(configuration);
+    	}
+    	
+    	return this.resourceManagementClient;
 
-        storageAccounts = new StorageAccounts(storageManagementClient, resourceManagementClient);
     }
 
+    // Returns the storage management client
+    StorageManagementClient storageManagementClient() {
+    	if(this.storageManagementClient == null) {
+    		this.storageManagementClient = StorageManagementService.create(configuration);
+    	}
+    	
+    	return this.storageManagementClient;
+    }
 }
