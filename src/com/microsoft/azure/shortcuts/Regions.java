@@ -25,7 +25,7 @@ import com.microsoft.azure.shortcuts.implementation.SupportsListing;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 
 // Class encapsulating the API related to locations
-class Regions implements 
+public class Regions implements 
 	SupportsListing {
 	
 	final Azure azure;

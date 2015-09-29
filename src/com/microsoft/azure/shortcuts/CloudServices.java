@@ -40,7 +40,7 @@ import com.microsoft.windowsazure.management.compute.models.HostedServiceUpdateP
 import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
 
 // Class encapsulating the API related to cloud services
-class CloudServices implements 
+public class CloudServices implements 
 	SupportsListing,
 	SupportsReading<CloudService>,
 	SupportsCreating<CloudServiceDefinitionBlank>,
@@ -49,7 +49,7 @@ class CloudServices implements
 	
 	final Azure azure;
 	
-	public CloudServices(Azure azure) {
+	CloudServices(Azure azure) {
 		this.azure = azure;
 	}
 	

@@ -25,7 +25,7 @@ import com.microsoft.azure.shortcuts.implementation.SupportsListing;
 import com.microsoft.windowsazure.management.models.RoleSizeListResponse.RoleSize;
 
 // Encapsulates the API related to VM sizes
-class Sizes implements 
+public class Sizes implements 
 	SupportsListing {
 	
 	final Azure azure;

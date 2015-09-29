@@ -36,7 +36,7 @@ import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurat
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
 
 // Class encapsulating the API related to virtual networks
-class Networks implements 
+public class Networks implements 
 	SupportsCreating<NetworkDefinitionBlank>,
 	SupportsDeleting,
 	SupportsListing {

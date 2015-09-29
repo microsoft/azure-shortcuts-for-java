@@ -66,7 +66,7 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleTy
  * @author marcins
  * 
  */
-class VirtualMachines implements 
+public class VirtualMachines implements 
 	SupportsCreating<VirtualMachineDefinitionBlank>,
 	SupportsReading<VirtualMachine>,
 	SupportsListing,

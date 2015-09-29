@@ -17,11 +17,13 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts;
+package com.microsoft.azure.shortcuts.samples;
 
 import java.io.File;
 import java.util.Arrays;
 
+import com.microsoft.azure.shortcuts.Azure;
+import com.microsoft.azure.shortcuts.Utils;
 import com.microsoft.azure.shortcuts.reading.CloudService;
 import com.microsoft.azure.shortcuts.reading.Network;
 import com.microsoft.azure.shortcuts.reading.OSImage;

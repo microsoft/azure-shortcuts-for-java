@@ -31,7 +31,7 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImag
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 
 // Class encapsulating the API related to OS images
-class OSImages implements 
+public class OSImages implements 
 	SupportsListing,
 	SupportsReading<OSImage> {
 	
