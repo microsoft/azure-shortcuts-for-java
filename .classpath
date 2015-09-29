@@ -2,10 +2,60 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="con" path="com.microsoftopentechnologies.windowsazure.tools.SDK_CONTAINER/0.7.0">
-		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="lib/activation-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/adal4j-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/azure-core-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-keyvault-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-keyvault-core-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-keyvault-extensions-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-media-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-compute-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-dns-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-network-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-resources-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-sql-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-storage-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-traffic-manager-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-utility-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-compute-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-media-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-network-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-scheduler-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-sql-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-storage-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-svc-mgmt-websites-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/bcprov-jdk15on-1.51.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.10.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient-4.3.6.jar"/>
+	<classpathentry kind="lib" path="lib/httpcore-4.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-asl-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.6.0.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-jaxrs-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-mapper-asl-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-xc-1.9.2.jar"/>
+	<classpathentry kind="lib" path="lib/javax.inject-1.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-api-2.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/jaxb-impl-2.2.3-1.jar"/>
+	<classpathentry kind="lib" path="lib/jcip-annotations-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/jersey-client-1.13.jar"/>
+	<classpathentry kind="lib" path="lib/jersey-core-1.13.jar"/>
+	<classpathentry kind="lib" path="lib/jersey-json-1.13.jar"/>
+	<classpathentry kind="lib" path="lib/jettison-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jjwt-0.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/json-smart-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/lang-tag-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/mail-1.4.5.jar"/>
+	<classpathentry kind="lib" path="lib/nimbus-jose-jwt-3.1.2.jar"/>
+	<classpathentry kind="lib" path="lib/oauth2-oidc-sdk-4.5.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/stax-api-1.0-2.jar"/>
+	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

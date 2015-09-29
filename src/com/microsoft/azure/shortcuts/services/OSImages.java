@@ -66,7 +66,7 @@ public class OSImages implements
 		osImage.category = response.getCategory();
 		osImage.description = response.getDescription();
 		osImage.eula = response.getEula();
-		osImage.iconUri = response.getIconUri();
+		osImage.iconUri = new URI(response.getIconUri());
 		osImage.family = response.getImageFamily();
 		osImage.ioType = response.getIOType();
 		osImage.label = response.getLabel();
@@ -79,7 +79,7 @@ public class OSImages implements
 		osImage.publishedDate = response.getPublishedDate();
 		osImage.publisher = response.getPublisherName();
 		osImage.recommendedVMSize = response.getRecommendedVMSize();
-		osImage.smallIconUri = response.getSmallIconUri();
+		osImage.smallIconUri = new URI(response.getSmallIconUri());
 		osImage.isPremium = response.isPremium();
 		osImage.isShownInGui = response.isShowInGui();
 		

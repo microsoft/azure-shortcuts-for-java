@@ -86,9 +86,9 @@ public class VirtualMachines implements
 		// Find all virtual machine roles within cloud services 
 		for(String serviceName : serviceNames) {
 			try {
-				DeploymentGetResponse deployment = azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
+				DeploymentGetResponse deployment = azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.PRODUCTION);
 				for(Role role : deployment.getRoles()) {
-					if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString())) {
+					if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PERSISTENTVMROLE.toString())) {
 						vms.add(serviceName + "." + role.getRoleName());
 					}
 				}
@@ -140,7 +140,7 @@ public class VirtualMachines implements
 		final String serviceName = serviceNameFromVmName(vmName);
 		String deploymentName;
 		if(null == (deploymentName = deploymentNameFromVMName(vmName))) {
-			return azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
+			return azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.PRODUCTION);
 		} else {
 			return azure.computeManagementClient().getDeploymentsOperations().getByName(serviceName, deploymentName);
 		}
@@ -151,7 +151,7 @@ public class VirtualMachines implements
 	private Role getVmRole(DeploymentGetResponse deployment) {
 		ArrayList<Role> roles = deployment.getRoles();
 		for(Role role : roles) {
-			if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString())) {
+			if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PERSISTENTVMROLE.toString())) {
 				return role;
 			}
 		}
@@ -402,7 +402,7 @@ public class VirtualMachines implements
 				role.setProvisionGuestAgent(this.guestAgent);
 				role.setRoleName(this.name);
 				role.setRoleSize(this.size);
-				role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
+				role.setRoleType(VirtualMachineRoleType.PERSISTENTVMROLE.toString());
 				role.setOSVirtualHardDisk(osDisk);
 				
 				ArrayList<Role> roles = new ArrayList<Role>(Arrays.asList(role));
@@ -410,7 +410,7 @@ public class VirtualMachines implements
 				// Create a new deployment
 				final VirtualMachineCreateDeploymentParameters vmCreateParams = new VirtualMachineCreateDeploymentParameters();
 				vmCreateParams.setRoles(roles);
-				vmCreateParams.setDeploymentSlot(DeploymentSlot.Production);
+				vmCreateParams.setDeploymentSlot(DeploymentSlot.PRODUCTION);
 				vmCreateParams.setLabel(this.deploymentLabel);
 				vmCreateParams.setName(this.deploymentName);
 				vmCreateParams.setVirtualNetworkName(this.network);
@@ -423,7 +423,7 @@ public class VirtualMachines implements
 				
 			} else {
 				// Get existing deployment from production
-				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudServiceName, DeploymentSlot.Production).getName();
+				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudServiceName, DeploymentSlot.PRODUCTION).getName();
 				
 				// Deploy into existing cloud service
 				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
