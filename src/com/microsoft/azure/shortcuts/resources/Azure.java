@@ -49,15 +49,20 @@ public class Azure {
     private NetworkResourceProviderClient networkResourceProviderClient;
 
     public final StorageAccounts storageAccounts;
+    public final Resources resources;
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
-        this.configuration = Utils.createConfiguration(subscriptionId, tenantId, clientId, clientKey);
-        storageAccounts = new StorageAccounts(this);
+    	this(Utils.createConfiguration(subscriptionId, tenantId, clientId, clientKey));
     }
 
     public Azure(String publishSettingsPath, String subscriptionId) throws IOException, ServiceException, URISyntaxException {
-        this.configuration = PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId);
-        storageAccounts = new StorageAccounts(this);
+    	this(PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId));
+    }
+    
+    private Azure(Configuration configuration) {
+    	this.configuration = configuration;
+        this.storageAccounts = new StorageAccounts(this);
+        this.resources = new Resources(this);
     }
     
     
@@ -91,6 +96,7 @@ public class Azure {
 
     }
 
+    
     // Returns the storage management client
     StorageManagementClient storageManagementClient() {
     	if(this.storageManagementClient == null) {

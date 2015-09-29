@@ -20,9 +20,11 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
+import java.util.Arrays;
+
 import com.microsoft.azure.shortcuts.resources.Azure;
 
-public class Samples {
+public class StorageAccounts {
     public static void main(String[] args) {
         String subscriptionId = "<subscription_id>";
         String tenantId = "<tenant_id>";
@@ -31,11 +33,16 @@ public class Samples {
 
         try {
             Azure azure = new Azure(subscriptionId, tenantId, clientId, clientKey);
-            azure.storageAccounts.define("lenaresourcegroup", "lenatestresources2").withRegion("West US").provision();
-
-            System.out.println(azure.storageAccounts.list());
+            test(azure);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public static void test(Azure azure) throws Exception {
+        azure.storageAccounts.define("lenaresourcegroup", "lenatestresources2").withRegion("West US").provision();
+
+		System.out.println("Storage accounts: \n\t" + Arrays.toString(
+				azure.storageAccounts.list()).replaceAll(", ", ",\n\t"));
     }
 }
