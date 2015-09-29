@@ -17,10 +17,10 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.implementation;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+// Requires class to support updating entities
+public interface SupportsUpdating<T> {
+	T update(String name);
 }

@@ -17,10 +17,36 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.samples;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
+import java.io.File;
 
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+import com.microsoft.azure.shortcuts.services.Azure;
+import com.microsoft.azure.shortcuts.services.Utils;
+
+// Tests VM sizes
+public class Certificates {
+	public static void main(String[] args) {
+		String publishSettingsPath = "my.publishsettings";
+		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
+
+		try {
+			// Instantiate Azure management class
+			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
+
+			test(azure);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public static void test(Azure azure) throws Exception {
+		File pfxFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.pfx");
+		File jdkFilePath = new File(System.getenv("JAVA_HOME"));
+		File cerFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.cer");
+		String password = "Abcd.1234", alias = "test";
+		
+		Utils.createCertPkcs12(pfxFile, jdkFilePath, alias, password, alias, 3650);
+		Utils.createCertPublicFromPkcs12(pfxFile, cerFile, jdkFilePath, alias, password);
+	}
 }

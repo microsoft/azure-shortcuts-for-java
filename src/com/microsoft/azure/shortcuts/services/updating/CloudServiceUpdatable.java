@@ -17,10 +17,10 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.updating;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
-
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+public interface CloudServiceUpdatable extends Updatable<CloudServiceUpdatable> {
+	CloudServiceUpdatable withDescription(String description);
+	CloudServiceUpdatable withLabel(String label);
+	CloudServiceUpdatable withReverseDnsFqdn(String fqdn);
 }

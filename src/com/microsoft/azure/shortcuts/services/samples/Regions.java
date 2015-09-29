@@ -17,10 +17,31 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.samples;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
+import java.util.Arrays;
 
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+import com.microsoft.azure.shortcuts.services.Azure;
+import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+
+// Tests Regions
+public class Regions {
+	public static void main(String[] args) {
+		String publishSettingsPath = "my.publishsettings";
+		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
+
+		try {
+			// Instantiate Azure management class
+			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
+
+			test(azure);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public static void test(Azure azure) throws Exception {
+		System.out.println("Available regions: " + Arrays.toString(
+				azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE)));
+	}
 }

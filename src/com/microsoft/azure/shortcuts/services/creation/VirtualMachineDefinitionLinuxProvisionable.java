@@ -17,10 +17,13 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.creation;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
+import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionLinuxProvisionable;
+import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionProvisionable;
 
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+
+// Linux-specific optional parameters
+public interface VirtualMachineDefinitionLinuxProvisionable extends VirtualMachineDefinitionProvisionable {
+	VirtualMachineDefinitionLinuxProvisionable withHostName(String name) throws Exception;		
 }

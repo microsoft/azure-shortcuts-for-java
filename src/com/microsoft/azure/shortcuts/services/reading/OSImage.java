@@ -17,10 +17,29 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.reading;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
+import java.net.URI;
+import java.util.Calendar;
 
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+public interface OSImage extends Named {
+	String category();
+	String description();
+	String eula();
+	URI iconUri();
+	String family();
+	String ioType();
+	String label();
+	String language();
+	String[] regions();
+	double logicalSizeInGB();
+	URI mediaLink();
+	String operatingSystemType();
+	URI privacyUri();
+	Calendar publishedDate();
+	String publisher();
+	String recommendedVMSize();
+	URI smallIconUri();
+	boolean isPremium();
+	boolean isShownInGui();
 }

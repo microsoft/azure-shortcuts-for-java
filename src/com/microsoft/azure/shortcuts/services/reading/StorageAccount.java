@@ -17,10 +17,26 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.reading;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
+import java.net.URI;
+import java.util.Calendar;
 
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
+import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
+
+
+public interface StorageAccount extends Named {
+	String affinityGroup();
+	String description();
+	String label();
+	String geoPrimaryRegion();
+	GeoRegionStatus geoPrimaryRegionStatus();
+	String geoSecondaryRegion();
+	GeoRegionStatus geoSecondaryRegionStatus();
+	String region();
+	StorageAccountStatus status();
+	Calendar lastGeoFailoverTime();
+	URI[] endpoints();
+	String type();
 }

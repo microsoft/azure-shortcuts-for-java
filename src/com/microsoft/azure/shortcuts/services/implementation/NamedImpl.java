@@ -17,10 +17,27 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.creation;
+package com.microsoft.azure.shortcuts.services.implementation;
 
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
+import com.microsoft.azure.shortcuts.services.reading.Named;
 
-public interface StorageAccountDefinitionBlank {
-    StorageAccountDefinitionProvisionable withRegion(String region);
+// Base implementation for named entities
+public abstract class NamedImpl implements Named {
+	final protected String name;
+	
+	protected NamedImpl(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String name() {
+		return this.name;
+	}
+	
+	@Override
+	public String toString() {
+		return this.name();
+	}
 }
+
+
