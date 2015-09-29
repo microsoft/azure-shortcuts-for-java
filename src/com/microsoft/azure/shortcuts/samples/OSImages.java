@@ -34,7 +34,7 @@ public class OSImages {
 			// Instantiate Azure management class
 			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 
-			OSImages.test(azure);
+			test(azure);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

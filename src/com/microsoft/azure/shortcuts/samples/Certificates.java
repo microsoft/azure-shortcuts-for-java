@@ -19,13 +19,13 @@
 */
 package com.microsoft.azure.shortcuts.samples;
 
-import java.util.Arrays;
+import java.io.File;
 
 import com.microsoft.azure.shortcuts.Azure;
-import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+import com.microsoft.azure.shortcuts.Utils;
 
-// Tests Regions
-public class Regions {
+// Tests VM sizes
+public class Certificates {
 	public static void main(String[] args) {
 		String publishSettingsPath = "my.publishsettings";
 		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
@@ -41,7 +41,12 @@ public class Regions {
 	}
 
 	public static void test(Azure azure) throws Exception {
-		System.out.println("Available regions: " + Arrays.toString(
-				azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE)));
+		File pfxFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.pfx");
+		File jdkFilePath = new File(System.getenv("JAVA_HOME"));
+		File cerFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.cer");
+		String password = "Abcd.1234", alias = "test";
+		
+		Utils.createCertPkcs12(pfxFile, jdkFilePath, alias, password, alias, 3650);
+		Utils.createCertPublicFromPkcs12(pfxFile, cerFile, jdkFilePath, alias, password);
 	}
 }

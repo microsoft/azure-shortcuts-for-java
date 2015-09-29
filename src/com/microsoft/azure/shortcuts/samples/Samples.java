@@ -19,12 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.samples;
 
-import java.io.File;
-import java.util.Arrays;
-
 import com.microsoft.azure.shortcuts.Azure;
-import com.microsoft.azure.shortcuts.Utils;
-import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
 
 public class Samples {
 	public static void main(String[] args) {
@@ -57,13 +52,7 @@ public class Samples {
 			Regions.test(azure);
 			
 			// Test cert creation
-			File pfxFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.pfx");
-			File jdkFilePath = new File(System.getenv("JAVA_HOME"));
-			File cerFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.cer");
-			String password = "Abcd.1234", alias = "test";
-			
-			Utils.createCertPkcs12(pfxFile, jdkFilePath, alias, password, alias, 3650);
-			Utils.createCertPublicFromPkcs12(pfxFile, cerFile, jdkFilePath, alias, password);
+			Certificates.test(azure);
 			
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

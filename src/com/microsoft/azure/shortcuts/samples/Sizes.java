@@ -33,7 +33,7 @@ public class Sizes {
 			// Instantiate Azure management class
 			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 
-			Sizes.test(azure);
+			test(azure);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}

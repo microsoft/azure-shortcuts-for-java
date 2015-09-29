@@ -34,7 +34,7 @@ public class VirtualNetworks {
 			// Instantiate Azure management class
 			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 
-			VirtualNetworks.test(azure);
+			test(azure);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
