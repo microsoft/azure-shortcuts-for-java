@@ -35,10 +35,10 @@ import com.microsoft.windowsazure.management.compute.ComputeManagementService;
 
 public class Azure {
 	private Configuration configuration= null;
-	ManagementClient management = null;
-	ComputeManagementClient compute = null;
-	StorageManagementClient storage = null;
-	NetworkManagementClient networking = null;
+	private ManagementClient management = null;
+	private ComputeManagementClient compute = null;
+	private StorageManagementClient storage = null;
+	private NetworkManagementClient networking = null;
 	
 	public final Regions regions = new Regions(this);
 	public final Sizes sizes = new Sizes(this);
@@ -51,11 +51,44 @@ public class Azure {
 	// Construct based on credentials from a publishsettings file for the selected subscription
 	public Azure(String publishSettingsPath, String subscriptionId) throws IOException {
 		this.configuration = PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId);
-		this.management = ManagementService.create(configuration);
-		this.compute = ComputeManagementService.create(configuration);
-		this.storage = StorageManagementService.create(configuration);
-		this.networking = NetworkManagementService.create(configuration);		
 	}
-
-
+	
+	// Returns the management client, creating it as needed
+	ManagementClient managementClient() {
+		if(this.management == null) {
+			this.management = ManagementService.create(configuration);
+		}
+		
+		return this.management;
+	}
+	
+	
+	// Returns the compute management client, creating it as needed
+	ComputeManagementClient computeManagementClient() {
+		if(this.compute == null) {
+			this.compute = ComputeManagementService.create(configuration);
+		}
+		
+		return this.compute;
+	}
+	
+	
+	// Returns the storage management client, creating it as needed
+	StorageManagementClient storageManagementClient() {
+		if(this.storage == null) {
+			this.storage = StorageManagementService.create(configuration);
+		}
+		
+		return this.storage;
+	}
+	
+	
+	// Returns the network management client, creating as needed
+	NetworkManagementClient networkManagementClient() {
+		if(this.networking == null) {
+			this.networking = NetworkManagementService.create(configuration);
+		}
+		
+		return this.networking;
+	}
 }

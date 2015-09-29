@@ -18,9 +18,11 @@
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.microsoft.azure.shortcuts.resources;
+package com.microsoft.azure.shortcuts.resources.samples;
 
-public class ResourceManagementSamples {
+import com.microsoft.azure.shortcuts.resources.Azure;
+
+public class Samples {
     public static void main(String[] args) {
         String subscriptionId = "<subscription_id>";
         String tenantId = "<tenant_id>";
@@ -30,7 +32,7 @@ public class ResourceManagementSamples {
 //        String publishSettingsPath = "/Users/farlen/stuff/publish.publishsettings";
 
         try {
-            AzureResources azureResources = new AzureResources(subscriptionId, tenantId, clientId, clientKey);
+            Azure azureResources = new Azure(subscriptionId, tenantId, clientId, clientKey);
 //            AzureResources azureResources = new AzureResources(publishSettingsPath, subscriptionId);
             azureResources.storageAccounts.define("lenaresourcegroup", "lenatestresources2").withRegion("West US").provision();
 

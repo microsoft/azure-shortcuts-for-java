@@ -44,7 +44,7 @@ public class OSImages implements
 	// Returns the list of available OS image names
 	public String[] list() {
 		try {
-			ArrayList<VirtualMachineOSImage> images = azure.compute.getVirtualMachineOSImagesOperations().list().getImages();
+			ArrayList<VirtualMachineOSImage> images = azure.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();
 			String[] names = new String[images.size()];
 			int i=0;
 			for(VirtualMachineOSImage image : images) {
@@ -62,7 +62,7 @@ public class OSImages implements
 	// Returns OS image information
 	public OSImage get(String name) throws Exception {
 		OSImageImpl osImage = new OSImageImpl(name);
-		VirtualMachineOSImageGetResponse response = azure.compute.getVirtualMachineOSImagesOperations().get(name);
+		VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(name);
 		osImage.category = response.getCategory();
 		osImage.description = response.getDescription();
 		osImage.eula = response.getEula();

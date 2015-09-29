@@ -37,7 +37,7 @@ public class Regions implements
 	// which must be one of the constants from the LocationAvailableServiceNames class, or all if null
 	public String[] list(String serviceType) {
 		try {
-			ArrayList<Location> locations = azure.management.getLocationsOperations().list().getLocations();
+			ArrayList<Location> locations = azure.managementClient().getLocationsOperations().list().getLocations();
 			String[] names = new String[locations.size()];
 			int i=0;
 			for(Location location : locations) {

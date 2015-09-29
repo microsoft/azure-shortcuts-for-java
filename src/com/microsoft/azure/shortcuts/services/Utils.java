@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.resources.AzureResources;
+import com.microsoft.azure.shortcuts.resources.Azure;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -234,13 +234,13 @@ public class Utils {
 	
 	
 	public static Configuration createConfiguration(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
-		URI baseUri = new URI(AzureResources.ARM_URL);
+		URI baseUri = new URI(Azure.ARM_URL);
 
 		return ManagementConfiguration.configure(
 				null,
 				baseUri.toString(),
 				subscriptionId,
-				AuthHelper.getAccessTokenFromServicePrincipalCredentials(AzureResources.MANAGEMENT_URI, AzureResources.ARM_AAD_URL,
+				AuthHelper.getAccessTokenFromServicePrincipalCredentials(Azure.MANAGEMENT_URI, Azure.ARM_AAD_URL,
 						tenantId, clientId, clientKey)
 						.getAccessToken());
 	}

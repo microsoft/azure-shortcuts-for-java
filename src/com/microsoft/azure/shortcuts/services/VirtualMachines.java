@@ -86,7 +86,7 @@ public class VirtualMachines implements
 		// Find all virtual machine roles within cloud services 
 		for(String serviceName : serviceNames) {
 			try {
-				DeploymentGetResponse deployment = azure.compute.getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
+				DeploymentGetResponse deployment = azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
 				for(Role role : deployment.getRoles()) {
 					if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString())) {
 						vms.add(serviceName + "." + role.getRoleName());
@@ -140,9 +140,9 @@ public class VirtualMachines implements
 		final String serviceName = serviceNameFromVmName(vmName);
 		String deploymentName;
 		if(null == (deploymentName = deploymentNameFromVMName(vmName))) {
-			return azure.compute.getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
+			return azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
 		} else {
-			return azure.compute.getDeploymentsOperations().getByName(serviceName, deploymentName);
+			return azure.computeManagementClient().getDeploymentsOperations().getByName(serviceName, deploymentName);
 		}
 	}
 	
@@ -183,7 +183,7 @@ public class VirtualMachines implements
 		final VirtualMachineImpl vm = new VirtualMachineImpl(serviceName + "." + deploymentName + "." + roleName);
 
 		// Get role properties
-		final VirtualMachineGetResponse vmResponse = azure.compute.getVirtualMachinesOperations().get(serviceName, deploymentName, roleName);
+		final VirtualMachineGetResponse vmResponse = azure.computeManagementClient().getVirtualMachinesOperations().get(serviceName, deploymentName, roleName);
 		vm.size = vmResponse.getRoleSize();
 		
 		// Get service-level data
@@ -415,7 +415,7 @@ public class VirtualMachines implements
 				vmCreateParams.setName(this.deploymentName);
 				vmCreateParams.setVirtualNetworkName(this.network);
 				
-				azure.compute.getVirtualMachinesOperations().createDeployment(
+				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(
 					(this.cloudServiceName != null) 
 					? this.cloudServiceName
 					: this.name,
@@ -423,7 +423,7 @@ public class VirtualMachines implements
 				
 			} else {
 				// Get existing deployment from production
-				final String deploymentName = azure.compute.getDeploymentsOperations().getBySlot(this.cloudServiceName, DeploymentSlot.Production).getName();
+				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudServiceName, DeploymentSlot.Production).getName();
 				
 				// Deploy into existing cloud service
 				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
@@ -432,7 +432,7 @@ public class VirtualMachines implements
 				vmCreateParams.setConfigurationSets(configs);
 				vmCreateParams.setOSVirtualHardDisk(osDisk);
 				vmCreateParams.setProvisionGuestAgent(this.guestAgent);	
-				azure.compute.getVirtualMachinesOperations().create(this.cloudServiceName, deploymentName, vmCreateParams);
+				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudServiceName, deploymentName, vmCreateParams);
 			}
 			
 			return this;

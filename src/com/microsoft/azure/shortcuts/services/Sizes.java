@@ -36,7 +36,7 @@ public class Sizes implements
 	// Return the list of available size names supporting the specified type of compute service
 	public String[] list(boolean supportingVM, boolean supportingCloudServices) {
 		try {
-			ArrayList<RoleSize> sizes = azure.management.getRoleSizesOperations().list().getRoleSizes();
+			ArrayList<RoleSize> sizes = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
 			String[] names = new String[sizes.size()];
 			int i=0;
 			for(RoleSize size : sizes) {

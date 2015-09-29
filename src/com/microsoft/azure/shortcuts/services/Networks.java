@@ -49,7 +49,7 @@ public class Networks implements
 
 	// Returns information about existing network
 	public Network get(String name) throws Exception {
-		String networkConfig = azure.networking.getNetworksOperations().getConfiguration().getConfiguration();
+		String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
 
 		// Correct for garbage prefix in XML returned by Azure
 		networkConfig = networkConfig.substring(networkConfig.indexOf('<'));
@@ -64,7 +64,7 @@ public class Networks implements
 		network.cidr = Utils.findXMLNode(networkConfig, cidrXpath).getTextContent();
 
 		// Determine affinity group
-		for(VirtualNetworkSite site : azure.networking.getNetworksOperations().list().getVirtualNetworkSites()) {
+		for(VirtualNetworkSite site : azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites()) {
 			if(site.getName().equalsIgnoreCase(name)) {
 				network.affinityGroup = site.getAffinityGroup();
 				network.label = site.getLabel();
@@ -95,7 +95,7 @@ public class Networks implements
 	private void updateNetworkConfig(String xml) throws Exception {
 		NetworkSetConfigurationParameters params = new NetworkSetConfigurationParameters();
 		params.setConfiguration(xml);
-		azure.networking.getNetworksOperations().setConfiguration(params);
+		azure.networkManagementClient().getNetworksOperations().setConfiguration(params);
 	}
 	
 	
@@ -109,7 +109,7 @@ public class Networks implements
 				+ "/*[local-name()='VirtualNetworkSite' and @name='%s']", name);
 		
 		// Get current network configuration
-		String networkConfig = azure.networking.getNetworksOperations().getConfiguration().getConfiguration();
+		String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
 		
 		// Correct for garbage prefix in XML returned by Azure
 		networkConfig = networkConfig.substring(networkConfig.indexOf('<'));
@@ -125,7 +125,7 @@ public class Networks implements
 	// Lists existing virtual networks
 	public String[] list() {
 		try {
-			final ArrayList<VirtualNetworkSite> networks = azure.networking.getNetworksOperations()
+			final ArrayList<VirtualNetworkSite> networks = azure.networkManagementClient().getNetworksOperations()
 					.list().getVirtualNetworkSites();
 			String[] names = new String[networks.size()];
 			int i=0;
@@ -210,7 +210,7 @@ public class Networks implements
 				.replace("${subnets}", subnetsSection.toString());
 			
 			// Get current network configuration
-			String networkConfig = azure.networking.getNetworksOperations().getConfiguration().getConfiguration();
+			String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
 			
 			// Correct for garbage prefix in XML returned by Azure
 			networkConfig = networkConfig.substring(networkConfig.indexOf('<'));

@@ -70,7 +70,7 @@ public class StorageAccounts implements
 	
 	// Deletes the specified storage account
 	public void delete(String accountName) throws IOException, ServiceException {
-		azure.storage.getStorageAccountsOperations().delete(accountName);
+		azure.storageManagementClient().getStorageAccountsOperations().delete(accountName);
 	}
 	
 	
@@ -78,7 +78,7 @@ public class StorageAccounts implements
 	public String[] list() {
 		try {
 			final ArrayList<com.microsoft.windowsazure.management.storage.models.StorageAccount> storageAccounts = 
-					azure.storage.getStorageAccountsOperations().list().getStorageAccounts();
+					azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
 			String[] names = new String[storageAccounts.size()];
 			int i = 0;
 			for(com.microsoft.windowsazure.management.storage.models.StorageAccount store: storageAccounts) {
@@ -95,7 +95,7 @@ public class StorageAccounts implements
 	// Gets storage account information
 	public StorageAccount get(String name) throws Exception {
 		StorageAccountImpl storageAccount = new StorageAccountImpl(name);
-		StorageAccountGetResponse response = azure.storage.getStorageAccountsOperations().get(name);
+		StorageAccountGetResponse response = azure.storageManagementClient().getStorageAccountsOperations().get(name);
 		StorageAccountProperties properties =  response.getStorageAccount().getProperties();
 		storageAccount.affinityGroup = properties.getAffinityGroup();
 		storageAccount.description = properties.getDescription();
@@ -141,7 +141,7 @@ public class StorageAccounts implements
 			params.setDescription(this.description);
 			params.setLabel((this.label == null) ? this.name : this.label);
 			params.setAccountType((this.type == null) ? StorageAccountTypes.STANDARD_LRS : this.type);
-			azure.storage.getStorageAccountsOperations().create(params);
+			azure.storageManagementClient().getStorageAccountsOperations().create(params);
 			return this;
 		}
 		
@@ -152,7 +152,7 @@ public class StorageAccounts implements
 			params.setAccountType(this.type);
 			params.setDescription(this.description);
 			params.setLabel(this.label);
-			azure.storage.getStorageAccountsOperations().update(this.name, params);
+			azure.storageManagementClient().getStorageAccountsOperations().update(this.name, params);
 			return this;
 		}
 

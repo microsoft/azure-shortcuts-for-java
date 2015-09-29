@@ -85,7 +85,7 @@ public class CloudServices implements
 			params.setServiceName(this.name);
 			params.setReverseDnsFqdn(this.reverseDnsFqdn);
 
-			azure.compute.getHostedServicesOperations().create(params);
+			azure.computeManagementClient().getHostedServicesOperations().create(params);
 			return this;
 		}
 
@@ -96,7 +96,7 @@ public class CloudServices implements
 			params.setDescription(this.description);
 			params.setLabel(this.label);
 			params.setReverseDnsFqdn(this.reverseDnsFqdn);
-			azure.compute.getHostedServicesOperations().update(this.name, params);
+			azure.computeManagementClient().getHostedServicesOperations().update(this.name, params);
 			return this;
 		}
 
@@ -165,7 +165,7 @@ public class CloudServices implements
 	
 	// Deletes the specified cloud service
 	public void delete(String name) throws Exception {
-		azure.compute.getHostedServicesOperations().delete(name);
+		azure.computeManagementClient().getHostedServicesOperations().delete(name);
 	}
 	
 	
@@ -178,7 +178,7 @@ public class CloudServices implements
 	// Return the list of cloud services
 	public String[] list() {
 		try {
-			final ArrayList<HostedService> services = azure.compute.getHostedServicesOperations()
+			final ArrayList<HostedService> services = azure.computeManagementClient().getHostedServicesOperations()
 					.list().getHostedServices();
 			String[] names = new String[services.size()];
 			int i = 0;
@@ -196,7 +196,7 @@ public class CloudServices implements
 	// Return the specified cloud service information
 	public CloudService get(String name) throws Exception {
 		CloudServiceImpl cloudService = new CloudServiceImpl(name);
-		HostedServiceGetResponse response = azure.compute.getHostedServicesOperations().get(name);
+		HostedServiceGetResponse response = azure.computeManagementClient().getHostedServicesOperations().get(name);
 		cloudService.description = response.getProperties().getDescription();
 		cloudService.label = response.getProperties().getLabel();
 		cloudService.region = response.getProperties().getLocation();

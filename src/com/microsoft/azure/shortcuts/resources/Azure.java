@@ -37,7 +37,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 
-public class AzureResources {
+public class Azure {
     public static String MANAGEMENT_URI = "https://management.core.windows.net/";
     public static String ARM_URL = "https://management.azure.com/";
     public static String ARM_AAD_URL = "https://login.windows.net/";
@@ -51,7 +51,7 @@ public class AzureResources {
 
     public final StorageAccounts storageAccounts;
 
-    public AzureResources(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
+    public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
         this.configuration = Utils.createConfiguration(subscriptionId, tenantId, clientId, clientKey);
 
         resourceManagementClient = ResourceManagementService.create(configuration);
@@ -62,7 +62,7 @@ public class AzureResources {
         storageAccounts = new StorageAccounts(storageManagementClient, resourceManagementClient);
     }
 
-    public AzureResources(String publishSettingsPath, String subscriptionId) throws IOException, ServiceException, URISyntaxException {
+    public Azure(String publishSettingsPath, String subscriptionId) throws IOException, ServiceException, URISyntaxException {
         this.configuration = PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId);
         resourceManagementClient = ResourceManagementService.create(configuration);
         storageManagementClient = StorageManagementService.create(configuration);
