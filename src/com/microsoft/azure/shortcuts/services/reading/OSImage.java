@@ -22,6 +22,8 @@ package com.microsoft.azure.shortcuts.services.reading;
 import java.net.URI;
 import java.util.Calendar;
 
+import com.microsoft.azure.shortcuts.common.reading.Named;
+
 public interface OSImage extends Named {
 	String category();
 	String description();

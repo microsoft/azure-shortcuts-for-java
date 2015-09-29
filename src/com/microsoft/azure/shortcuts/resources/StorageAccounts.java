@@ -24,6 +24,7 @@ import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.models.*;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.resources.creation.StorageAccountDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.creation.StorageAccountDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.resources.updating.StorageAccountUpdatable;
@@ -31,13 +32,14 @@ import com.microsoft.windowsazure.exception.ServiceException;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class StorageAccounts /*implements
+public class StorageAccounts implements 
+		SupportsListing
+			/*
             SupportsCreating<StorageAccountDefinitionBlank>,
             SupportsUpdating<StorageAccountUpdatable>,
-            SupportsListing,
             SupportsReading<StorageAccount>,
             SupportsDeleting*/ {
 
@@ -63,15 +65,44 @@ public class StorageAccounts /*implements
     public void delete(String resourceGroup, String accountName) throws IOException, ServiceException {
         storage.getStorageAccountsOperations().delete(resourceGroup, accountName);
     }
-
-    // Return the list of storage accounts
-    public List<StorageAccount> list() throws ServiceException, IOException, URISyntaxException {
-        return storage.getStorageAccountsOperations().list().getStorageAccounts();
+    
+    
+    // Return the list of storage account names
+    @Override
+    public String[] list() {
+        ArrayList<StorageAccount> storageAccounts;
+		try {
+			storageAccounts = storage.getStorageAccountsOperations().list().getStorageAccounts();
+			String[] names = new String[storageAccounts.size()];
+			int i = 0;
+			for(StorageAccount store: storageAccounts) {
+				names[i++]= store.getName();
+			}
+			return names;
+		} catch (IOException | ServiceException | URISyntaxException e) {
+			// Not very actionable so return empty array
+			return new String[0];
+		}
     }
+    
 
-    public List<StorageAccount> listByResourceGroup(String resourceGroup) throws ServiceException, IOException, URISyntaxException {
-        return storage.getStorageAccountsOperations().listByResourceGroup(resourceGroup).getStorageAccounts();
+    // Return the list of storage accounts in a resource group
+    public String[] listByResourceGroup(String resourceGroup) {
+        ArrayList<StorageAccount> storageAccounts;
+		try {
+			storageAccounts = storage.getStorageAccountsOperations().listByResourceGroup(resourceGroup).getStorageAccounts();
+			String[] names = new String[storageAccounts.size()];
+			int i = 0;
+			for(StorageAccount store: storageAccounts) {
+				names[i++]= store.getName();
+			}
+			return names;
+		} catch (IOException | ServiceException | URISyntaxException e) {
+			// Not very actionable so return empty array
+			return new String[0];
+		}
     }
+    
 
     // Gets storage account information
     public StorageAccount get(String resourceGroup, String name) throws Exception {

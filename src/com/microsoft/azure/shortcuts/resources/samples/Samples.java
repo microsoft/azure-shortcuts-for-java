@@ -29,14 +29,11 @@ public class Samples {
         String clientId = "<client_id>";
         String clientKey = "<client_key>";
 
-//        String publishSettingsPath = "/Users/farlen/stuff/publish.publishsettings";
-
         try {
-            Azure azureResources = new Azure(subscriptionId, tenantId, clientId, clientKey);
-//            AzureResources azureResources = new AzureResources(publishSettingsPath, subscriptionId);
-            azureResources.storageAccounts.define("lenaresourcegroup", "lenatestresources2").withRegion("West US").provision();
+            Azure azure = new Azure(subscriptionId, tenantId, clientId, clientKey);
+            azure.storageAccounts.define("lenaresourcegroup", "lenatestresources2").withRegion("West US").provision();
 
-            System.out.println(azureResources.storageAccounts.list());
+            System.out.println(azure.storageAccounts.list());
         } catch (Exception e) {
             e.printStackTrace();
         }

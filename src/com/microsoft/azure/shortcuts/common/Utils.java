@@ -17,7 +17,7 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services;
+package com.microsoft.azure.shortcuts.common;
 
 import com.microsoft.azure.shortcuts.resources.Azure;
 import com.microsoft.azure.utility.AuthHelper;
@@ -177,7 +177,7 @@ public class Utils {
 	
 	
 	// Returns the first node matching the xpath in the xml
-	static Node findXMLNode(String xml, String xpath) throws XPathExpressionException {
+	static public Node findXMLNode(String xml, String xpath) throws XPathExpressionException {
 		final InputSource parentSource = new InputSource(new StringReader(xml));
 		final XPath xpathObject = XPathFactory.newInstance().newXPath();
 		return (Node) xpathObject.evaluate(xpath, parentSource, XPathConstants.NODE);
@@ -185,7 +185,7 @@ public class Utils {
 	
 	
 	// Deletes the XML element from the provided XML string based on the XPath
-	static String deleteXMLElement(String xml, String xpath) {
+	public static String deleteXMLElement(String xml, String xpath) {
 		try {
 			final Node node = findXMLNode(xml, xpath);
 			Node parent = node.getParentNode();
@@ -211,7 +211,7 @@ public class Utils {
 	
 	
 	// Inserts XML string as a child node into another XML string based on the provided xpath
-	static String insertXMLElement(String parentXML, String childXMLElement, String parentXPath) {
+	public static String insertXMLElement(String parentXML, String childXMLElement, String parentXPath) {
 		try {
 			// Find parent node based on XPath
 			final Node parentNode = Utils.findXMLNode(parentXML, parentXPath);

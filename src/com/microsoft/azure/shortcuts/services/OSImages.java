@@ -23,8 +23,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.services.implementation.NamedImpl;
-import com.microsoft.azure.shortcuts.services.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.services.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.reading.OSImage;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;

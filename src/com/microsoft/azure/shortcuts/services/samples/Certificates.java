@@ -22,7 +22,7 @@ package com.microsoft.azure.shortcuts.services.samples;
 import java.io.File;
 
 import com.microsoft.azure.shortcuts.services.Azure;
-import com.microsoft.azure.shortcuts.services.Utils;
+import com.microsoft.azure.shortcuts.common.Utils;
 
 // Tests VM sizes
 public class Certificates {

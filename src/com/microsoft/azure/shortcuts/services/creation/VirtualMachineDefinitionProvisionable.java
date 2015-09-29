@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services.creation;
 
+import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatable;
 

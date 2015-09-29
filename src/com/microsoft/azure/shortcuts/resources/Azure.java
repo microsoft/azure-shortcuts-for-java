@@ -28,7 +28,7 @@ import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
-import com.microsoft.azure.shortcuts.services.Utils;
+import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;

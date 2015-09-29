@@ -20,8 +20,8 @@
 package com.microsoft.azure.shortcuts.resources.creation;
 
 import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.resources.updating.StorageAccountUpdatable;
-import com.microsoft.azure.shortcuts.services.creation.Provisionable;
 
 public interface StorageAccountDefinitionProvisionable extends Provisionable<StorageAccountUpdatable> {
     StorageAccountDefinitionProvisionable withType(AccountType type);

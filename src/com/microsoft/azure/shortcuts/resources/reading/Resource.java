@@ -19,7 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.resources.reading;
 
-public interface Resource {
-    String resourceGroup();
-    String name();
+import com.microsoft.azure.shortcuts.common.reading.Named;
+
+public interface Resource extends Named {
+    String group();
 }

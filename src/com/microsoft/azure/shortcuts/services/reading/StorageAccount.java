@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.services.reading;
 import java.net.URI;
 import java.util.Calendar;
 
+import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
 

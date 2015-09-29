@@ -36,13 +36,13 @@ public abstract class ResourceImpl implements Resource {
         return this.name;
     }
 
-    public String resourceGroup() {
+    public String group() {
         return resourceGroup;
     }
 
     @Override
     public String toString() {
-        return this.resourceGroup() + ":" + this.name();
+        return this.group() + ":" + this.name();
     }
 }
 

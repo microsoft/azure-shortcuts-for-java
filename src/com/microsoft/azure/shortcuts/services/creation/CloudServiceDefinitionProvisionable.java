@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services.creation;
 
+import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
 

@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services.reading;
 
+import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
 
 public interface VirtualMachine extends Named {

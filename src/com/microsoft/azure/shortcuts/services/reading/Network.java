@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services.reading;
 
+import com.microsoft.azure.shortcuts.common.reading.Named;
 
 public interface Network extends Named {
 	String cidr();

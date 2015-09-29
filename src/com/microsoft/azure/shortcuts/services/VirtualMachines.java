@@ -26,6 +26,7 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
@@ -41,7 +42,6 @@ import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionW
 import com.microsoft.azure.shortcuts.services.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.services.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.services.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.services.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.services.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.reading.Network;
@@ -315,9 +315,7 @@ public class VirtualMachines implements
 			if(this.storageAccountName == null) {
 				final String storeName = "store" + System.currentTimeMillis();
 				StorageAccountDefinitionBlank storageDefinition  = azure.storageAccounts.define(storeName);
-				StorageAccountDefinitionProvisionable storageProvisionable  = (this.affinityGroup != null)
-					? storageDefinition.withAffinityGroup(this.affinityGroup)
-					: storageDefinition.withRegion(this.region);
+				StorageAccountDefinitionProvisionable storageProvisionable  = storageDefinition.withRegion(this.region);
 				storageProvisionable.provision();
 				this.storageAccountName = storeName;
 			}
@@ -580,11 +578,6 @@ public class VirtualMachines implements
 
 		public String affinityGroup() {
 			return this.affinityGroup;
-		}
-
-		public VirtualMachineImpl withAffinityGroup(String affinityGroup) {
-			this.affinityGroup = affinityGroup;
-			return this;
 		}
 
 		public VirtualMachineImpl withNewCloudService(String name) {

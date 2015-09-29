@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.services;
 
 import java.util.ArrayList;
 
-import com.microsoft.azure.shortcuts.services.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.windowsazure.management.models.RoleSizeListResponse.RoleSize;
 
 // Encapsulates the API related to VM sizes

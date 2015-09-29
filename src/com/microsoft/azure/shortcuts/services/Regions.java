@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.services;
 
 import java.util.ArrayList;
 
-import com.microsoft.azure.shortcuts.services.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 
 // Class encapsulating the API related to locations

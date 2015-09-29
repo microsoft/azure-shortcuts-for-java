@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services.updating;
 
-import com.microsoft.azure.shortcuts.services.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Named;
 
 public interface Updatable<T> extends Named, Deletable {
 	T apply() throws Exception;
