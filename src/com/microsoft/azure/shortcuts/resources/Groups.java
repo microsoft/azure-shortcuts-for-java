@@ -23,16 +23,13 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
-import com.microsoft.azure.management.resources.models.GenericResourceExtended;
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public class Resources implements
-	SupportsListing {
-	
+public class Groups implements SupportsListing {
 	final Azure azure;
-	
-	Resources(Azure azure) {
+	Groups(Azure azure) {
 		this.azure = azure;
 	}
 	
@@ -40,13 +37,13 @@ public class Resources implements
 	// Returns list of resource names in the subscription
 	public String[] list() {
 		try {
-			ArrayList<GenericResourceExtended> resources = 
-					azure.resourceManagementClient().getResourcesOperations().list(null).getResources();
+			ArrayList<ResourceGroupExtended> groups = 
+					azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
 			
-			String[] names = new String[resources.size()];
+			String[] names = new String[groups.size()];
 			int i = 0;
-			for(GenericResourceExtended resource: resources) {
-				names[i++]= resource.getName();
+			for(ResourceGroupExtended group: groups) {
+				names[i++]= group.getName();
 			}
 			return names;
 

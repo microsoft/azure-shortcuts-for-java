@@ -17,41 +17,26 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
+package com.microsoft.azure.shortcuts.resources.samples;
 
-import com.microsoft.azure.management.resources.models.GenericResourceExtended;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.windowsazure.exception.ServiceException;
+import java.util.Arrays;
 
-public class Resources implements
-	SupportsListing {
-	
-	final Azure azure;
-	
-	Resources(Azure azure) {
-		this.azure = azure;
-	}
-	
-	@Override
-	// Returns list of resource names in the subscription
-	public String[] list() {
-		try {
-			ArrayList<GenericResourceExtended> resources = 
-					azure.resourceManagementClient().getResourcesOperations().list(null).getResources();
-			
-			String[] names = new String[resources.size()];
-			int i = 0;
-			for(GenericResourceExtended resource: resources) {
-				names[i++]= resource.getName();
-			}
-			return names;
+import com.microsoft.azure.shortcuts.resources.Azure;
 
-		} catch (IOException | ServiceException | URISyntaxException e) {
-			return new String[0];
-		}
-	}
+// Tests resources
+public class Groups {
+    public static void main(String[] args) {
+        try {
+            Azure azure = new Azure("my.azureauth", null);
+            test(azure);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void test(Azure azure) {
+		System.out.println("Groups: \n\t" + Arrays.toString(
+			azure.groups.list()).replaceAll(", ", ",\n\t"));
+    }
 }

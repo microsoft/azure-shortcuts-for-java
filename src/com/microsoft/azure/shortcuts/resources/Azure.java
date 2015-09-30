@@ -56,6 +56,7 @@ public class Azure {
 
     public final StorageAccounts storageAccounts;
     public final Resources resources;
+    public final Groups groups;
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	this(createConfiguration(subscriptionId, tenantId, clientId, clientKey, null, null, null));
@@ -69,6 +70,7 @@ public class Azure {
     	this.configuration = configuration;
         this.storageAccounts = new StorageAccounts(this);
         this.resources = new Resources(this);
+        this.groups = new Groups(this);
     }
     
     
@@ -130,6 +132,7 @@ public class Azure {
 		}
 		
 		// Extract service principal information
+		subscriptionId = subscription.getAttribute("id");
 		String tenantId = subscription.getAttribute("tenant");
 		String clientId = subscription.getAttribute("client");
 		String clientKey = subscription.getAttribute("key");
@@ -189,6 +192,10 @@ public class Azure {
 			String managementUri,
 			String baseUrl,
 			String authUrl) throws Exception {
+		
+		if(subscriptionId == null) {
+			throw new Exception("Missing subscription");
+		}
 		
 		if(baseUrl == null) {
 			baseUrl = Azure.ARM_URL;
