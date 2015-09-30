@@ -83,9 +83,10 @@ public class StorageAccounts implements
     
 
     // Return the list of storage accounts in a resource group
-    public String[] listByResourceGroup(String resourceGroup) {
+    public String[] list(String resourceGroup) {
         ArrayList<StorageAccount> storageAccounts;
 		try {
+			
 			storageAccounts = this.azure.storageManagementClient().getStorageAccountsOperations().listByResourceGroup(resourceGroup).getStorageAccounts();
 			String[] names = new String[storageAccounts.size()];
 			int i = 0;

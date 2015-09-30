@@ -39,5 +39,5 @@ public class Resources {
     public static void test(Azure azure) {
 		System.out.println("Resources: \n\t" + Arrays.toString(
 			azure.resources.list()).replaceAll(", ", ",\n\t"));
-    }
+	}
 }

@@ -23,6 +23,7 @@ package com.microsoft.azure.shortcuts.resources.samples;
 import java.util.Arrays;
 
 import com.microsoft.azure.shortcuts.resources.Azure;
+import com.microsoft.azure.shortcuts.resources.reading.Group;
 
 // Tests resources
 public class Groups {
@@ -35,8 +36,16 @@ public class Groups {
         }
     }
 
-    public static void test(Azure azure) {
-		System.out.println("Groups: \n\t" + Arrays.toString(
+    public static void test(Azure azure) throws Exception {
+		// List resource groups
+    	System.out.println("Groups: \n\t" + Arrays.toString(
 			azure.groups.list()).replaceAll(", ", ",\n\t"));
+		
+    	// Read a specific resource group
+		Group resourceGroup = azure.groups.get("marcinstest");
+		System.out.println(String.format("Found group: %s\n"
+				+ "\tRegion: %s\n",
+				resourceGroup.name(),
+				resourceGroup.region()));
     }
 }

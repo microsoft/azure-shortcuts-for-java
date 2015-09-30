@@ -24,7 +24,10 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
+import com.microsoft.azure.management.resources.models.ResourceListParameters;
+import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.resources.reading.Resource;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 public class Resources implements
@@ -39,19 +42,48 @@ public class Resources implements
 	@Override
 	// Returns list of resource names in the subscription
 	public String[] list() {
+		return list(null);
+	}
+	
+	
+	// Returns list of resource names in the specified resource group
+	public String[] list(String group) {
 		try {
+			ResourceListParameters params = new ResourceListParameters();
+			params.setResourceGroupName(group);
 			ArrayList<GenericResourceExtended> resources = 
-					azure.resourceManagementClient().getResourcesOperations().list(null).getResources();
+					azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
 			
 			String[] names = new String[resources.size()];
 			int i = 0;
 			for(GenericResourceExtended resource: resources) {
 				names[i++]= resource.getName();
 			}
+						
 			return names;
 
 		} catch (IOException | ServiceException | URISyntaxException e) {
 			return new String[0];
+		}		
+	}
+		
+	
+	// Implements the individual resource logic
+	private class ResourceImpl 
+		extends
+			NamedImpl
+		implements 
+			Resource {
+		
+		private String group;
+
+		private ResourceImpl(String name) {
+			super(name.toLowerCase());
+		}
+
+		@Override
+		public String group() {
+			return this.group;
 		}
 	}
 }

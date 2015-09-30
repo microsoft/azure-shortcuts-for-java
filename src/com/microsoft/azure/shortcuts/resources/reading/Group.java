@@ -17,34 +17,10 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
+package com.microsoft.azure.shortcuts.resources.reading;
 
-package com.microsoft.azure.shortcuts.resources.samples;
+import com.microsoft.azure.shortcuts.common.reading.Named;
 
-import java.util.Arrays;
-
-import com.microsoft.azure.shortcuts.resources.Azure;
-
-public class StorageAccounts {
-    public static void main(String[] args) {
-
-        try {
-            Azure azure = new Azure("my.azureauth", null);
-            test(azure);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public static void test(Azure azure) throws Exception {
-    	final String timestamp = String.valueOf(System.currentTimeMillis());
-		final String accountName = "store" + timestamp;
-		final String group = "group" + timestamp;
-		System.out.println("Storage accounts: \n\t" + Arrays.toString(
-				azure.storageAccounts.list()).replaceAll(", ", ",\n\t"));
-
-		azure.storageAccounts.define(group, accountName)
-        	.withRegion("West US")
-        	.provision();
-
-    }
+public interface Group extends Named {
+	String region();
 }

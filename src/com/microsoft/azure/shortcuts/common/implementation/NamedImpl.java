@@ -17,9 +17,27 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.implementation;
+package com.microsoft.azure.shortcuts.common.implementation;
 
-// Requires class to support reading entities
-public interface SupportsReading<T> {
-	T get(String name) throws Exception;
+import com.microsoft.azure.shortcuts.common.reading.Named;
+
+// Base implementation for named entities
+public abstract class NamedImpl implements Named {
+	final protected String name;
+	
+	protected NamedImpl(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String name() {
+		return this.name;
+	}
+	
+	@Override
+	public String toString() {
+		return this.name();
+	}
 }
+
+

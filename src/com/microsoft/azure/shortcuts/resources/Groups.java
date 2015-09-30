@@ -24,10 +24,17 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
+import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
+import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public class Groups implements SupportsListing {
+public class Groups 
+	implements 
+		SupportsListing,
+		SupportsReading<Group> {
+	
 	final Azure azure;
 	Groups(Azure azure) {
 		this.azure = azure;
@@ -51,4 +58,35 @@ public class Groups implements SupportsListing {
 			return new String[0];
 		}
 	}
+	
+	
+	@Override
+	// Gets a specific resource group
+	public Group get(String name) throws Exception {
+		GroupImpl group = new GroupImpl(name);
+		ResourceGroupExtended response = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
+		group.region = response.getLocation();
+		return group;
+	}
+	
+	
+	// Implements logic for individual resource group
+	private class GroupImpl 
+		extends 
+			NamedImpl
+		implements
+			Group {
+		
+		public String region;
+
+		private GroupImpl(String name) {
+			super(name.toLowerCase());
+		}
+
+		@Override
+		public String region() {
+			return this.region;
+		}
+	}
+			
 }
