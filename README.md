@@ -1,7 +1,14 @@
 # azure-shortcuts-for-java
-A radically simplified API for Azure in Java, following a variant of fluent interface with the builder design pattern.
+A radically simplified API for Azure in Java, following a variant of fluent interface with the builder design pattern. 
 
 *Note: this is currently an experimental labs project/work in progress*
+
+The shortcuts library supports both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable. 
+
+It is not a current goal for the shortcuts however to cover the entirety of the Azure API surface. The developers should fall back on the Azure SDK for Java for scenarios not covered by the Shortcuts.
+
+A lot of short code samples are in the com.microsoft.azure.shortcuts.resources.samples (for ARM) and com.microsoft.azure.shortcuts.services.samples (for ASM) packages.
+
 
 ## Pre-requisites
 * Java 7+
@@ -12,13 +19,42 @@ A radically simplified API for Azure in Java, following a variant of fluent inte
 
 ### Creating an authenticated client:
 
-This is the first step for all the other examples. Currently, it only support the legacy "publish-settings" based way of authenticating:
+This is the first step for all the other examples.:
+
+*ASM* 
+(import from com.microsoft.azure.shortcuts.services.* packages)
 
 ```java
 String publishSettingsPath = "<your file>.publishsettings";
 String subscriptionId = "<subscription-GUID>";
 final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 ```
+
+*ARM*
+(import from the com.microsoft.azure.shortcuts.resources.* packages)
+
+```java
+String publishSettingsPath = "<your file>"; // See explanation below
+String subscriptionId = "<subscription-GUID>";
+Azure azure = new Azure("my.azureauth", null);
+```
+
+*Note: Active Directory auth for ARM currently requires a lot of inputs and token management logic. So to simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:*
+
+```xml
+<azureShortcutsAuth>
+	<subscription 
+		id="<subscription id>" 
+		tenant="<tenant id>" 
+		client="<client id>" 
+		key="<client key>"
+		managementURI="https://management.core.windows.net/"
+		baseURL="https://management.azure.com/"
+		authURL="https://login.windows.net/"
+		/>
+</azureShortcutsAuth>
+```
+
 
 ### Virtual Machines
 
