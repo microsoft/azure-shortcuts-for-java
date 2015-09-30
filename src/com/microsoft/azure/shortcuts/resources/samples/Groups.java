@@ -44,8 +44,19 @@ public class Groups {
     	// Read a specific resource group
 		Group resourceGroup = azure.groups.get("marcinstest");
 		System.out.println(String.format("Found group: %s\n"
-				+ "\tRegion: %s\n",
+				+ "\tRegion: %s\n"
+				+ "\tID: %s\n"
+				+ "\tTags: %s\n"
+				+ "\tProvisioning state: %s\n",
 				resourceGroup.name(),
-				resourceGroup.region()));
+				resourceGroup.region(),
+				resourceGroup.id(),
+				resourceGroup.tags().toString(),
+				resourceGroup.getProvisioningState()));
+		
+		// Delete a specific resource group
+		String group = "group1443594878500";
+		System.out.println("Deleting group " + group);
+		azure.groups.delete(group);
     }
 }

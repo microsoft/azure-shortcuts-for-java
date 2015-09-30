@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.services.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.services.implementation.SupportsUpdating;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatable;
@@ -56,24 +56,29 @@ public class StorageAccounts implements
 		this.azure = azure;
 	}
 	
+	
+	@Override
 	// Starts a new storage account update
 	public StorageAccountUpdatable update(String name) {
 		return new StorageAccountImpl(name);
 	}
 
 	
+	@Override
 	// Starts a new storage account definition
 	public StorageAccountDefinitionBlank define(String name) {
 		return new StorageAccountImpl(name);
 	}
 	
 	
+	@Override
 	// Deletes the specified storage account
 	public void delete(String accountName) throws IOException, ServiceException {
 		azure.storageManagementClient().getStorageAccountsOperations().delete(accountName);
 	}
 	
 	
+	@Override
 	// Return the list of storage accounts
 	public String[] list() {
 		try {

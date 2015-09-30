@@ -25,12 +25,12 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionWithCidr;
 import com.microsoft.azure.shortcuts.services.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.services.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.services.reading.Network;
 import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatable;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;

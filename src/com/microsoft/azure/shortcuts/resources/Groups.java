@@ -22,9 +22,11 @@ package com.microsoft.azure.shortcuts.resources;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
@@ -33,7 +35,8 @@ import com.microsoft.windowsazure.exception.ServiceException;
 public class Groups 
 	implements 
 		SupportsListing,
-		SupportsReading<Group> {
+		SupportsReading<Group>,
+		SupportsDeleting {
 	
 	final Azure azure;
 	Groups(Azure azure) {
@@ -66,10 +69,20 @@ public class Groups
 		GroupImpl group = new GroupImpl(name);
 		ResourceGroupExtended response = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
 		group.region = response.getLocation();
+		group.id = response.getId();
+		group.tags = response.getTags();
+		
 		return group;
 	}
 	
 	
+	@Override
+	public void delete(String name) throws Exception {
+		azure.resourceManagementClient().getResourceGroupsOperations().delete(name);
+		//TODO: Apparently the effect of the deletion is not immediate - Azure SDK misleadingly returns from this synch call even though listing resource groups will still include this
+	}
+	
+			
 	// Implements logic for individual resource group
 	private class GroupImpl 
 		extends 
@@ -77,7 +90,8 @@ public class Groups
 		implements
 			Group {
 		
-		public String region;
+		public HashMap<String, String> tags;
+		public String region, id;
 
 		private GroupImpl(String name) {
 			super(name.toLowerCase());
@@ -87,6 +101,25 @@ public class Groups
 		public String region() {
 			return this.region;
 		}
+
+		@Override
+		public String id() {
+			return this.id;
+		}
+
+		@Override
+		public HashMap<String, String> tags() {
+			return this.tags;
+		}
+
+		@Override
+		public String getProvisioningState() {
+			// This property is not cached because it is useful to read it in real time
+			try {
+				return azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup().getProvisioningState();
+			} catch (IOException | ServiceException | URISyntaxException e) {
+				return null;
+			}
+		}
 	}
-			
 }
