@@ -27,13 +27,8 @@ import com.microsoft.azure.shortcuts.resources.Azure;
 // Tests resources
 public class Resources {
     public static void main(String[] args) {
-        String subscriptionId = "<subscription_id>";
-        String tenantId = "<tenant_id>";
-        String clientId = "<client_id>";
-        String clientKey = "<client_key>";
-
         try {
-            Azure azure = new Azure(subscriptionId, tenantId, clientId, clientKey);
+            Azure azure = new Azure("my.azureauth", null);
             test(azure);
         } catch (Exception e) {
             e.printStackTrace();

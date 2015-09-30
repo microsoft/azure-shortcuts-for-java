@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="lib/activation-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/adal4j-1.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/azure-core-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-core-0.8.1.jar" sourcepath="C:/Users/marcins/Desktop/AzureSDK/src/azure-core-0.8.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/azure-keyvault-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-keyvault-core-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-keyvault-extensions-0.8.1.jar"/>
@@ -12,9 +12,9 @@
 	<classpathentry kind="lib" path="lib/azure-mgmt-compute-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-mgmt-dns-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-mgmt-network-0.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/azure-mgmt-resources-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-resources-0.8.1.jar" sourcepath="C:/Users/marcins/Desktop/AzureSDK/src/azure-mgmt-resources-0.8.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/azure-mgmt-sql-0.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/azure-mgmt-storage-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-storage-0.8.1.jar" sourcepath="C:/Users/marcins/Desktop/AzureSDK/src/azure-mgmt-storage-0.8.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/azure-mgmt-traffic-manager-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-mgmt-utility-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-svc-mgmt-0.8.1.jar"/>

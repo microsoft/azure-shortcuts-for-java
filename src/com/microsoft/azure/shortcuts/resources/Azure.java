@@ -28,19 +28,25 @@ import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.Utils;
+import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.File;
+import java.net.URI;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 
 public class Azure {
     public static String MANAGEMENT_URI = "https://management.core.windows.net/";
     public static String ARM_URL = "https://management.azure.com/";
     public static String ARM_AAD_URL = "https://login.windows.net/";
-
 
     private Configuration configuration;
     private ResourceManagementClient resourceManagementClient;
@@ -52,17 +58,85 @@ public class Azure {
     public final Resources resources;
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
-    	this(Utils.createConfiguration(subscriptionId, tenantId, clientId, clientKey));
+    	this(createConfiguration(subscriptionId, tenantId, clientId, clientKey, null, null, null));
     }
 
-    public Azure(String publishSettingsPath, String subscriptionId) throws IOException, ServiceException, URISyntaxException {
-    	this(PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId));
+    public Azure(String authenticationFilePath, String subscriptionId) throws Exception {
+    	this(getConfigFromFile(authenticationFilePath, subscriptionId));
     }
     
     private Azure(Configuration configuration) {
     	this.configuration = configuration;
         this.storageAccounts = new StorageAccounts(this);
         this.resources = new Resources(this);
+    }
+    
+    
+    // Returns an appropriate authenticated configuration based on the supplied file, automatically detecting if the file is a
+    // PublishSettings file or an Azure shortcuts authentication file
+    private static Configuration getConfigFromFile(String authFilePath, String subscriptionId) throws Exception {
+    	Configuration config = getConfigurationFromAuthXml(new File(authFilePath), subscriptionId);
+    	if(config != null) {
+    		return config;
+    	} else {
+    		return PublishSettingsLoader.createManagementConfiguration(authFilePath, subscriptionId);
+    	}
+    }
+    
+    
+    // Returns an ARM authenticated configuration based on the provided Azure shortcuts authentication file
+    // The assumed schema of the file is:
+    // <azureShortcutsAuth>
+    //   <subscription 
+    //		id="<subscription-id>" 
+    //		tenant="<tenant-id>"
+    //		client="<client-id>"
+    //		key="<client-key>"
+    //		managementURI="<management-URI>"
+    //		baseURL="<base-ARM-URL>"
+    //		authURL="<active-directory-login-url>"
+    //	 />
+    // </azureShortcutsAuth>
+    private static Configuration getConfigurationFromAuthXml(File authFile, String subscriptionId) throws Exception {
+    	Document xmlDoc = Utils.loadXml(authFile);
+    	Element root = xmlDoc.getDocumentElement();    	
+    	if(!root.getTagName().equals("azureShortcutsAuth")) {
+    		return null;
+    	} 
+    	
+    	NodeList subscriptions = root.getElementsByTagName("subscription");
+    	if(subscriptions.getLength() == 0) {
+    		throw new ParserConfigurationException("No subscriptions found");
+    	}
+
+    	Element subscription = null;
+    	if(subscriptionId == null) {
+    		// If no specific subscription ID requested, assume the first one
+    		subscription = (Element)subscriptions.item(0);
+    	} else {
+    		// Else, find the subscription with the requested ID
+    		for(int i=0; i<subscriptions.getLength(); i++) {
+    			subscription = (Element)subscriptions.item(i);
+    			if(subscription.getAttribute("id").equals(subscriptionId)) {
+    				break;
+    			} else {
+    				subscription = null;
+    			}
+    		}
+    	}
+    	
+		if(subscription == null) {
+			throw new ParserConfigurationException("Subscription not found");
+		}
+		
+		// Extract service principal information
+		String tenantId = subscription.getAttribute("tenant");
+		String clientId = subscription.getAttribute("client");
+		String clientKey = subscription.getAttribute("key");
+		String managementUri = subscription.getAttribute("managementURI");
+		String baseUrl = subscription.getAttribute("baseURL");
+		String authUrl = subscription.getAttribute("authURL");
+		return createConfiguration(subscriptionId, tenantId, clientId, clientKey, managementUri, baseUrl, authUrl);
     }
     
     
@@ -105,4 +179,42 @@ public class Azure {
     	
     	return this.storageManagementClient;
     }
+    
+    
+	private static Configuration createConfiguration(
+			String subscriptionId, 
+			String tenantId, 
+			String clientId, 
+			String clientKey,
+			String managementUri,
+			String baseUrl,
+			String authUrl) throws Exception {
+		
+		if(baseUrl == null) {
+			baseUrl = Azure.ARM_URL;
+		}
+		URI baseUri = new URI(baseUrl);
+		
+		if(managementUri == null) {
+			managementUri = Azure.MANAGEMENT_URI;
+		}
+		
+		if(authUrl == null) {
+			authUrl = Azure.ARM_AAD_URL;
+		}
+		
+		String accessToken = AuthHelper.getAccessTokenFromServicePrincipalCredentials(
+			managementUri, 
+			authUrl,
+			tenantId, 
+			clientId, 
+			clientKey).getAccessToken();
+		
+		return ManagementConfiguration.configure(
+			(String)null, 
+			baseUri,
+			subscriptionId,
+			accessToken);
+	}
+
 }

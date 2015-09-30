@@ -51,8 +51,5 @@ public class Resources implements
 		} catch (IOException | ServiceException | URISyntaxException e) {
 			return new String[0];
 		}
-		
 	}
-	
-
 }

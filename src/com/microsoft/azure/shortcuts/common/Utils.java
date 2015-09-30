@@ -33,7 +33,9 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 
+import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -46,6 +48,7 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class Utils {
 	
@@ -210,6 +213,14 @@ public class Utils {
 	}
 	
 	
+	// Loads XML from a file
+	public static Document loadXml(File file) throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		return builder.parse(file);
+	}
+	
+	
 	// Inserts XML string as a child node into another XML string based on the provided xpath
 	public static String insertXMLElement(String parentXML, String childXMLElement, String parentXPath) {
 		try {
@@ -229,19 +240,5 @@ public class Utils {
 		} catch (Exception e) {
 			return null;
 		}
-	}
-
-	
-	
-	public static Configuration createConfiguration(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
-		URI baseUri = new URI(Azure.ARM_URL);
-
-		return ManagementConfiguration.configure(
-				null,
-				baseUri.toString(),
-				subscriptionId,
-				AuthHelper.getAccessTokenFromServicePrincipalCredentials(Azure.MANAGEMENT_URI, Azure.ARM_AAD_URL,
-						tenantId, clientId, clientKey)
-						.getAccessToken());
 	}
 }

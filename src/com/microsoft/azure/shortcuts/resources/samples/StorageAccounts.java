@@ -26,13 +26,9 @@ import com.microsoft.azure.shortcuts.resources.Azure;
 
 public class StorageAccounts {
     public static void main(String[] args) {
-        String subscriptionId = "<subscription_id>";
-        String tenantId = "<tenant_id>";
-        String clientId = "<client_id>";
-        String clientKey = "<client_key>";
 
         try {
-            Azure azure = new Azure(subscriptionId, tenantId, clientId, clientKey);
+            Azure azure = new Azure("my.azureauth", null);
             test(azure);
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,7 +36,12 @@ public class StorageAccounts {
     }
     
     public static void test(Azure azure) throws Exception {
-        azure.storageAccounts.define("lenaresourcegroup", "lenatestresources2").withRegion("West US").provision();
+    	final String timestamp = String.valueOf(System.currentTimeMillis());
+		final String accountName = "store" + timestamp;
+		final String group = "group" + timestamp;
+        azure.storageAccounts.define(group, accountName)
+        	.withRegion("West US")
+        	.provision();
 
 		System.out.println("Storage accounts: \n\t" + Arrays.toString(
 				azure.storageAccounts.list()).replaceAll(", ", ",\n\t"));
