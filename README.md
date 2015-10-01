@@ -16,7 +16,7 @@ A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.
 ## Examples
 
 
-### Creating an authenticated client:
+(###Creating-an-authenticated-client):
 
 This is the first step for all the other examples.:
 
