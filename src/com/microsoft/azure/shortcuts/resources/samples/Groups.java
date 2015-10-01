@@ -41,8 +41,16 @@ public class Groups {
     	System.out.println("Groups: \n\t" + Arrays.toString(
 			azure.groups.list()).replaceAll(", ", ",\n\t"));
 		
+    	// Create a resource group
+    	String groupName = "group" + String.valueOf(System.currentTimeMillis());
+    	System.out.println("Creating group " + groupName);
+    	azure.groups.define(groupName)
+    		.withRegion("West US")
+    		.withTag("hello", "world")
+    		.provision();
+    	
     	// Read a specific resource group
-		Group resourceGroup = azure.groups.get("marcinstest");
+		Group resourceGroup = azure.groups.get(groupName);
 		System.out.println(String.format("Found group: %s\n"
 				+ "\tRegion: %s\n"
 				+ "\tID: %s\n"
@@ -55,14 +63,13 @@ public class Groups {
 				resourceGroup.getProvisioningState()));
 				
 		// Update a resource group
-		azure.groups.update("marcinstest")
+		azure.groups.update(groupName)
 			.withTag("foo", "bar")
 			.withoutTag("hello")
 			.apply();
 		
 		// Delete a specific resource group
-		String group = "group1443631203104";
-		System.out.println("Deleting group " + group);
-		azure.groups.delete(group);
+		System.out.println("Deleting group " + groupName);
+		azure.groups.delete(groupName);
     }
 }

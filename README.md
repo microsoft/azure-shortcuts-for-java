@@ -10,10 +10,11 @@ A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.
 
 ## Pre-requisites
 * Java 7+
-* Azure SDK for Java v0.7.0
+* Azure SDK for Java v0.8.0 or higher
 * An Azure subscription
 
 ## Examples
+
 
 ### Creating an authenticated client:
 
@@ -451,6 +452,14 @@ System.out.println("Available regions: " + Arrays.toString(
 ### Resource Groups
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+#### Creating a resource group
+```java
+azure.groups.define("myResourceGroup")
+	.withRegion("West US")
+	.withTag("hello", "world")
+    .provision();
+```
 
 #### Listing resource groups
 

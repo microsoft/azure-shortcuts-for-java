@@ -154,7 +154,7 @@ public class Azure {
     
     
     // Returns the network management client, creating if needed
-    NetworkResourceProviderClient getNetworkManagementClient() {
+    NetworkResourceProviderClient networkManagementClient() {
     	if(this.networkResourceProviderClient == null) {
     		this.networkResourceProviderClient = NetworkResourceProviderService.create(configuration);
     	}

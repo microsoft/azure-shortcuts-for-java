@@ -27,12 +27,15 @@ import java.util.HashMap;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
-import com.microsoft.azure.shortcuts.common.updating.GroupUpdatable;
+import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
+import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
+import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 public class Groups 
@@ -40,7 +43,8 @@ public class Groups
 		SupportsListing,
 		SupportsReading<Group>,
 		SupportsDeleting,
-		SupportsUpdating<GroupUpdatable> {
+		SupportsUpdating<GroupUpdatable>,
+		SupportsCreating<GroupDefinitionBlank> {
 	
 	final Azure azure;
 	Groups(Azure azure) {
@@ -92,6 +96,12 @@ public class Groups
 		return new GroupImpl(name);
 	}
 
+
+	@Override
+	public GroupDefinitionBlank define(String name) {
+		return new GroupImpl(name);
+	}
+
 	
 	// Implements logic for individual resource group
 	private class GroupImpl 
@@ -99,6 +109,8 @@ public class Groups
 			NamedImpl
 		implements
 			GroupUpdatable,
+			GroupDefinitionProvisionable,
+			GroupDefinitionBlank,
 			Group {
 		
 		public HashMap<String, String> tags = new HashMap<String, String>();
@@ -160,6 +172,17 @@ public class Groups
 			azure.groups.delete(this.name);
 		}
 
+		
+		@Override
+		public GroupUpdatable provision() throws Exception {
+			ResourceGroup params = new ResourceGroup();
+			params.setLocation(this.region);
+			params.setTags(this.tags);
+			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.name, params);
+			return this;
+		}
+
+		
 		@Override
 		public GroupImpl withTags(HashMap<String, String> tags) {
 			this.tags = tags;
@@ -178,6 +201,10 @@ public class Groups
 			return this;
 		}
 
-		
+		@Override
+		public GroupImpl withRegion(String region) {
+			this.region = region;
+			return this;
+		}
 	}
 }

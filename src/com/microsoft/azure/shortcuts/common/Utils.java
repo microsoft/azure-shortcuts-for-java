@@ -19,10 +19,6 @@
 */
 package com.microsoft.azure.shortcuts.common;
 
-import com.microsoft.azure.shortcuts.resources.Azure;
-import com.microsoft.azure.utility.AuthHelper;
-import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,7 +27,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.net.URI;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
