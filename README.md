@@ -20,6 +20,7 @@ A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.
 * [Virtual Networks](#virtual-networks)
 * [Cloud Services](#cloud-services)
 * [Storage Accounts](#storage-accounts)
+* [Regions](#regions)
 * [Resource Groups](#resource-groups)
 
 ### Creating an authenticated client
@@ -434,21 +435,6 @@ azure.storageAccounts.update("mystorage")
 	.withDescription("Updated")
 	.withLabel("Updated")
 	.apply();
-```
-
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
-
-
-### Listing available regions
-
-This returns regions supporting Virtual Machines specifically. For all regions, use the parameter-less overload.
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-```java
-System.out.println("Available regions: " + Arrays.toString(
-	azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE)));
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
