@@ -19,6 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.services.updating;
 
+import com.microsoft.azure.shortcuts.common.updating.Updatable;
+
 public interface NetworkUpdatable extends Updatable<NetworkUpdatable> {
 
 }

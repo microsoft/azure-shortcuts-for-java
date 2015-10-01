@@ -53,9 +53,15 @@ public class Groups {
 				resourceGroup.id(),
 				resourceGroup.tags().toString(),
 				resourceGroup.getProvisioningState()));
+				
+		// Update a resource group
+		azure.groups.update("marcinstest")
+			.withTag("foo", "bar")
+			.withoutTag("hello")
+			.apply();
 		
 		// Delete a specific resource group
-		String group = "group1443594878500";
+		String group = "group1443631203104";
 		System.out.println("Deleting group " + group);
 		azure.groups.delete(group);
     }

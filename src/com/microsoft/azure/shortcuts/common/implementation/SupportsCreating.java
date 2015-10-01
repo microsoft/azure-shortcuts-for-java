@@ -17,11 +17,10 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.updating;
+package com.microsoft.azure.shortcuts.common.implementation;
 
-import com.microsoft.azure.shortcuts.common.updating.Deletable;
-import com.microsoft.azure.shortcuts.resources.reading.Resource;
 
-public interface Updatable <T> extends Resource, Deletable {
-    T apply() throws Exception;
+// Requires class to support creating entities
+public interface SupportsCreating<T> {
+	T define(String name);
 }

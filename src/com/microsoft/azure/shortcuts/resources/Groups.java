@@ -24,11 +24,14 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
+import com.microsoft.azure.shortcuts.common.updating.GroupUpdatable;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -36,7 +39,8 @@ public class Groups
 	implements 
 		SupportsListing,
 		SupportsReading<Group>,
-		SupportsDeleting {
+		SupportsDeleting,
+		SupportsUpdating<GroupUpdatable> {
 	
 	final Azure azure;
 	Groups(Azure azure) {
@@ -82,15 +86,22 @@ public class Groups
 		//TODO: Apparently the effect of the deletion is not immediate - Azure SDK misleadingly returns from this synch call even though listing resource groups will still include this
 	}
 	
-			
+
+	@Override
+	public GroupUpdatable update(String name) {
+		return new GroupImpl(name);
+	}
+
+	
 	// Implements logic for individual resource group
 	private class GroupImpl 
 		extends 
 			NamedImpl
 		implements
+			GroupUpdatable,
 			Group {
 		
-		public HashMap<String, String> tags;
+		public HashMap<String, String> tags = new HashMap<String, String>();
 		public String region, id;
 
 		private GroupImpl(String name) {
@@ -121,5 +132,52 @@ public class Groups
 				return null;
 			}
 		}
+
+		
+		@Override
+		public GroupImpl apply() throws Exception {
+			ResourceGroup params = new ResourceGroup();
+			Group group;
+			
+			params.setTags(this.tags);
+			
+			// Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
+			if(this.region != null) {
+				params.setLocation(this.region);
+			} else if(null == (group = azure.groups.get(this.name))) {
+				throw new Exception("Resource group not found");
+			} else {
+				params.setLocation(group.region());
+			}
+
+			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.name, params);
+			return this;
+		}
+
+		
+		@Override
+		public void delete() throws Exception {
+			azure.groups.delete(this.name);
+		}
+
+		@Override
+		public GroupImpl withTags(HashMap<String, String> tags) {
+			this.tags = tags;
+			return this;
+		}
+
+		@Override
+		public GroupImpl withTag(String key, String value) {
+			this.tags.put(key, value);
+			return this;
+		}
+
+		@Override
+		public GroupImpl withoutTag(String key) {
+			this.tags.remove(key);
+			return this;
+		}
+
+		
 	}
 }

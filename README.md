@@ -459,6 +459,27 @@ System.out.println("Groups: \n\t" + Arrays.toString(
 	azure.groups.list()));
 ```
 
+### Updating a resource group (changing its tags)
+
+Tags are key/value pairs.
+
+```java
+azure.groups.update("<resource-group-name>")
+	.withTag("foo", "bar")
+	.withoutTag("hello")
+	.apply();
+
+```
+
+You can also pass an instance of HashMap<String, String> with all the tags in it:
+
+```java
+azure.groups.update("<resource-group-name>")
+	.withTags(myHashMap)
+	.apply();
+```
+
+
 #### Reading information about a resource group
 
 ```java

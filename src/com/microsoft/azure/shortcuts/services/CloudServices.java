@@ -25,13 +25,13 @@ import java.util.Calendar;
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.services.implementation.SupportsUpdating;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateParameters;
