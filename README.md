@@ -474,7 +474,7 @@ System.out.println("Groups: \n\t" + Arrays.toString(
 	azure.groups.list()));
 ```
 
-### Updating a resource group (changing its tags)
+#### Updating a resource group (changing its tags)
 
 Tags are key/value pairs.
 
