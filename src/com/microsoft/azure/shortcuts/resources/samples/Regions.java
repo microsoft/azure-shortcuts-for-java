@@ -17,9 +17,32 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.common.implementation;
 
-// Requires class to support listing entities
-public interface SupportsListing {
-	String[] list() throws Exception;
+package com.microsoft.azure.shortcuts.resources.samples;
+
+import java.util.Arrays;
+
+import com.microsoft.azure.shortcuts.resources.Azure;
+import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+
+// Tests resources
+public class Regions {
+    public static void main(String[] args) {
+        try {
+            Azure azure = new Azure("my.azureauth", null);
+            test(azure);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void test(Azure azure) throws Exception {
+		// List all regions
+    	System.out.println("All regions: \n\t" + Arrays.toString(
+			azure.regions.list()).replaceAll(", ", ",\n\t"));
+
+    	// List regions supporting high memory
+    	System.out.println("Regions supporting high memory: \n\t" + Arrays.toString(
+			azure.regions.list(LocationAvailableServiceNames.HIGHMEMORY)).replaceAll(", ", ",\n\t"));    	
+    }
 }

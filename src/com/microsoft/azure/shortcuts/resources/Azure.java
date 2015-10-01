@@ -30,6 +30,8 @@ import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.management.ManagementClient;
+import com.microsoft.windowsazure.management.ManagementService;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 
@@ -53,10 +55,12 @@ public class Azure {
     private StorageManagementClient storageManagementClient;
     private ComputeManagementClient computeManagementClient;
     private NetworkResourceProviderClient networkResourceProviderClient;
+    private ManagementClient managementClient;
 
     public final StorageAccounts storageAccounts;
     public final Resources resources;
     public final Groups groups;
+    public final Regions regions;
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	this(createConfiguration(subscriptionId, tenantId, clientId, clientKey, null, null, null));
@@ -71,6 +75,7 @@ public class Azure {
         this.storageAccounts = new StorageAccounts(this);
         this.resources = new Resources(this);
         this.groups = new Groups(this);
+        this.regions = new Regions(this);
     }
     
     
@@ -146,7 +151,7 @@ public class Azure {
     // Returns the compute management client, creating if needed
     ComputeManagementClient computeManagementClient() {
     	if(this.computeManagementClient == null) {
-    		this.computeManagementClient = ComputeManagementService.create(configuration);
+    		this.computeManagementClient = ComputeManagementService.create(this.configuration);
     	}
     	
     	return this.computeManagementClient;
@@ -156,7 +161,7 @@ public class Azure {
     // Returns the network management client, creating if needed
     NetworkResourceProviderClient networkManagementClient() {
     	if(this.networkResourceProviderClient == null) {
-    		this.networkResourceProviderClient = NetworkResourceProviderService.create(configuration);
+    		this.networkResourceProviderClient = NetworkResourceProviderService.create(this.configuration);
     	}
     	
     	return this.networkResourceProviderClient;
@@ -166,7 +171,7 @@ public class Azure {
     // Returns the resource management client, creating if needed
     ResourceManagementClient resourceManagementClient() {
     	if(this.resourceManagementClient == null) {
-    		this.resourceManagementClient = ResourceManagementService.create(configuration);
+    		this.resourceManagementClient = ResourceManagementService.create(this.configuration);
     	}
     	
     	return this.resourceManagementClient;
@@ -177,10 +182,20 @@ public class Azure {
     // Returns the storage management client
     StorageManagementClient storageManagementClient() {
     	if(this.storageManagementClient == null) {
-    		this.storageManagementClient = StorageManagementService.create(configuration);
+    		this.storageManagementClient = StorageManagementService.create(this.configuration);
     	}
     	
     	return this.storageManagementClient;
+    }
+    
+    
+    // Returns the management client
+    ManagementClient managementClient() {
+    	if(this.managementClient == null) {
+    		this.managementClient = ManagementService.create(this.configuration);
+    	}
+    	
+    	return this.managementClient;
     }
     
     

@@ -53,21 +53,16 @@ public class Groups
 	
 	@Override
 	// Returns list of resource names in the subscription
-	public String[] list() {
-		try {
-			ArrayList<ResourceGroupExtended> groups = 
-					azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
+	public String[] list() throws Exception {
+		ArrayList<ResourceGroupExtended> groups = 
+			azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
 			
-			String[] names = new String[groups.size()];
-			int i = 0;
-			for(ResourceGroupExtended group: groups) {
-				names[i++]= group.getName();
-			}
-			return names;
-
-		} catch (IOException | ServiceException | URISyntaxException e) {
-			return new String[0];
+		String[] names = new String[groups.size()];
+		int i = 0;
+		for(ResourceGroupExtended group: groups) {
+			names[i++]= group.getName();
 		}
+		return names;
 	}
 	
 	

@@ -455,6 +455,28 @@ System.out.println("Available regions: " + Arrays.toString(
 *[TODO]*
 
 
+### Regions
+
+
+#### Listing regions
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+Listing all regions:
+
+```java
+System.out.println("All regions: \n\t" + Arrays.toString(
+	azure.regions.list()).replaceAll(", ", ",\n\t"));
+```
+
+Listing regions supporting a specific capability from the `LocationsAvailableServiceNames` options:
+
+```
+System.out.println("Regions supporting high memory: \n\t" + Arrays.toString(
+	azure.regions.list(LocationAvailableServiceNames.HIGHMEMORY)).replaceAll(", ", ",\n\t"));    	
+```
+
 ### Resource Groups
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
