@@ -5,9 +5,7 @@ A radically simplified API for Azure in Java, following a variant of fluent inte
 
 The shortcuts library supports both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable. 
 
-It is not a current goal for the shortcuts however to cover the entirety of the Azure API surface. The developers should fall back on the Azure SDK for Java for scenarios not covered by the Shortcuts.
-
-A lot of short code samples are in the com.microsoft.azure.shortcuts.resources.samples (for ARM) and com.microsoft.azure.shortcuts.services.samples (for ASM) packages.
+A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.samples` (for ARM) and `com.microsoft.azure.shortcuts.services.samples` (for ASM) packages.
 
 
 ## Pre-requisites
@@ -21,8 +19,7 @@ A lot of short code samples are in the com.microsoft.azure.shortcuts.resources.s
 
 This is the first step for all the other examples.:
 
-*ASM* 
-(import from com.microsoft.azure.shortcuts.services.* packages)
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 String publishSettingsPath = "<your file>.publishsettings";
@@ -30,8 +27,7 @@ String subscriptionId = "<subscription-GUID>";
 final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 ```
 
-*ARM*
-(import from the com.microsoft.azure.shortcuts.resources.* packages)
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
 String publishSettingsPath = "<your file>"; // See explanation below
@@ -60,6 +56,8 @@ Azure azure = new Azure("my.azureauth", null);
 
 #### Creating a Linux VM in a new, default cloud service with SSH set up
 
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
 ```java
 azure.virtualMachines.define("mylinuxvm")
 	.withRegion("West US")
@@ -71,7 +69,13 @@ azure.virtualMachines.define("mylinuxvm")
 	.provision();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Creating a Linux VM in a new cloud service in an existing virtual network
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.virtualMachines.define("mylinuxvm")
@@ -86,7 +90,12 @@ azure.virtualMachines.define("mylinuxvm")
 	.provision();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 #### Creating a Windows VM in an existing cloud service
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.virtualMachines.define("mywinvm")
@@ -99,15 +108,26 @@ azure.virtualMachines.define("mywinvm")
 	.provision();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 
 #### Listing VMs in a subscription
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 System.out.println("Virtual machines: "+ Arrays.toString(
 	azure.virtualMachines.list())); 
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Reading information about a VM
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 VirtualMachine vm = azure.virtualMachines.get("mylinuxvm");
@@ -132,7 +152,13 @@ System.out.println(String.format("Reading information about vm: %s\n"
 ));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Listing available VM sizes
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 boolean supportingVM = true;
@@ -142,10 +168,15 @@ System.out.println("Available VM sizes: " + Arrays.toString(
 	azure.sizes.list(supportingVM, supportingCloudServices)));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 
 ### Virtual Networks
 
 #### Creating a virtual network with a default subnet
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.networks.define("mynetwork")
@@ -154,7 +185,13 @@ azure.networks.define("mynetwork")
 	.provision();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Creating a virtual network with multiple, explicitly defined subnets
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.networks.define("mynetwork")
@@ -165,14 +202,26 @@ azure.networks.define("mynetwork")
 	.provision();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 #### Listing virtual networks in a subscription
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 System.out.println("My virtual networks: " + Arrays.toString(
 	azure.networks.list()));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Reading information about a virtual network
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
 ```java
 Network network = azure.networks.get("mynetwork");
 
@@ -189,15 +238,25 @@ System.out.println(String.format("Network found: %s\n"
 ));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 #### Deleting a virtual network
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.networks.delete("mynetwork");
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 ### Cloud Services
 
 #### Creating a cloud service
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.cloudServices.define("myservice")
@@ -205,14 +264,25 @@ azure.cloudServices.define("myservice")
 	.provision();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 #### Listing cloud services in a subscription
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 System.out.println("My cloud services: " + Arrays.toString(
 	azure.cloudServices.list()));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Updating an existing cloud service
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.cloudServices.update("myservice")
@@ -221,7 +291,12 @@ azure.cloudServices.update("myservice")
 	.apply();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 #### Reading information about a cloud service
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 CloudService cloudService = azure.cloudServices.get("myservice");
@@ -244,15 +319,25 @@ System.out.println(String.format("Found cloud service: %s\n"
 	cloudService.reverseDnsFqdn()));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 #### Deleting a cloud service
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.cloudServices.delete(serviceName);
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 ### Storage Accounts
 
 #### Creating a storage account
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.storageAccounts.define("mystorage")
@@ -260,14 +345,27 @@ azure.storageAccounts.define("mystorage")
 	.provision();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Listing storage accounts in a subscription
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
 System.out.println("My storage accounts: " + Arrays.toString(
 	azure.storageAccounts.list()));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Updating a storage account
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.storageAccounts.update("mystorage")
@@ -276,7 +374,12 @@ azure.storageAccounts.update("mystorage")
 	.apply();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
 #### Reading information about a storage account
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 StorageAccount storageAccount = azure.storageAccounts.get(accountName);
@@ -311,7 +414,13 @@ System.out.println(String.format("Found storage account: %s\n"
 ));
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 #### Deleting a storage account
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.storageAccounts.update("mystorage")
@@ -320,11 +429,57 @@ azure.storageAccounts.update("mystorage")
 	.apply();
 ```
 
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
 ### Listing available regions
 
 This returns regions supporting Virtual Machines specifically. For all regions, use the parameter-less overload.
 
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
 ```java
 System.out.println("Available regions: " + Arrays.toString(
 	azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE)));
+```
+
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+*[TODO]*
+
+
+### Resource Groups
+
+This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+#### Listing resource groups
+
+```java
+System.out.println("Groups: \n\t" + Arrays.toString(
+	azure.groups.list()));
+```
+
+#### Reading information about a resource group
+
+```java
+String resourceGroup="<resource-group-name>";		
+Group resourceGroup = azure.groups.get(resourceGroup);
+System.out.println(String.format("Found group: %s\n"
+		+ "\tRegion: %s\n"
+		+ "\tID: %s\n"
+		+ "\tTags: %s\n"
+		+ "\tProvisioning state: %s\n",
+		resourceGroup.name(),
+		resourceGroup.region(),
+		resourceGroup.id(),
+		resourceGroup.tags().toString(),
+		resourceGroup.getProvisioningState()));
+```
+
+#### Deleting a resource group
+
+```java
+String group = "<resrouce-group-name>";
+System.out.println("Deleting group " + group);
+	azure.groups.delete(group);
 ```
