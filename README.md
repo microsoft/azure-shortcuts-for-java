@@ -15,7 +15,12 @@ A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.
 
 ## Examples
 
-[foo bar](#creating-an-authenticated-client)
+* [Authentication](#creating-an-authenticated-client)
+* [Virtual Machines](#virtual-machines)
+* [Virtual Networks](#virtual-networks)
+* [Cloud Services](#cloud-services)
+* [Storage Accounts](#storage-accounts)
+* [Resource Groups](#resource-groups)
 
 ### Creating an authenticated client
 
