@@ -17,31 +17,19 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.common.implementation;
+package com.microsoft.azure.shortcuts.resources.reading;
+
+import java.util.HashMap;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 
-// Base implementation for named entities
-public abstract class NamedImpl implements Named {
-	protected String name;
+public interface Provider extends Named {
+	String registrationState();
+	HashMap<String, ResourceType> resourceTypes();
+	ResourceType resourceTypes(String name);
 	
-	protected NamedImpl(String name) {
-		this.name = name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public String name() {
-		return this.name;
-	}
-	
-	@Override
-	public String toString() {
-		return this.name();
+	public interface ResourceType extends Named {
+		String[] apiVersions();
+		String latestApiVersion();
 	}
 }
-
-

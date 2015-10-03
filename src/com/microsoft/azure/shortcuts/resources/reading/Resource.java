@@ -30,4 +30,5 @@ public interface Resource extends Named {
     String provider();
     String type();
     HashMap<String, String> tags();
+    String getProvisioningState();
 }

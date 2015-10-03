@@ -197,5 +197,11 @@ public class StorageAccounts implements
 			// TODO Auto-generated method stub
 			return null;
 		}
+
+		@Override
+		public String getProvisioningState() {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
 }

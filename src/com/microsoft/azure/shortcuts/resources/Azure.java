@@ -61,6 +61,7 @@ public class Azure {
     public final Resources resources;
     public final Groups groups;
     public final Regions regions;
+    public final Providers providers;
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	this(createConfiguration(subscriptionId, tenantId, clientId, clientKey, null, null, null));
@@ -76,6 +77,7 @@ public class Azure {
         this.resources = new Resources(this);
         this.groups = new Groups(this);
         this.regions = new Regions(this);
+        this.providers = new Providers(this);
     }
     
     

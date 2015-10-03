@@ -1,5 +1,5 @@
 # azure-shortcuts-for-java
-A radically simplified API for Azure in Java, following a variant of fluent interface with the builder design pattern. 
+The goal of this project is to provide a radically simplified API for Azure in Java, following a variant of fluent interface with the builder design pattern. 
 
 *Note: this is currently an experimental labs project/work in progress*
 
@@ -23,6 +23,7 @@ A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.
 * [Regions](#regions)
 * [Resource Groups](#resource-groups)
 * [Resources](#resources)
+* [Resource Providers](#resource-providers)
 
 ### Creating an authenticated client
 
@@ -566,14 +567,107 @@ System.out.println(String.format("Found resource ID: %s\n"
 	+ "\tRegion: %s\n"
 	+ "\tShort name: %s\n"
 	+ "\tTags: %s\n"
-	+ "\tType: %s\n",
-				
+	+ "\tType: %s\n"
+	+ "\tProvisioning state %s\n",
+			
 	resource.name(),
 	resource.group(),
 	resource.provider(),
 	resource.region(),
 	resource.shortName(),
 	resource.tags(),
-	resource.type()
+	resource.type(),
+	resource.getProvisioningState()
 ));
+```
+
+### Resource Providers
+
+This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+#### Listing resource providers (by namespace)
+
+```java
+String[] providerNamespaces = azure.providers.list();
+```
+
+#### Reading information about a resource provider
+
+Using the namespace of the provider you can get from `providers.list()`:
+
+```java
+Provider provider = azure.providers.get("microsoft.classicstorage");
+System.out.println(String.format("Found provider: %s\n" 
+    + "\tRegistration State: %s\n"
+    + "\tAPI versions for resource types:",
+    provider.name(),
+    provider.registrationState()));
+```
+
+**Currently known providers:**
+
+* Microsoft.ApiManagement,
+* Microsoft.AppService,
+* Microsoft.Batch,
+* microsoft.cache,
+* microsoft.classiccompute,
+* microsoft.classicnetwork,
+* microsoft.classicstorage,
+* Microsoft.Compute,
+* Microsoft.Insights,
+* Microsoft.KeyVault,
+* Microsoft.Media,
+* Microsoft.MobileEngagement,
+* Microsoft.Network,
+* Microsoft.OperationalInsights,
+* microsoft.sql,
+* Microsoft.Storage,
+* Microsoft.StreamAnalytics,
+* Microsoft.Web,
+* Microsoft.ADHybridHealthService,
+* Microsoft.Authorization,
+* Microsoft.Automation,
+* Microsoft.BingMaps,
+* Microsoft.BizTalkServices,
+* Microsoft.DataFactory,
+* Microsoft.Devices,
+* Microsoft.DevTestLab,
+* Microsoft.DocumentDB,
+* Microsoft.DomainRegistration,
+* Microsoft.DynamicsLcs,
+* Microsoft.EventHub,
+* Microsoft.Features,
+* Microsoft.Logic,
+* Microsoft.MarketplaceOrdering,
+* Microsoft.NotificationHubs,
+* Microsoft.Resources,
+* Microsoft.Scheduler,
+* Microsoft.Search,
+* Microsoft.ServiceBus,
+* microsoft.support,
+* microsoft.visualstudio,
+* NewRelic.APM,
+* Sendgrid.Email,
+* SuccessBricks.ClearDB
+	
+
+#### Listing provider resource types and their versions
+
+```java
+Provider provider = azure.providers.get("<provider-namespace>");
+for(ResourceType t : provider.resourceTypes().values()) {
+	System.out.println(String.format("%s: %s", t.name(), Arrays.toString(t.apiVersions())));
+}
+```
+
+#### Finding the latest API version of a resource type
+
+```java
+String latestAPIVersion = azure.providers.get("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
+```
+
+Or shortcut:
+
+```java
+String latestAPIVersion = azure.providers.get("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
 ```

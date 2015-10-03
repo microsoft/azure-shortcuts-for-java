@@ -62,6 +62,12 @@ public class Resources {
         			resource.group());
         	printResource(resource);
     	}
+    	
+    	
+    	// Delete a resource based on its ID
+    	String resourceToDelete = "ThisMustFail!";
+    	System.out.println("Deleting resource " + resourceToDelete);
+    	azure.resources.delete(resourceToDelete);    	
 	}
     
     
@@ -72,7 +78,8 @@ public class Resources {
 			+ "\tRegion: %s\n"
 			+ "\tShort name: %s\n"
 			+ "\tTags: %s\n"
-			+ "\tType: %s\n",
+			+ "\tType: %s\n"
+			+ "\tProvisioning state %s\n",
 			
 			resource.name(),
 			resource.group(),
@@ -80,7 +87,8 @@ public class Resources {
 			resource.region(),
 			resource.shortName(),
 			resource.tags(),
-			resource.type()
+			resource.type(),
+			resource.getProvisioningState()
 			));    	
     }
 }
