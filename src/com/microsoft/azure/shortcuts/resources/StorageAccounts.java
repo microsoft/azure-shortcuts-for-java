@@ -174,8 +174,28 @@ public class StorageAccounts implements
             return this.region;
         }
 
-        public AccountType type() {
-            return this.type;
-        }
+		@Override
+		public String shortName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String provider() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public String type() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public HashMap<String, String> tags() {
+			// TODO Auto-generated method stub
+			return null;
+		}
     }
 }

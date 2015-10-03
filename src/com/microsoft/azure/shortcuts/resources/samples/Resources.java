@@ -23,6 +23,7 @@ package com.microsoft.azure.shortcuts.resources.samples;
 import java.util.Arrays;
 
 import com.microsoft.azure.shortcuts.resources.Azure;
+import com.microsoft.azure.shortcuts.resources.reading.Resource;
 
 // Tests resources
 public class Resources {
@@ -36,8 +37,37 @@ public class Resources {
     }
     
 
-    public static void test(Azure azure) {
-		System.out.println("Resources: \n\t" + Arrays.toString(
-			azure.resources.list()).replaceAll(", ", ",\n\t"));
+    public static void test(Azure azure) throws Exception {
+    	// Listing all resources 
+    	String[] resourceIds = azure.resources.list();
+    	System.out.println("Resources: \n\t" + Arrays.toString(
+			resourceIds).replaceAll(", ", ",\n\t"));
+
+    	// Listing resources in a specific group
+    	String groupName = "azchat";
+    	String[] resourceIds2 = azure.resources.list(groupName);
+    	System.out.println("Resources inside group '" + groupName + "': \n\t" + Arrays.toString(
+			resourceIds2).replaceAll(", ", ",\n\t"));
+    	
+    	// Getting information about a specific resource
+    	if(resourceIds.length > 0) {
+    		Resource resource = azure.resources.get(resourceIds[0]);
+    		System.out.println(String.format("Found resource ID: %s\n"
+				+ "\tGroup: %s\n"
+				+ "\tProvider: %s\n"
+				+ "\tRegion: %s\n"
+				+ "\tShort name: %s\n"
+				+ "\tTags: %s\n"
+				+ "\tType: %s\n",
+				
+				resource.name(),
+				resource.group(),
+				resource.provider(),
+				resource.region(),
+				resource.shortName(),
+				resource.tags(),
+				resource.type()
+				));
+    	}
 	}
 }

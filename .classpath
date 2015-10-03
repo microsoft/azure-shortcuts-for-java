@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="lib/azure-mgmt-sql-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-mgmt-storage-0.8.1.jar" sourcepath="C:/Users/marcins/Desktop/AzureSDK/src/azure-mgmt-storage-0.8.1-sources.jar"/>
 	<classpathentry kind="lib" path="lib/azure-mgmt-traffic-manager-0.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/azure-mgmt-utility-0.8.1.jar"/>
+	<classpathentry kind="lib" path="lib/azure-mgmt-utility-0.8.1.jar" sourcepath="C:/Users/marcins/Desktop/AzureSDK/src/azure-mgmt-utility-0.8.2.jar"/>
 	<classpathentry kind="lib" path="lib/azure-svc-mgmt-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-svc-mgmt-compute-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/azure-svc-mgmt-media-0.8.1.jar"/>

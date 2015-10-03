@@ -36,6 +36,7 @@ public abstract class ResourceImpl implements Resource {
         return this.name;
     }
 
+    @Override
     public String group() {
         return resourceGroup;
     }

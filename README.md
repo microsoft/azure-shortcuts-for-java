@@ -125,8 +125,7 @@ azure.virtualMachines.define("mywinvm")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-System.out.println("Virtual machines: "+ Arrays.toString(
-	azure.virtualMachines.list())); 
+String[] virtualMachineNames = azure.virtualMachines.list(); 
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -172,8 +171,7 @@ System.out.println(String.format("Reading information about vm: %s\n"
 boolean supportingVM = true;
 boolean supportingCloudServices = false;
 
-System.out.println("Available VM sizes: " + Arrays.toString(
-	azure.sizes.list(supportingVM, supportingCloudServices)));
+String[] availableVmSizes = azure.sizes.list(supportingVM, supportingCloudServices);
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -218,8 +216,7 @@ azure.networks.define("mynetwork")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-System.out.println("My virtual networks: " + Arrays.toString(
-	azure.networks.list()));
+String[] virtualNetworkNames = azure.networks.list()));
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -280,8 +277,7 @@ azure.cloudServices.define("myservice")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-System.out.println("My cloud services: " + Arrays.toString(
-	azure.cloudServices.list()));
+String[] cloudServiceNames = azure.cloudServices.list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -363,8 +359,7 @@ azure.storageAccounts.define("mystorage")
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
-System.out.println("My storage accounts: " + Arrays.toString(
-	azure.storageAccounts.list()));
+String[] storageAccountNames = azure.storageAccounts.list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -452,8 +447,7 @@ azure.storageAccounts.update("mystorage")
 Listing all regions:
 
 ```java
-System.out.println("All regions: \n\t" + Arrays.toString(
-	azure.regions.list()).replaceAll(", ", ",\n\t"));
+String[] regionNames = azure.regions.list();
 ```
 
 Listing regions supporting a specific capability from the `LocationsAvailableServiceNames` options:
@@ -478,8 +472,7 @@ azure.groups.define("myResourceGroup")
 #### Listing resource groups
 
 ```java
-System.out.println("Groups: \n\t" + Arrays.toString(
-	azure.groups.list()));
+String[] resourceGroupNames = azure.groups.list()));
 ```
 
 #### Updating a resource group (changing its tags)
@@ -519,6 +512,61 @@ System.out.println(String.format("Found group: %s\n"
 		resourceGroup.tags().toString(),
 		resourceGroup.getProvisioningState()));
 ```
+
+#### Deleting a resource group
+
+```java
+String group = "<resource-group-name>";
+System.out.println("Deleting group " + group);
+	azure.groups.delete(group);
+```
+
+### Resources
+
+This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+#### Listing resources (by ID)
+
+All resources in a subscription:
+
+```java
+String[] resourceIds = azure.resources.list();
+```
+
+Resources in a specific group:
+
+```java
+String[] resourceIds = azure.resources.list("<resource-group-name>");
+```
+
+#### Reading information about a resource
+
+If you know the full ID of the resource (e.g. you got it from the `resources.list()`)
+
+```java
+Resource resource = azure.resources.get("<resource-id>");
+System.out.println(String.format("Found resource ID: %s\n"
+	+ "\tGroup: %s\n"
+	+ "\tProvider: %s\n"
+	+ "\tRegion: %s\n"
+	+ "\tShort name: %s\n"
+	+ "\tTags: %s\n"
+	+ "\tType: %s\n",
+				
+	resource.name(),
+	resource.group(),
+	resource.provider(),
+	resource.region(),
+	resource.shortName(),
+	resource.tags(),
+	resource.type()
+));
+```
+
+If you don't know the full ID, but you have the resource group name, provider and type:
+
+*{TODO}*
+
 
 #### Deleting a resource group
 
