@@ -22,6 +22,7 @@ A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.
 * [Storage Accounts](#storage-accounts)
 * [Regions](#regions)
 * [Resource Groups](#resource-groups)
+* [Resources](#resources)
 
 ### Creating an authenticated client
 
@@ -567,11 +568,3 @@ If you don't know the full ID, but you have the resource group name, provider an
 
 *{TODO}*
 
-
-#### Deleting a resource group
-
-```java
-String group = "<resrouce-group-name>";
-System.out.println("Deleting group " + group);
-	azure.groups.delete(group);
-```
