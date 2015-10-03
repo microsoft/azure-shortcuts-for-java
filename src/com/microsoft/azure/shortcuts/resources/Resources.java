@@ -32,6 +32,7 @@ import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
+import com.microsoft.azure.shortcuts.resources.updating.ResourceUpdatable;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -176,7 +177,8 @@ public class Resources implements
 		extends
 			NamedImpl
 		implements 
-			Resource {
+			Resource,
+			ResourceUpdatable {
 		
 		private HashMap<String, String> tags = new HashMap<>();
 		private String region;
@@ -236,6 +238,19 @@ public class Resources implements
 				this.type(),
 				this.provider());
 			return identity;
+		}
+
+		
+		@Override
+		public ResourceUpdatable apply() throws Exception {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		
+		@Override
+		public void delete() throws Exception {
+			azure.resources.delete(this.name);
 		}
 	}
 }

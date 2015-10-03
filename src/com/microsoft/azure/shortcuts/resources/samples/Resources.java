@@ -63,11 +63,10 @@ public class Resources {
         	printResource(resource);
     	}
     	
-    	
     	// Delete a resource based on its ID
     	String resourceToDelete = "ThisMustFail!";
     	System.out.println("Deleting resource " + resourceToDelete);
-    	azure.resources.delete(resourceToDelete);    	
+    	azure.resources.delete(resourceToDelete);
 	}
     
     
