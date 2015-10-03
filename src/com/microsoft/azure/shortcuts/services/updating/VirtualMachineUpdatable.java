@@ -21,6 +21,6 @@ package com.microsoft.azure.shortcuts.services.updating;
 
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
 
-public interface VirtualMachineUpdatable extends Updatable<VirtualMachineUpdatable> {
+public interface VirtualMachineUpdatable extends VirtualMachineUpdatableBlank, Updatable<VirtualMachineUpdatable> {
 
 }

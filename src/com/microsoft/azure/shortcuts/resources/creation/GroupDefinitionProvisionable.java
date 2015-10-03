@@ -22,9 +22,9 @@ package com.microsoft.azure.shortcuts.resources.creation;
 import java.util.HashMap;
 
 import com.microsoft.azure.shortcuts.common.creation.Provisionable;
-import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
+import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
-public interface GroupDefinitionProvisionable extends Provisionable<GroupUpdatable>{
+public interface GroupDefinitionProvisionable extends Provisionable<GroupUpdatableBlank>{
 	GroupDefinitionProvisionable withTags(HashMap<String, String> tags);
 	GroupDefinitionProvisionable withTag(String key, String value);
 }

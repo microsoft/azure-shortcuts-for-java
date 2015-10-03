@@ -22,12 +22,12 @@ package com.microsoft.azure.shortcuts.services.reading;
 import java.util.Calendar;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;
 
 // Encapsulates the readable properties of a cloud service
 public interface CloudService extends 
 	Named,
-	CloudServiceUpdatable {
+	CloudServiceUpdatableBlank {
 	
 	String region();
 	String description();

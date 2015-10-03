@@ -22,11 +22,11 @@ package com.microsoft.azure.shortcuts.resources.reading;
 import java.util.HashMap;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.resources.updating.ResourceUpdatable;
+import com.microsoft.azure.shortcuts.resources.updating.ResourceUpdatableBlank;
 
 public interface Resource extends 
 	Named,
-	ResourceUpdatable {
+	ResourceUpdatableBlank {
 	
     String group();
     String region();

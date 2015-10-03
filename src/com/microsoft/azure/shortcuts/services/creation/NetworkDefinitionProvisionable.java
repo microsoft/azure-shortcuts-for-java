@@ -20,8 +20,8 @@
 package com.microsoft.azure.shortcuts.services.creation;
 
 import com.microsoft.azure.shortcuts.common.creation.Provisionable;
-import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatableBlank;
 
-public interface NetworkDefinitionProvisionable extends Provisionable<NetworkUpdatable> {
+public interface NetworkDefinitionProvisionable extends Provisionable<NetworkUpdatableBlank> {
 	NetworkDefinitionProvisionable withSubnet(String name, String cidr);
 }

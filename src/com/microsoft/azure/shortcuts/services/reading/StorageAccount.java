@@ -23,14 +23,14 @@ import java.net.URI;
 import java.util.Calendar;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
 
 
 public interface StorageAccount extends 
 	Named,
-	StorageAccountUpdatable {
+	StorageAccountUpdatableBlank {
 	
 	String affinityGroup();
 	String description();

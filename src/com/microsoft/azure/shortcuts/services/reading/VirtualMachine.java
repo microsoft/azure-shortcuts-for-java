@@ -20,12 +20,12 @@
 package com.microsoft.azure.shortcuts.services.reading;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatableBlank;
 import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
 
 public interface VirtualMachine extends 
 	Named,
-	VirtualMachineUpdatable {
+	VirtualMachineUpdatableBlank {
 	
 	String size();
 	String deployment();

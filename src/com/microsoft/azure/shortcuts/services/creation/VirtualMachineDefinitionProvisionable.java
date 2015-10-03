@@ -21,11 +21,11 @@ package com.microsoft.azure.shortcuts.services.creation;
 
 import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatableBlank;
 
 
 // Optional parameters
-public interface VirtualMachineDefinitionProvisionable extends Provisionable<VirtualMachineUpdatable> {
+public interface VirtualMachineDefinitionProvisionable extends Provisionable<VirtualMachineUpdatableBlank> {
 	VirtualMachineDefinitionProvisionable withTcpEndpoint(int publicPort);
 	VirtualMachineDefinitionProvisionable withTcpEndpoint(int publicPort, int privatePort);
 	VirtualMachineDefinitionProvisionable withTcpEndpoint(int publicPort, int privatePort, String name);

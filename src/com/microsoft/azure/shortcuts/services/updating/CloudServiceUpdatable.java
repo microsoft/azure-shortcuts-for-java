@@ -21,8 +21,5 @@ package com.microsoft.azure.shortcuts.services.updating;
 
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
 
-public interface CloudServiceUpdatable extends Updatable<CloudServiceUpdatable> {
-	CloudServiceUpdatable withDescription(String description);
-	CloudServiceUpdatable withLabel(String label);
-	CloudServiceUpdatable withReverseDnsFqdn(String fqdn);
+public interface CloudServiceUpdatable extends CloudServiceUpdatableBlank, Updatable<CloudServiceUpdatable> {
 }

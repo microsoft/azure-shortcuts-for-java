@@ -21,10 +21,10 @@ package com.microsoft.azure.shortcuts.services.creation;
 
 import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
 
 // Encapsulates all the optional settings for creating a storage account, and the provision method
-public interface StorageAccountDefinitionProvisionable extends Provisionable<StorageAccountUpdatable> {
+public interface StorageAccountDefinitionProvisionable extends Provisionable<StorageAccountUpdatableBlank> {
 	StorageAccountDefinitionProvisionable withType(String type);
 	StorageAccountDefinitionProvisionable withLabel(String label);
 	StorageAccountDefinitionProvisionable withDescription(String description);

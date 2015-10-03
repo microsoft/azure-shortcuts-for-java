@@ -21,5 +21,5 @@ package com.microsoft.azure.shortcuts.resources.updating;
 
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
 
-public interface ResourceUpdatable extends Updatable<ResourceUpdatable> {
+public interface ResourceUpdatable extends ResourceUpdatableBlank, Updatable<ResourceUpdatable> {
 }

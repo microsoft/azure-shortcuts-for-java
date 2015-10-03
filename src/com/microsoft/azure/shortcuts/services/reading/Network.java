@@ -20,11 +20,11 @@
 package com.microsoft.azure.shortcuts.services.reading;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatableBlank;
 
 public interface Network extends 
 	Named,
-	NetworkUpdatable {
+	NetworkUpdatableBlank {
 	
 	String cidr();
 	String region();

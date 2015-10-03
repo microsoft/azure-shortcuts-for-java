@@ -34,6 +34,7 @@ import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBla
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceGetResponse;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceUpdateParameters;
@@ -45,7 +46,7 @@ public class CloudServices implements
 	SupportsReading<CloudService>,
 	SupportsCreating<CloudServiceDefinitionBlank>,
 	SupportsDeleting,
-	SupportsUpdating<CloudServiceUpdatable> {
+	SupportsUpdating<CloudServiceUpdatableBlank> {
 	
 	final Azure azure;
 	
@@ -170,7 +171,7 @@ public class CloudServices implements
 	
 	
 	// Starts a cloud service update
-	public CloudServiceUpdatable update(String name) {
+	public CloudServiceUpdatableBlank update(String name) {
 		return new CloudServiceImpl(name);
 	}
 	

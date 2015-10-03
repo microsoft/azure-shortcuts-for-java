@@ -36,6 +36,7 @@ import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
+import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 public class Groups 
@@ -43,7 +44,7 @@ public class Groups
 		SupportsListing,
 		SupportsReading<Group>,
 		SupportsDeleting,
-		SupportsUpdating<GroupUpdatable>,
+		SupportsUpdating<GroupUpdatableBlank>,
 		SupportsCreating<GroupDefinitionBlank> {
 	
 	final Azure azure;
@@ -87,7 +88,7 @@ public class Groups
 	
 
 	@Override
-	public GroupUpdatable update(String name) {
+	public GroupUpdatableBlank update(String name) {
 		return new GroupImpl(name);
 	}
 
@@ -169,7 +170,7 @@ public class Groups
 
 		
 		@Override
-		public GroupUpdatable provision() throws Exception {
+		public GroupUpdatableBlank provision() throws Exception {
 			ResourceGroup params = new ResourceGroup();
 			params.setLocation(this.region);
 			params.setTags(this.tags);

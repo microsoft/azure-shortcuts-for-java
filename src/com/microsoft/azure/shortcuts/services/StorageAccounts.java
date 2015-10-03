@@ -34,6 +34,7 @@ import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionB
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatable;
+import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
@@ -46,7 +47,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdate
 // Class encapsulating the API related to storage accounts
 public class StorageAccounts implements 
 	SupportsCreating<StorageAccountDefinitionBlank>, 
-	SupportsUpdating<StorageAccountUpdatable>,
+	SupportsUpdating<StorageAccountUpdatableBlank>,
 	SupportsListing,
 	SupportsReading<StorageAccount>,
 	SupportsDeleting {
@@ -59,7 +60,7 @@ public class StorageAccounts implements
 	
 	@Override
 	// Starts a new storage account update
-	public StorageAccountUpdatable update(String name) {
+	public StorageAccountUpdatableBlank update(String name) {
 		return new StorageAccountImpl(name);
 	}
 

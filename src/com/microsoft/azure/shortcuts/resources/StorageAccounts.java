@@ -26,6 +26,7 @@ import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.resources.creation.StorageAccountDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.creation.StorageAccountDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.resources.updating.StorageAccountUpdatable;
+import com.microsoft.azure.shortcuts.resources.updating.StorageAccountUpdatableBlank;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 import java.io.IOException;
@@ -48,7 +49,7 @@ public class StorageAccounts implements
     }
 
     // Starts a new storage account update
-    public StorageAccountUpdatable update(String resourceGroup, String name) {
+    public StorageAccountUpdatableBlank update(String resourceGroup, String name) {
         return new StorageAccountImpl(resourceGroup, name);
     }
 

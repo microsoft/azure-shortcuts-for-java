@@ -19,12 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources.updating;
 
-import java.util.HashMap;
-
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
 
-public interface GroupUpdatable extends Updatable<GroupUpdatable> {
-	GroupUpdatable withTags(HashMap<String, String> tags);
-	GroupUpdatable withTag(String key, String value);
-	GroupUpdatable withoutTag(String key);
+public interface GroupUpdatable extends GroupUpdatableBlank, Updatable<GroupUpdatable> {
 }
