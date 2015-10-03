@@ -7,6 +7,7 @@ The shortcuts library supports both the "modern" ARM (Azure Resource Model) mode
 
 A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.samples` (for ARM) and `com.microsoft.azure.shortcuts.services.samples` (for ASM) packages.
 
+it is *not* currently a goal of this library to cover all of the Azure API surface, but to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back.
 
 ## Pre-requisites
 * Java 7+
