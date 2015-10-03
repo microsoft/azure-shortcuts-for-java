@@ -101,24 +101,36 @@ public class Resources implements
 
 	@Override
 	public Resource get(String id) throws Exception {
-		ResourceImpl resource = new ResourceImpl(id);
+		return this.get(
+				RESOURCE_ID_PART.NAME.from(id), 
+				RESOURCE_ID_PART.TYPE.from(id),
+				RESOURCE_ID_PART.PROVIDER.from(id), 
+				RESOURCE_ID_PART.GROUP.from(id));
+	}
+	
+	
+	// Gets a resource based on its name, type, provider and group
+	public Resource get(String name, String type, String provider, String group) throws Exception {
+		ResourceImpl resource = new ResourceImpl(null);
 		
 		ResourceIdentity resourceIdentity = new ResourceIdentity();
-		resourceIdentity.setResourceName(RESOURCE_ID_PART.NAME.from(id));
-		resourceIdentity.setResourceProviderNamespace(RESOURCE_ID_PART.PROVIDER.from(id));
-		resourceIdentity.setResourceType(RESOURCE_ID_PART.TYPE.from(id));
-		resourceIdentity.setResourceProviderApiVersion("2015-06-01"); //TODO: This should probably not be fixed...
+		resourceIdentity.setResourceName(name);
+		resourceIdentity.setResourceProviderNamespace(provider);
+		resourceIdentity.setResourceType(type);
+		resourceIdentity.setResourceProviderApiVersion("2015-06-01"); //TODO: This should probably not be hard coded...
 		
-		GenericResourceExtended response = azure.resourceManagementClient().getResourcesOperations().get(RESOURCE_ID_PART.GROUP.from(id), resourceIdentity).getResource();
+		GenericResourceExtended response = azure.resourceManagementClient().getResourcesOperations().get(group, resourceIdentity).getResource();
 		if(response != null) {
 			resource.region = response.getLocation();
 			resource.tags = response.getTags();
+			resource.setName(response.getId());
+			
 			return resource;
 		} else {
 			throw new Exception("Resource not found");
-		}
+		}		
 	}
-
+	
 	
 	// Implements the individual resource logic
 	private class ResourceImpl 
@@ -134,6 +146,10 @@ public class Resources implements
 			super(id);
 		}
 
+		private void setName(String id) {
+			this.name = id;
+		}
+		
 		@Override
 		public String group() {
 			return RESOURCE_ID_PART.GROUP.from(this.name);

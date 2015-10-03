@@ -542,10 +542,24 @@ String[] resourceIds = azure.resources.list("<resource-group-name>");
 
 #### Reading information about a resource
 
-If you know the full ID of the resource (e.g. you got it from the `resources.list()`)
+If you know the full ID of the resource (e.g. you got it from the `resources.list()`), then:
 
 ```java
 Resource resource = azure.resources.get("<resource-id>");
+```
+Else, if you know the resource name, type, provider and group, then:
+
+```java
+Resource resource = azure.resources.get(
+	"<resource-name>",
+	"<resource-type>",
+	"<resource-provider-namespace>",
+	"<resource-group>");
+```
+
+And then getting at the properties, for example: 
+
+```java
 System.out.println(String.format("Found resource ID: %s\n"
 	+ "\tGroup: %s\n"
 	+ "\tProvider: %s\n"
@@ -563,8 +577,3 @@ System.out.println(String.format("Found resource ID: %s\n"
 	resource.type()
 ));
 ```
-
-If you don't know the full ID, but you have the resource group name, provider and type:
-
-*{TODO}*
-

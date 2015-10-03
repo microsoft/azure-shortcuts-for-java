@@ -49,25 +49,38 @@ public class Resources {
     	System.out.println("Resources inside group '" + groupName + "': \n\t" + Arrays.toString(
 			resourceIds2).replaceAll(", ", ",\n\t"));
     	
-    	// Getting information about a specific resource
+    	// Getting information about a specific resource based on ID
     	if(resourceIds.length > 0) {
     		Resource resource = azure.resources.get(resourceIds[0]);
-    		System.out.println(String.format("Found resource ID: %s\n"
-				+ "\tGroup: %s\n"
-				+ "\tProvider: %s\n"
-				+ "\tRegion: %s\n"
-				+ "\tShort name: %s\n"
-				+ "\tTags: %s\n"
-				+ "\tType: %s\n",
-				
-				resource.name(),
-				resource.group(),
-				resource.provider(),
-				resource.region(),
-				resource.shortName(),
-				resource.tags(),
-				resource.type()
-				));
+    		printResource(resource);
+
+    		// Getting information about a specific resource based on name, type, provider and group
+        	resource =  azure.resources.get(
+        			resource.shortName(),
+        			resource.type(),
+        			resource.provider(),
+        			resource.group());
+        	printResource(resource);
     	}
 	}
+    
+    
+    private static void printResource(Resource resource) {
+		System.out.println(String.format("Found resource ID: %s\n"
+			+ "\tGroup: %s\n"
+			+ "\tProvider: %s\n"
+			+ "\tRegion: %s\n"
+			+ "\tShort name: %s\n"
+			+ "\tTags: %s\n"
+			+ "\tType: %s\n",
+			
+			resource.name(),
+			resource.group(),
+			resource.provider(),
+			resource.region(),
+			resource.shortName(),
+			resource.tags(),
+			resource.type()
+			));    	
+    }
 }

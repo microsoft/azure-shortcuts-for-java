@@ -23,7 +23,7 @@ import com.microsoft.azure.shortcuts.common.reading.Named;
 
 // Base implementation for named entities
 public abstract class NamedImpl implements Named {
-	final protected String name;
+	protected String name;
 	
 	protected NamedImpl(String name) {
 		this.name = name;
