@@ -582,6 +582,26 @@ System.out.println(String.format("Found resource ID: %s\n"
 ));
 ```
 
+#### Deleting a resource
+
+Using its ID:
+
+```java
+azure.resources.delete("<resource-id">);
+```
+
+Or using its metadata:
+
+```java
+azure.resources.delete("<short-name>", "<resource-type>", "<provider-namespace>", "<group-name>");
+```
+
+Or, if you've already gotten a reference to a `Resource` object (represented by `resource` below) from `get()`, then:
+
+```java
+resource.delete();
+```
+
 ### Resource Providers
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages

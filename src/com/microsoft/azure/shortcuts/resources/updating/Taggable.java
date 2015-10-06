@@ -19,7 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.resources.updating;
 
-import com.microsoft.azure.shortcuts.common.updating.Deletable;
+import java.util.HashMap;
 
-public interface ResourceUpdatableBlank extends Deletable {
+public interface Taggable<T> {
+	T withTags(HashMap<String, String> tags);
+	T withTag(String key, String value);
+	T withoutTag(String key);
 }

@@ -57,7 +57,7 @@ public class Azure {
     private NetworkResourceProviderClient networkResourceProviderClient;
     private ManagementClient managementClient;
 
-    public final StorageAccounts storageAccounts;
+    // public final StorageAccounts storageAccounts; TODO
     public final Resources resources;
     public final Groups groups;
     public final Regions regions;
@@ -73,7 +73,7 @@ public class Azure {
     
     private Azure(Configuration configuration) {
     	this.configuration = configuration;
-        this.storageAccounts = new StorageAccounts(this);
+        // this.storageAccounts = new StorageAccounts(this); TODO
         this.resources = new Resources(this);
         this.groups = new Groups(this);
         this.regions = new Regions(this);

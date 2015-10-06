@@ -19,12 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources.updating;
 
-import java.util.HashMap;
-
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 
-public interface GroupUpdatableBlank extends Deletable  {
-	GroupUpdatable withTags(HashMap<String, String> tags);
-	GroupUpdatable withTag(String key, String value);
-	GroupUpdatable withoutTag(String key);
+public interface GroupUpdatableBlank extends Deletable, Taggable<GroupUpdatable>  {
 }

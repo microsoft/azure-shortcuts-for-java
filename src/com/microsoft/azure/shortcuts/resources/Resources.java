@@ -30,9 +30,9 @@ import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
+import com.microsoft.azure.shortcuts.common.updating.Deletable;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
-import com.microsoft.azure.shortcuts.resources.updating.ResourceUpdatable;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
 
@@ -148,6 +148,7 @@ public class Resources implements
 		if(response != null) {
 			resource.region = response.getLocation();
 			resource.tags = response.getTags();
+			resource.properties = response.getProperties();
 			resource.setName(response.getId());
 			return resource;
 		} else {
@@ -171,17 +172,16 @@ public class Resources implements
 			createResourceIdentity(name, type, provider));
 	}
 	
-	
+
 	// Implements the individual resource logic
 	private class ResourceImpl 
 		extends
 			NamedImpl
 		implements 
-			Resource,
-			ResourceUpdatable {
+			Resource, Deletable {
 		
 		private HashMap<String, String> tags = new HashMap<>();
-		private String region;
+		private String region, properties;
 		
 		private ResourceImpl(String id) {
 			super(id);
@@ -218,6 +218,11 @@ public class Resources implements
 		}
 
 		@Override
+		public String properties() {
+			return this.properties;
+		}
+
+		@Override
 		public String getProvisioningState() {
 			try {
 				if(this.name == null) {
@@ -238,13 +243,6 @@ public class Resources implements
 				this.type(),
 				this.provider());
 			return identity;
-		}
-
-		
-		@Override
-		public ResourceUpdatable apply() throws Exception {
-			// TODO Auto-generated method stub
-			return null;
 		}
 
 		

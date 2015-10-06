@@ -49,24 +49,36 @@ public class Resources {
     	System.out.println("Resources inside group '" + groupName + "': \n\t" + Arrays.toString(
 			resourceIds2).replaceAll(", ", ",\n\t"));
     	
-    	// Getting information about a specific resource based on ID
-    	if(resourceIds.length > 0) {
-    		Resource resource = azure.resources.get(resourceIds[0]);
-    		printResource(resource);
-
-    		// Getting information about a specific resource based on name, type, provider and group
-        	resource =  azure.resources.get(
-        			resource.shortName(),
-        			resource.type(),
-        			resource.provider(),
-        			resource.group());
-        	printResource(resource);
-    	}
+        // Getting information about a specific resource based on ID
+    	Resource resource = azure.resources.get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1443631726509/providers/Microsoft.Storage/storageAccounts/store1443631726509");
+    	printResource(resource);
+    		
+    	// Getting information about a specific resource based on name, type, provider and group
+        resource =  azure.resources.get(
+        	resource.shortName(),
+        	resource.type(),
+        	resource.provider(),
+        	resource.group());
+        printResource(resource);	
+    	    	
+    	// Delete a resource based on its metadata
+        System.out.println(String.format("Deleting resource '%s' of type '%s' by provider '%s' in group '%s'",
+        	resource.shortName(),
+        	resource.type(),
+        	resource.provider(),
+        	resource.group()));
+        		
+        azure.resources.delete(
+    		resource.shortName(),
+    		resource.type(),
+    		resource.provider(),
+    		resource.group());
     	
     	// Delete a resource based on its ID
-    	String resourceToDelete = "ThisMustFail!";
+    	String resourceToDelete = "ThisMustFail";
     	System.out.println("Deleting resource " + resourceToDelete);
     	azure.resources.delete(resourceToDelete);
+    	
 	}
     
     

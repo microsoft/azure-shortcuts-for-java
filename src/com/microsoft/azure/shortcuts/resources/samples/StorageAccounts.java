@@ -39,12 +39,13 @@ public class StorageAccounts {
     	final String timestamp = String.valueOf(System.currentTimeMillis());
 		final String accountName = "store" + timestamp;
 		final String group = "group" + timestamp;
-		System.out.println("Storage accounts: \n\t" + Arrays.toString(
+		// TODO
+		/* System.out.println("Storage accounts: \n\t" + Arrays.toString(
 				azure.storageAccounts.list()).replaceAll(", ", ",\n\t"));
 
 		azure.storageAccounts.define(group, accountName)
         	.withRegion("West US")
-        	.provision();
+        	.provision(); */
 
     }
 }
