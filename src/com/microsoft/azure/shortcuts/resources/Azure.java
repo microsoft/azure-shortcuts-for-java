@@ -30,8 +30,6 @@ import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.management.ManagementClient;
-import com.microsoft.windowsazure.management.ManagementService;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 
@@ -55,12 +53,10 @@ public class Azure {
     private StorageManagementClient storageManagementClient;
     private ComputeManagementClient computeManagementClient;
     private NetworkResourceProviderClient networkResourceProviderClient;
-    private ManagementClient managementClient;
 
     // public final StorageAccounts storageAccounts; TODO
     public final Resources resources;
     public final Groups groups;
-    public final Regions regions;
     public final Providers providers;
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
@@ -76,7 +72,6 @@ public class Azure {
         // this.storageAccounts = new StorageAccounts(this); TODO
         this.resources = new Resources(this);
         this.groups = new Groups(this);
-        this.regions = new Regions(this);
         this.providers = new Providers(this);
     }
     
@@ -188,16 +183,6 @@ public class Azure {
     	}
     	
     	return this.storageManagementClient;
-    }
-    
-    
-    // Returns the management client
-    ManagementClient managementClient() {
-    	if(this.managementClient == null) {
-    		this.managementClient = ManagementService.create(this.configuration);
-    	}
-    	
-    	return this.managementClient;
     }
     
     

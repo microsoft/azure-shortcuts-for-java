@@ -170,7 +170,7 @@ public class Groups
 
 		
 		@Override
-		public GroupUpdatableBlank provision() throws Exception {
+		public GroupImpl provision() throws Exception {
 			ResourceGroup params = new ResourceGroup();
 			params.setLocation(this.region);
 			params.setTags(this.tags);

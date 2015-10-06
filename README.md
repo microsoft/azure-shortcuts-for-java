@@ -445,7 +445,6 @@ azure.storageAccounts.update("mystorage")
 #### Listing regions
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 Listing all regions:
 
@@ -459,6 +458,9 @@ Listing regions supporting a specific capability from the `LocationsAvailableSer
 System.out.println("Regions supporting high memory: \n\t" + Arrays.toString(
 	azure.regions.list(LocationAvailableServiceNames.HIGHMEMORY)).replaceAll(", ", ",\n\t"));    	
 ```
+
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages {TODO}
+
 
 ### Resource Groups
 
