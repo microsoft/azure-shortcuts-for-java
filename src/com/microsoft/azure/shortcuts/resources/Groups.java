@@ -19,14 +19,12 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
@@ -37,7 +35,6 @@ import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvision
 import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 public class Groups 
 	implements 
@@ -70,13 +67,8 @@ public class Groups
 	@Override
 	// Gets a specific resource group
 	public Group get(String name) throws Exception {
-		GroupImpl group = new GroupImpl(name);
-		ResourceGroupExtended response = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
-		group.region = response.getLocation();
-		group.id = response.getId();
-		group.tags = response.getTags();
-		
-		return group;
+		GroupImpl group = new GroupImpl(name, false);
+		return group.refresh();
 	}
 	
 	
@@ -89,58 +81,96 @@ public class Groups
 
 	@Override
 	public GroupUpdatableBlank update(String name) {
-		return new GroupImpl(name);
+		return new GroupImpl(name, false);
 	}
 
 
 	@Override
 	public GroupDefinitionBlank define(String name) {
-		return new GroupImpl(name);
+		return new GroupImpl(name, true);
 	}
 
 	
 	// Implements logic for individual resource group
 	private class GroupImpl 
 		extends 
-			NamedImpl
+			NamedRefreshableImpl<Group>
 		implements
 			GroupUpdatable,
 			GroupDefinitionProvisionable,
 			GroupDefinitionBlank,
 			Group {
 		
-		public HashMap<String, String> tags = new HashMap<String, String>();
-		public String region, id;
+		private HashMap<String, String> tags = new HashMap<String, String>();
+		private String region, id, provisioningState;
 
-		private GroupImpl(String name) {
-			super(name.toLowerCase());
+		private GroupImpl(String name, boolean initialized) {
+			super(name.toLowerCase(), initialized);
 		}
 
+
+		/***********************************************************
+		 * Getters
+		 ***********************************************************/
+		
 		@Override
-		public String region() {
+		public String region() throws Exception {
+			ensureInitialized();
 			return this.region;
 		}
 
 		@Override
-		public String id() {
+		public String id() throws Exception {
+			ensureInitialized();
 			return this.id;
 		}
 
 		@Override
-		public HashMap<String, String> tags() {
+		public HashMap<String, String> tags() throws Exception {
+			ensureInitialized();
 			return this.tags;
 		}
 
 		@Override
-		public String getProvisioningState() {
+		public String getProvisioningState() throws Exception {
 			// This property is not cached because it is useful to read it in real time
-			try {
-				return azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup().getProvisioningState();
-			} catch (IOException | ServiceException | URISyntaxException e) {
-				return null;
-			}
+			this.refresh();
+			return this.provisioningState;
 		}
 
+		
+		/**************************************************************
+		 * Setters (fluent interface)
+		 **************************************************************/
+		
+		@Override
+		public GroupImpl withTags(HashMap<String, String> tags) {
+			this.tags = tags;
+			return this;
+		}
+
+		@Override
+		public GroupImpl withTag(String key, String value) {
+			this.tags.put(key, value);
+			return this;
+		}
+
+		@Override
+		public GroupImpl withoutTag(String key) {
+			this.tags.remove(key);
+			return this;
+		}
+
+		@Override
+		public GroupImpl withRegion(String region) {
+			this.region = region;
+			return this;
+		}
+
+
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
 		
 		@Override
 		public GroupImpl apply() throws Exception {
@@ -180,26 +210,13 @@ public class Groups
 
 		
 		@Override
-		public GroupImpl withTags(HashMap<String, String> tags) {
-			this.tags = tags;
-			return this;
-		}
-
-		@Override
-		public GroupImpl withTag(String key, String value) {
-			this.tags.put(key, value);
-			return this;
-		}
-
-		@Override
-		public GroupImpl withoutTag(String key) {
-			this.tags.remove(key);
-			return this;
-		}
-
-		@Override
-		public GroupImpl withRegion(String region) {
-			this.region = region;
+		public GroupImpl refresh() throws Exception {
+			ResourceGroupExtended response = azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup();
+			this.region = response.getLocation();
+			this.id = response.getId();
+			this.tags = response.getTags();
+			this.provisioningState = response.getProvisioningState();
+			this.initialized = true;
 			return this;
 		}
 	}

@@ -25,6 +25,7 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
@@ -50,45 +51,13 @@ public class Networks implements
 
 	// Returns information about existing network
 	public Network get(String name) throws Exception {
-		String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
-
-		// Correct for garbage prefix in XML returned by Azure
-		networkConfig = networkConfig.substring(networkConfig.indexOf('<'));
-
-		NetworkImpl network  = new NetworkImpl(name);
-		final String siteXpath = "/*[local-name()='NetworkConfiguration']"
-				+ "/*[local-name()='VirtualNetworkConfiguration']"
-				+ "/*[local-name()='VirtualNetworkSites']"
-				+ "/*[local-name()='VirtualNetworkSite' and @name='" + name + "']";
-
-		final String cidrXpath = siteXpath + "/*[local-name()='AddressSpace']/*[local-name()='AddressPrefix']";
-		network.cidr = Utils.findXMLNode(networkConfig, cidrXpath).getTextContent();
-
-		// Determine affinity group
-		for(VirtualNetworkSite site : azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites()) {
-			if(site.getName().equalsIgnoreCase(name)) {
-				network.affinityGroup = site.getAffinityGroup();
-				network.label = site.getLabel();
-				network.region = site.getLocation();
-				// Read subnets
-				for(com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet s : site.getSubnets()) {
-					// TODO: Other subnet properties
-					
-					NetworkImpl.SubnetImpl subnet = network.new SubnetImpl(s.getName());
-					network.subnets.add(subnet);
-					subnet.cidr = s.getAddressPrefix();
-				}
-				// TODO Other data
-				break;
-			}
-		}
-		
-		return network;
+		NetworkImpl network  = new NetworkImpl(name, false);
+		return network.refresh();
 	}
 	
 	// Starts a new network definition
 	public NetworkDefinitionBlank define(String name) {
-		return new NetworkImpl(name);
+		return new NetworkImpl(name, true);
 	}
 	
 	
@@ -143,7 +112,7 @@ public class Networks implements
 	
 	// Encapsulates the required and optional parameters for a network
 	private class NetworkImpl 
-		extends NamedImpl 
+		extends NamedRefreshableImpl<Network>
 		implements 
 			NetworkDefinitionBlank, 
 			NetworkDefinitionWithCidr, 
@@ -154,31 +123,102 @@ public class Networks implements
 		private String region, cidr, affinityGroup, label;
 		private ArrayList<NetworkImpl.SubnetImpl> subnets = new ArrayList<NetworkImpl.SubnetImpl>();
 		
-		private NetworkImpl(String name) {
-			super(name);
-		}
-					
-		public NetworkImpl apply() throws Exception {
-			// TODO Auto-generated method stub
-			throw new NotImplementedException("Not yet implemented.");
+		private NetworkImpl(String name, boolean initialized) {
+			super(name, initialized);
 		}
 		
-		public void delete() throws Exception {
-			azure.networks.delete(this.name);
+		
+		/***********************************************************
+		 * Getters
+		 * @throws Exception 
+		 ***********************************************************/
+
+		public String cidr() throws Exception {
+			ensureInitialized();
+			return this.cidr;
+		}
+		
+		public String region() throws Exception {
+			ensureInitialized();
+			return this.region;
 		}
 
+		public String affinityGroup() throws Exception {
+			ensureInitialized(); 
+			return this.affinityGroup;
+		}
+
+		public String label() throws Exception {
+			ensureInitialized();
+			return this.label;
+		}
+
+		@Override
+		public Subnet[] subnets() {
+			return subnets.toArray(new Subnet[0]);
+		}
+		
+		// Implementation of Subnet
+		private class SubnetImpl 
+			extends NamedImpl<Subnet>
+			implements Network.Subnet {
+			
+			private String cidr;
+
+			private SubnetImpl(String name) {
+				super(name);
+			}
+			
+			@Override
+			public String cidr() {
+				return this.cidr;
+			}
+		}
+
+
+		/**************************************************************
+		 * Setters (fluent interface)
+		 **************************************************************/
+
+		@Override
 		public NetworkImpl withRegion(String region) {
 			this.region = region;
 			return this;
 		}
 		
+		@Override
 		public NetworkImpl withCidr(String cidr) {
 			this.cidr = cidr;
 			return this;
 		}
 		
+		@Override
+		public NetworkDefinitionProvisionable withSubnet(String name, String cidr) {
+			SubnetImpl subnet = new SubnetImpl(name);
+			subnet.cidr = cidr;
+			this.subnets.add(subnet);
+			return this;
+		}
+	
+
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
+
+		@Override
+		public NetworkImpl apply() throws Exception {
+			// TODO Auto-generated method stub
+			throw new NotImplementedException("Not yet implemented.");
+		}
 		
-		// Provisions a new network
+		
+		@Override
+		public void delete() throws Exception {
+			azure.networks.delete(this.name);
+		}
+
+
+		@Override
 		public NetworkImpl provision() throws Exception {
 			// If no subnets specified, create a default subnet containing the whole network
 			if(this.subnets.size() == 0) {
@@ -229,51 +269,43 @@ public class Networks implements
 			
 			return this;
 		}
-		
-		public String cidr() {
-			return this.cidr;
-		}
-		
-		public String region() {
-			return this.region;
-		}
 
-		public String affinityGroup() {
-			return this.affinityGroup;
-		}
-
-		public String label() {
-			return this.label;
-		}
 
 		@Override
-		public Subnet[] subnets() {
-			return subnets.toArray(new Subnet[0]);
-		}
-		
-		// Implementation of Subnet
-		private class SubnetImpl 
-			extends NamedImpl 
-			implements Network.Subnet {
-			
-			private String cidr;
+		public Network refresh() throws Exception {
+			String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
 
-			private SubnetImpl(String name) {
-				super(name);
+			// Correct for garbage prefix in XML returned by Azure
+			networkConfig = networkConfig.substring(networkConfig.indexOf('<'));
+
+			final String siteXpath = "/*[local-name()='NetworkConfiguration']"
+					+ "/*[local-name()='VirtualNetworkConfiguration']"
+					+ "/*[local-name()='VirtualNetworkSites']"
+					+ "/*[local-name()='VirtualNetworkSite' and @name='" + name + "']";
+
+			final String cidrXpath = siteXpath + "/*[local-name()='AddressSpace']/*[local-name()='AddressPrefix']";
+			this.cidr = Utils.findXMLNode(networkConfig, cidrXpath).getTextContent();
+
+			// Determine affinity group
+			for(VirtualNetworkSite site : azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites()) {
+				if(site.getName().equalsIgnoreCase(name)) {
+					this.affinityGroup = site.getAffinityGroup();
+					this.label = site.getLabel();
+					this.region = site.getLocation();
+					// Read subnets
+					for(com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet s : site.getSubnets()) {
+						// TODO: Other subnet properties
+						
+						NetworkImpl.SubnetImpl subnet = this.new SubnetImpl(s.getName());
+						this.subnets.add(subnet);
+						subnet.cidr = s.getAddressPrefix();
+					}
+					// TODO Other data
+					break;
+				}
 			}
 			
-			@Override
-			public String cidr() {
-				return this.cidr;
-			}
-		
-		}
-
-		@Override
-		public NetworkDefinitionProvisionable withSubnet(String name, String cidr) {
-			SubnetImpl subnet = new SubnetImpl(name);
-			subnet.cidr = cidr;
-			this.subnets.add(subnet);
+			this.initialized = true;
 			return this;
 		}
 	}

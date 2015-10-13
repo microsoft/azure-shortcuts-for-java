@@ -26,18 +26,15 @@ import java.util.HashMap;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
-import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionLinuxProvisionable;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWindowsProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithAdminPassword;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithAdminUsername;
@@ -78,6 +75,89 @@ public class VirtualMachines implements
 		this.azure = azure;
 	}
 	
+	
+	// Helper class for dealing with VM ids
+	// Format: [{serviceName}.[{deploymentName}.]]roleName}
+	// If serviceName is blank, assume same as roleName
+	// If deploymentName is blank, assume PRODUCTION
+	private static class VirtualMachineId {
+		private static String[] getParts(String id) {
+			if(id == null) {
+				return null;
+			}
+			
+			String[] parts = id.split("\\.");
+			if(parts.length < 1) {
+				return null;
+			} else {
+				return parts;
+			}
+		}
+		
+		// Return service name from id
+		public static String serviceFromId(String id) {
+			String[] parts = getParts(id);
+			if(parts == null) {
+				return null;
+			} else {			
+				return parts[0];
+			}
+		}
+		
+		// Return deployment name from id if present, else null
+		public static String deploymentFromId(String id) {
+			String[] parts = getParts(id);
+			if(parts == null) {
+				return null;
+			} else if(parts.length == 3) {
+				return parts[2];
+			} else {
+				return null;
+			}
+		}
+		
+		// Return role name from id
+		public static String roleFromId(String id) {
+			String[] parts = getParts(id);
+			return parts[parts.length-1];
+		}
+		
+		
+		// Create a VM id based on cloud service, deployment name and role name
+		public static String createId(String service, String deployment, String role) {
+			if(role == null) {
+				return  null;
+			}
+			
+			StringBuilder id = new StringBuilder(service != null ? service : role); // Default service name to role name
+			id.append(".");
+			
+			if(deployment != null) {
+				id.append(deployment);
+				id.append(".");
+			}
+
+			id.append(role);
+			return id.toString();
+		}
+		
+		
+		public static String withServiceName(String service, String id) {
+			return createId(service, deploymentFromId(id), roleFromId(id));
+		}
+		
+		
+		public static String withDeploymentName(String deployment, String id) {
+			return createId(serviceFromId(id), deployment, roleFromId(id));
+		}
+		
+		
+		public static String withRoleName(String role, String id) {
+			return createId(serviceFromId(id), deploymentFromId(id), role);
+		}
+	}
+	
+	
 	// Lists all virtual machines
 	public String[] list() {
 		String[] serviceNames = azure.cloudServices.list();
@@ -103,43 +183,15 @@ public class VirtualMachines implements
 	
 	// Starts a new definition for a virtual machine
 	public VirtualMachineDefinitionBlank define(String name) {
-		return new VirtualMachineImpl(name);
-	}
-	
-	
-	// Returns service name from fully qualified vm name
-	private String serviceNameFromVmName(String vmName) {
-		return vmName.split("\\.")[0];
-	}
-	
-	
-	// Returns role name (if any) from fully qualifies vm name, else null
-	private String roleNameFromVmName(String vmName) {
-		String[] parts = vmName.split("\\.");
-		if(parts.length > 1 ) {
-			return parts[parts.length - 1];
-		} else {
-			return null;
-		}
-	}
-	
-	
-	// Returns deployment name (if any) from fully qualified vm name, or null
-	private String deploymentNameFromVMName(String vmName) {
-		String[] parts = vmName.split("\\.");
-		if(parts.length > 2) {
-			return parts[1];
-		} else {
-			return null;
-		}
+		return new VirtualMachineImpl(name, true);
 	}
 	
 	
 	// Gets the deployment from Azure based on the fully qualified vm name
 	private DeploymentGetResponse getDeployment(String vmName) throws Exception {
-		final String serviceName = serviceNameFromVmName(vmName);
+		final String serviceName = VirtualMachineId.serviceFromId(vmName);
 		String deploymentName;
-		if(null == (deploymentName = deploymentNameFromVMName(vmName))) {
+		if(null == (deploymentName = VirtualMachineId.deploymentFromId(vmName))) {
 			return azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.PRODUCTION);
 		} else {
 			return azure.computeManagementClient().getDeploymentsOperations().getByName(serviceName, deploymentName);
@@ -155,88 +207,17 @@ public class VirtualMachines implements
 				return role;
 			}
 		}
-		
 		return null;
 	}
 
 	
 	// Returns the data for an existing virtual machine, where the VM name (if any) is qualified with the service name and deployment name (if any): 
 	// "<cloud-service-name>.<deployment-name>.<vm-name>"
-	// or "<cloud-service-name>.<vm-name>" where dpeloyment slot is assumed to be Production
+	// or "<cloud-service-name>.<vm-name>" where deployment slot is assumed to be Production
 	// or "<cloud-service-name>" where deployment slot is assumed to be Production and the first role is assumed to be the right one
 	public VirtualMachine get(String name) throws Exception {
-		// Determine service name
-		final String serviceName = serviceNameFromVmName(name);
-		
-		// Determine deployment
-		final DeploymentGetResponse deploymentResponse = getDeployment(name);
-		final String deploymentName = deploymentResponse.getName();
-
-		// Determine role
-		final Role role = getVmRole(deploymentResponse);
-		if(role == null) {
-			throw new Exception("No virtual machine found in this service");
-		}
-		final String roleName = role.getRoleName();
-		
-		// Instantiate VM with fully qualified name
-		final VirtualMachineImpl vm = new VirtualMachineImpl(serviceName + "." + deploymentName + "." + roleName);
-
-		// Get role properties
-		final VirtualMachineGetResponse vmResponse = azure.computeManagementClient().getVirtualMachinesOperations().get(serviceName, deploymentName, roleName);
-		vm.size = vmResponse.getRoleSize();
-		
-		// Get service-level data
-		//TODO Make it lazily evaluated
-		CloudService service = azure.cloudServices.get(serviceName);
-		vm.cloudServiceName = serviceName;
-		vm.affinityGroup = service.affinityGroup();
-		vm.region = service.region();
-		
-		// Get deployment-level data
-		vm.deploymentName = deploymentName;
-		vm.deploymentLabel = deploymentResponse.getLabel();
-		vm.status = deploymentResponse.getStatus();
-		vm.network = deploymentResponse.getVirtualNetworkName();
-					
-		// Process config data
-		for(ConfigurationSet config : vmResponse.getConfigurationSets()) {
-			if(config.getAdminPassword() != null) {
-				vm.adminPassword = config.getAdminPassword();
-			}
-			
-			if(config.getAdminUserName() != null) {
-				vm.adminUsername = config.getAdminUserName();
-			}
-			
-			if(config.getComputerName() != null) {
-				vm.computerName = config.getComputerName();
-			}
-			
-			vm.isLinux = (config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.LINUXPROVISIONINGCONFIGURATION));
-			vm.isWindows = (config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION));
-			
-			if(config.getHostName() != null) {
-				vm.hostName = config.getHostName();
-			}
-			
-			// TODO: Support endpoints
-			if(config.getInputEndpoints() != null) {
-				
-			}
-			
-			if(config.getUserName() != null) {
-				vm.adminUsername = config.getUserName();
-			}
-			
-			if(config.getUserPassword() != null) {
-				vm.adminPassword = config.getUserPassword();
-			}
-		}
-		
-		// TODO Get other data
-		
-		return vm;
+		VirtualMachineImpl vm = new VirtualMachineImpl(name, false);
+		return vm.refresh();
 	}
 
 
@@ -253,7 +234,7 @@ public class VirtualMachines implements
 
 	// Implements virtual machine logic
 	private class VirtualMachineImpl 
-		extends NamedImpl
+		extends NamedRefreshableImpl<VirtualMachine>
 		implements 
 			VirtualMachineDefinitionBlank, 
 			VirtualMachineDefinitionLinuxProvisionable,
@@ -266,37 +247,249 @@ public class VirtualMachines implements
 			VirtualMachineUpdatable {
 
 		private String affinityGroup, network, size, region, linuxImage, windowsImage, adminUsername, adminPassword, 
-			computerName, hostName, deploymentName, deploymentLabel, cloudServiceName, storageAccountName, subnet, roleName;
+			computerName, hostName, deploymentLabel, storageAccountName, subnet;
 		boolean autoUpdate = true, guestAgent = true, isLinux, isWindows, isExistingCloudService;
 		DeploymentStatus status;
 		final ArrayList<Integer> tcpPorts = new ArrayList<Integer>();
 		final HashMap<Integer, Integer> privatePorts = new HashMap<Integer, Integer>();
 		final HashMap<Integer, String> endpointNames = new HashMap<Integer, String>();
 		
-		private VirtualMachineImpl(String name) { 
-			super(name);
-			this.deploymentLabel = this.deploymentName = this.hostName = this.computerName = name;
+		private VirtualMachineImpl(String name, boolean initialized) { 
+			super(name, initialized);
+			this.deploymentLabel = this.hostName = this.computerName = name;
+			withDeployment(name);
 		}
 		
-		// Applies updates to the virtual machine
+		
+		/***********************************************************
+		 * Getters
+		 ***********************************************************/
+
+		@Override
+		public DeploymentStatus status() throws Exception {
+			//TODO: This should be getStatus and should call Azure each time (never cached)
+			ensureInitialized();
+			return this.status;
+		}
+
+		@Override
+		public String network() throws Exception {
+			ensureInitialized();
+			return this.network;
+		}
+
+		@Override
+		public String size() throws Exception {
+			ensureInitialized();
+			return this.size;
+		}
+		
+		@Override
+		public String region() throws Exception {
+			ensureInitialized();
+			return this.region;
+		}
+		
+		@Override
+		public String roleName() throws Exception {
+			return VirtualMachineId.roleFromId(this.name);
+		}
+		
+		@Override
+		public String deployment() throws Exception {
+			return VirtualMachineId.deploymentFromId(this.name);
+		}
+
+		@Override
+		public String cloudService() throws Exception  {
+			return VirtualMachineId.serviceFromId(this.name);
+		}
+
+		@Override
+		public boolean isLinux() throws Exception  {
+			ensureInitialized();
+			return this.isLinux;
+		}
+
+		@Override
+		public boolean isWindows() throws Exception  {
+			ensureInitialized();
+			return this.isWindows;
+		}
+
+		@Override
+		public String affinityGroup() throws Exception  {
+			ensureInitialized();
+			return this.affinityGroup;
+		}
+
+
+		/**************************************************************
+		 * Setters (fluent interface)
+		 **************************************************************/
+		
+		@Override
+		public VirtualMachineImpl withNetwork(String network) {
+			this.network = network;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withSize(String size) {
+			this.size = size;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withRegion(String region) {
+			this.region = region;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withLinuxImage(String image) {
+			this.linuxImage = image;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withWindowsImage(String image) {
+			this.windowsImage = image;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withAdminUsername(String userName) {
+			this.adminUsername = userName;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withAdminPassword(String password) {
+			this.adminPassword = password;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withTcpEndpoint(int port) {
+			this.tcpPorts.add(port);
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withTcpEndpoint(int publicPort, int privatePort) {
+			this.tcpPorts.add(publicPort);
+			this.privatePorts.put(publicPort, privatePort);
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withTcpEndpoint(int publicPort, int privatePort, String name) {
+			withTcpEndpoint(publicPort, privatePort);
+			this.privatePorts.put(publicPort, privatePort);
+			this.endpointNames.put(publicPort, name);
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withAutoUpdate(boolean autoUpdate) {
+			this.autoUpdate = autoUpdate;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withComputerName(String name) throws Exception {
+			if(name == null || name.length() < 1 || name.length() > 15) {
+				throw new Exception("Computer name not valid");
+			} else {
+				this.computerName = name;
+			}
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withHostName(String name) throws Exception {
+			if(name == null || name.length() < 1 || name.length() > 64) {
+				throw new Exception("Host name not valid.");
+			} else {
+				this.hostName = name;
+			}
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withGuestAgent(boolean provision) {
+			this.guestAgent = provision;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withDeployment(String name)  {
+			this.setName(VirtualMachineId.withDeploymentName(name, this.name()));
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withDeploymentLabel(String name) {
+			this.deploymentLabel = name;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withExistingCloudService(String name) {
+			this.setName(VirtualMachineId.withServiceName(name.toLowerCase(), this.name()));			
+			this.isExistingCloudService = true;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withNewCloudService(String name) {
+			this.setName(VirtualMachineId.withServiceName(name.toLowerCase(), this.name()));			
+			this.isExistingCloudService = false;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withSubnet(String subnet) {
+			this.subnet = subnet;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withStorageAccount(String name) {
+			this.storageAccountName = name.toLowerCase();
+			return this;
+		}
+		
+		private VirtualMachineImpl withRoleName(String name) {
+			this.setName(VirtualMachineId.withRoleName(name.toLowerCase(), this.name()));			
+			return this;
+		}
+
+		
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
+		
+		@Override
 		public VirtualMachineImpl apply() throws Exception {
 			throw new NotImplementedException("Not yet implemented");
 			// TODO return this;
 		}
 
-
-		// Deletes this virtual machine
+		
+		@Override
 		public void delete() throws Exception {
 			azure.virtualMachines.delete(this.name);
 		}
 		
 
-		// Provisions a new virtual machine in a new service
+		@Override
 		public VirtualMachineImpl provision() throws Exception {
 			// Get affinity group and region from existing resources
-			if(this.cloudServiceName != null && this.isExistingCloudService) {
+			if(this.cloudService() != null && this.isExistingCloudService) {
 				// Get from existing cloud service
-				final CloudService cloudService = azure.cloudServices.get(this.cloudServiceName);
+				final CloudService cloudService = azure.cloudServices.get(this.cloudService());
 				this.affinityGroup = cloudService.affinityGroup();
 				this.region = cloudService.region();
 			} else if(this.network != null) {
@@ -314,9 +507,9 @@ public class VirtualMachines implements
 			// Create storage account if not specified
 			if(this.storageAccountName == null) {
 				final String storeName = "store" + System.currentTimeMillis();
-				StorageAccountDefinitionBlank storageDefinition  = azure.storageAccounts.define(storeName);
-				StorageAccountDefinitionProvisionable storageProvisionable  = storageDefinition.withRegion(this.region);
-				storageProvisionable.provision();
+				azure.storageAccounts.define(storeName)
+					.withRegion(this.region)
+					.provision();
 				this.storageAccountName = storeName;
 			}
 
@@ -384,10 +577,7 @@ public class VirtualMachines implements
 			// Determine if to create a new cloud service deployment or add to existing
 			if(!this.isExistingCloudService) {
 				// Create a new cloud service using the same name as the VM
-				CloudServiceDefinitionBlank serviceDefinition = azure.cloudServices.define(
-						this.cloudServiceName != null
-						? this.cloudServiceName
-						: this.name);
+				CloudServiceDefinitionBlank serviceDefinition = azure.cloudServices.define(this.cloudService());
 				CloudServiceDefinitionProvisionable serviceProvisionable = 
 						(this.affinityGroup != null) 
 						? serviceDefinition.withAffinityGroup(this.affinityGroup) 
@@ -398,9 +588,9 @@ public class VirtualMachines implements
 				Role role = new Role();
 				role.setConfigurationSets(configs);
 				role.setProvisionGuestAgent(this.guestAgent);
-				role.setRoleName(this.name);
+				role.setRoleName(this.roleName());
 				role.setRoleSize(this.size);
-				role.setRoleType(VirtualMachineRoleType.PERSISTENTVMROLE.toString());
+				role.setRoleType("PersistentVMRole");
 				role.setOSVirtualHardDisk(osDisk);
 				
 				ArrayList<Role> roles = new ArrayList<Role>(Arrays.asList(role));
@@ -410,18 +600,14 @@ public class VirtualMachines implements
 				vmCreateParams.setRoles(roles);
 				vmCreateParams.setDeploymentSlot(DeploymentSlot.PRODUCTION);
 				vmCreateParams.setLabel(this.deploymentLabel);
-				vmCreateParams.setName(this.deploymentName);
-				vmCreateParams.setVirtualNetworkName(this.network);
+				vmCreateParams.setName(this.deployment());
+				vmCreateParams.setVirtualNetworkName(this.network == null ? "" : this.network);
 				
-				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(
-					(this.cloudServiceName != null) 
-					? this.cloudServiceName
-					: this.name,
-					vmCreateParams);
+				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);
 				
 			} else {
 				// Get existing deployment from production
-				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudServiceName, DeploymentSlot.PRODUCTION).getName();
+				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudService(), DeploymentSlot.PRODUCTION).getName();
 				
 				// Deploy into existing cloud service
 				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
@@ -430,165 +616,79 @@ public class VirtualMachines implements
 				vmCreateParams.setConfigurationSets(configs);
 				vmCreateParams.setOSVirtualHardDisk(osDisk);
 				vmCreateParams.setProvisionGuestAgent(this.guestAgent);	
-				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudServiceName, deploymentName, vmCreateParams);
+				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudService(), deploymentName, vmCreateParams);
 			}
 			
 			return this;
 		}
-		
-		
-		public DeploymentStatus status() {
-			return this.status;
-		}
 
-		public VirtualMachineImpl withNetwork(String network) {
-			this.network = network;
-			return this;
-		}
-		
-		public String network() {
-			return this.network;
-		}
-
-		public VirtualMachineImpl withSize(String size) {
-			this.size = size;
-			return this;
-		}
-
-		public String size() {
-			return this.size;
-		}
-		
-		public VirtualMachineImpl withRegion(String region) {
-			this.region = region;
-			return this;
-		}
-		
-		public String region() {
-			return this.region;
-		}
-		
-		@Override
-		public String roleName() {
-			return this.roleName;
-		}
-		
-		public VirtualMachineImpl withLinuxImage(String image) {
-			this.linuxImage = image;
-			return this;
-		}
-		
-		public VirtualMachineImpl withWindowsImage(String image) {
-			this.windowsImage = image;
-			return this;
-		}
-		
-		public VirtualMachineImpl withAdminUsername(String userName) {
-			this.adminUsername = userName;
-			return this;
-		}
-		
-		public VirtualMachineImpl withAdminPassword(String password) {
-			this.adminPassword = password;
-			return this;
-		}
-		
-		public VirtualMachineImpl withTcpEndpoint(int port) {
-			this.tcpPorts.add(port);
-			return this;
-		}
-		
-		public VirtualMachineImpl withTcpEndpoint(int publicPort, int privatePort) {
-			this.tcpPorts.add(publicPort);
-			this.privatePorts.put(publicPort, privatePort);
-			return this;
-		}
-
-		public VirtualMachineImpl withTcpEndpoint(int publicPort, int privatePort, String name) {
-			withTcpEndpoint(publicPort, privatePort);
-			this.privatePorts.put(publicPort, privatePort);
-			this.endpointNames.put(publicPort, name);
-			return this;
-		}
-
-		public VirtualMachineImpl withAutoUpdate(boolean autoUpdate) {
-			this.autoUpdate = autoUpdate;
-			return this;
-		}
-
-		public VirtualMachineImpl withComputerName(String name) throws Exception {
-			if(name == null || name.length() < 1 || name.length() > 15) {
-				throw new Exception("Computer name not valid");
-			} else {
-				this.computerName = name;
-			}
-			return this;
-		}
-		
-		public VirtualMachineImpl withHostName(String name) throws Exception {
-			if(name == null || name.length() < 1 || name.length() > 64) {
-				throw new Exception("Host name not valid.");
-			} else {
-				this.hostName = name;
-			}
-			return this;
-		}
-
-		public VirtualMachineImpl withGuestAgent(boolean provision) {
-			this.guestAgent = provision;
-			return this;
-		}
-
-		public VirtualMachineImpl withDeployment(String name)  {
-			this.deploymentName = name;
-			return this;
-		}
-		
-		public String deployment() {
-			return this.deploymentName;
-		}
-
-		public VirtualMachineImpl withDeploymentLabel(String name) {
-			this.deploymentLabel = name;
-			return this;
-		}
-		
-		public VirtualMachineImpl withExistingCloudService(String name) {
-			this.cloudServiceName = name.toLowerCase();
-			this.isExistingCloudService = true;
-			return this;
-		}
-
-		public String cloudService() {
-			return this.cloudServiceName;
-		}
-
-		public VirtualMachineDefinitionProvisionable withStorageAccount(String name) {
-			this.storageAccountName = name.toLowerCase();
-			return this;
-		}
-
-		public boolean isLinux() {
-			return this.isLinux;
-		}
-
-		public boolean isWindows() {
-			return this.isWindows;
-		}
-
-		public String affinityGroup() {
-			return this.affinityGroup;
-		}
-
-		public VirtualMachineImpl withNewCloudService(String name) {
-			this.cloudServiceName = name;
-			this.isExistingCloudService = false;
-			return this;
-		}
 
 		@Override
-		public VirtualMachineImpl withSubnet(String subnet) {
-			this.subnet = subnet;
+		public VirtualMachine refresh() throws Exception {
+			final DeploymentGetResponse deploymentResponse = getDeployment(this.name);
+			this.withDeployment(deploymentResponse.getName());
+
+			// Determine role
+			final Role role = getVmRole(deploymentResponse);
+			if(role == null) {
+				throw new Exception("No virtual machine found in this service");
+			}
+			
+			this.withRoleName(role.getRoleName());
+
+			// Get role properties
+			final VirtualMachineGetResponse vmResponse = azure.computeManagementClient().getVirtualMachinesOperations().get(
+					this.cloudService(), this.deployment(), this.roleName());
+			this.size = vmResponse.getRoleSize();
+
+			// Get service-level data
+			//TODO Make it lazily evaluated
+			CloudService service = azure.cloudServices.get(this.cloudService());
+			this.affinityGroup = service.affinityGroup();
+			this.region = service.region();
+			
+			// Get deployment-level data
+			this.deploymentLabel = deploymentResponse.getLabel();
+			this.status = deploymentResponse.getStatus();
+			this.network = deploymentResponse.getVirtualNetworkName();
+						
+			// Process config data
+			for(ConfigurationSet config : vmResponse.getConfigurationSets()) {
+				if(config.getAdminPassword() != null) {
+					this.adminPassword = config.getAdminPassword();
+				}
+				
+				if(config.getAdminUserName() != null) {
+					this.adminUsername = config.getAdminUserName();
+				}
+				
+				if(config.getComputerName() != null) {
+					this.computerName = config.getComputerName();
+				}
+				
+				this.isLinux = (config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.LINUXPROVISIONINGCONFIGURATION));
+				this.isWindows = (config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION));
+				
+				if(config.getHostName() != null) {
+					this.hostName = config.getHostName();
+				}
+				
+				// TODO: Support endpoints
+				if(config.getInputEndpoints() != null) {
+					
+				}
+				
+				if(config.getUserName() != null) {
+					this.adminUsername = config.getUserName();
+				}
+				
+				if(config.getUserPassword() != null) {
+					this.adminPassword = config.getUserPassword();
+				}
+			}
+			
+			// TODO Get other data
+			this.initialized = true;
 			return this;
 		}
 	}

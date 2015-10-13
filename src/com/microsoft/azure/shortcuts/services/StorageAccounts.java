@@ -24,7 +24,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
@@ -61,26 +61,24 @@ public class StorageAccounts implements
 	@Override
 	// Starts a new storage account update
 	public StorageAccountUpdatableBlank update(String name) {
-		return new StorageAccountImpl(name);
+		return new StorageAccountImpl(name, false);
 	}
 
 	
 	@Override
 	// Starts a new storage account definition
 	public StorageAccountDefinitionBlank define(String name) {
-		return new StorageAccountImpl(name);
+		return new StorageAccountImpl(name, true);
 	}
 	
 	
 	@Override
-	// Deletes the specified storage account
 	public void delete(String accountName) throws IOException, ServiceException {
 		azure.storageManagementClient().getStorageAccountsOperations().delete(accountName);
 	}
 	
 	
 	@Override
-	// Return the list of storage accounts
 	public String[] list() {
 		try {
 			final ArrayList<com.microsoft.windowsazure.management.storage.models.StorageAccount> storageAccounts = 
@@ -98,30 +96,16 @@ public class StorageAccounts implements
 	}
 	
 	
-	// Gets storage account information
+	@Override
 	public StorageAccount get(String name) throws Exception {
-		StorageAccountImpl storageAccount = new StorageAccountImpl(name);
-		StorageAccountGetResponse response = azure.storageManagementClient().getStorageAccountsOperations().get(name);
-		StorageAccountProperties properties =  response.getStorageAccount().getProperties();
-		storageAccount.affinityGroup = properties.getAffinityGroup();
-		storageAccount.description = properties.getDescription();
-		storageAccount.label = properties.getLabel();
-		storageAccount.geoPrimaryRegion = properties.getGeoPrimaryRegion();
-		storageAccount.geoSecondaryRegion = properties.getGeoSecondaryRegion();
-		storageAccount.region = properties.getLocation();
-		storageAccount.status = properties.getStatus();
-		storageAccount.lastFailoverTime = properties.getLastGeoFailoverTime();
-		storageAccount.geoPrimaryRegionStatus = properties.getStatusOfGeoPrimaryRegion();
-		storageAccount.geoSecondaryRegionStatus = properties.getStatusOfGeoSecondaryRegion();
-		storageAccount.endpoints = properties.getEndpoints().toArray(new URI[0]);
-		storageAccount.type = properties.getAccountType();
-		return storageAccount;
+		StorageAccountImpl storageAccount = new StorageAccountImpl(name, false);
+		return storageAccount.refresh();
 	}
 
 	
 	// Nested class encapsulating the API related to creating new storage accounts
 	private class StorageAccountImpl 
-		extends NamedImpl
+		extends NamedRefreshableImpl<StorageAccount>
 		implements 
 			StorageAccountDefinitionBlank, 
 			StorageAccountDefinitionProvisionable,
@@ -134,11 +118,123 @@ public class StorageAccounts implements
 		private GeoRegionStatus geoPrimaryRegionStatus, geoSecondaryRegionStatus;
 		public URI[] endpoints;
 		
-		private StorageAccountImpl(String name) {
-			super(name.toLowerCase());
+		private StorageAccountImpl(String name, boolean initialized) {
+			super(name.toLowerCase(), initialized);
 		}
 		
-		// Creates a new storage account
+		/***********************************************************
+		 * Getters
+		 * @throws Exception 
+		 ***********************************************************/
+
+		@Override
+		public String description() throws Exception {
+			ensureInitialized();
+			return this.description;
+		}
+
+		@Override
+		public String label() throws Exception {
+			ensureInitialized();
+			return this.label;
+		}
+
+		@Override
+		public String geoPrimaryRegion() throws Exception {
+			ensureInitialized();
+			return this.geoPrimaryRegion;
+		}
+
+		@Override
+		public GeoRegionStatus geoPrimaryRegionStatus() throws Exception {
+			ensureInitialized();
+			return this.geoPrimaryRegionStatus;
+		}
+
+		@Override
+		public String geoSecondaryRegion() throws Exception {
+			ensureInitialized();
+			return this.geoSecondaryRegion;
+		}
+
+		@Override
+		public GeoRegionStatus geoSecondaryRegionStatus() throws Exception {
+			ensureInitialized();
+			return this.geoSecondaryRegionStatus;
+		}
+
+		@Override
+		public String region() throws Exception {
+			ensureInitialized();
+			return this.region;
+		}
+
+		@Override
+		public StorageAccountStatus status() throws Exception {
+			ensureInitialized();
+			return this.status;
+		}
+
+		@Override
+		public Calendar lastGeoFailoverTime() throws Exception {
+			ensureInitialized();
+			return this.lastFailoverTime;
+		}
+
+		@Override
+		public URI[] endpoints() throws Exception {
+			ensureInitialized();
+			return this.endpoints;
+		}
+
+		@Override
+		public String type() throws Exception {
+			ensureInitialized();
+			return this.type;
+		}
+
+
+		@Override
+		public String affinityGroup() throws Exception {
+			ensureInitialized();
+			return this.affinityGroup;
+		}
+
+
+		/**************************************************************
+		 * Setters (fluent interface)
+		 **************************************************************/
+
+		@Override
+		public StorageAccountImpl withRegion(String region) {
+			this.region =region;
+			return this;
+		}
+					
+		@Override
+		public StorageAccountImpl withType(String type) {
+			this.type = type;
+			return this;
+		}
+		
+		@Override
+		public StorageAccountImpl withLabel(String label) {
+			this.label= label;
+			return this;
+		}
+		
+		@Override
+		public StorageAccountImpl withDescription(String description) {
+			this.description = description;
+			return this;
+		}
+
+		
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
+
+		@Override
 		public StorageAccountImpl provision() throws Exception {
 			final StorageAccountCreateParameters params = new StorageAccountCreateParameters();
 			params.setName(this.name.toLowerCase());
@@ -151,8 +247,8 @@ public class StorageAccounts implements
 			return this;
 		}
 		
-					
-		// Apply changes to the storage account
+	
+		@Override
 		public StorageAccountImpl apply() throws Exception {
 			StorageAccountUpdateParameters params = new StorageAccountUpdateParameters();
 			params.setAccountType(this.type);
@@ -164,80 +260,29 @@ public class StorageAccounts implements
 
 		
 		@Override
-		// Deletes this storage account
 		public void delete() throws Exception {
 			azure.storageAccounts.delete(this.name);
 		}
 
 		
-		public StorageAccountImpl withRegion(String region) {
-			this.region =region;
+		@Override
+		public StorageAccount refresh() throws Exception {
+			StorageAccountGetResponse response = azure.storageManagementClient().getStorageAccountsOperations().get(this.name);
+			StorageAccountProperties properties =  response.getStorageAccount().getProperties();
+			this.affinityGroup = properties.getAffinityGroup();
+			this.description = properties.getDescription();
+			this.label = properties.getLabel();
+			this.geoPrimaryRegion = properties.getGeoPrimaryRegion();
+			this.geoSecondaryRegion = properties.getGeoSecondaryRegion();
+			this.region = properties.getLocation();
+			this.status = properties.getStatus();
+			this.lastFailoverTime = properties.getLastGeoFailoverTime();
+			this.geoPrimaryRegionStatus = properties.getStatusOfGeoPrimaryRegion();
+			this.geoSecondaryRegionStatus = properties.getStatusOfGeoSecondaryRegion();
+			this.endpoints = properties.getEndpoints().toArray(new URI[0]);
+			this.type = properties.getAccountType();
+			this.initialized = true;
 			return this;
 		}
-					
-		public StorageAccountImpl withType(String type) {
-			this.type = type;
-			return this;
-		}
-		
-		public StorageAccountImpl withLabel(String label) {
-			this.label= label;
-			return this;
-		}
-		
-		public StorageAccountImpl withDescription(String description) {
-			this.description = description;
-			return this;
-		}
-
-		public String description() {
-			return this.description;
-		}
-
-		public String label() {
-			return this.label;
-		}
-
-		public String geoPrimaryRegion() {
-			return this.geoPrimaryRegion;
-		}
-
-		public GeoRegionStatus geoPrimaryRegionStatus() {
-			return this.geoPrimaryRegionStatus;
-		}
-
-		public String geoSecondaryRegion() {
-			return this.geoSecondaryRegion;
-		}
-
-		public GeoRegionStatus geoSecondaryRegionStatus() {
-			return this.geoSecondaryRegionStatus;
-		}
-
-		public String region() {
-			return this.region;
-		}
-
-		public StorageAccountStatus status() {
-			return this.status;
-		}
-
-		public Calendar lastGeoFailoverTime() {
-			return this.lastFailoverTime;
-		}
-
-		public URI[] endpoints() {
-			return this.endpoints;
-		}
-
-		public String type() {
-			return this.type;
-		}
-
-
-		public String affinityGroup() {
-			return this.affinityGroup;
-		}
-
 	}		
 }

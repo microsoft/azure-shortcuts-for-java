@@ -32,16 +32,16 @@ public interface StorageAccount extends
 	Named,
 	StorageAccountUpdatableBlank {
 	
-	String affinityGroup();
-	String description();
-	String label();
-	String geoPrimaryRegion();
-	GeoRegionStatus geoPrimaryRegionStatus();
-	String geoSecondaryRegion();
-	GeoRegionStatus geoSecondaryRegionStatus();
-	String region();
-	StorageAccountStatus status();
-	Calendar lastGeoFailoverTime();
-	URI[] endpoints();
-	String type();
+	String affinityGroup() throws Exception;
+	String description() throws Exception;
+	String label() throws Exception;
+	String geoPrimaryRegion() throws Exception;
+	GeoRegionStatus geoPrimaryRegionStatus() throws Exception;
+	String geoSecondaryRegion() throws Exception;
+	GeoRegionStatus geoSecondaryRegionStatus() throws Exception;
+	String region() throws Exception;
+	StorageAccountStatus status() throws Exception;
+	Calendar lastGeoFailoverTime() throws Exception;
+	URI[] endpoints() throws Exception;
+	String type() throws Exception;
 }

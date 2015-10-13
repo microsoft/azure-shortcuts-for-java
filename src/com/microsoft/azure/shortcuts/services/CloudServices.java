@@ -24,7 +24,7 @@ import java.util.Calendar;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
@@ -39,6 +39,7 @@ import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateP
 import com.microsoft.windowsazure.management.compute.models.HostedServiceGetResponse;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceUpdateParameters;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
+import com.microsoft.windowsazure.management.compute.models.HostedServiceProperties;
 
 // Class encapsulating the API related to cloud services
 public class CloudServices implements 
@@ -54,9 +55,52 @@ public class CloudServices implements
 		this.azure = azure;
 	}
 	
+
+	@Override
+	public CloudServiceDefinitionBlank define(String name) {
+		return new CloudServiceImpl(name, true);
+	}
+	
+	
+	@Override
+	public void delete(String name) throws Exception {
+		azure.computeManagementClient().getHostedServicesOperations().delete(name);
+	}
+	
+	
+	@Override
+	public CloudServiceUpdatableBlank update(String name) {
+		return new CloudServiceImpl(name, false);
+	}
+	
+	
+	@Override
+	public String[] list() {
+		try {
+			final ArrayList<HostedService> services = azure.computeManagementClient().getHostedServicesOperations()
+					.list().getHostedServices();
+			String[] names = new String[services.size()];
+			int i = 0;
+			for(HostedService cloudService: services) {
+				names[i++]= cloudService.getServiceName();
+			}
+			return names;
+		} catch (Exception e) {
+			// Not very actionable, so just return an empty array
+			return new String[0];
+		}
+	}
+	
+	
+	@Override
+	public CloudService get(String name) throws Exception {
+		CloudServiceImpl cloudService = new CloudServiceImpl(name, false);
+		return cloudService.refresh();
+	}
+
 	
 	private class CloudServiceImpl 
-		extends NamedImpl 
+		extends NamedRefreshableImpl<CloudService>
 		implements 
 			CloudServiceDefinitionBlank, 
 			CloudServiceDefinitionProvisionable,
@@ -66,42 +110,56 @@ public class CloudServices implements
 		private String region, description, affinityGroup, label, reverseDnsFqdn;
 		Calendar created, lastModified;
 		
-		private CloudServiceImpl(String name) {
-			super(name.toLowerCase());
+		private CloudServiceImpl(String name, boolean initialized) {
+			super(name.toLowerCase(), initialized);
 		}
 
-		// Delete this cloud service
-		public void delete() throws Exception {
-			azure.cloudServices.delete(this.name);
-		}
-		
-		
-		// Provision a new cloud service
-		public CloudServiceImpl provision() throws Exception {
-			final HostedServiceCreateParameters params = new HostedServiceCreateParameters();
-			params.setAffinityGroup(this.affinityGroup);
-			params.setDescription(this.description);
-			params.setLabel((this.label == null) ? this.name : this.label);
-			params.setLocation(this.region);
-			params.setServiceName(this.name);
-			params.setReverseDnsFqdn(this.reverseDnsFqdn);
 
-			azure.computeManagementClient().getHostedServicesOperations().create(params);
-			return this;
+		/***********************************************************
+		 * Getters
+		 * @throws Exception 
+		 ***********************************************************/
+
+		public String region() throws Exception {
+			ensureInitialized();
+			return this.region;
 		}
 
-		
-		// Apply updates to the cloud service
-		public CloudServiceImpl apply() throws Exception {
-			HostedServiceUpdateParameters params = new HostedServiceUpdateParameters();
-			params.setDescription(this.description);
-			params.setLabel(this.label);
-			params.setReverseDnsFqdn(this.reverseDnsFqdn);
-			azure.computeManagementClient().getHostedServicesOperations().update(this.name, params);
-			return this;
+		public String description() throws Exception {
+			ensureInitialized();
+			return this.description;
 		}
 
-		
+		public String label() throws Exception {
+			ensureInitialized();
+			return this.label;
+		}
+
+		public String reverseDnsFqdn() throws Exception {
+			ensureInitialized();
+			return this.reverseDnsFqdn;
+		}
+
+		public Calendar created() throws Exception {
+			ensureInitialized();
+			return this.created;
+		}
+
+		public Calendar modified() throws Exception {
+			ensureInitialized();
+			return this.lastModified;
+		}
+
+		public String affinityGroup() throws Exception {
+			ensureInitialized();
+			return this.affinityGroup;
+		}
+
+
+		/**************************************************************
+		 * Setters (fluent interface)
+		 **************************************************************/
+
 		public CloudServiceImpl withRegion(String region) {
 			this.region =region;
 			return this;
@@ -128,86 +186,59 @@ public class CloudServices implements
 			return this;
 		}
 		
-		public String region() {
-			return this.region;
+
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
+
+		@Override
+		public void delete() throws Exception {
+			azure.cloudServices.delete(this.name);
+		}
+		
+		
+		@Override
+		public CloudServiceImpl provision() throws Exception {
+			final HostedServiceCreateParameters params = new HostedServiceCreateParameters();
+			params.setAffinityGroup(this.affinityGroup);
+			params.setDescription(this.description);
+			params.setLabel((this.label == null) ? this.name : this.label);
+			params.setLocation(this.region);
+			params.setServiceName(this.name);
+			params.setReverseDnsFqdn(this.reverseDnsFqdn);
+
+			azure.computeManagementClient().getHostedServicesOperations().create(params);
+			return this;
 		}
 
-		public String description() {
-			return this.description;
+		
+		@Override
+		public CloudServiceImpl apply() throws Exception {
+			HostedServiceUpdateParameters params = new HostedServiceUpdateParameters();
+			params.setDescription(this.description);
+			params.setLabel(this.label);
+			params.setReverseDnsFqdn(this.reverseDnsFqdn);
+			azure.computeManagementClient().getHostedServicesOperations().update(this.name, params);
+			return this;
 		}
 
-		public String label() {
-			return this.label;
-		}
 
-		public String reverseDnsFqdn() {
-			return this.reverseDnsFqdn;
-		}
+		@Override
+		public CloudServiceImpl refresh() throws Exception {
+			HostedServiceGetResponse response = azure.computeManagementClient().getHostedServicesOperations().get(this.name);
+			HostedServiceProperties props = response.getProperties();
+			this.description = props.getDescription();
+			this.label = props.getLabel();
+			this.region = props.getLocation();
+			this.reverseDnsFqdn = props.getReverseDnsFqdn();
+			this.created = props.getDateCreated();
+			this.lastModified = props.getDateLastModified();
+			this.affinityGroup = props.getAffinityGroup();
+			this.initialized = true;
 
-		public Calendar created() {
-			return this.created;
+			return this;
 		}
-
-		public Calendar modified() {
-			return this.lastModified;
-		}
-
-		public String affinityGroup() {
-			return this.affinityGroup;
-		}
-	}
-	
-	
-	// Starts a new cloud service definition
-	public CloudServiceDefinitionBlank define(String name) {
-		return new CloudServiceImpl(name);
-	}
-	
-	
-	// Deletes the specified cloud service
-	public void delete(String name) throws Exception {
-		azure.computeManagementClient().getHostedServicesOperations().delete(name);
-	}
-	
-	
-	// Starts a cloud service update
-	public CloudServiceUpdatableBlank update(String name) {
-		return new CloudServiceImpl(name);
-	}
-	
-	
-	// Return the list of cloud services
-	public String[] list() {
-		try {
-			final ArrayList<HostedService> services = azure.computeManagementClient().getHostedServicesOperations()
-					.list().getHostedServices();
-			String[] names = new String[services.size()];
-			int i = 0;
-			for(HostedService cloudService: services) {
-				names[i++]= cloudService.getServiceName();
-			}
-			return names;
-		} catch (Exception e) {
-			// Not very actionable, so just return an empty array
-			return new String[0];
-		}
-	}
-	
-	
-	// Return the specified cloud service information
-	public CloudService get(String name) throws Exception {
-		CloudServiceImpl cloudService = new CloudServiceImpl(name);
-		HostedServiceGetResponse response = azure.computeManagementClient().getHostedServicesOperations().get(name);
-		cloudService.description = response.getProperties().getDescription();
-		cloudService.label = response.getProperties().getLabel();
-		cloudService.region = response.getProperties().getLocation();
-		cloudService.reverseDnsFqdn = response.getProperties().getReverseDnsFqdn();
-		cloudService.created = response.getProperties().getDateCreated();
-		cloudService.lastModified = response.getProperties().getDateLastModified();
-		cloudService.affinityGroup = response.getProperties().getAffinityGroup();
-
-		return cloudService;
-	}
+	}	
 }
 
 

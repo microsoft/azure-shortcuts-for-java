@@ -22,14 +22,16 @@ package com.microsoft.azure.shortcuts.resources.reading;
 import java.util.HashMap;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
 public interface Group extends 
 	Named,
-	GroupUpdatableBlank {
+	GroupUpdatableBlank,
+	Refreshable<Group> {
 	
-	String region();
-	String id();
-	HashMap<String, String> tags();
-	String getProvisioningState();
+	String region() throws Exception;
+	String id() throws Exception;
+	HashMap<String, String> tags() throws Exception;
+	String getProvisioningState() throws Exception;
 }

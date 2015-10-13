@@ -29,11 +29,11 @@ public interface CloudService extends
 	Named,
 	CloudServiceUpdatableBlank {
 	
-	String region();
-	String description();
-	String label();
-	String reverseDnsFqdn();
-	Calendar created();
-	Calendar modified();
-	String affinityGroup();
+	String region() throws Exception;
+	String description() throws Exception;
+	String label() throws Exception;
+	String reverseDnsFqdn() throws Exception;
+	Calendar created() throws Exception;
+	Calendar modified() throws Exception;
+	String affinityGroup() throws Exception;
 }

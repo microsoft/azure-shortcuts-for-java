@@ -27,15 +27,15 @@ public interface VirtualMachine extends
 	Named,
 	VirtualMachineUpdatableBlank {
 	
-	String size();
-	String deployment();
-	String cloudService();
-	String network();
-	String region();
-	String affinityGroup();
-	DeploymentStatus status();
-	boolean isLinux();
-	boolean isWindows();
-	String roleName();
+	String size() throws Exception;
+	String deployment() throws Exception;
+	String cloudService() throws Exception;
+	String network() throws Exception;
+	String region() throws Exception;
+	String affinityGroup() throws Exception;
+	DeploymentStatus status() throws Exception;
+	boolean isLinux() throws Exception;
+	boolean isWindows() throws Exception;
+	String roleName() throws Exception;
 }
 

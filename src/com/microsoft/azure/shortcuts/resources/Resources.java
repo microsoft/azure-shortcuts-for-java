@@ -26,7 +26,7 @@ import java.util.HashMap;
 
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
@@ -143,17 +143,8 @@ public class Resources implements
 	
 	// Returns a resource based on its group and identity object
 	private Resource get(String group, ResourceIdentity identity) throws Exception {
-		ResourceImpl resource = new ResourceImpl(null);
-		GenericResourceExtended response = azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
-		if(response != null) {
-			resource.region = response.getLocation();
-			resource.tags = response.getTags();
-			resource.properties = response.getProperties();
-			resource.setName(response.getId());
-			return resource;
-		} else {
-			throw new Exception("Resource not found");
-		}				
+		ResourceImpl resource = new ResourceImpl(null, false);
+		return resource.refresh(group, identity);
 	}
 	
 	
@@ -176,66 +167,109 @@ public class Resources implements
 	// Implements the individual resource logic
 	private class ResourceImpl 
 		extends
-			NamedImpl
+			NamedRefreshableImpl<Resource>
 		implements 
 			Resource, Deletable {
 		
 		private HashMap<String, String> tags = new HashMap<>();
 		private String region, properties;
 		
-		private ResourceImpl(String id) {
-			super(id);
+		private ResourceImpl(String id, boolean initialized) {
+			super(id, initialized);
 		}
 
+		
+		/***********************************************************
+		 * Getters
+		 ***********************************************************/
+
 		@Override
-		public String group() {
+		public String group() throws Exception {
+			ensureInitialized();
 			return RESOURCE_ID.GROUP.from(this.name);
 		}
 
 		@Override
-		public String region() {
+		public String region() throws Exception {
+			ensureInitialized();
 			return this.region;
 		}
 
 		@Override
-		public String shortName() {
+		public String shortName() throws Exception {
+			ensureInitialized();
 			return RESOURCE_ID.NAME.from(this.name);
 		}
 
 		@Override
-		public String provider() {
+		public String provider() throws Exception {
+			ensureInitialized();
 			return RESOURCE_ID.PROVIDER.from(this.name);
 		}
 
 		@Override
-		public String type() {
+		public String type() throws Exception {
+			ensureInitialized();
 			return RESOURCE_ID.TYPE.from(this.name);
 		}
 
 		@Override
-		public HashMap<String, String> tags() {
+		public HashMap<String, String> tags() throws Exception {
+			ensureInitialized();
 			return this.tags;
 		}
 
 		@Override
-		public String properties() {
+		public String properties() throws Exception {
+			ensureInitialized();
 			return this.properties;
 		}
 
 		@Override
-		public String getProvisioningState() {
-			try {
-				if(this.name == null) {
-					return null; // Temporary object, does not exist in the cloud
-				} else {
-					return azure.resourceManagementClient().getResourcesOperations().get(this.group(), this.toResourceIdentity()).getResource().getProvisioningState();
-				}
-			} catch (Exception e) {
-				return null;
-			}			
+		public String getProvisioningState() throws Exception {
+			if(this.name == null) {
+				return null; // Temporary object, does not exist in the cloud
+			} else {
+				return azure.resourceManagementClient().getResourcesOperations().get(
+						this.group(), this.toResourceIdentity()).getResource().getProvisioningState();
+			}
 		}
 		
 		
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
+
+		@Override
+		public void delete() throws Exception {
+			azure.resources.delete(this.name);
+		}
+		
+
+		@Override
+		public ResourceImpl refresh() throws Exception {
+			return refresh(
+				RESOURCE_ID.GROUP.from(this.name),
+				createResourceIdentity(this.name));
+		}
+		
+		
+		// Refreshes the resource based on the group and identity information
+		private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
+			GenericResourceExtended response = azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
+			this.setName(response.getId());
+			this.region = response.getLocation();
+			this.tags = response.getTags();
+			this.properties = response.getProperties();
+			this.initialized = true;
+			return this;
+		}
+		
+		
+		/************************************************************
+		 * Helpers
+		 ************************************************************/
+
 		// Returns ResourceIdentity instance based on this resource
 		private ResourceIdentity toResourceIdentity() throws Exception {
 			ResourceIdentity identity = createResourceIdentity(
@@ -245,10 +279,6 @@ public class Resources implements
 			return identity;
 		}
 
-		
-		@Override
-		public void delete() throws Exception {
-			azure.resources.delete(this.name);
-		}
+
 	}
 }

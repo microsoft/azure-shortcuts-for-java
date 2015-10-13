@@ -23,7 +23,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.reading.OSImage;
@@ -61,35 +61,14 @@ public class OSImages implements
 	
 	// Returns OS image information
 	public OSImage get(String name) throws Exception {
-		OSImageImpl osImage = new OSImageImpl(name);
-		VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(name);
-		osImage.category = response.getCategory();
-		osImage.description = response.getDescription();
-		osImage.eula = response.getEula();
-		osImage.iconUri = new URI(response.getIconUri());
-		osImage.family = response.getImageFamily();
-		osImage.ioType = response.getIOType();
-		osImage.label = response.getLabel();
-		osImage.language = response.getLanguage();
-		osImage.regions = response.getLocation().split(";");
-		osImage.logicalSizeInGB = response.getLogicalSizeInGB();
-		osImage.mediaLink = response.getMediaLinkUri();
-		osImage.operatingSystemType = response.getOperatingSystemType();
-		osImage.privacyUri = response.getPrivacyUri();
-		osImage.publishedDate = response.getPublishedDate();
-		osImage.publisher = response.getPublisherName();
-		osImage.recommendedVMSize = response.getRecommendedVMSize();
-		osImage.smallIconUri = new URI(response.getSmallIconUri());
-		osImage.isPremium = response.isPremium();
-		osImage.isShownInGui = response.isShowInGui();
-		
-		return osImage;
+		OSImageImpl osImage = new OSImageImpl(name, false);
+		return osImage.refresh();
 	}
 
 	
 	// Encapsulated information about an image
 	private class OSImageImpl 
-		extends NamedImpl 
+		extends NamedRefreshableImpl<OSImage> 
 		implements OSImage {
 		
 		private String category, description, eula, family, ioType, label, language, operatingSystemType, publisher, recommendedVMSize;
@@ -99,84 +78,158 @@ public class OSImages implements
 		private boolean isPremium, isShownInGui;
 		private double logicalSizeInGB;
 		
-		private OSImageImpl(String name) {
-			super(name);
+		private OSImageImpl(String name, boolean initialized) {
+			super(name, initialized);
 		}
 
-		public String category() {
+		
+		/***********************************************************
+		 * Getters
+		 * @throws Exception 
+		 ***********************************************************/
+		@Override
+		public String category() throws Exception {
+			ensureInitialized();
 			return this.category;
 		}
 
-		public String description() {
+		@Override
+		public String description() throws Exception {
+			ensureInitialized();
 			return this.description;
 		}
 
-		public String eula() {
+		@Override
+		public String eula() throws Exception {
+			ensureInitialized();
 			return this.eula;
 		}
 
-		public URI iconUri() {
+		@Override
+		public URI iconUri() throws Exception {
+			ensureInitialized();
 			return this.iconUri;
 		}
 
-		public String family() {
+		@Override
+		public String family() throws Exception {
+			ensureInitialized();
 			return this.family;
 		}
 
-		public String ioType() {
+		@Override
+		public String ioType() throws Exception {
+			ensureInitialized();
 			return this.ioType;
 		}
-
-		public String label() {
+		
+		@Override
+		public String label() throws Exception {
+			ensureInitialized();
 			return this.label;
 		}
 
-		public String language() {
+		@Override
+		public String language() throws Exception {
+			ensureInitialized();
 			return this.language;
 		}
 
-		public String[] regions() {
+		@Override
+		public String[] regions() throws Exception {
+			ensureInitialized();
 			return this.regions;
 		}
 
-		public double logicalSizeInGB() {
+		@Override
+		public double logicalSizeInGB() throws Exception {
+			ensureInitialized();
 			return this.logicalSizeInGB;
 		}
 
-		public URI mediaLink() {
+		@Override
+		public URI mediaLink() throws Exception {
+			ensureInitialized();
 			return this.mediaLink;
 		}
 
-		public String operatingSystemType() {
+		@Override
+		public String operatingSystemType() throws Exception {
+			ensureInitialized();
 			return this.operatingSystemType;
 		}
 
-		public URI privacyUri() {
+		@Override
+		public URI privacyUri() throws Exception {
+			ensureInitialized();
 			return this.privacyUri;
 		}
 
-		public Calendar publishedDate() {
+		@Override
+		public Calendar publishedDate() throws Exception {
+			ensureInitialized();
 			return this.publishedDate;
 		}
 
-		public String publisher() {
+		@Override
+		public String publisher() throws Exception {
+			ensureInitialized();
 			return this.publisher;
 		}
 
-		public String recommendedVMSize() {
+		@Override
+		public String recommendedVMSize() throws Exception {
+			ensureInitialized();
 			return this.recommendedVMSize;
 		}
 
-		public URI smallIconUri() {
+		@Override
+		public URI smallIconUri() throws Exception {
+			ensureInitialized();
 			return this.smallIconUri;
 		}
 
-		public boolean isPremium() {
+		@Override
+		public boolean isPremium() throws Exception {
+			ensureInitialized();
 			return this.isPremium;
 		}
 
-		public boolean isShownInGui() {
+		@Override
+		public boolean isShownInGui() throws Exception {
+			ensureInitialized();
 			return this.isShownInGui;
+		}
+
+		
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
+
+		@Override
+		public OSImage refresh() throws Exception {
+			VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(this.name);
+			this.category = response.getCategory();
+			this.description = response.getDescription();
+			this.eula = response.getEula();
+			this.iconUri = new URI(response.getIconUri());
+			this.family = response.getImageFamily();
+			this.ioType = response.getIOType();
+			this.label = response.getLabel();
+			this.language = response.getLanguage();
+			this.regions = response.getLocation().split(";");
+			this.logicalSizeInGB = response.getLogicalSizeInGB();
+			this.mediaLink = response.getMediaLinkUri();
+			this.operatingSystemType = response.getOperatingSystemType();
+			this.privacyUri = response.getPrivacyUri();
+			this.publishedDate = response.getPublishedDate();
+			this.publisher = response.getPublisherName();
+			this.recommendedVMSize = response.getRecommendedVMSize();
+			this.smallIconUri = new URI(response.getSmallIconUri());
+			this.isPremium = response.isPremium();
+			this.isShownInGui = response.isShowInGui();
+			this.initialized = true;
+			return this;
 		}
 	}	
 }

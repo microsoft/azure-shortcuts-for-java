@@ -26,12 +26,12 @@ import com.microsoft.azure.shortcuts.common.reading.Named;
 public interface Resource extends 
 	Named {
 	
-    String group();
-    String region();
-    String shortName();
-    String provider();
-    String type();
-    String properties();
-    HashMap<String, String> tags();
-    String getProvisioningState();
+    String group() throws Exception;
+    String region() throws Exception;
+    String shortName() throws Exception;
+    String provider() throws Exception;
+    String type() throws Exception;
+    String properties() throws Exception;
+    HashMap<String, String> tags() throws Exception;
+    String getProvisioningState() throws Exception;
 }

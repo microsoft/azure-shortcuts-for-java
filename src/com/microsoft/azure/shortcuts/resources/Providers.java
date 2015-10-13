@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
@@ -54,56 +55,51 @@ public class Providers implements
 	
 	@Override
 	public Provider get(String namespace) throws Exception {
-		ProviderImpl provider = new ProviderImpl(namespace);
-		com.microsoft.azure.management.resources.models.Provider response = azure.resourceManagementClient().getProvidersOperations().get(namespace).getProvider();
-		provider.setName(response.getNamespace());
-		provider.registrationState = response.getRegistrationState();
-		
-		ArrayList<ProviderResourceType> resourceTypes = response.getResourceTypes();
-		for(ProviderResourceType r : resourceTypes) {
-			ProviderImpl.ResourceTypeImpl resourceType = provider.new ResourceTypeImpl(r.getName());
-			provider.resourceTypes.put(r.getName(), resourceType);
-			resourceType.apiVersions = r.getApiVersions();
-			Collections.sort(resourceType.apiVersions);
-		}
-		return provider;
+		ProviderImpl provider = new ProviderImpl(namespace, false);
+		return provider.refresh();
 	}
 
 	
 	// Implements logic for individual provider
 	private class ProviderImpl
 		extends
-			NamedImpl
+			NamedRefreshableImpl<Provider>
 		implements 
 			Provider {
 		
 		private String registrationState;
 		private HashMap<String, ResourceType> resourceTypes = new HashMap<>();		
-		private ProviderImpl(String id) {
-			super(id);
+		private ProviderImpl(String id, boolean initialized) {
+			super(id, initialized);
 		}
 
+
+		/***********************************************************
+		 * Getters
+		 * @throws Exception 
+		 ***********************************************************/
+
 		@Override
-		public String registrationState() {
+		public String registrationState() throws Exception {
 			return this.registrationState;
 		}
 		
 
 		@Override
-		public HashMap<String, ResourceType> resourceTypes() {
+		public HashMap<String, ResourceType> resourceTypes() throws Exception {
 			return this.resourceTypes;
 		}
 		
 		
 		@Override
-		public ResourceType resourceTypes(String name) {
+		public ResourceType resourceTypes(String name) throws Exception {
 			return this.resourceTypes().get(name);
 		}
 		
 		
 		// Implementation of resource type
 		private class ResourceTypeImpl
-			extends NamedImpl
+			extends NamedImpl<ResourceType>
 			implements Provider.ResourceType {
 
 			private ArrayList<String> apiVersions = new ArrayList<>();
@@ -125,6 +121,30 @@ public class Providers implements
 					return null;
 				}
 			}
+		}
+		
+
+		/************************************************************
+		 * Verbs
+		 ************************************************************/
+
+		@Override
+		public ProviderImpl refresh() throws Exception {
+			com.microsoft.azure.management.resources.models.Provider response = 
+					azure.resourceManagementClient().getProvidersOperations().get(this.name).getProvider();
+			this.setName(response.getNamespace());
+			this.registrationState = response.getRegistrationState();
+			
+			ArrayList<ProviderResourceType> resourceTypes = response.getResourceTypes();
+			for(ProviderResourceType r : resourceTypes) {
+				ProviderImpl.ResourceTypeImpl resourceType = this.new ResourceTypeImpl(r.getName());
+				this.resourceTypes.put(r.getName(), resourceType);
+				resourceType.apiVersions = r.getApiVersions();
+				Collections.sort(resourceType.apiVersions);
+			}
+			
+			this.initialized = true;
+			return this;
 		}
 	}
 }

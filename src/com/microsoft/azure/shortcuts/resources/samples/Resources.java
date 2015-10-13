@@ -50,7 +50,7 @@ public class Resources {
 			resourceIds2).replaceAll(", ", ",\n\t"));
     	
         // Getting information about a specific resource based on ID
-    	Resource resource = azure.resources.get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1443631726509/providers/Microsoft.Storage/storageAccounts/store1443631726509");
+    	Resource resource = azure.resources.get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1443631726509/providers/Microsoft.Storage/storageAccounts/store1443631965630");
     	printResource(resource);
     		
     	// Getting information about a specific resource based on name, type, provider and group
@@ -82,7 +82,8 @@ public class Resources {
 	}
     
     
-    private static void printResource(Resource resource) {
+    private static void printResource(Resource resource) throws Exception {
+    	
 		System.out.println(String.format("Found resource ID: %s\n"
 			+ "\tGroup: %s\n"
 			+ "\tProvider: %s\n"

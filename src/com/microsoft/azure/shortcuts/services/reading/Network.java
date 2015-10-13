@@ -26,11 +26,11 @@ public interface Network extends
 	Named,
 	NetworkUpdatableBlank {
 	
-	String cidr();
-	String region();
-	String affinityGroup();
-	String label();
-	Subnet[] subnets();
+	String cidr() throws Exception;
+	String region() throws Exception;
+	String affinityGroup() throws Exception;
+	String label() throws Exception;
+	Subnet[] subnets() throws Exception;
 	
 	public interface Subnet extends Named {	
 		String cidr();

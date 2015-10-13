@@ -24,12 +24,13 @@ import java.util.HashMap;
 import com.microsoft.azure.shortcuts.common.reading.Named;
 
 public interface Provider extends Named {
-	String registrationState();
-	HashMap<String, ResourceType> resourceTypes();
-	ResourceType resourceTypes(String name);
+	String registrationState() throws Exception;
+	HashMap<String, ResourceType> resourceTypes() throws Exception;
+	ResourceType resourceTypes(String name) throws Exception;
 	
 	public interface ResourceType extends Named {
 		String[] apiVersions();
 		String latestApiVersion();
+		
 	}
 }
