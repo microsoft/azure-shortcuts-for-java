@@ -20,6 +20,9 @@
 package com.microsoft.azure.shortcuts.services.samples;
 
 import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.Azure;
 import com.microsoft.azure.shortcuts.services.reading.Network;
@@ -55,8 +58,8 @@ public class VirtualNetworks {
 			.provision();
 
 		// List the virtual networks
-		System.out.println("Available virtual networks: " + Arrays.toString(
-			azure.networks.list()));
+		List<String> virtualNetworkNames = azure.networks.list();
+		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network
 		network = azure.networks.get(networkName);
@@ -85,8 +88,8 @@ public class VirtualNetworks {
 			.provision();
 
 		// List the virtual networks
-		System.out.println("Available virtual networks: " + Arrays.toString(
-			azure.networks.list()));
+		virtualNetworkNames = azure.networks.list();
+		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network
 		network = azure.networks.get(networkName);

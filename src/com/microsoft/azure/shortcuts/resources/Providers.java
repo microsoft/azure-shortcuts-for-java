@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
@@ -42,13 +43,15 @@ public class Providers implements
 	
 	@Override
 	// Returns list of resource names in the subscription
-	public String[] list() throws Exception {
-		ArrayList<com.microsoft.azure.management.resources.models.Provider> providers = azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();
-		String[] names = new String[providers.size()];
-		int i = 0;
-		for(com.microsoft.azure.management.resources.models.Provider provider: providers) {
-			names[i++]= provider.getNamespace();
+	public List<String> list() throws Exception {
+		ArrayList<com.microsoft.azure.management.resources.models.Provider> items = 
+				azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();
+
+		ArrayList<String> names = new ArrayList<>();
+		for(com.microsoft.azure.management.resources.models.Provider item : items) {
+			names.add(item.getNamespace());
 		}
+
 		return names;
 	}
 	

@@ -20,6 +20,7 @@
 package com.microsoft.azure.shortcuts.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.windowsazure.management.models.RoleSizeListResponse.RoleSize;
@@ -34,26 +35,23 @@ public class Sizes implements
 	}
 	
 	// Return the list of available size names supporting the specified type of compute service
-	public String[] list(boolean supportingVM, boolean supportingCloudServices) {
+	public List<String> list(boolean supportingVM, boolean supportingCloudServices) {
 		try {
-			ArrayList<RoleSize> sizes = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
-			String[] names = new String[sizes.size()];
-			int i=0;
-			for(RoleSize size : sizes) {
-				if(supportingVM && size.isSupportedByVirtualMachines() 
-				|| supportingCloudServices && size.isSupportedByWebWorkerRoles()) {
-					names[i++] = size.getName();
-				}
+			ArrayList<RoleSize> items = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
+			ArrayList<String> names = new ArrayList<>();
+			for(RoleSize item : items) {
+				names.add(item.getName());
 			}
+
 			return names;
 		} catch (Exception e) {
 			// Not very actionable, so just return an empty array
-			return new String[0];
+			return new ArrayList<>();
 		}			
 	}
 
 	// Returns all available size names
-	public String[] list() {
+	public List<String> list() {
 		return list(true, true);
 	}
 }

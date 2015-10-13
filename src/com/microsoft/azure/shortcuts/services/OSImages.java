@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.services;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
@@ -42,19 +43,19 @@ public class OSImages implements
 	}
 
 	// Returns the list of available OS image names
-	public String[] list() {
+	public List<String> list() {
 		try {
-			ArrayList<VirtualMachineOSImage> images = azure.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();
-			String[] names = new String[images.size()];
-			int i=0;
-			for(VirtualMachineOSImage image : images) {
-				names[i++] = image.getName();
-				//image.
+			ArrayList<VirtualMachineOSImage> items = 
+				azure.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();			
+			ArrayList<String> names = new ArrayList<>();
+			for(VirtualMachineOSImage item : items) {
+				names.add(item.getName());
 			}
+
 			return names;
 		} catch (Exception e) {
 			// Not very actionable, so just return an empty array
-			return new String[0];
+			return new ArrayList<>();
 		}
 	}
 	

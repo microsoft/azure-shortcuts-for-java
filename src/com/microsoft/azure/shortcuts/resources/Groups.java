@@ -21,6 +21,7 @@ package com.microsoft.azure.shortcuts.resources;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
@@ -50,20 +51,19 @@ public class Groups
 	}
 	
 	@Override
-	// Returns list of resource names in the subscription
-	public String[] list() throws Exception {
+	public List<String> list() throws Exception {
 		ArrayList<ResourceGroupExtended> groups = 
 			azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
-			
-		String[] names = new String[groups.size()];
-		int i = 0;
-		for(ResourceGroupExtended group: groups) {
-			names[i++]= group.getName();
+		
+		ArrayList<String> names = new ArrayList<>();
+		for(ResourceGroupExtended group : groups) {
+			names.add(group.getName());
 		}
-		return names;
+		
+		return names;		
 	}
 	
-	
+		
 	@Override
 	// Gets a specific resource group
 	public Group get(String name) throws Exception {

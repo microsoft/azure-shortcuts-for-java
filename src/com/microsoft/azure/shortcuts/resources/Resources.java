@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
@@ -49,30 +50,29 @@ public class Resources implements
 	
 	@Override
 	// Returns list of resource names in the subscription
-	public String[] list() {
+	public List<String> list() {
 		return list(null);
 	}
 	
 	
 	// Returns list of resource names in the specified resource group
-	public String[] list(String group) {
+	public List<String> list(String group) {
 		try {
 			ResourceListParameters params = new ResourceListParameters();
 			params.setResourceGroupName(group);
-			ArrayList<GenericResourceExtended> resources = 
+			ArrayList<GenericResourceExtended> items = 
 					azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
 			
-			String[] names = new String[resources.size()];
-			int i = 0;
-			for(GenericResourceExtended resource: resources) {
-				names[i++]= resource.getId();
+			ArrayList<String> names = new ArrayList<>();
+			for(GenericResourceExtended item : items) {
+				names.add(item.getName());
 			}
-						
+
 			return names;
 
 		} catch (IOException | ServiceException | URISyntaxException e) {
-			return new String[0];
-		}		
+			return new ArrayList<String>();
+		}
 	}
 
  

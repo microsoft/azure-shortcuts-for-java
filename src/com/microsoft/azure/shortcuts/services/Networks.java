@@ -20,6 +20,7 @@
 package com.microsoft.azure.shortcuts.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -93,19 +94,18 @@ public class Networks implements
 	
 	
 	// Lists existing virtual networks
-	public String[] list() {
+	public List<String> list() {
 		try {
-			final ArrayList<VirtualNetworkSite> networks = azure.networkManagementClient().getNetworksOperations()
+			final ArrayList<VirtualNetworkSite> items = azure.networkManagementClient().getNetworksOperations()
 					.list().getVirtualNetworkSites();
-			String[] names = new String[networks.size()];
-			int i=0;
-			for(VirtualNetworkSite network : networks) {
-				names[i++] = network.getName();
+			ArrayList<String> names = new ArrayList<>();
+			for(VirtualNetworkSite item : items) {
+				names.add(item.getName());
 			}
 			return names;
 		} catch (Exception e) {
 			// Not very actionable, so just return an empty array
-			return new String[0];
+			return new ArrayList<>();
 		}	
 	}
 	

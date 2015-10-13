@@ -20,6 +20,9 @@
 package com.microsoft.azure.shortcuts.services.samples;
 
 import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.Azure;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
@@ -51,8 +54,8 @@ public class StorageAccounts {
 			.provision();
 
 		// List storage accounts
-		System.out.println("Available storage accounts: " + Arrays.toString(
-			azure.storageAccounts.list()));
+		List<String> storageAccountNames = azure.storageAccounts.list();
+		System.out.println("Available storage accounts: " + StringUtils.join(storageAccountNames, ", "));
 
 		// Get storage account information
 		StorageAccount storageAccount = azure.storageAccounts.get(accountName);

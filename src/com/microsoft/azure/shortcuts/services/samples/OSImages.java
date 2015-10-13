@@ -20,6 +20,9 @@
 package com.microsoft.azure.shortcuts.services.samples;
 
 import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.Azure;
 import com.microsoft.azure.shortcuts.services.reading.OSImage;
@@ -44,8 +47,8 @@ public class OSImages {
 		final String imageName = "b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB";
 
 		// List the OS images
-		System.out.println("Available OS images: \n\t" + Arrays.toString(
-			azure.osImages.list()).replaceAll(", ", ",\n\t"));
+		List<String> OsImageNames = azure.osImages.list();
+		System.out.println("Available OS images: \n\t" + StringUtils.join(OsImageNames, ",\n\t"));
 		
 		// Get information about a specific OS image
 		OSImage osImage = azure.osImages.get(imageName);

@@ -19,7 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.Azure;
 import com.microsoft.azure.shortcuts.services.reading.VirtualMachine;
@@ -94,8 +96,8 @@ public class VirtualMachines {
 			.provision();		
 			
 		// List virtual machines
-		System.out.println("Virtual machines: "+ Arrays.toString(
-			azure.virtualMachines.list()));
+		List<String> vmNames = azure.virtualMachines.list();
+		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));
 			
 		// Get information about the created Linux vm
 		VirtualMachine vm = azure.virtualMachines.get(vmName);

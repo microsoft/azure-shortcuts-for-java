@@ -20,6 +20,7 @@
 package com.microsoft.azure.shortcuts.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
@@ -35,25 +36,22 @@ public class Regions implements
 	
 	// Return the list of available region names supporting the specified service type, 
 	// which must be one of the constants from the LocationAvailableServiceNames class, or all if null
-	public String[] list(String serviceType) {
+	public List<String> list(String serviceType) {
 		try {
-			ArrayList<Location> locations = azure.managementClient().getLocationsOperations().list().getLocations();
-			String[] names = new String[locations.size()];
-			int i=0;
-			for(Location location : locations) {
-				if(null == serviceType || location.getAvailableServices().contains(serviceType)) {
-					names[i++] = location.getName();
-				}
+			ArrayList<Location> items = azure.managementClient().getLocationsOperations().list().getLocations();
+			ArrayList<String> names = new ArrayList<>();
+			for(Location item : items) {
+				names.add(item.getName());
 			}
 			return names;
 		} catch (Exception e) {
 			// Not very actionable, so just return an empty array
-			return new String[0];
+			return new ArrayList<>();
 		}
 	}
 
 	// Lists all regions
-	public String[] list() {
+	public List<String> list() {
 		return list(null);
 	}
 }

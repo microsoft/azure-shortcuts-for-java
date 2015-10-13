@@ -19,7 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.Azure;
 
@@ -40,6 +42,7 @@ public class Sizes {
 	}
 
 	public static void test(Azure azure) throws Exception {
-		System.out.println("Available VM sizes: " + Arrays.toString(
-			azure.sizes.list(true, false)));	}
+		List<String> sizeNames = azure.sizes.list(true, false);
+		System.out.println("Available VM sizes: " + StringUtils.join(sizeNames, ", "));
+	}
 }

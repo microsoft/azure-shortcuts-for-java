@@ -20,7 +20,9 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Azure;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
@@ -39,15 +41,13 @@ public class Resources {
 
     public static void test(Azure azure) throws Exception {
     	// Listing all resources 
-    	String[] resourceIds = azure.resources.list();
-    	System.out.println("Resources: \n\t" + Arrays.toString(
-			resourceIds).replaceAll(", ", ",\n\t"));
+    	List<String> resourceIds = azure.resources.list();
+    	System.out.println("Resources: \n\t" + StringUtils.join(resourceIds, ",\n\t"));
 
     	// Listing resources in a specific group
     	String groupName = "azchat";
-    	String[] resourceIds2 = azure.resources.list(groupName);
-    	System.out.println("Resources inside group '" + groupName + "': \n\t" + Arrays.toString(
-			resourceIds2).replaceAll(", ", ",\n\t"));
+    	List<String> resourceIds2 = azure.resources.list(groupName);
+    	System.out.println("Resources inside group '" + groupName + "': \n\t" + StringUtils.join(resourceIds2, ",\n\t"));
     	
         // Getting information about a specific resource based on ID
     	Resource resource = azure.resources.get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1443631726509/providers/Microsoft.Storage/storageAccounts/store1443631965630");

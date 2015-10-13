@@ -19,7 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.Azure;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
@@ -52,8 +54,8 @@ public class CloudServices {
 			.provision();
 
 		// List cloud services
-		System.out.println("Available cloud services: " + Arrays.toString(
-			azure.cloudServices.list()));
+		List<String> cloudServiceNames = azure.cloudServices.list();
+		System.out.println("Available cloud services: " + StringUtils.join(cloudServiceNames, ", "));
 
 		// Get cloud service info
 		CloudService cloudService = azure.cloudServices.get(serviceName);

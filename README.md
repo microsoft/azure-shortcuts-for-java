@@ -128,7 +128,7 @@ azure.virtualMachines.define("mywinvm")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-String[] virtualMachineNames = azure.virtualMachines.list(); 
+List<String> vmNames = azure.virtualMachines.list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -174,7 +174,19 @@ System.out.println(String.format("Reading information about vm: %s\n"
 boolean supportingVM = true;
 boolean supportingCloudServices = false;
 
-String[] availableVmSizes = azure.sizes.list(supportingVM, supportingCloudServices);
+List<String> sizeNames = azure.sizes.list(supportingVM, supportingCloudServices);
+```
+
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+{TODO}
+
+
+#### Listing available OS image names
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+List<String> OsImageNames = azure.osImages.list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -219,11 +231,11 @@ azure.networks.define("mynetwork")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-String[] virtualNetworkNames = azure.networks.list()));
+List<String> virtualNetworkNames = azure.networks.list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 
 #### Reading information about a virtual network
@@ -280,7 +292,7 @@ azure.cloudServices.define("myservice")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-String[] cloudServiceNames = azure.cloudServices.list();
+List<String> cloudServiceNames = azure.cloudServices.list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -359,14 +371,13 @@ azure.storageAccounts.define("mystorage")
 #### Listing storage accounts in a subscription
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
-String[] storageAccountNames = azure.storageAccounts.list();
+List<String> storageAccountNames = azure.storageAccounts.list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 
 #### Updating a storage account
@@ -436,7 +447,7 @@ azure.storageAccounts.update("mystorage")
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 
 ### Regions
@@ -449,14 +460,13 @@ azure.storageAccounts.update("mystorage")
 Listing all regions:
 
 ```java
-String[] regionNames = azure.regions.list();
+List<String> regionNames = azure.regions.list();
 ```
 
 Listing regions supporting a specific capability from the `LocationsAvailableServiceNames` options:
 
 ```
-System.out.println("Regions supporting high memory: \n\t" + Arrays.toString(
-	azure.regions.list(LocationAvailableServiceNames.HIGHMEMORY)).replaceAll(", ", ",\n\t"));    	
+List<String> regionNames = azure.regions.list(LocationAvailableServiceNames.HIGHMEMORY);    	
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages {TODO}
@@ -477,7 +487,7 @@ azure.groups.define("myResourceGroup")
 #### Listing resource groups
 
 ```java
-String[] resourceGroupNames = azure.groups.list()));
+List<String> resourceGroupNames = azure.groups.list();
 ```
 
 #### Updating a resource group (changing its tags)
@@ -535,13 +545,13 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 All resources in a subscription:
 
 ```java
-String[] resourceIds = azure.resources.list();
+List<String> resourceIds = azure.resources.list();
 ```
 
 Resources in a specific group:
 
 ```java
-String[] resourceIds = azure.resources.list("<resource-group-name>");
+List<String> resourceIds = azure.resources.list("<resource-group-name>");
 ```
 
 #### Reading information about a resource
@@ -611,7 +621,7 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 #### Listing resource providers (by namespace)
 
 ```java
-String[] providerNamespaces = azure.providers.list();
+List<String> providerNamespaces = azure.providers.list();
 ```
 
 #### Reading information about a resource provider

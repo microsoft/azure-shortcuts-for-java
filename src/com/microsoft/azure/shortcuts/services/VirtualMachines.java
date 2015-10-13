@@ -23,6 +23,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -159,8 +160,8 @@ public class VirtualMachines implements
 	
 	
 	// Lists all virtual machines
-	public String[] list() {
-		String[] serviceNames = azure.cloudServices.list();
+	public List<String> list() {
+		List<String> serviceNames = azure.cloudServices.list();
 		ArrayList<String> vms = new ArrayList<String>();
 		
 		// Find all virtual machine roles within cloud services 
@@ -177,7 +178,7 @@ public class VirtualMachines implements
 			}
 		}
 		
-		return vms.toArray(new String[0]);
+		return vms;
 	}
 
 	

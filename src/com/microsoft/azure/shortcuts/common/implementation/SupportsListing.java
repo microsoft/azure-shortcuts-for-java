@@ -19,7 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.common.implementation;
 
+import java.util.List;
+
 // Requires class to support listing entities
 public interface SupportsListing {
-	String[] list() throws Exception;
+	List<String> list() throws Exception;
 }

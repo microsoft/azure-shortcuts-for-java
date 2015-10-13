@@ -19,7 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.Azure;
 import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
@@ -41,7 +43,7 @@ public class Regions {
 	}
 
 	public static void test(Azure azure) throws Exception {
-		System.out.println("Available regions: " + Arrays.toString(
-				azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE)));
+		List<String> regionNames = azure.regions.list(LocationAvailableServiceNames.PERSISTENTVMROLE);
+		System.out.println("Available regions: " + StringUtils.join(regionNames, ", "));
 	}
 }

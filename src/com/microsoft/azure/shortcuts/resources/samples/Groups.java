@@ -20,7 +20,9 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Azure;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
@@ -38,9 +40,10 @@ public class Groups {
 
     public static void test(Azure azure) throws Exception {
 		// List resource groups
-    	System.out.println("Groups: \n\t" + Arrays.toString(
-			azure.groups.list()).replaceAll(", ", ",\n\t"));
+    	List<String> groups = azure.groups.list();
+    	System.out.println("Groups: \n\t" + StringUtils.join(groups, ",\n\t"));
 		
+    	
     	// Create a resource group
     	String groupName = "group" + String.valueOf(System.currentTimeMillis());
     	System.out.println("Creating group " + groupName);

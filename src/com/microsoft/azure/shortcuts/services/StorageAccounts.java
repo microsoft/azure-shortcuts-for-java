@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
@@ -79,19 +80,18 @@ public class StorageAccounts implements
 	
 	
 	@Override
-	public String[] list() {
+	public List<String> list() {
 		try {
-			final ArrayList<com.microsoft.windowsazure.management.storage.models.StorageAccount> storageAccounts = 
+			final ArrayList<com.microsoft.windowsazure.management.storage.models.StorageAccount> items = 
 					azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
-			String[] names = new String[storageAccounts.size()];
-			int i = 0;
-			for(com.microsoft.windowsazure.management.storage.models.StorageAccount store: storageAccounts) {
-				names[i++]= store.getName();
+			ArrayList<String> names = new ArrayList<>();
+			for(com.microsoft.windowsazure.management.storage.models.StorageAccount item : items) {
+				names.add(item.getName());
 			}
 			return names;
 		} catch (Exception e) {
 			// Not very actionable, so just return an empty array
-			return new String[0];
+			return new ArrayList<>();
 		}
 	}
 	

@@ -21,6 +21,7 @@ package com.microsoft.azure.shortcuts.services;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -75,19 +76,19 @@ public class CloudServices implements
 	
 	
 	@Override
-	public String[] list() {
+	public List<String> list() {
 		try {
-			final ArrayList<HostedService> services = azure.computeManagementClient().getHostedServicesOperations()
+			final ArrayList<HostedService> items = azure.computeManagementClient().getHostedServicesOperations()
 					.list().getHostedServices();
-			String[] names = new String[services.size()];
-			int i = 0;
-			for(HostedService cloudService: services) {
-				names[i++]= cloudService.getServiceName();
+			ArrayList<String> names = new ArrayList<>();
+			for(HostedService item : items) {
+				names.add(item.getServiceName());
 			}
+
 			return names;
 		} catch (Exception e) {
 			// Not very actionable, so just return an empty array
-			return new String[0];
+			return new ArrayList<String>();
 		}
 	}
 	

@@ -21,6 +21,9 @@
 package com.microsoft.azure.shortcuts.resources.samples;
 
 import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Azure;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
@@ -39,11 +42,10 @@ public class Providers {
 
     public static void test(Azure azure) throws Exception {
 		// List providers
-    	String[] providers = azure.providers.list();
-    	System.out.println("Providers: \n\t" + Arrays.toString(
-			providers).replaceAll(", ", ",\n\t"));
+    	List<String> providers = azure.providers.list();
+    	System.out.println("Providers: \n\t" + StringUtils.join(providers, ",\n\t"));
     	
-    	if(providers.length > 0) {
+    	if(providers.size() > 0) {
     		// Get information about a specific provider
     		Provider provider = azure.providers.get("microsoft.classicstorage");
     		
