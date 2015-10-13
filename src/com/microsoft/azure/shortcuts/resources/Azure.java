@@ -30,6 +30,7 @@ import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.resources.listing.Groups;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
+import com.microsoft.azure.shortcuts.resources.listing.Resources;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -57,7 +58,7 @@ public class Azure {
     private NetworkResourceProviderClient networkResourceProviderClient;
 
     // public final StorageAccounts storageAccounts; TODO
-    public final Resources resources;
+    private final ResourcesImpl resources;
     private final GroupsImpl groups;
     private final ProvidersImpl providers;
 
@@ -72,7 +73,7 @@ public class Azure {
     private Azure(Configuration configuration) {
     	this.configuration = configuration;
         // this.storageAccounts = new StorageAccounts(this); TODO
-        this.resources = new Resources(this);
+        this.resources = new ResourcesImpl(this);
         this.groups = new GroupsImpl(this);
         this.providers = new ProvidersImpl(this);
     }
@@ -97,9 +98,12 @@ public class Azure {
     	return this.groups;
     }
     
-    
     public Providers providers() {
     	return this.providers;
+    }
+    
+    public Resources resources() {
+    	return this.resources;
     }
     
     

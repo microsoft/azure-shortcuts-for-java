@@ -28,23 +28,18 @@ import java.util.List;
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
+import com.microsoft.azure.shortcuts.resources.listing.Resources;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public class Resources implements
-	SupportsListing,
-	SupportsReading<Resource>,
-	SupportsDeleting {
+public class ResourcesImpl implements Resources {
 	
 	final Azure azure;
 	
-	Resources(Azure azure) {
+	ResourcesImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
@@ -242,7 +237,7 @@ public class Resources implements
 
 		@Override
 		public void delete() throws Exception {
-			azure.resources.delete(this.name);
+			azure.resources().delete(this.name);
 		}
 		
 

@@ -545,26 +545,26 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 All resources in a subscription:
 
 ```java
-List<String> resourceIds = azure.resources.list();
+List<String> resourceIds = azure.resources().list();
 ```
 
 Resources in a specific group:
 
 ```java
-List<String> resourceIds = azure.resources.list("<resource-group-name>");
+List<String> resourceIds = azure.resources().list("<resource-group-name>");
 ```
 
 #### Reading information about a resource
 
-If you know the full ID of the resource (e.g. you got it from the `resources.list()`), then:
+If you know the full ID of the resource (e.g. you got it from the `resources().list()`), then:
 
 ```java
-Resource resource = azure.resources.get("<resource-id>");
+Resource resource = azure.resources().get("<resource-id>");
 ```
 Else, if you know the resource name, type, provider and group, then:
 
 ```java
-Resource resource = azure.resources.get(
+Resource resource = azure.resources().get(
 	"<resource-name>",
 	"<resource-type>",
 	"<resource-provider-namespace>",
@@ -599,13 +599,13 @@ System.out.println(String.format("Found resource ID: %s\n"
 Using its ID:
 
 ```java
-azure.resources.delete("<resource-id">);
+azure.resources().delete("<resource-id">);
 ```
 
 Or using its metadata:
 
 ```java
-azure.resources.delete("<short-name>", "<resource-type>", "<provider-namespace>", "<group-name>");
+azure.resources().delete("<short-name>", "<resource-type>", "<provider-namespace>", "<group-name>");
 ```
 
 Or, if you've already gotten a reference to a `Resource` object (represented by `resource` below) from `get()`, then:

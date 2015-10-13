@@ -41,20 +41,20 @@ public class Resources {
 
     public static void test(Azure azure) throws Exception {
     	// Listing all resources 
-    	List<String> resourceIds = azure.resources.list();
+    	List<String> resourceIds = azure.resources().list();
     	System.out.println("Resources: \n\t" + StringUtils.join(resourceIds, ",\n\t"));
 
     	// Listing resources in a specific group
     	String groupName = "azchat";
-    	List<String> resourceIds2 = azure.resources.list(groupName);
+    	List<String> resourceIds2 = azure.resources().list(groupName);
     	System.out.println("Resources inside group '" + groupName + "': \n\t" + StringUtils.join(resourceIds2, ",\n\t"));
     	
         // Getting information about a specific resource based on ID
-    	Resource resource = azure.resources.get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1443631726509/providers/Microsoft.Storage/storageAccounts/store1443631965630");
+    	Resource resource = azure.resources().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1443631726509/providers/Microsoft.Storage/storageAccounts/store1443631965630");
     	printResource(resource);
     		
     	// Getting information about a specific resource based on name, type, provider and group
-        resource =  azure.resources.get(
+        resource =  azure.resources().get(
         	resource.shortName(),
         	resource.type(),
         	resource.provider(),
@@ -68,7 +68,7 @@ public class Resources {
         	resource.provider(),
         	resource.group()));
         		
-        azure.resources.delete(
+        azure.resources().delete(
     		resource.shortName(),
     		resource.type(),
     		resource.provider(),
@@ -77,7 +77,7 @@ public class Resources {
     	// Delete a resource based on its ID
     	String resourceToDelete = "ThisMustFail";
     	System.out.println("Deleting resource " + resourceToDelete);
-    	azure.resources.delete(resourceToDelete);
+    	azure.resources().delete(resourceToDelete);
     	
 	}
     
