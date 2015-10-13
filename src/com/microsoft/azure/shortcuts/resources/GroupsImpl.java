@@ -26,27 +26,17 @@ import java.util.List;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvisionable;
+import com.microsoft.azure.shortcuts.resources.listing.Groups;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
-public class Groups 
-	implements 
-		SupportsListing,
-		SupportsReading<Group>,
-		SupportsDeleting,
-		SupportsUpdating<GroupUpdatableBlank>,
-		SupportsCreating<GroupDefinitionBlank> {
+public class GroupsImpl implements Groups {
 	
 	final Azure azure;
-	Groups(Azure azure) {
+	GroupsImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
@@ -182,7 +172,7 @@ public class Groups
 			// Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
 			if(this.region != null) {
 				params.setLocation(this.region);
-			} else if(null == (group = azure.groups.get(this.name))) {
+			} else if(null == (group = azure.groups().get(this.name))) {
 				throw new Exception("Resource group not found");
 			} else {
 				params.setLocation(group.region());
@@ -195,7 +185,7 @@ public class Groups
 		
 		@Override
 		public void delete() throws Exception {
-			azure.groups.delete(this.name);
+			azure.groups().delete(this.name);
 		}
 
 		

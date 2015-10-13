@@ -40,20 +40,20 @@ public class Groups {
 
     public static void test(Azure azure) throws Exception {
 		// List resource groups
-    	List<String> groups = azure.groups.list();
+    	List<String> groups = azure.groups().list();
     	System.out.println("Groups: \n\t" + StringUtils.join(groups, ",\n\t"));
 		
     	
     	// Create a resource group
     	String groupName = "group" + String.valueOf(System.currentTimeMillis());
     	System.out.println("Creating group " + groupName);
-    	azure.groups.define(groupName)
+    	azure.groups().define(groupName)
     		.withRegion("West US")
     		.withTag("hello", "world")
     		.provision();
     	
     	// Read a specific resource group
-		Group resourceGroup = azure.groups.get(groupName);
+		Group resourceGroup = azure.groups().get(groupName);
 		System.out.println(String.format("Found group: %s\n"
 				+ "\tRegion: %s\n"
 				+ "\tID: %s\n"
@@ -66,13 +66,13 @@ public class Groups {
 				resourceGroup.getProvisioningState()));
 				
 		// Update a resource group
-		azure.groups.update(groupName)
+		azure.groups().update(groupName)
 			.withTag("foo", "bar")
 			.withoutTag("hello")
 			.apply();
 		
 		// Delete a specific resource group
 		System.out.println("Deleting group " + groupName);
-		azure.groups.delete(groupName);
+		azure.groups().delete(groupName);
     }
 }

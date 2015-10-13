@@ -478,7 +478,7 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 
 #### Creating a resource group
 ```java
-azure.groups.define("myResourceGroup")
+azure.groups().define("myResourceGroup")
 	.withRegion("West US")
 	.withTag("hello", "world")
     .provision();
@@ -487,7 +487,7 @@ azure.groups.define("myResourceGroup")
 #### Listing resource groups
 
 ```java
-List<String> resourceGroupNames = azure.groups.list();
+List<String> resourceGroupNames = azure.groups().list();
 ```
 
 #### Updating a resource group (changing its tags)
@@ -495,7 +495,7 @@ List<String> resourceGroupNames = azure.groups.list();
 Tags are key/value pairs.
 
 ```java
-azure.groups.update("<resource-group-name>")
+azure.groups().update("<resource-group-name>")
 	.withTag("foo", "bar")
 	.withoutTag("hello")
 	.apply();
@@ -505,7 +505,7 @@ azure.groups.update("<resource-group-name>")
 You can also pass an instance of HashMap<String, String> with all the tags in it:
 
 ```java
-azure.groups.update("<resource-group-name>")
+azure.groups().update("<resource-group-name>")
 	.withTags(myHashMap)
 	.apply();
 ```
@@ -515,7 +515,7 @@ azure.groups.update("<resource-group-name>")
 
 ```java
 String resourceGroup="<resource-group-name>";		
-Group resourceGroup = azure.groups.get(resourceGroup);
+Group resourceGroup = azure.groups().get(resourceGroup);
 System.out.println(String.format("Found group: %s\n"
 		+ "\tRegion: %s\n"
 		+ "\tID: %s\n"
@@ -533,7 +533,7 @@ System.out.println(String.format("Found group: %s\n"
 ```java
 String group = "<resource-group-name>";
 System.out.println("Deleting group " + group);
-	azure.groups.delete(group);
+	azure.groups().delete(group);
 ```
 
 ### Resources
