@@ -621,15 +621,15 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 #### Listing resource providers (by namespace)
 
 ```java
-List<String> providerNamespaces = azure.providers.list();
+List<String> providerNamespaces = azure.providers().list();
 ```
 
 #### Reading information about a resource provider
 
-Using the namespace of the provider you can get from `providers.list()`:
+Using the namespace of the provider you can get from `providers().list()`:
 
 ```java
-Provider provider = azure.providers.get("microsoft.classicstorage");
+Provider provider = azure.providers().get("microsoft.classicstorage");
 System.out.println(String.format("Found provider: %s\n" 
     + "\tRegistration State: %s\n"
     + "\tAPI versions for resource types:",
@@ -687,7 +687,7 @@ System.out.println(String.format("Found provider: %s\n"
 #### Listing provider resource types and their versions
 
 ```java
-Provider provider = azure.providers.get("<provider-namespace>");
+Provider provider = azure.providers().get("<provider-namespace>");
 for(ResourceType t : provider.resourceTypes().values()) {
 	System.out.println(String.format("%s: %s", t.name(), Arrays.toString(t.apiVersions())));
 }
@@ -696,11 +696,11 @@ for(ResourceType t : provider.resourceTypes().values()) {
 #### Finding the latest API version of a resource type
 
 ```java
-String latestAPIVersion = azure.providers.get("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
+String latestAPIVersion = azure.providers().get("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
 ```
 
 Or shortcut:
 
 ```java
-String latestAPIVersion = azure.providers.get("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
+String latestAPIVersion = azure.providers().get("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
 ```

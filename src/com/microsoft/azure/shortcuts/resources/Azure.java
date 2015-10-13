@@ -29,6 +29,7 @@ import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.resources.listing.Groups;
+import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -58,7 +59,7 @@ public class Azure {
     // public final StorageAccounts storageAccounts; TODO
     public final Resources resources;
     private final GroupsImpl groups;
-    public final Providers providers;
+    private final ProvidersImpl providers;
 
     public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	this(createConfiguration(subscriptionId, tenantId, clientId, clientKey, null, null, null));
@@ -73,7 +74,7 @@ public class Azure {
         // this.storageAccounts = new StorageAccounts(this); TODO
         this.resources = new Resources(this);
         this.groups = new GroupsImpl(this);
-        this.providers = new Providers(this);
+        this.providers = new ProvidersImpl(this);
     }
     
     
@@ -88,9 +89,17 @@ public class Azure {
     	}
     }
     
-    
+    //**********************************************************
+    //* Getters
+    //**********************************************************
+
     public Groups groups() {
     	return this.groups;
+    }
+    
+    
+    public Providers providers() {
+    	return this.providers;
     }
     
     

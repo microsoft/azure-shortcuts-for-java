@@ -27,17 +27,14 @@ import java.util.List;
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
+import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
-public class Providers implements
-	SupportsListing,
-	SupportsReading<Provider>{
+public class ProvidersImpl implements Providers {
 	
 	final Azure azure;
 	
-	Providers(Azure azure) {
+	ProvidersImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
@@ -45,7 +42,7 @@ public class Providers implements
 	// Returns list of resource names in the subscription
 	public List<String> list() throws Exception {
 		ArrayList<com.microsoft.azure.management.resources.models.Provider> items = 
-				azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();
+			azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();
 
 		ArrayList<String> names = new ArrayList<>();
 		for(com.microsoft.azure.management.resources.models.Provider item : items) {

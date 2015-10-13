@@ -119,7 +119,7 @@ public class Resources implements
 		identity.setResourceType(type);
 		
 		// Find latest API version
-		final Provider p = azure.providers.get(provider);
+		final Provider p = azure.providers().get(provider);
 		final String latestApiVersion = p.resourceTypes(type).latestApiVersion();
 		identity.setResourceProviderApiVersion(latestApiVersion);
     	return identity;

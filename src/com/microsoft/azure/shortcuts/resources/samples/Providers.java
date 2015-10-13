@@ -42,12 +42,12 @@ public class Providers {
 
     public static void test(Azure azure) throws Exception {
 		// List providers
-    	List<String> providers = azure.providers.list();
+    	List<String> providers = azure.providers().list();
     	System.out.println("Providers: \n\t" + StringUtils.join(providers, ",\n\t"));
     	
     	if(providers.size() > 0) {
     		// Get information about a specific provider
-    		Provider provider = azure.providers.get("microsoft.classicstorage");
+    		Provider provider = azure.providers().get("microsoft.classicstorage");
     		
     		System.out.println(String.format("Found provider: %s\n" 
     				+ "\tRegistration State: %s\n"
