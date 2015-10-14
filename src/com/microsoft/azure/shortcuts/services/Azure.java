@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.services;
 
 import java.io.IOException;
 
+import com.microsoft.azure.shortcuts.services.listing.CloudServices;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 import com.microsoft.windowsazure.management.ManagementClient;
@@ -44,7 +45,7 @@ public class Azure {
 	public final Sizes sizes = new Sizes(this);
 	public final OSImages osImages = new OSImages(this);
 	public final StorageAccounts storageAccounts = new StorageAccounts(this);
-	public final CloudServices cloudServices = new CloudServices(this);
+	private final CloudServicesImpl cloudServices = new CloudServicesImpl(this);
 	public final Networks networks = new Networks(this);
 	public final VirtualMachines virtualMachines = new VirtualMachines(this);
 	
@@ -52,6 +53,16 @@ public class Azure {
 	public Azure(String publishSettingsPath, String subscriptionId) throws IOException {
 		this.configuration = PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId);
 	}
+	
+	
+	/******************************************************
+	 * Getters
+	 ******************************************************/
+	
+	public CloudServices cloudServices() {
+		return this.cloudServices;
+	}
+	
 	
 	// Returns the management client, creating it as needed
 	ManagementClient managementClient() {

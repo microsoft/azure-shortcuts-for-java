@@ -26,13 +26,9 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
+import com.microsoft.azure.shortcuts.services.listing.CloudServices;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;
@@ -43,16 +39,11 @@ import com.microsoft.windowsazure.management.compute.models.HostedServiceListRes
 import com.microsoft.windowsazure.management.compute.models.HostedServiceProperties;
 
 // Class encapsulating the API related to cloud services
-public class CloudServices implements 
-	SupportsListing,
-	SupportsReading<CloudService>,
-	SupportsCreating<CloudServiceDefinitionBlank>,
-	SupportsDeleting,
-	SupportsUpdating<CloudServiceUpdatableBlank> {
+public class CloudServicesImpl implements CloudServices {
 	
 	final Azure azure;
 	
-	CloudServices(Azure azure) {
+	CloudServicesImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
@@ -194,7 +185,7 @@ public class CloudServices implements
 
 		@Override
 		public void delete() throws Exception {
-			azure.cloudServices.delete(this.name);
+			azure.cloudServices().delete(this.name);
 		}
 		
 		

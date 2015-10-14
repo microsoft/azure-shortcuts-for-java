@@ -279,7 +279,7 @@ azure.networks.delete("mynetwork");
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.cloudServices.define("myservice")
+azure.cloudServices().define("myservice")
 	.withRegion("West US")
 	.provision();
 ```
@@ -292,11 +292,11 @@ azure.cloudServices.define("myservice")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> cloudServiceNames = azure.cloudServices.list();
+List<String> cloudServiceNames = azure.cloudServices().list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 
 #### Updating an existing cloud service
@@ -304,21 +304,21 @@ List<String> cloudServiceNames = azure.cloudServices.list();
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.cloudServices.update("myservice")
+azure.cloudServices().update("myservice")
 	.withDescription("Updated")
 	.withLabel("Updated")
 	.apply();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 #### Reading information about a cloud service
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-CloudService cloudService = azure.cloudServices.get("myservice");
+CloudService cloudService = azure.cloudServices().get("myservice");
 
 System.out.println(String.format("Found cloud service: %s\n"
 	+ "\tLabel: %s\n"
@@ -339,18 +339,18 @@ System.out.println(String.format("Found cloud service: %s\n"
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 #### Deleting a cloud service
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.cloudServices.delete(serviceName);
+azure.cloudServices().delete(serviceName);
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 ### Storage Accounts
 

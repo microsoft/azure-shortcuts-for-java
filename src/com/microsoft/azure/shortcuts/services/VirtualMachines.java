@@ -160,8 +160,8 @@ public class VirtualMachines implements
 	
 	
 	// Lists all virtual machines
-	public List<String> list() {
-		List<String> serviceNames = azure.cloudServices.list();
+	public List<String> list() throws Exception {
+		List<String> serviceNames = azure.cloudServices().list();
 		ArrayList<String> vms = new ArrayList<String>();
 		
 		// Find all virtual machine roles within cloud services 
@@ -490,7 +490,7 @@ public class VirtualMachines implements
 			// Get affinity group and region from existing resources
 			if(this.cloudService() != null && this.isExistingCloudService) {
 				// Get from existing cloud service
-				final CloudService cloudService = azure.cloudServices.get(this.cloudService());
+				final CloudService cloudService = azure.cloudServices().get(this.cloudService());
 				this.affinityGroup = cloudService.affinityGroup();
 				this.region = cloudService.region();
 			} else if(this.network != null) {
@@ -578,7 +578,7 @@ public class VirtualMachines implements
 			// Determine if to create a new cloud service deployment or add to existing
 			if(!this.isExistingCloudService) {
 				// Create a new cloud service using the same name as the VM
-				CloudServiceDefinitionBlank serviceDefinition = azure.cloudServices.define(this.cloudService());
+				CloudServiceDefinitionBlank serviceDefinition = azure.cloudServices().define(this.cloudService());
 				CloudServiceDefinitionProvisionable serviceProvisionable = 
 						(this.affinityGroup != null) 
 						? serviceDefinition.withAffinityGroup(this.affinityGroup) 
@@ -644,7 +644,7 @@ public class VirtualMachines implements
 
 			// Get service-level data
 			//TODO Make it lazily evaluated
-			CloudService service = azure.cloudServices.get(this.cloudService());
+			CloudService service = azure.cloudServices().get(this.cloudService());
 			this.affinityGroup = service.affinityGroup();
 			this.region = service.region();
 			

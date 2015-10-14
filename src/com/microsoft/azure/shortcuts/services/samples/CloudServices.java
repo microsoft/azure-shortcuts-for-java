@@ -49,16 +49,16 @@ public class CloudServices {
 		System.out.println(String.format("Creating cloud service named '%s'...", serviceName));
 
 		// Create a new cloud service
-		azure.cloudServices.define(serviceName)
+		azure.cloudServices().define(serviceName)
 			.withRegion("West US")
 			.provision();
 
 		// List cloud services
-		List<String> cloudServiceNames = azure.cloudServices.list();
+		List<String> cloudServiceNames = azure.cloudServices().list();
 		System.out.println("Available cloud services: " + StringUtils.join(cloudServiceNames, ", "));
 
 		// Get cloud service info
-		CloudService cloudService = azure.cloudServices.get(serviceName);
+		CloudService cloudService = azure.cloudServices().get(serviceName);
 		System.out.println(String.format("Found cloud service: %s\n"
 				+ "\tLabel: %s\n"
 				+ "\tDescription: %s\n"
@@ -79,12 +79,12 @@ public class CloudServices {
 		// Update cloud service
 		System.out.println(String.format("Updating cloud service named '%s'...", serviceName));
 
-		azure.cloudServices.update(serviceName)
+		azure.cloudServices().update(serviceName)
 			.withDescription("Updated")
 			.withLabel("Updated")
 			.apply();
 
-		cloudService = azure.cloudServices.get(serviceName);
+		cloudService = azure.cloudServices().get(serviceName);
 		System.out.println(String.format("Updated cloud service: %s\n"
 				+ "\tLabel: %s\n"
 				+ "\tDescription: %s\n",
@@ -96,6 +96,6 @@ public class CloudServices {
 		
 		// Delete the newly created cloud service
 		System.out.println(String.format("Deleting cloud service named '%s'...", serviceName));
-		azure.cloudServices.delete(serviceName);
+		azure.cloudServices().delete(serviceName);
 	}
 }
