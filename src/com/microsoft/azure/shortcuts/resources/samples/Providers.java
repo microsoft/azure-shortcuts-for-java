@@ -33,7 +33,7 @@ import com.microsoft.azure.shortcuts.resources.reading.Provider.ResourceType;
 public class Providers {
     public static void main(String[] args) {
         try {
-            Azure azure = new Azure("my.azureauth", null);
+            Azure azure = Azure.authenticate("my.azureauth", null);
             test(azure);
         } catch (Exception e) {
             e.printStackTrace();

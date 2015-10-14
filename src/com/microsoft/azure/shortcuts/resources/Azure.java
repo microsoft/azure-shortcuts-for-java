@@ -62,11 +62,20 @@ public class Azure {
     private final GroupsImpl groups;
     private final ProvidersImpl providers;
 
-    public Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
+    public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
+    	return new Azure(subscriptionId, tenantId, clientId, clientKey);
+    }
+    
+    public static Azure authenticate(String authenticationFilePath, String subscriptionId) throws Exception {
+    	return new Azure(authenticationFilePath, subscriptionId);
+    }
+    
+    private Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	this(createConfiguration(subscriptionId, tenantId, clientId, clientKey, null, null, null));
     }
 
-    public Azure(String authenticationFilePath, String subscriptionId) throws Exception {
+    
+    private Azure(String authenticationFilePath, String subscriptionId) throws Exception {
     	this(getConfigFromFile(authenticationFilePath, subscriptionId));
     }
     

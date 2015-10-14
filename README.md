@@ -43,7 +43,7 @@ final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 ```java
 String authFilePath = "<my-auth-file>"; // See explanation below
 String subscriptionId = "<subscription-GUID>";
-Azure azure = new Azure(authFilePath, subscriptionId);
+Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 ```
 
 *Note: Active Directory auth for ARM currently requires a lot of inputs and token management logic. So to simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:*
