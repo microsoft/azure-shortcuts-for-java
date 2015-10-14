@@ -32,7 +32,7 @@ public class Certificates {
 
 		try {
 			// Instantiate Azure management class
-			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
+			final Azure azure = Azure.authenticate(publishSettingsPath, subscriptionId);
 
 			test(azure);
 		} catch (Exception e) {

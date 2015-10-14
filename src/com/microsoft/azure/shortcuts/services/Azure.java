@@ -55,8 +55,18 @@ public class Azure {
 	private final NetworksImpl networks = new NetworksImpl(this);
 	private final VirtualMachinesImpl virtualMachines = new VirtualMachinesImpl(this);
 	
-	// Construct based on credentials from a publishsettings file for the selected subscription
-	public Azure(String publishSettingsPath, String subscriptionId) throws IOException {
+	
+	/**
+	 * @param publishSettingsPath
+	 * @param subscriptionId
+	 * @return Authenticated Azure client exposing access to ASM-based ("Classic") services
+	 * @throws IOException
+	 */
+	public static Azure authenticate(String publishSettingsPath, String subscriptionId) throws IOException {
+		return new Azure(publishSettingsPath, subscriptionId);
+	}
+	
+	private Azure(String publishSettingsPath, String subscriptionId) throws IOException {
 		this.configuration = PublishSettingsLoader.createManagementConfiguration(publishSettingsPath, subscriptionId);
 	}
 	
