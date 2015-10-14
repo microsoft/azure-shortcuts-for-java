@@ -460,13 +460,13 @@ azure.storageAccounts.update("mystorage")
 Listing all regions:
 
 ```java
-List<String> regionNames = azure.regions.list();
+List<String> regionNames = azure.regions().list();
 ```
 
 Listing regions supporting a specific capability from the `LocationsAvailableServiceNames` options:
 
 ```
-List<String> regionNames = azure.regions.list(LocationAvailableServiceNames.HIGHMEMORY);    	
+List<String> regionNames = azure.regions().list(LocationAvailableServiceNames.HIGHMEMORY);    	
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages {TODO}

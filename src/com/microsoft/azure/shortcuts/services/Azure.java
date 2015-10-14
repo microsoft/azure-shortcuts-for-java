@@ -25,6 +25,7 @@ import java.io.IOException;
 import com.microsoft.azure.shortcuts.services.listing.CloudServices;
 import com.microsoft.azure.shortcuts.services.listing.Networks;
 import com.microsoft.azure.shortcuts.services.listing.OsImages;
+import com.microsoft.azure.shortcuts.services.listing.Regions;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 import com.microsoft.windowsazure.management.ManagementClient;
@@ -43,7 +44,7 @@ public class Azure {
 	private StorageManagementClient storage = null;
 	private NetworkManagementClient networking = null;
 	
-	public final Regions regions = new Regions(this);
+	private final RegionsImpl regions = new RegionsImpl(this);
 	public final Sizes sizes = new Sizes(this);
 	private final OSImagesImpl osImages = new OSImagesImpl(this);
 	public final StorageAccounts storageAccounts = new StorageAccounts(this);
@@ -82,6 +83,14 @@ public class Azure {
 	 */
 	public OsImages osImages() {
 		return this.osImages;
+	}
+	
+	
+	/**
+	 * @return The interface exposing functionality related to OS images
+	 */
+	public Regions regions() {
+		return this.regions;
 	}
 	
 	

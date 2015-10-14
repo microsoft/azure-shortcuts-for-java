@@ -17,33 +17,19 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.samples;
+package com.microsoft.azure.shortcuts.services.listing;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 
-import com.microsoft.azure.shortcuts.services.Azure;
-import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
+public interface Regions extends
+	SupportsListing {
 
-// Tests Regions
-public class Regions {
-	public static void main(String[] args) {
-		String publishSettingsPath = "my.publishsettings";
-		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
-
-		try {
-			// Instantiate Azure management class
-			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
-
-			test(azure);
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-	}
-
-	public static void test(Azure azure) throws Exception {
-		List<String> regionNames = azure.regions().list(LocationAvailableServiceNames.PERSISTENTVMROLE);
-		System.out.println("Available regions: " + StringUtils.join(regionNames, ", "));
-	}
+	/**
+	 * 
+	 * @param serviceType
+	 * @return Regions supporting a specific service type from the LocationAvailableServiceNames class
+	 */
+	List<String> list(String serviceType);
 }
