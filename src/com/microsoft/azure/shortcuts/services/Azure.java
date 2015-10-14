@@ -28,6 +28,7 @@ import com.microsoft.azure.shortcuts.services.listing.OsImages;
 import com.microsoft.azure.shortcuts.services.listing.Regions;
 import com.microsoft.azure.shortcuts.services.listing.Sizes;
 import com.microsoft.azure.shortcuts.services.listing.StorageAccounts;
+import com.microsoft.azure.shortcuts.services.listing.VirtualMachines;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 import com.microsoft.windowsazure.management.ManagementClient;
@@ -52,7 +53,7 @@ public class Azure {
 	private final StorageAccountsImpl storageAccounts = new StorageAccountsImpl(this);
 	private final CloudServicesImpl cloudServices = new CloudServicesImpl(this);
 	private final NetworksImpl networks = new NetworksImpl(this);
-	public final VirtualMachines virtualMachines = new VirtualMachines(this);
+	private final VirtualMachinesImpl virtualMachines = new VirtualMachinesImpl(this);
 	
 	// Construct based on credentials from a publishsettings file for the selected subscription
 	public Azure(String publishSettingsPath, String subscriptionId) throws IOException {
@@ -102,6 +103,13 @@ public class Azure {
 		return this.sizes;
 	}
 	
+	
+	/**
+	 * @return The interface exposing functionality related to virtual machines
+	 */
+	public VirtualMachines virtualMachines() {
+		return this.virtualMachines;
+	}
 	
 	/**
 	 * @return The interface exposing functionality related to storage accounts

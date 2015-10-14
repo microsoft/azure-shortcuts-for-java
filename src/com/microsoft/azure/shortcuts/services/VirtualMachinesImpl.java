@@ -28,10 +28,6 @@ import java.util.List;
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionBlank;
@@ -41,6 +37,7 @@ import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionW
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithAdminUsername;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithImage;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithSize;
+import com.microsoft.azure.shortcuts.services.listing.VirtualMachines;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.reading.Network;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
@@ -64,15 +61,10 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleTy
  * @author marcins
  * 
  */
-public class VirtualMachines implements 
-	SupportsCreating<VirtualMachineDefinitionBlank>,
-	SupportsReading<VirtualMachine>,
-	SupportsListing,
-	SupportsDeleting {
-	
+public class VirtualMachinesImpl implements VirtualMachines {	
 	final Azure azure;
 	
-	VirtualMachines(Azure azure) {
+	VirtualMachinesImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
@@ -159,7 +151,7 @@ public class VirtualMachines implements
 	}
 	
 	
-	// Lists all virtual machines
+	@Override
 	public List<String> list() throws Exception {
 		List<String> serviceNames = azure.cloudServices().list();
 		ArrayList<String> vms = new ArrayList<String>();
@@ -182,7 +174,7 @@ public class VirtualMachines implements
 	}
 
 	
-	// Starts a new definition for a virtual machine
+	@Override
 	public VirtualMachineDefinitionBlank define(String name) {
 		return new VirtualMachineImpl(name, true);
 	}
@@ -216,13 +208,14 @@ public class VirtualMachines implements
 	// "<cloud-service-name>.<deployment-name>.<vm-name>"
 	// or "<cloud-service-name>.<vm-name>" where deployment slot is assumed to be Production
 	// or "<cloud-service-name>" where deployment slot is assumed to be Production and the first role is assumed to be the right one
+	@Override
 	public VirtualMachine get(String name) throws Exception {
 		VirtualMachineImpl vm = new VirtualMachineImpl(name, false);
 		return vm.refresh();
 	}
 
 
-	// Deletes a virtual machine
+	@Override
 	public void delete(String name) throws Exception {
 		// TODO
 		if(name == null) {
@@ -481,7 +474,7 @@ public class VirtualMachines implements
 		
 		@Override
 		public void delete() throws Exception {
-			azure.virtualMachines.delete(this.name);
+			azure.virtualMachines().delete(this.name);
 		}
 		
 

@@ -70,7 +70,7 @@ Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.virtualMachines.define("mylinuxvm")
+azure.virtualMachines().define("mylinuxvm")
 	.withRegion("West US")
 	.withSize("Small")
 	.withAdminUsername("test")
@@ -89,7 +89,7 @@ azure.virtualMachines.define("mylinuxvm")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.virtualMachines.define("mylinuxvm")
+azure.virtualMachines().define("mylinuxvm")
 	.withNetwork(network)
 	.withSize("Small")
 	.withAdminUsername("test")
@@ -109,7 +109,7 @@ azure.virtualMachines.define("mylinuxvm")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.virtualMachines.define("mywinvm")
+azure.virtualMachines().define("mywinvm")
 	.withExistingCloudService("mycloudservice")
 	.withSize("Small")
 	.withAdminUsername("test")
@@ -128,7 +128,7 @@ azure.virtualMachines.define("mywinvm")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> vmNames = azure.virtualMachines.list();
+List<String> vmNames = azure.virtualMachines().list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -140,7 +140,7 @@ List<String> vmNames = azure.virtualMachines.list();
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-VirtualMachine vm = azure.virtualMachines.get("mylinuxvm");
+VirtualMachine vm = azure.virtualMachines().get("mylinuxvm");
 System.out.println(String.format("Reading information about vm: %s\n"
 	+ "\tDeployment name: %s\n"
 	+ "\tService name: %s\n"

@@ -60,7 +60,7 @@ public class VirtualMachines {
 		final String vmName2 = "vl" + timeStamp;
 		System.out.println(String.format("Creating virtual machine named '%s'...", vmName2));
 		final String cloudService2 = "cs" + timeStamp;
-		azure.virtualMachines.define(vmName2)
+		azure.virtualMachines().define(vmName2)
 			.withNetwork(network)
 			.withSize("Small")
 			.withAdminUsername("marcins")
@@ -74,7 +74,7 @@ public class VirtualMachines {
 		// Create a Linux VM in a new service
 		final String vmName = "vm" + timeStamp;
 		System.out.println(String.format("Creating virtual machine named '%s'...", vmName));
-		azure.virtualMachines.define(vmName)
+		azure.virtualMachines().define(vmName)
 			.withRegion("West US")
 			.withSize("Small")
 			.withAdminUsername("marcins")
@@ -86,7 +86,7 @@ public class VirtualMachines {
 
 		// Add a Windows VM to the same service deployment
 		final String vmNameWin = "wm" + timeStamp;
-		azure.virtualMachines.define(vmNameWin)
+		azure.virtualMachines().define(vmNameWin)
 			.withExistingCloudService(vmName)
 			.withSize("Small")
 			.withAdminUsername("marcins")
@@ -96,11 +96,11 @@ public class VirtualMachines {
 			.provision();		
 			
 		// List virtual machines
-		List<String> vmNames = azure.virtualMachines.list();
+		List<String> vmNames = azure.virtualMachines().list();
 		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));
 			
 		// Get information about the created Linux vm
-		VirtualMachine vm = azure.virtualMachines.get(vmName);
+		VirtualMachine vm = azure.virtualMachines().get(vmName);
 		System.out.println(String.format("Reading information about vm: %s\n"
 				+ "\tDeployment name: %s\n"
 				+ "\tService name: %s\n"
@@ -122,7 +122,7 @@ public class VirtualMachines {
 				));
 			
 		// Get information about the created Windows vm
-		vm = azure.virtualMachines.get(vmName + "." + vmNameWin);
+		vm = azure.virtualMachines().get(vmName + "." + vmNameWin);
 		System.out.println(String.format("Reading information about vm: %s\n"
 				+ "\tDeployment name: %s\n"
 				+ "\tService name: %s\n"
@@ -144,7 +144,7 @@ public class VirtualMachines {
 				));
 			
 		// Get information about the second Linux VM
-		vm = azure.virtualMachines.get(cloudService2 + "." + vmName2);
+		vm = azure.virtualMachines().get(cloudService2 + "." + vmName2);
 		System.out.println(String.format("Reading information about vm: %s\n"
 				+ "\tDeployment name: %s\n"
 				+ "\tService name: %s\n"
