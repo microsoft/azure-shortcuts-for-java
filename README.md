@@ -15,9 +15,16 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 1. Create a directory for the workspace
 2. In that workspace directory, run `mvn -Declipse.workspace=. eclipse:configure-workspace`
-3. In the project directory, after `git-clone`, run `mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true`
+3. In the project directory, after `git-clone`, run `mvn eclipse:eclipse -DdownloadSources=true`
 4. In Eclipse, use  the workspace folder created earlier, and import the project into it (don't copy)
-5. Using Eclipse's **Configure Build Path** dialog for the project, on the **Source** tab, use **Add Folder...** to select the `src` folder of the project
+
+## Usage pre-requisites
+
+* Java 7+
+* Azure SDK for Java v0.8.0 or higher
+* An Azure subscription
+
+## Examples
 
 Inside the `\*.samples` packages, you will find a number of runnable sample code (classes with `main()`). For each of the sample classes, you can just **Debug As** > **Java Application**.
 
@@ -25,15 +32,7 @@ Many of the samples rely on credentials files in the root of the project:
 
 * for the **"Classic" ASM-based APIs**, use a *"my.publishsettings"* file. This is the classical Publish-Settings file from Azure.
 
-* for the **"Resource" ARM-based APIs**, you can use the experimental *"my.authfile"* containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a service principal for your app. Further simplication of the authentication process is an area of active investigation, but for now you can create the file manually, as per the [Authentication](#creating-an-authenticated-client) section.    
-
-## Pre-requisites
-
-* Java 7+
-* Azure SDK for Java v0.8.0 or higher
-* An Azure subscription
-
-## Examples
+* for the **"Resource" ARM-based APIs**, you can use the experimental *"my.authfile"* containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a service principal for your app. Further simplification of the authentication process is an area of active investigation, but for now you can create the file manually, as per the [Authentication](#creating-an-authenticated-client) section.    
 
 * [Authentication](#creating-an-authenticated-client)
 * [Virtual Machines](#virtual-machines)
