@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import com.microsoft.azure.shortcuts.services.Azure;
+import com.microsoft.azure.shortcuts.services.implementation.Azure;
 
 public class Samples {
 	public static void main(String[] args) {

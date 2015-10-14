@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.microsoft.azure.shortcuts.services.Azure;
+import com.microsoft.azure.shortcuts.services.implementation.Azure;
 
 // Tests VM sizes
 public class Sizes {

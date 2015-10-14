@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.microsoft.azure.shortcuts.resources.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
 
 // Tests resources

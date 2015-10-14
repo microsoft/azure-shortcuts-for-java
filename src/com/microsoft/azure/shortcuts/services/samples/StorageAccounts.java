@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.microsoft.azure.shortcuts.services.Azure;
+import com.microsoft.azure.shortcuts.services.implementation.Azure;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 
 //Tests Storage Accounts

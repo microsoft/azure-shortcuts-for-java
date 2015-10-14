@@ -18,7 +18,7 @@
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-package com.microsoft.azure.shortcuts.services;
+package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.io.IOException;
 

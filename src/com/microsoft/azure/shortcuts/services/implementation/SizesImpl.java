@@ -17,40 +17,42 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services;
+package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.services.listing.Regions;
-import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
+import com.microsoft.azure.shortcuts.services.listing.Sizes;
+import com.microsoft.windowsazure.management.models.RoleSizeListResponse.RoleSize;
 
-// Class encapsulating the API related to locations
-public class RegionsImpl implements Regions {
+// Encapsulates the API related to VM sizes
+public class SizesImpl implements Sizes {
 	
 	final Azure azure;
-	RegionsImpl(Azure azure) {
+	SizesImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
+
 	@Override
-	public List<String> list(String serviceType) {
+	public List<String> list(boolean supportingVM, boolean supportingCloudServices) {
 		try {
-			ArrayList<Location> items = azure.managementClient().getLocationsOperations().list().getLocations();
+			ArrayList<RoleSize> items = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
 			ArrayList<String> names = new ArrayList<>();
-			for(Location item : items) {
+			for(RoleSize item : items) {
 				names.add(item.getName());
 			}
+
 			return names;
 		} catch (Exception e) {
 			// Not very actionable, so just return an empty array
 			return new ArrayList<>();
-		}
+		}			
 	}
 
+
 	@Override
-	// Lists all regions
 	public List<String> list() {
-		return list(null);
+		return list(true, true);
 	}
 }
