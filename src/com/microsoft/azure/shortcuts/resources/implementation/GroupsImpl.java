@@ -33,11 +33,12 @@ import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
-public class GroupsImpl implements Groups {
+public class GroupsImpl 
+	extends EntitiesImpl
+	implements Groups {
 	
-	final Azure azure;
 	GroupsImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 	
 	@Override

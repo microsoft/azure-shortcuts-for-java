@@ -30,12 +30,12 @@ import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
-public class ProvidersImpl implements Providers {
-	
-	final Azure azure;
+public class ProvidersImpl 
+	extends EntitiesImpl
+	implements Providers {
 	
 	ProvidersImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 	
 	@Override

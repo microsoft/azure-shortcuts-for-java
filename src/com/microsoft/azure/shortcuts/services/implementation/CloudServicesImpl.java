@@ -39,12 +39,12 @@ import com.microsoft.windowsazure.management.compute.models.HostedServiceListRes
 import com.microsoft.windowsazure.management.compute.models.HostedServiceProperties;
 
 // Class encapsulating the API related to cloud services
-public class CloudServicesImpl implements CloudServices {
-	
-	final Azure azure;
+public class CloudServicesImpl 
+	extends EntitiesImpl
+	implements CloudServices {
 	
 	CloudServicesImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 	
 

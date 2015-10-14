@@ -61,11 +61,12 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleTy
  * @author marcins
  * 
  */
-public class VirtualMachinesImpl implements VirtualMachines {	
-	final Azure azure;
+public class VirtualMachinesImpl 
+	extends EntitiesImpl
+	implements VirtualMachines {	
 	
 	VirtualMachinesImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 	
 	

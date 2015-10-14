@@ -34,12 +34,12 @@ import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurat
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
 
 // Class encapsulating the API related to virtual networks
-public class NetworksImpl implements Networks {
-	
-	final Azure azure;
+public class NetworksImpl 
+	extends EntitiesImpl
+	implements Networks {
 	
 	NetworksImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 
 	@Override

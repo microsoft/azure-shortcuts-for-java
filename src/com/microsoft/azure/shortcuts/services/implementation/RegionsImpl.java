@@ -26,11 +26,12 @@ import com.microsoft.azure.shortcuts.services.listing.Regions;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 
 // Class encapsulating the API related to locations
-public class RegionsImpl implements Regions {
+public class RegionsImpl 
+	extends EntitiesImpl
+	implements Regions {
 	
-	final Azure azure;
 	RegionsImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 	
 	@Override

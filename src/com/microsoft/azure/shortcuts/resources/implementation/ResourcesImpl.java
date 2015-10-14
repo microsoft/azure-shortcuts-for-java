@@ -35,12 +35,12 @@ import com.microsoft.azure.shortcuts.resources.reading.Resource;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
 
-public class ResourcesImpl implements Resources {
-	
-	final Azure azure;
+public class ResourcesImpl
+	extends EntitiesImpl
+	implements Resources {
 	
 	ResourcesImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 	
 	@Override

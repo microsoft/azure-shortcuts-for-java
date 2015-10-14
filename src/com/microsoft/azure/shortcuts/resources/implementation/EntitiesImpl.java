@@ -17,43 +17,11 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.implementation;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.microsoft.azure.shortcuts.services.listing.Sizes;
-import com.microsoft.windowsazure.management.models.RoleSizeListResponse.RoleSize;
-
-// Encapsulates the API related to VM sizes
-public class SizesImpl 
-	extends EntitiesImpl
-	implements Sizes {
-	
-	SizesImpl(Azure azure) {
-		super(azure);
-	}
-	
-
-	@Override
-	public List<String> list(boolean supportingVM, boolean supportingCloudServices) {
-		try {
-			ArrayList<RoleSize> items = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
-			ArrayList<String> names = new ArrayList<>();
-			for(RoleSize item : items) {
-				names.add(item.getName());
-			}
-
-			return names;
-		} catch (Exception e) {
-			// Not very actionable, so just return an empty array
-			return new ArrayList<>();
-		}			
-	}
-
-
-	@Override
-	public List<String> list() {
-		return list(true, true);
+abstract class EntitiesImpl {
+	final protected Azure azure;
+	protected EntitiesImpl(Azure azure) {
+		this.azure = azure;
 	}
 }

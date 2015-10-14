@@ -42,11 +42,12 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountTypes;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
 
 // Class encapsulating the API related to storage accounts
-public class StorageAccountsImpl implements StorageAccounts {
+public class StorageAccountsImpl 
+	extends EntitiesImpl
+	implements StorageAccounts {
 	
-	final Azure azure;
 	StorageAccountsImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 	
 	

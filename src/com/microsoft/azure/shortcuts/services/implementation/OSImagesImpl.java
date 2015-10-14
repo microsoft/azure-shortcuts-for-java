@@ -31,12 +31,12 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImag
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 
 // Class encapsulating the API related to OS images
-public class OSImagesImpl implements OsImages {
-	
-	final Azure azure;
+public class OSImagesImpl 
+	extends EntitiesImpl
+	implements OsImages {
 	
 	OSImagesImpl(Azure azure) {
-		this.azure = azure;
+		super(azure);
 	}
 
 
