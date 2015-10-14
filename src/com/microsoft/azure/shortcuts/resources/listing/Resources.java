@@ -3,12 +3,12 @@ package com.microsoft.azure.shortcuts.resources.listing;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
 
 public interface Resources extends
-	SupportsListing,
+	SupportsListingNames,
 	SupportsReading<Resource>,
 	SupportsDeleting {
 

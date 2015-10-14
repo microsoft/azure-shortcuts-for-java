@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.services.listing;
 
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.reading.VirtualMachine;
@@ -29,6 +29,6 @@ import com.microsoft.azure.shortcuts.services.reading.VirtualMachine;
 public interface VirtualMachines extends
 	SupportsCreating<VirtualMachineDefinitionBlank>,
 	SupportsReading<VirtualMachine>,
-	SupportsListing,
+	SupportsListingNames,
 	SupportsDeleting {
 }

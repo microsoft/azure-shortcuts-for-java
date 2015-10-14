@@ -21,9 +21,9 @@ package com.microsoft.azure.shortcuts.resources.listing;
 
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
 
-public interface Sizes extends SupportsListing {
+public interface Sizes extends SupportsListingNames {
 
 	/**
 	 * @param region

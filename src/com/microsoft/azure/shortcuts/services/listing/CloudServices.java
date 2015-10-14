@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.services.listing;
 
 import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
@@ -29,7 +29,7 @@ import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;
 
 public interface CloudServices extends 
-	SupportsListing,
+	SupportsListingNames,
 	SupportsReading<CloudService>,
 	SupportsCreating<CloudServiceDefinitionBlank>,
 	SupportsDeleting,

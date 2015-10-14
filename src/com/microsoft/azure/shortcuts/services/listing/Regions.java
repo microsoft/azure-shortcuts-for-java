@@ -21,10 +21,10 @@ package com.microsoft.azure.shortcuts.services.listing;
 
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
 
 public interface Regions extends
-	SupportsListing {
+	SupportsListingNames {
 
 	/**
 	 * 
