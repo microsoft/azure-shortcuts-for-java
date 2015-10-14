@@ -22,19 +22,19 @@ package com.microsoft.azure.shortcuts.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
+import com.microsoft.azure.shortcuts.services.listing.Sizes;
 import com.microsoft.windowsazure.management.models.RoleSizeListResponse.RoleSize;
 
 // Encapsulates the API related to VM sizes
-public class Sizes implements 
-	SupportsListing {
+public class SizesImpl implements Sizes {
 	
 	final Azure azure;
-	Sizes(Azure azure) {
+	SizesImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
-	// Return the list of available size names supporting the specified type of compute service
+
+	@Override
 	public List<String> list(boolean supportingVM, boolean supportingCloudServices) {
 		try {
 			ArrayList<RoleSize> items = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
@@ -50,7 +50,8 @@ public class Sizes implements
 		}			
 	}
 
-	// Returns all available size names
+
+	@Override
 	public List<String> list() {
 		return list(true, true);
 	}

@@ -163,7 +163,7 @@ System.out.println(String.format("Reading information about vm: %s\n"
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 
 #### Listing available VM sizes
@@ -174,7 +174,7 @@ System.out.println(String.format("Reading information about vm: %s\n"
 boolean supportingVM = true;
 boolean supportingCloudServices = false;
 
-List<String> sizeNames = azure.sizes.list(supportingVM, supportingCloudServices);
+List<String> sizeNames = azure.sizes().list(supportingVM, supportingCloudServices);
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -190,7 +190,7 @@ List<String> OsImageNames = azure.osImages().list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 
 ### Virtual Networks

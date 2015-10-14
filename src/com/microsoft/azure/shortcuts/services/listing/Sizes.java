@@ -17,32 +17,19 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.samples;
+package com.microsoft.azure.shortcuts.services.listing;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 
-import com.microsoft.azure.shortcuts.services.Azure;
+public interface Sizes extends
+	SupportsListing {
 
-// Tests VM sizes
-public class Sizes {
-	public static void main(String[] args) {
-		String publishSettingsPath = "my.publishsettings";
-		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
-
-		try {
-			// Instantiate Azure management class
-			final Azure azure = new Azure(publishSettingsPath, subscriptionId);
-
-			test(azure);
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}
-	}
-
-	public static void test(Azure azure) throws Exception {
-		List<String> sizeNames = azure.sizes().list(true, false);
-		System.out.println("Available VM sizes: " + StringUtils.join(sizeNames, ", "));
-	}
+	/**
+	 * @param supportingVM
+	 * @param supportingCloudServices
+	 * @return List of available size names supporting the specified type of compute service
+	 */
+	List<String> list(boolean supportingVM, boolean supportingCloudServices);
 }
