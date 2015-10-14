@@ -96,7 +96,7 @@ public class VirtualMachines {
 			.provision();		
 			
 		// List virtual machines
-		List<String> vmNames = azure.virtualMachines().list();
+		List<String> vmNames = azure.virtualMachines().names();
 		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));
 			
 		// Get information about the created Linux vm

@@ -45,13 +45,13 @@ public class ResourcesImpl
 	
 	@Override
 	// Returns list of resource names in the subscription
-	public List<String> list() {
-		return list(null);
+	public List<String> names() {
+		return names(null);
 	}
 	
 	
 	// Returns list of resource names in the specified resource group
-	public List<String> list(String group) {
+	public List<String> names(String group) {
 		try {
 			ResourceListParameters params = new ResourceListParameters();
 			params.setResourceGroupName(group);

@@ -23,5 +23,5 @@ import java.util.List;
 
 // Requires class to support listing entities
 public interface SupportsListingNames {
-	List<String> list() throws Exception;
+	List<String> names() throws Exception;
 }

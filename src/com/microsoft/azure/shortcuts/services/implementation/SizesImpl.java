@@ -36,7 +36,7 @@ public class SizesImpl
 	
 
 	@Override
-	public List<String> list(boolean supportingVM, boolean supportingCloudServices) {
+	public List<String> names(boolean supportingVM, boolean supportingCloudServices) {
 		try {
 			ArrayList<RoleSize> items = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
 			ArrayList<String> names = new ArrayList<>();
@@ -53,7 +53,7 @@ public class SizesImpl
 
 
 	@Override
-	public List<String> list() {
-		return list(true, true);
+	public List<String> names() {
+		return names(true, true);
 	}
 }

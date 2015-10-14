@@ -43,7 +43,7 @@ public class Regions {
 	}
 
 	public static void test(Azure azure) throws Exception {
-		List<String> regionNames = azure.regions().list(LocationAvailableServiceNames.PERSISTENTVMROLE);
+		List<String> regionNames = azure.regions().names(LocationAvailableServiceNames.PERSISTENTVMROLE);
 		System.out.println("Available regions: " + StringUtils.join(regionNames, ", "));
 	}
 }

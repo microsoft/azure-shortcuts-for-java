@@ -40,7 +40,7 @@ public class Groups {
 
     public static void test(Azure azure) throws Exception {
 		// List resource groups
-    	List<String> groups = azure.groups().list();
+    	List<String> groups = azure.groups().names();
     	System.out.println("Groups: \n\t" + StringUtils.join(groups, ",\n\t"));
 		
     	

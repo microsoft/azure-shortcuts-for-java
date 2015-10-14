@@ -17,7 +17,7 @@ public interface Resources extends
 	 * @param groupName
 	 * @return
 	 */
-	List<String> list(String groupName);
+	List<String> names(String groupName);
 
 	/**
 	 * Gets a resource using its name, type, provider namespace and group name

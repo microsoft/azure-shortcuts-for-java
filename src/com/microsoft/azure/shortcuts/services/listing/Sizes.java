@@ -31,5 +31,5 @@ public interface Sizes extends
 	 * @param supportingCloudServices
 	 * @return List of available size names supporting the specified type of compute service
 	 */
-	List<String> list(boolean supportingVM, boolean supportingCloudServices);
+	List<String> names(boolean supportingVM, boolean supportingCloudServices);
 }

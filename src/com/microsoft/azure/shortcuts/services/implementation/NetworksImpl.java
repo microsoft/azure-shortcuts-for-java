@@ -90,7 +90,7 @@ public class NetworksImpl
 	
 	@Override
 	// Lists existing virtual networks
-	public List<String> list() {
+	public List<String> names() {
 		try {
 			final ArrayList<VirtualNetworkSite> items = azure.networkManagementClient().getNetworksOperations()
 					.list().getVirtualNetworkSites();

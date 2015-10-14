@@ -54,7 +54,7 @@ public class StorageAccounts {
 			.provision();
 
 		// List storage accounts
-		List<String> storageAccountNames = azure.storageAccounts().list();
+		List<String> storageAccountNames = azure.storageAccounts().names();
 		System.out.println("Available storage accounts: " + StringUtils.join(storageAccountNames, ", "));
 
 		// Get storage account information

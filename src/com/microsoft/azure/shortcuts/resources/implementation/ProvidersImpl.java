@@ -40,7 +40,7 @@ public class ProvidersImpl
 	
 	@Override
 	// Returns list of resource names in the subscription
-	public List<String> list() throws Exception {
+	public List<String> names() throws Exception {
 		ArrayList<com.microsoft.azure.management.resources.models.Provider> items = 
 			azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();
 

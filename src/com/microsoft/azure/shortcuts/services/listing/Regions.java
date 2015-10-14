@@ -31,5 +31,5 @@ public interface Regions extends
 	 * @param serviceType
 	 * @return Regions supporting a specific service type from the LocationAvailableServiceNames class
 	 */
-	List<String> list(String serviceType);
+	List<String> names(String serviceType);
 }

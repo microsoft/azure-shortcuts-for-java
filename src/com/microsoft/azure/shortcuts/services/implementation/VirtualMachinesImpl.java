@@ -153,8 +153,8 @@ public class VirtualMachinesImpl
 	
 	
 	@Override
-	public List<String> list() throws Exception {
-		List<String> serviceNames = azure.cloudServices().list();
+	public List<String> names() throws Exception {
+		List<String> serviceNames = azure.cloudServices().names();
 		ArrayList<String> vms = new ArrayList<String>();
 		
 		// Find all virtual machine roles within cloud services 

@@ -42,7 +42,7 @@ public class GroupsImpl
 	}
 	
 	@Override
-	public List<String> list() throws Exception {
+	public List<String> names() throws Exception {
 		ArrayList<ResourceGroupExtended> groups = 
 			azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
 		

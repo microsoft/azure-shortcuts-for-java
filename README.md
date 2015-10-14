@@ -146,7 +146,7 @@ azure.virtualMachines().define("mywinvm")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> vmNames = azure.virtualMachines().list();
+List<String> vmNames = azure.virtualMachines().names();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -209,7 +209,7 @@ List<String> sizeNames = azure.sizes().list("westus");
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> OsImageNames = azure.osImages().list();
+List<String> OsImageNames = azure.osImages().names();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -254,7 +254,7 @@ azure.networks().define("mynetwork")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> virtualNetworkNames = azure.networks().list();
+List<String> virtualNetworkNames = azure.networks().names();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -315,7 +315,7 @@ azure.cloudServices().define("myservice")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> cloudServiceNames = azure.cloudServices().list();
+List<String> cloudServiceNames = azure.cloudServices().names();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -396,7 +396,7 @@ azure.storageAccounts().define("mystorage")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> storageAccountNames = azure.storageAccounts().list();
+List<String> storageAccountNames = azure.storageAccounts().names();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -483,7 +483,7 @@ azure.storageAccounts().update("mystorage")
 Listing all regions:
 
 ```java
-List<String> regionNames = azure.regions().list();
+List<String> regionNames = azure.regions().names();
 ```
 
 Listing regions supporting a specific capability from the `LocationsAvailableServiceNames` options:
@@ -510,7 +510,7 @@ azure.groups().define("myResourceGroup")
 #### Listing resource groups
 
 ```java
-List<String> resourceGroupNames = azure.groups().list();
+List<String> resourceGroupNames = azure.groups().names();
 ```
 
 #### Updating a resource group (changing its tags)
@@ -568,7 +568,7 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 All resources in a subscription:
 
 ```java
-List<String> resourceIds = azure.resources().list();
+List<String> resourceIds = azure.resources().names();
 ```
 
 Resources in a specific group:
@@ -579,7 +579,7 @@ List<String> resourceIds = azure.resources().list("<resource-group-name>");
 
 #### Reading information about a resource
 
-If you know the full ID of the resource (e.g. you got it from the `resources().list()`), then:
+If you know the full ID of the resource (e.g. you got it from the `resources().names()`), then:
 
 ```java
 Resource resource = azure.resources().get("<resource-id>");
@@ -644,12 +644,12 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 #### Listing resource providers (by namespace)
 
 ```java
-List<String> providerNamespaces = azure.providers().list();
+List<String> providerNamespaces = azure.providers().names();
 ```
 
 #### Reading information about a resource provider
 
-Using the namespace of the provider you can get from `providers().list()`:
+Using the namespace of the provider you can get from `providers().names()`:
 
 ```java
 Provider provider = azure.providers().get("microsoft.classicstorage");

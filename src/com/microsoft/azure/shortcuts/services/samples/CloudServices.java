@@ -54,7 +54,7 @@ public class CloudServices {
 			.provision();
 
 		// List cloud services
-		List<String> cloudServiceNames = azure.cloudServices().list();
+		List<String> cloudServiceNames = azure.cloudServices().names();
 		System.out.println("Available cloud services: " + StringUtils.join(cloudServiceNames, ", "));
 
 		// Get cloud service info

@@ -58,7 +58,7 @@ public class VirtualNetworks {
 			.provision();
 
 		// List the virtual networks
-		List<String> virtualNetworkNames = azure.networks().list();
+		List<String> virtualNetworkNames = azure.networks().names();
 		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network
@@ -88,7 +88,7 @@ public class VirtualNetworks {
 			.provision();
 
 		// List the virtual networks
-		virtualNetworkNames = azure.networks().list();
+		virtualNetworkNames = azure.networks().names();
 		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network

@@ -39,7 +39,7 @@ public class Sizes {
 
     public static void test(Azure azure) throws Exception {
 		// List sizes in a specific region
-    	List<String> sizeNames = azure.sizes().list("westus");
+    	List<String> sizeNames = azure.sizes().names("westus");
     	System.out.println("VM sizes: \n\t" + StringUtils.join(sizeNames, ",\n\t"));    	
     }
 }

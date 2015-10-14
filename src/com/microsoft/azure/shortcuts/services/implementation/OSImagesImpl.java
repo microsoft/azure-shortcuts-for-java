@@ -41,7 +41,7 @@ public class OSImagesImpl
 
 
 	@Override
-	public List<String> list() {
+	public List<String> names() {
 		try {
 			ArrayList<VirtualMachineOSImage> items = 
 				azure.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();			

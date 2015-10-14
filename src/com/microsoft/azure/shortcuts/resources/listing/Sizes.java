@@ -29,6 +29,6 @@ public interface Sizes extends SupportsListingNames {
 	 * @param region
 	 * @return Virtual machine sizes available in the specified region
 	 */
-	List<String> list(String region);
+	List<String> names(String region);
 
 }

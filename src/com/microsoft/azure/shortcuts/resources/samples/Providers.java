@@ -42,7 +42,7 @@ public class Providers {
 
     public static void test(Azure azure) throws Exception {
 		// List providers
-    	List<String> providers = azure.providers().list();
+    	List<String> providers = azure.providers().names();
     	System.out.println("Providers: \n\t" + StringUtils.join(providers, ",\n\t"));
     	
     	if(providers.size() > 0) {

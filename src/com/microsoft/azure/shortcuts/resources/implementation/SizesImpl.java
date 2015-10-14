@@ -37,7 +37,7 @@ public class SizesImpl
 	}
 	
 	@Override
-	public List<String> list(String region) {
+	public List<String> names(String region) {
 		try {
 			ArrayList<VirtualMachineSize> items = azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
 			ArrayList<String> names = new ArrayList<>();
@@ -52,7 +52,7 @@ public class SizesImpl
 	}
 
 	@Override
-	public List<String> list() throws Exception {
+	public List<String> names() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}

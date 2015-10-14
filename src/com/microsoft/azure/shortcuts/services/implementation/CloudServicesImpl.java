@@ -67,7 +67,7 @@ public class CloudServicesImpl
 	
 	
 	@Override
-	public List<String> list() {
+	public List<String> names() {
 		try {
 			final ArrayList<HostedService> items = azure.computeManagementClient().getHostedServicesOperations()
 					.list().getHostedServices();

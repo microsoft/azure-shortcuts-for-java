@@ -17,41 +17,11 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.implementation;
+package com.microsoft.azure.shortcuts.common.implementation;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.services.listing.Regions;
-import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
-
-// Class encapsulating the API related to locations
-public class RegionsImpl 
-	extends EntitiesImpl
-	implements Regions {
-	
-	RegionsImpl(Azure azure) {
-		super(azure);
-	}
-	
-	@Override
-	public List<String> names(String serviceType) {
-		try {
-			ArrayList<Location> items = azure.managementClient().getLocationsOperations().list().getLocations();
-			ArrayList<String> names = new ArrayList<>();
-			for(Location item : items) {
-				names.add(item.getName());
-			}
-			return names;
-		} catch (Exception e) {
-			// Not very actionable, so just return an empty array
-			return new ArrayList<>();
-		}
-	}
-
-	@Override
-	// Lists all regions
-	public List<String> names() {
-		return names(null);
-	}
+// Requires class to support listing entities
+public interface SupportsListingEntities<T> {
+	List<T> list() throws Exception;
 }

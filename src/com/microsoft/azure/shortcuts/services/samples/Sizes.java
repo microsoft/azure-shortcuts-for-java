@@ -42,7 +42,7 @@ public class Sizes {
 	}
 
 	public static void test(Azure azure) throws Exception {
-		List<String> sizeNames = azure.sizes().list(true, false);
+		List<String> sizeNames = azure.sizes().names(true, false);
 		System.out.println("Available VM sizes: " + StringUtils.join(sizeNames, ", "));
 	}
 }

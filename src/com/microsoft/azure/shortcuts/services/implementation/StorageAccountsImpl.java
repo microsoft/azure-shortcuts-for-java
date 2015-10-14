@@ -72,7 +72,7 @@ public class StorageAccountsImpl
 	
 	
 	@Override
-	public List<String> list() {
+	public List<String> names() {
 		try {
 			final ArrayList<com.microsoft.windowsazure.management.storage.models.StorageAccount> items = 
 					azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
