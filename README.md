@@ -186,7 +186,7 @@ List<String> sizeNames = azure.sizes.list(supportingVM, supportingCloudServices)
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> OsImageNames = azure.osImages.list();
+List<String> OsImageNames = azure.osImages().list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages

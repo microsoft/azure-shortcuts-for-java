@@ -25,24 +25,22 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
+import com.microsoft.azure.shortcuts.services.listing.OsImages;
 import com.microsoft.azure.shortcuts.services.reading.OSImage;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 
 // Class encapsulating the API related to OS images
-public class OSImages implements 
-	SupportsListing,
-	SupportsReading<OSImage> {
+public class OSImagesImpl implements OsImages {
 	
 	final Azure azure;
 	
-	OSImages(Azure azure) {
+	OSImagesImpl(Azure azure) {
 		this.azure = azure;
 	}
 
-	// Returns the list of available OS image names
+
+	@Override
 	public List<String> list() {
 		try {
 			ArrayList<VirtualMachineOSImage> items = 
@@ -59,8 +57,8 @@ public class OSImages implements
 		}
 	}
 	
-	
-	// Returns OS image information
+
+	@Override
 	public OSImage get(String name) throws Exception {
 		OSImageImpl osImage = new OSImageImpl(name, false);
 		return osImage.refresh();

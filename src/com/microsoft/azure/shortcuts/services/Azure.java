@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import com.microsoft.azure.shortcuts.services.listing.CloudServices;
 import com.microsoft.azure.shortcuts.services.listing.Networks;
+import com.microsoft.azure.shortcuts.services.listing.OsImages;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 import com.microsoft.windowsazure.management.ManagementClient;
@@ -44,7 +45,7 @@ public class Azure {
 	
 	public final Regions regions = new Regions(this);
 	public final Sizes sizes = new Sizes(this);
-	public final OSImages osImages = new OSImages(this);
+	private final OSImagesImpl osImages = new OSImagesImpl(this);
 	public final StorageAccounts storageAccounts = new StorageAccounts(this);
 	private final CloudServicesImpl cloudServices = new CloudServicesImpl(this);
 	private final NetworksImpl networks = new NetworksImpl(this);
@@ -61,8 +62,7 @@ public class Azure {
 	 ******************************************************/
 	
 	/**
-	 * Returns the interface exposing functionality related to cloud services
-	 * @return
+	 * @return The interface exposing functionality related to cloud services
 	 */
 	public CloudServices cloudServices() {
 		return this.cloudServices;
@@ -70,11 +70,18 @@ public class Azure {
 	
 	
 	/**
-	 * Returns the interface exposing functionaliy related to virtual networks
-	 * @return
+	 * @return The interface exposing functionality related to virtual networks
 	 */
 	public Networks networks() {
 		return this.networks;
+	}
+	
+	
+	/**
+	 * @return The interface exposing functionality related to OS images
+	 */
+	public OsImages osImages() {
+		return this.osImages;
 	}
 	
 	

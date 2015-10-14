@@ -47,11 +47,11 @@ public class OSImages {
 		final String imageName = "b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB";
 
 		// List the OS images
-		List<String> OsImageNames = azure.osImages.list();
+		List<String> OsImageNames = azure.osImages().list();
 		System.out.println("Available OS images: \n\t" + StringUtils.join(OsImageNames, ",\n\t"));
 		
 		// Get information about a specific OS image
-		OSImage osImage = azure.osImages.get(imageName);
+		OSImage osImage = azure.osImages().get(imageName);
 		System.out.println(String.format("Found image: %s\n"
 				+ "\tCategory: %s\n"
 				+ "\tDescription: %s\n"
