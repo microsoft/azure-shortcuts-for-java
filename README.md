@@ -200,7 +200,7 @@ List<String> OsImageNames = azure.osImages.list();
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.networks.define("mynetwork")
+azure.networks().define("mynetwork")
 	.withRegion("West US")
 	.withCidr("10.0.0.0/29")
 	.provision();
@@ -215,7 +215,7 @@ azure.networks.define("mynetwork")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.networks.define("mynetwork")
+azure.networks().define("mynetwork")
 	.withRegion("West US")
 	.withCidr("10.0.0.0/28")
 	.withSubnet("Foo", "10.0.0.0/29")
@@ -231,7 +231,7 @@ azure.networks.define("mynetwork")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> virtualNetworkNames = azure.networks.list();
+List<String> virtualNetworkNames = azure.networks().list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -243,7 +243,7 @@ List<String> virtualNetworkNames = azure.networks.list();
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-Network network = azure.networks.get("mynetwork");
+Network network = azure.networks().get("mynetwork");
 
 System.out.println(String.format("Network found: %s\n"
 	+ "\tRegion: %s\n"
@@ -259,18 +259,18 @@ System.out.println(String.format("Network found: %s\n"
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 #### Deleting a virtual network
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.networks.delete("mynetwork");
+azure.networks().delete("mynetwork");
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 ### Cloud Services
 

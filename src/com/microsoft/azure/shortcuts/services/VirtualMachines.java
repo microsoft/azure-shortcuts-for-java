@@ -495,7 +495,7 @@ public class VirtualMachines implements
 				this.region = cloudService.region();
 			} else if(this.network != null) {
 				// Get from network
-				final Network network = azure.networks.get(this.network);
+				final Network network = azure.networks().get(this.network);
 				this.affinityGroup = network.affinityGroup();
 				this.region = network.region();
 				

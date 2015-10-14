@@ -50,7 +50,7 @@ public class VirtualNetworks {
 		// Create a network with multiple subnets
 		networkName = "net" + String.valueOf(System.currentTimeMillis());
 		System.out.println(String.format("Creating virtual network named '%s'...", networkName));
-		azure.networks.define(networkName)
+		azure.networks().define(networkName)
 			.withRegion("West US")
 			.withCidr("10.0.0.0/28")
 			.withSubnet("Foo", "10.0.0.0/29")
@@ -58,11 +58,11 @@ public class VirtualNetworks {
 			.provision();
 
 		// List the virtual networks
-		List<String> virtualNetworkNames = azure.networks.list();
+		List<String> virtualNetworkNames = azure.networks().list();
 		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network
-		network = azure.networks.get(networkName);
+		network = azure.networks().get(networkName);
 		System.out.println(String.format("Network found: %s\n"
 				+ "\tRegion: %s\n"
 				+ "\tCIDR: %s\n"
@@ -77,22 +77,22 @@ public class VirtualNetworks {
 
 		// Delete the newly created virtual network
 		System.out.println(String.format("Deleting virtual network named '%s'...", network.name()));
-		azure.networks.delete(network.name());
+		azure.networks().delete(network.name());
 
 		// Create network with default subnet
 		networkName = "net" + String.valueOf(System.currentTimeMillis());
 		System.out.println(String.format("Creating virtual network named '%s'...", networkName));
-		azure.networks.define(networkName)
+		azure.networks().define(networkName)
 			.withRegion("West US")
 			.withCidr("10.0.0.0/29")
 			.provision();
 
 		// List the virtual networks
-		virtualNetworkNames = azure.networks.list();
+		virtualNetworkNames = azure.networks().list();
 		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network
-		network = azure.networks.get(networkName);
+		network = azure.networks().get(networkName);
 		System.out.println(String.format("Network found: %s\n"
 				+ "\tRegion: %s\n"
 				+ "\tCIDR: %s\n"
@@ -107,6 +107,6 @@ public class VirtualNetworks {
 
 		// Delete the newly created virtual network
 		System.out.println(String.format("Deleting virtual network named '%s'...", network.name()));
-		azure.networks.delete(network.name());
+		azure.networks().delete(network.name());
 	}
 }

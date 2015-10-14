@@ -23,6 +23,7 @@ package com.microsoft.azure.shortcuts.services;
 import java.io.IOException;
 
 import com.microsoft.azure.shortcuts.services.listing.CloudServices;
+import com.microsoft.azure.shortcuts.services.listing.Networks;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 import com.microsoft.windowsazure.management.ManagementClient;
@@ -46,7 +47,7 @@ public class Azure {
 	public final OSImages osImages = new OSImages(this);
 	public final StorageAccounts storageAccounts = new StorageAccounts(this);
 	private final CloudServicesImpl cloudServices = new CloudServicesImpl(this);
-	public final Networks networks = new Networks(this);
+	private final NetworksImpl networks = new NetworksImpl(this);
 	public final VirtualMachines virtualMachines = new VirtualMachines(this);
 	
 	// Construct based on credentials from a publishsettings file for the selected subscription
@@ -59,8 +60,21 @@ public class Azure {
 	 * Getters
 	 ******************************************************/
 	
+	/**
+	 * Returns the interface exposing functionality related to cloud services
+	 * @return
+	 */
 	public CloudServices cloudServices() {
 		return this.cloudServices;
+	}
+	
+	
+	/**
+	 * Returns the interface exposing functionaliy related to virtual networks
+	 * @return
+	 */
+	public Networks networks() {
+		return this.networks;
 	}
 	
 	

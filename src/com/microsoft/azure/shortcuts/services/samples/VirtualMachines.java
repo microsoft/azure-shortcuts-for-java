@@ -49,7 +49,7 @@ public class VirtualMachines {
 		// Create a new network
 		final String network = "net" + timeStamp;
 		System.out.println(String.format("Creating virtual network named '%s'...", network));
-		azure.networks.define(network)
+		azure.networks().define(network)
 			.withRegion("West US")
 			.withCidr("10.0.0.0/28")
 			.withSubnet("Foo", "10.0.0.0/29")

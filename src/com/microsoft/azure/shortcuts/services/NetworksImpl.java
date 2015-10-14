@@ -22,40 +22,34 @@ package com.microsoft.azure.shortcuts.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionWithCidr;
+import com.microsoft.azure.shortcuts.services.listing.Networks;
 import com.microsoft.azure.shortcuts.services.reading.Network;
-import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatable;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
 
 // Class encapsulating the API related to virtual networks
-public class Networks implements 
-	SupportsCreating<NetworkDefinitionBlank>,
-	SupportsDeleting,
-	SupportsListing {
+public class NetworksImpl implements Networks {
 	
 	final Azure azure;
 	
-	Networks(Azure azure) {
+	NetworksImpl(Azure azure) {
 		this.azure = azure;
 	}
 
+	@Override
 	// Returns information about existing network
-	public Network get(String name) throws Exception {
+	public NetworkImpl get(String name) throws Exception {
 		NetworkImpl network  = new NetworkImpl(name, false);
 		return network.refresh();
 	}
 	
+	@Override
 	// Starts a new network definition
 	public NetworkDefinitionBlank define(String name) {
 		return new NetworkImpl(name, true);
@@ -70,6 +64,7 @@ public class Networks implements
 	}
 	
 	
+	@Override
 	// Deletes the specified network
 	public void delete(String name) throws Exception {
 		//  XPath to the network XML to delete
@@ -93,6 +88,7 @@ public class Networks implements
 	}
 	
 	
+	@Override
 	// Lists existing virtual networks
 	public List<String> list() {
 		try {
@@ -117,7 +113,6 @@ public class Networks implements
 			NetworkDefinitionBlank, 
 			NetworkDefinitionWithCidr, 
 			NetworkDefinitionProvisionable,
-			NetworkUpdatable,
 			Network {
 
 		private String region, cidr, affinityGroup, label;
@@ -206,15 +201,8 @@ public class Networks implements
 		 ************************************************************/
 
 		@Override
-		public NetworkImpl apply() throws Exception {
-			// TODO Auto-generated method stub
-			throw new NotImplementedException("Not yet implemented.");
-		}
-		
-		
-		@Override
 		public void delete() throws Exception {
-			azure.networks.delete(this.name);
+			azure.networks().delete(this.name);
 		}
 
 
@@ -272,7 +260,7 @@ public class Networks implements
 
 
 		@Override
-		public Network refresh() throws Exception {
+		public NetworkImpl refresh() throws Exception {
 			String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
 
 			// Correct for garbage prefix in XML returned by Azure
