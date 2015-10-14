@@ -359,7 +359,7 @@ azure.cloudServices().delete(serviceName);
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.storageAccounts.define("mystorage")
+azure.storageAccounts().define("mystorage")
 	.withRegion("West US")
 	.provision();
 ```
@@ -373,7 +373,7 @@ azure.storageAccounts.define("mystorage")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-List<String> storageAccountNames = azure.storageAccounts.list();
+List<String> storageAccountNames = azure.storageAccounts().list();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -385,7 +385,7 @@ List<String> storageAccountNames = azure.storageAccounts.list();
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.storageAccounts.update("mystorage")
+azure.storageAccounts().update("mystorage")
 	.withDescription("Updated")
 	.withLabel("Updated")
 	.apply();
@@ -399,7 +399,7 @@ azure.storageAccounts.update("mystorage")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-StorageAccount storageAccount = azure.storageAccounts.get(accountName);
+StorageAccount storageAccount = azure.storageAccounts().get(accountName);
 
 System.out.println(String.format("Found storage account: %s\n"
 	+ "\tAffinity group: %s\n"
@@ -440,7 +440,7 @@ System.out.println(String.format("Found storage account: %s\n"
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.storageAccounts.update("mystorage")
+azure.storageAccounts().update("mystorage")
 	.withDescription("Updated")
 	.withLabel("Updated")
 	.apply();

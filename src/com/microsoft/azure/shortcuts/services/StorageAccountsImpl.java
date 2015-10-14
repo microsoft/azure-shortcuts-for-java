@@ -26,13 +26,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListing;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
+import com.microsoft.azure.shortcuts.services.listing.StorageAccounts;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatable;
 import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
@@ -46,15 +42,10 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountTypes;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdateParameters;
 
 // Class encapsulating the API related to storage accounts
-public class StorageAccounts implements 
-	SupportsCreating<StorageAccountDefinitionBlank>, 
-	SupportsUpdating<StorageAccountUpdatableBlank>,
-	SupportsListing,
-	SupportsReading<StorageAccount>,
-	SupportsDeleting {
+public class StorageAccountsImpl implements StorageAccounts {
 	
 	final Azure azure;
-	StorageAccounts(Azure azure) {
+	StorageAccountsImpl(Azure azure) {
 		this.azure = azure;
 	}
 	
@@ -261,7 +252,7 @@ public class StorageAccounts implements
 		
 		@Override
 		public void delete() throws Exception {
-			azure.storageAccounts.delete(this.name);
+			azure.storageAccounts().delete(this.name);
 		}
 
 		

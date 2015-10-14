@@ -49,16 +49,16 @@ public class StorageAccounts {
 		System.out.println(String.format("Creating account named '%s'...", accountName));
 		
 		// Create a new storage account
-		azure.storageAccounts.define(accountName)
+		azure.storageAccounts().define(accountName)
 			.withRegion("West US")
 			.provision();
 
 		// List storage accounts
-		List<String> storageAccountNames = azure.storageAccounts.list();
+		List<String> storageAccountNames = azure.storageAccounts().list();
 		System.out.println("Available storage accounts: " + StringUtils.join(storageAccountNames, ", "));
 
 		// Get storage account information
-		StorageAccount storageAccount = azure.storageAccounts.get(accountName);
+		StorageAccount storageAccount = azure.storageAccounts().get(accountName);
 		System.out.println(String.format("Found storage account: %s\n"
 				+ "\tAffinity group: %s\n"
 				+ "\tLabel: %s\n"
@@ -92,12 +92,12 @@ public class StorageAccounts {
 		// Update storage info
 		System.out.println(String.format("Updating storage account named '%s'...", accountName));
 
-		azure.storageAccounts.update(accountName)
+		azure.storageAccounts().update(accountName)
 			.withDescription("Updated")
 			.withLabel("Updated")
 			.apply();
 		
-		storageAccount = azure.storageAccounts.get(accountName);
+		storageAccount = azure.storageAccounts().get(accountName);
 		System.out.println(String.format("Updated storage account: %s\n"
 				+ "\tLabel: %s\n"
 				+ "\tDescription: %s\n",		
@@ -107,6 +107,6 @@ public class StorageAccounts {
 		
 		// Delete the newly created storage account
 		System.out.println(String.format("Deleting storage account named '%s'...", accountName));
-		azure.storageAccounts.delete(accountName);
+		azure.storageAccounts().delete(accountName);
 	}
 }

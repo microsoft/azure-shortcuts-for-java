@@ -508,14 +508,14 @@ public class VirtualMachines implements
 			// Create storage account if not specified
 			if(this.storageAccountName == null) {
 				final String storeName = "store" + System.currentTimeMillis();
-				azure.storageAccounts.define(storeName)
+				azure.storageAccounts().define(storeName)
 					.withRegion(this.region)
 					.provision();
 				this.storageAccountName = storeName;
 			}
 
 			// Determine URL and verify location of VHD blob to use
-			StorageAccount act = azure.storageAccounts.get(this.storageAccountName);
+			StorageAccount act = azure.storageAccounts().get(this.storageAccountName);
 			if(!this.region.equalsIgnoreCase(act.region())) {
 				throw new Exception("Storage account is not in the same region.");
 			}

@@ -27,6 +27,7 @@ import com.microsoft.azure.shortcuts.services.listing.Networks;
 import com.microsoft.azure.shortcuts.services.listing.OsImages;
 import com.microsoft.azure.shortcuts.services.listing.Regions;
 import com.microsoft.azure.shortcuts.services.listing.Sizes;
+import com.microsoft.azure.shortcuts.services.listing.StorageAccounts;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 import com.microsoft.windowsazure.management.ManagementClient;
@@ -48,7 +49,7 @@ public class Azure {
 	private final RegionsImpl regions = new RegionsImpl(this);
 	private final SizesImpl sizes = new SizesImpl(this);
 	private final OSImagesImpl osImages = new OSImagesImpl(this);
-	public final StorageAccounts storageAccounts = new StorageAccounts(this);
+	private final StorageAccountsImpl storageAccounts = new StorageAccountsImpl(this);
 	private final CloudServicesImpl cloudServices = new CloudServicesImpl(this);
 	private final NetworksImpl networks = new NetworksImpl(this);
 	public final VirtualMachines virtualMachines = new VirtualMachines(this);
@@ -99,6 +100,14 @@ public class Azure {
 	 */
 	public Sizes sizes() {
 		return this.sizes;
+	}
+	
+	
+	/**
+	 * @return The interface exposing functionality related to storage accounts
+	 */
+	public StorageAccounts storageAccounts() {
+		return this.storageAccounts;
 	}
 	
 	
