@@ -1,15 +1,34 @@
 # azure-shortcuts-for-java
-The goal of this project is to provide a radically simplified API for Azure in Java, following a variant of fluent interface with the builder design pattern. 
+The goal of this project is to provide a radically simplified API for Azure in Java, following a flavor of modern API design patterns (builder, fluent) optimized for readability, writeability and succinctness. 
 
-*Note: this is currently an experimental labs project/work in progress*
+*Note: this is currently an experimental labs project/work in progress*.
 
-The shortcuts library supports both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable. 
+The shortcuts library supports both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable.
 
-A lot of short code samples are in the `com.microsoft.azure.shortcuts.resources.samples` (for ARM) and `com.microsoft.azure.shortcuts.services.samples` (for ASM) packages.
+A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` (for ARM) and `com.microsoft.azure.shortcuts.services.samples` (for ASM).
 
-it is *not* currently a goal of this library to cover all of the Azure API surface, but to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back.
+It is *not* currently a goal of this library to cover all of the Azure API surface, but rather to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back, which this project is also built on.
+
+## Setting up the dev machine
+
+To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao for [the pointers](http://ted-gao.blogspot.com/2011/09/using-maven-to-manage-library.html)):
+
+1. Create a directory for the workspace
+2. In that workspace directory, run `mvn -Declipse.workspace=. eclipse:configure-workspace`
+3. In the project directory, after `git-clone`, run `mvn eclipse:eclipse`
+4. In Eclipse, use  the workspace folder created earlier, and import the project into it (don't copy)
+5. Using Eclipse's **Configure Build Path** dialog for the project, on the **Source** tab, use **Add Folder...** to select the `src` folder of the project
+
+Inside the `\*.samples` packages, you will find a number of runnable sample code (classes with `main()`). For each of the sample classes, you can just **Debug As** > **Java Application**.
+
+Many of the samples rely on credentials files in the root of the project:
+
+* for the **"Classic" ASM-based APIs**, use a *"my.publishsettings"* file. This is the classical Publish-Settings file from Azure.
+
+* for the **"Resource" ARM-based APIs**, you can use the experimental *"my.authfile"* containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a service principal for your app. Further simplication of the authentication process is an area of active investigation, but for now you can create the file manually, as per the [Authentication](#creating-an-authenticated-client) section.    
 
 ## Pre-requisites
+
 * Java 7+
 * Azure SDK for Java v0.8.0 or higher
 * An Azure subscription
@@ -392,7 +411,7 @@ azure.storageAccounts().update("mystorage")
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 #### Reading information about a storage account
 
@@ -432,7 +451,7 @@ System.out.println(String.format("Found storage account: %s\n"
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+{TODO}
 
 
 #### Deleting a storage account
