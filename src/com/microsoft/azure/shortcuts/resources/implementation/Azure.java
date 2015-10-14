@@ -31,6 +31,7 @@ import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.resources.listing.Groups;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.listing.Resources;
+import com.microsoft.azure.shortcuts.resources.listing.Sizes;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -61,6 +62,7 @@ public class Azure {
     private final ResourcesImpl resources;
     private final GroupsImpl groups;
     private final ProvidersImpl providers;
+    private final SizesImpl sizes;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -79,12 +81,14 @@ public class Azure {
     	this(getConfigFromFile(authenticationFilePath, subscriptionId));
     }
     
+    
     private Azure(Configuration configuration) {
     	this.configuration = configuration;
         // this.storageAccounts = new StorageAccounts(this); TODO
         this.resources = new ResourcesImpl(this);
         this.groups = new GroupsImpl(this);
         this.providers = new ProvidersImpl(this);
+        this.sizes = new SizesImpl(this);
     }
     
     
@@ -98,6 +102,7 @@ public class Azure {
     		return PublishSettingsLoader.createManagementConfiguration(authFilePath, subscriptionId);
     	}
     }
+    
     
     //**********************************************************
     //* Getters
@@ -113,6 +118,10 @@ public class Azure {
     
     public Resources resources() {
     	return this.resources;
+    }
+    
+    public Sizes sizes() {
+    	return this.sizes;
     }
     
     

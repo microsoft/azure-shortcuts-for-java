@@ -1,62 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4.5/mail-1.4.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.2.2/jaxb-api-2.2.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/adal4j/1.1.1/adal4j-1.1.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/nimbusds/oauth2-oidc-sdk/4.5/oauth2-oidc-sdk-4.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.10/commons-codec-1.10.jar"/>
-	<classpathentry kind="var" path="M2_REPO/net/minidev/json-smart/1.1.1/json-smart-1.1.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/nimbusds/lang-tag/1.4/lang-tag-1.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/nimbusds/nimbus-jose-jwt/3.1.2/nimbus-jose-jwt-3.1.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcprov-jdk15on/1.51/bcprov-jdk15on-1.51.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.2.4/gson-2.2.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-core/0.8.3/azure-core-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.2/commons-logging-1.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-client/1.13/jersey-client-1.13.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-core/1.13/jersey-core-1.13.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-json/1.13/jersey-json-1.13.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/codehaus/jettison/jettison/1.1/jettison-1.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/sun/xml/bind/jaxb-impl/2.2.3-1/jaxb-impl-2.2.3-1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.9.2/jackson-core-asl-1.9.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-mapper-asl/1.9.2/jackson-mapper-asl-1.9.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-jaxrs/1.9.2/jackson-jaxrs-1.9.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-xc/1.9.2/jackson-xc-1.9.2.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-compute/0.8.3/azure-mgmt-compute-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-media/0.8.3/azure-media-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.6.0/jackson-databind-2.6.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.6.0/jackson-core-2.6.0.jar"/>
-	<classpathentry kind="var" path="M2_REPO/io/jsonwebtoken/jjwt/0.5.1/jjwt-0.5.1.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-keyvault-extensions/0.8.3/azure-keyvault-extensions-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-keyvault/0.8.3/azure-keyvault-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-keyvault-core/0.8.3/azure-keyvault-core-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-websites/0.8.3/azure-svc-mgmt-websites-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-storage/0.8.3/azure-svc-mgmt-storage-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-sql/0.8.3/azure-svc-mgmt-sql-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-scheduler/0.8.3/azure-svc-mgmt-scheduler-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-network/0.8.3/azure-svc-mgmt-network-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-media/0.8.3/azure-svc-mgmt-media-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-utility/0.8.3/azure-mgmt-utility-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-resources/0.8.3/azure-mgmt-resources-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-storage/0.8.3/azure-mgmt-storage-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-network/0.8.3/azure-mgmt-network-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-compute/0.8.3/azure-svc-mgmt-compute-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-traffic-manager/0.8.3/azure-mgmt-traffic-manager-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-dns/0.8.3/azure-mgmt-dns-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-sql/0.8.3/azure-mgmt-sql-0.8.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt/0.8.3/azure-svc-mgmt-0.8.3.jar"/>
-	<classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="src" path="src" including="**/*.java"/>
+  <classpathentry kind="output" path="target/classes"/>
+  <classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4.5/mail-1.4.5.jar" sourcepath="M2_REPO/javax/mail/mail/1.4.5/mail-1.4.5-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar" sourcepath="M2_REPO/javax/activation/activation/1.1/activation-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/inject/javax.inject/1/javax.inject-1.jar" sourcepath="M2_REPO/javax/inject/javax.inject/1/javax.inject-1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.2.2/jaxb-api-2.2.2.jar" sourcepath="M2_REPO/javax/xml/bind/jaxb-api/2.2.2/jaxb-api-2.2.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2.jar" sourcepath="M2_REPO/javax/xml/stream/stax-api/1.0-2/stax-api-1.0-2-sources.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/adal4j/1.1.1/adal4j-1.1.1.jar" sourcepath="M2_REPO/com/microsoft/azure/adal4j/1.1.1/adal4j-1.1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/nimbusds/oauth2-oidc-sdk/4.5/oauth2-oidc-sdk-4.5.jar" sourcepath="M2_REPO/com/nimbusds/oauth2-oidc-sdk/4.5/oauth2-oidc-sdk-4.5-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0.jar" sourcepath="M2_REPO/net/jcip/jcip-annotations/1.0/jcip-annotations-1.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar" sourcepath="M2_REPO/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-codec/commons-codec/1.10/commons-codec-1.10.jar" sourcepath="M2_REPO/commons-codec/commons-codec/1.10/commons-codec-1.10-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/minidev/json-smart/1.1.1/json-smart-1.1.1.jar" sourcepath="M2_REPO/net/minidev/json-smart/1.1.1/json-smart-1.1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/nimbusds/lang-tag/1.4/lang-tag-1.4.jar" sourcepath="M2_REPO/com/nimbusds/lang-tag/1.4/lang-tag-1.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/nimbusds/nimbus-jose-jwt/3.1.2/nimbus-jose-jwt-3.1.2.jar" sourcepath="M2_REPO/com/nimbusds/nimbus-jose-jwt/3.1.2/nimbus-jose-jwt-3.1.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/bouncycastle/bcprov-jdk15on/1.51/bcprov-jdk15on-1.51.jar" sourcepath="M2_REPO/org/bouncycastle/bcprov-jdk15on/1.51/bcprov-jdk15on-1.51-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/google/code/gson/gson/2.2.4/gson-2.2.4.jar" sourcepath="M2_REPO/com/google/code/gson/gson/2.2.4/gson-2.2.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-core/0.8.3/azure-core-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-core/0.8.3/azure-core-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpclient/4.3.6/httpclient-4.3.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3.jar" sourcepath="M2_REPO/org/apache/httpcomponents/httpcore/4.3.3/httpcore-4.3.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-logging/commons-logging/1.2/commons-logging-1.2.jar" sourcepath="M2_REPO/commons-logging/commons-logging/1.2/commons-logging-1.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-client/1.13/jersey-client-1.13.jar" sourcepath="M2_REPO/com/sun/jersey/jersey-client/1.13/jersey-client-1.13-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-core/1.13/jersey-core-1.13.jar" sourcepath="M2_REPO/com/sun/jersey/jersey-core/1.13/jersey-core-1.13-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/jersey/jersey-json/1.13/jersey-json-1.13.jar" sourcepath="M2_REPO/com/sun/jersey/jersey-json/1.13/jersey-json-1.13-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/jettison/jettison/1.1/jettison-1.1.jar" sourcepath="M2_REPO/org/codehaus/jettison/jettison/1.1/jettison-1.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/stax/stax-api/1.0.1/stax-api-1.0.1.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/sun/xml/bind/jaxb-impl/2.2.3-1/jaxb-impl-2.2.3-1.jar" sourcepath="M2_REPO/com/sun/xml/bind/jaxb-impl/2.2.3-1/jaxb-impl-2.2.3-1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.9.2/jackson-core-asl-1.9.2.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-core-asl/1.9.2/jackson-core-asl-1.9.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-mapper-asl/1.9.2/jackson-mapper-asl-1.9.2.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-mapper-asl/1.9.2/jackson-mapper-asl-1.9.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-jaxrs/1.9.2/jackson-jaxrs-1.9.2.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-jaxrs/1.9.2/jackson-jaxrs-1.9.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/org/codehaus/jackson/jackson-xc/1.9.2/jackson-xc-1.9.2.jar" sourcepath="M2_REPO/org/codehaus/jackson/jackson-xc/1.9.2/jackson-xc-1.9.2-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-compute/0.8.3/azure-mgmt-compute-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-compute/0.8.3/azure-mgmt-compute-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4.jar" sourcepath="M2_REPO/commons-io/commons-io/2.4/commons-io-2.4-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-media/0.8.3/azure-media-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-media/0.8.3/azure-media-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.6.0/jackson-databind-2.6.0.jar" sourcepath="M2_REPO/com/fasterxml/jackson/core/jackson-databind/2.6.0/jackson-databind-2.6.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0.jar" sourcepath="M2_REPO/com/fasterxml/jackson/core/jackson-annotations/2.6.0/jackson-annotations-2.6.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.6.0/jackson-core-2.6.0.jar" sourcepath="M2_REPO/com/fasterxml/jackson/core/jackson-core/2.6.0/jackson-core-2.6.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/io/jsonwebtoken/jjwt/0.5.1/jjwt-0.5.1.jar" sourcepath="M2_REPO/io/jsonwebtoken/jjwt/0.5.1/jjwt-0.5.1-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-keyvault-extensions/0.8.3/azure-keyvault-extensions-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-keyvault-extensions/0.8.3/azure-keyvault-extensions-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-keyvault/0.8.3/azure-keyvault-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-keyvault/0.8.3/azure-keyvault-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-keyvault-core/0.8.3/azure-keyvault-core-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-keyvault-core/0.8.3/azure-keyvault-core-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-websites/0.8.3/azure-svc-mgmt-websites-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt-websites/0.8.3/azure-svc-mgmt-websites-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-storage/0.8.3/azure-svc-mgmt-storage-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt-storage/0.8.3/azure-svc-mgmt-storage-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-sql/0.8.3/azure-svc-mgmt-sql-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt-sql/0.8.3/azure-svc-mgmt-sql-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-scheduler/0.8.3/azure-svc-mgmt-scheduler-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt-scheduler/0.8.3/azure-svc-mgmt-scheduler-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-network/0.8.3/azure-svc-mgmt-network-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt-network/0.8.3/azure-svc-mgmt-network-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-media/0.8.3/azure-svc-mgmt-media-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt-media/0.8.3/azure-svc-mgmt-media-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-utility/0.8.3/azure-mgmt-utility-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-utility/0.8.3/azure-mgmt-utility-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-resources/0.8.3/azure-mgmt-resources-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-resources/0.8.3/azure-mgmt-resources-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-storage/0.8.3/azure-mgmt-storage-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-storage/0.8.3/azure-mgmt-storage-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-network/0.8.3/azure-mgmt-network-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-network/0.8.3/azure-mgmt-network-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt-compute/0.8.3/azure-svc-mgmt-compute-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt-compute/0.8.3/azure-svc-mgmt-compute-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-traffic-manager/0.8.3/azure-mgmt-traffic-manager-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-traffic-manager/0.8.3/azure-mgmt-traffic-manager-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-dns/0.8.3/azure-mgmt-dns-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-dns/0.8.3/azure-mgmt-dns-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-mgmt-sql/0.8.3/azure-mgmt-sql-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-mgmt-sql/0.8.3/azure-mgmt-sql-0.8.3-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/microsoft/azure/azure-svc-mgmt/0.8.3/azure-svc-mgmt-0.8.3.jar" sourcepath="M2_REPO/com/microsoft/azure/azure-svc-mgmt/0.8.3/azure-svc-mgmt-0.8.3-sources.jar"/>
 </classpath>

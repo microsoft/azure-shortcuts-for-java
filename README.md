@@ -15,7 +15,7 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 1. Create a directory for the workspace
 2. In that workspace directory, run `mvn -Declipse.workspace=. eclipse:configure-workspace`
-3. In the project directory, after `git-clone`, run `mvn eclipse:eclipse`
+3. In the project directory, after `git-clone`, run `mvn eclipse:eclipse -DdownloadSources=true -DdownloadJavadocs=true`
 4. In Eclipse, use  the workspace folder created earlier, and import the project into it (don't copy)
 5. Using Eclipse's **Configure Build Path** dialog for the project, on the **Source** tab, use **Add Folder...** to select the `src` folder of the project
 
@@ -197,7 +197,12 @@ List<String> sizeNames = azure.sizes().list(supportingVM, supportingCloudService
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+
+You need to specify the region to get the sizes:
+
+```java
+List<String> sizeNames = azure.sizes().list("westus");
+```
 
 
 #### Listing available OS image names

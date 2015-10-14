@@ -7,6 +7,9 @@
     <groupId>com.microsoft.azure.shortcuts</groupId>
     <artifactId>azure-shortcuts</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <build>
+    	<sourceDirectory>src</sourceDirectory>
+    </build>
     <dependencies>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
