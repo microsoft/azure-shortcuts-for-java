@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
@@ -62,7 +63,7 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleTy
  * 
  */
 public class VirtualMachinesImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements VirtualMachines {	
 	
 	VirtualMachinesImpl(Azure azure) {

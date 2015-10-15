@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvisionable;
@@ -34,8 +35,10 @@ import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
 public class GroupsImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements Groups {
+	
+	List<Group> groups = null;
 	
 	GroupsImpl(Azure azure) {
 		super(azure);

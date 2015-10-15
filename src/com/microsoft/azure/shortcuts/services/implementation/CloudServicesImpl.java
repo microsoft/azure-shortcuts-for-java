@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.NotImplementedException;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
@@ -40,7 +41,7 @@ import com.microsoft.windowsazure.management.compute.models.HostedServicePropert
 
 // Class encapsulating the API related to cloud services
 public class CloudServicesImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements CloudServices {
 	
 	CloudServicesImpl(Azure azure) {

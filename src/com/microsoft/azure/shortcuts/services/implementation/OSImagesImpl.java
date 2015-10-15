@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.listing.OsImages;
 import com.microsoft.azure.shortcuts.services.reading.OSImage;
@@ -32,7 +33,7 @@ import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImag
 
 // Class encapsulating the API related to OS images
 public class OSImagesImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements OsImages {
 	
 	OSImagesImpl(Azure azure) {

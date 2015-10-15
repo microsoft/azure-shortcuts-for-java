@@ -22,12 +22,13 @@ package com.microsoft.azure.shortcuts.services.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.services.listing.Sizes;
 import com.microsoft.windowsazure.management.models.RoleSizeListResponse.RoleSize;
 
 // Encapsulates the API related to VM sizes
 public class SizesImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements Sizes {
 	
 	SizesImpl(Azure azure) {

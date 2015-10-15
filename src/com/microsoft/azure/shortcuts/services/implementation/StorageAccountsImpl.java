@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
@@ -43,7 +44,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountUpdate
 
 // Class encapsulating the API related to storage accounts
 public class StorageAccountsImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements StorageAccounts {
 	
 	StorageAccountsImpl(Azure azure) {

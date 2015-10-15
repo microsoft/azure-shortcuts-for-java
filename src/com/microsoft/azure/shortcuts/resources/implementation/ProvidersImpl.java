@@ -25,13 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
 public class ProvidersImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements Providers {
 	
 	ProvidersImpl(Azure azure) {

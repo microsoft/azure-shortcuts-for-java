@@ -22,12 +22,13 @@ package com.microsoft.azure.shortcuts.services.implementation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.services.listing.Regions;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 
 // Class encapsulating the API related to locations
 public class RegionsImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements Regions {
 	
 	RegionsImpl(Azure azure) {

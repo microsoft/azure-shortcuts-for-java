@@ -27,6 +27,7 @@ import java.util.List;
 
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 import com.microsoft.azure.shortcuts.resources.listing.Resources;
@@ -35,8 +36,9 @@ import com.microsoft.azure.shortcuts.resources.reading.Resource;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
 
+
 public class ResourcesImpl
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements Resources {
 	
 	ResourcesImpl(Azure azure) {

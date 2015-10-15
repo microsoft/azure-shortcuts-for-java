@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.Utils;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionBlank;
@@ -35,7 +36,7 @@ import com.microsoft.windowsazure.management.network.models.NetworkListResponse.
 
 // Class encapsulating the API related to virtual networks
 public class NetworksImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements Networks {
 	
 	NetworksImpl(Azure azure) {

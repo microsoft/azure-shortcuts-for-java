@@ -25,11 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Sizes;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 public class SizesImpl 
-	extends EntitiesImpl
+	extends EntitiesImpl<Azure>
 	implements Sizes {
 
 	SizesImpl(Azure azure) {
