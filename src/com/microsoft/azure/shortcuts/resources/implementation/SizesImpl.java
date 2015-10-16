@@ -19,15 +19,16 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Sizes;
-import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.azure.shortcuts.resources.reading.Size;
 
 public class SizesImpl 
 	extends EntitiesImpl<Azure>
@@ -38,23 +39,68 @@ public class SizesImpl
 	}
 	
 	@Override
-	public List<String> names(String region) {
-		try {
-			ArrayList<VirtualMachineSize> items = azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
-			ArrayList<String> names = new ArrayList<>();
-			for(VirtualMachineSize item : items) {
-				names.add(item.getName());
-			}
-			return names;
-		} catch (IOException | ServiceException | URISyntaxException e) {
-			// Not very actionable, so just return an empty array
-			return new ArrayList<>();
-		}
-	}
-
-	@Override
-	public List<String> names() throws Exception {
+	public Map<String, Size> list() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	
+	@Override
+	public Map<String, Size> list(String region) throws Exception {
+		ArrayList<VirtualMachineSize> items = azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
+		HashMap<String, Size> entities = new HashMap<>();
+		for(VirtualMachineSize item : items) {
+			SizeImpl size = new SizeImpl(item);
+			entities.put(item.getName(), size);
+		}
+		return Collections.unmodifiableMap(entities);
+	}
+
+
+	// Implementation of a Size
+	private class SizeImpl
+		extends NamedImpl<Size>
+		implements Size {
+
+		final VirtualMachineSize azureSize;
+		
+		private SizeImpl(VirtualMachineSize azureSize) {
+			super(azureSize.getName());
+			this.azureSize = azureSize;
+		}
+
+		
+		/*************************************
+		 * Getters
+		 *************************************/
+		
+		@Override
+		public int maxDataDiskCount() {
+			return this.azureSize.getMaxDataDiskCount();
+		}
+
+
+		@Override
+		public int memoryInMB() {
+			return this.azureSize.getMemoryInMB();
+		}
+
+
+		@Override
+		public int numberOfCores() {
+			return this.azureSize.getNumberOfCores();
+		}
+
+
+		@Override
+		public int osDiskSizeInMB() {
+			return this.azureSize.getOSDiskSizeInMB();
+		}
+
+
+		@Override
+		public int resourceDiskSizeInMB() {
+			return this.azureSize.getResourceDiskSizeInMB();
+		}
 	}
 }

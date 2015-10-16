@@ -19,18 +19,12 @@
 */
 package com.microsoft.azure.shortcuts.resources.reading;
 
-import java.util.List;
-import java.util.Map;
-
 import com.microsoft.azure.shortcuts.common.reading.Named;
 
-public interface Provider extends Named {
-	String registrationState() throws Exception;
-	Map<String, ResourceType> resourceTypes() throws Exception;
-	ResourceType resourceTypes(String name) throws Exception;
-	
-	public interface ResourceType extends Named {
-		List<String> apiVersions();
-		String latestApiVersion();
-	}
+public interface Size extends Named {
+	int maxDataDiskCount();
+	int memoryInMB();
+	int numberOfCores();
+	int osDiskSizeInMB();
+	int resourceDiskSizeInMB();
 }

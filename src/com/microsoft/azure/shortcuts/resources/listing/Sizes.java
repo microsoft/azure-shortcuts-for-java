@@ -19,16 +19,18 @@
 */
 package com.microsoft.azure.shortcuts.resources.listing;
 
-import java.util.List;
+import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.resources.reading.Size;
 
-public interface Sizes extends SupportsListingNames {
+public interface Sizes extends 
+	SupportsListingEntities<Size> {
 
 	/**
 	 * @param region
 	 * @return Virtual machine sizes available in the specified region
+	 * @throws Exception 
 	 */
-	List<String> names(String region);
-
+	Map<String, Size> list(String region) throws Exception;
 }

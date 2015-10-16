@@ -20,11 +20,13 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.reading.Size;
 
 // Tests sizes
 public class Sizes {
@@ -38,8 +40,26 @@ public class Sizes {
     }
 
     public static void test(Azure azure) throws Exception {
-		// List sizes in a specific region
-    	List<String> sizeNames = azure.sizes().names("westus");
-    	System.out.println("VM sizes: \n\t" + StringUtils.join(sizeNames, ",\n\t"));    	
+		// List size names in a specific region
+    	Set<String> sizeNames = azure.sizes().list("westus").keySet();
+    	System.out.println("VM sizes: \n\t" + StringUtils.join(sizeNames, ",\n\t"));
+    	
+    	// List sizes in a specific region
+    	Map<String, Size> sizes = azure.sizes().list("westus");
+    	for(Size size : sizes.values()) {
+        	System.out.println(String.format("VM size: %s\n"
+        		+ "\tMax data disk count: %d\n"
+        		+ "\tMemory in MB: %d\n"
+        		+ "\tNumber of cores: %d\n"
+        		+ "\tOS disk size in MB: %d\n"
+        		+ "\tResource disk size in MB: %d\n",
+        		size.name(),
+        		size.maxDataDiskCount(),
+        		size.memoryInMB(),
+        		size.numberOfCores(),
+        		size.osDiskSizeInMB(),
+        		size.resourceDiskSizeInMB()
+        		));
+    	}
     }
 }

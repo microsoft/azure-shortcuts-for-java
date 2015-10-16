@@ -197,12 +197,17 @@ List<String> sizeNames = azure.sizes().list(supportingVM, supportingCloudService
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-You need to specify the region to get the sizes:
+You need to specify the region to get the sizes. The returned sizes are indexed by their name:
 
 ```java
-List<String> sizeNames = azure.sizes().list("westus");
+Map<String, Size> sizes = azure.sizes().list("westus");
 ```
 
+Therefore, to get the names only:
+
+```java
+Set<String> sizeNames = azure.sizes().list("westus").keySet();
+```
 
 #### Listing available OS image names
 
