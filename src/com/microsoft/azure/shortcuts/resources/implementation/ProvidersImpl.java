@@ -114,7 +114,7 @@ public class ProvidersImpl
 		
 		// Implementation of resource type
 		private class ResourceTypeImpl
-			extends NamedImpl<ResourceType>
+			extends NamedImpl
 			implements Provider.ResourceType {
 
 			final private ProviderResourceType azureResourceType;

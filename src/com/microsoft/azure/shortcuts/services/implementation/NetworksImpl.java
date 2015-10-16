@@ -156,7 +156,7 @@ public class NetworksImpl
 		
 		// Implementation of Subnet
 		private class SubnetImpl 
-			extends NamedImpl<Subnet>
+			extends NamedImpl
 			implements Network.Subnet {
 			
 			private String cidr;

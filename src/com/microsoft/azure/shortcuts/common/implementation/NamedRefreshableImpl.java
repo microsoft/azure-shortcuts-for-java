@@ -22,7 +22,7 @@ package com.microsoft.azure.shortcuts.common.implementation;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 
 public abstract class NamedRefreshableImpl<T> 
-	extends NamedImpl<T>
+	extends NamedImpl
 	implements Refreshable<T> {
 
 	protected boolean initialized = false;

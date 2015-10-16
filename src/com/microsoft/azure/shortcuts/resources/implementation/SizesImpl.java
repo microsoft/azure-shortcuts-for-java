@@ -59,7 +59,7 @@ public class SizesImpl
 
 	// Implementation of a Size
 	private class SizeImpl
-		extends NamedImpl<Size>
+		extends NamedImpl
 		implements Size {
 
 		final VirtualMachineSize azureSize;
