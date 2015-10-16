@@ -42,7 +42,6 @@ public class Groups {
 		// List resource groups
     	List<String> groups = azure.groups().names();
     	System.out.println("Groups: \n\t" + StringUtils.join(groups, ",\n\t"));
-		
     	
     	// Create a resource group
     	String groupName = "group" + String.valueOf(System.currentTimeMillis());
@@ -63,7 +62,7 @@ public class Groups {
 				resourceGroup.region(),
 				resourceGroup.id(),
 				resourceGroup.tags().toString(),
-				resourceGroup.getProvisioningState()));
+				resourceGroup.provisioningState()));
 				
 		// Update a resource group
 		azure.groups().update(groupName)

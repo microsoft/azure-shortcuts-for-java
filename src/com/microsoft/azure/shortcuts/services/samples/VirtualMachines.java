@@ -49,13 +49,13 @@ public class VirtualMachines {
 		// Create a new network
 		final String network = "net" + timeStamp;
 		System.out.println(String.format("Creating virtual network named '%s'...", network));
-		azure.networks().define(network)
+		azure.networks().define(network)		
 			.withRegion("West US")
 			.withCidr("10.0.0.0/28")
 			.withSubnet("Foo", "10.0.0.0/29")
 			.withSubnet("Bar", "10.0.0.8/29")
 			.provision();
-			
+					
 		// Create a Linux VM in that network
 		final String vmName2 = "vl" + timeStamp;
 		System.out.println(String.format("Creating virtual machine named '%s'...", vmName2));
@@ -94,7 +94,7 @@ public class VirtualMachines {
 			.withWindowsImage("a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201504.01-en.us-127GB.vhd")
 			.withTcpEndpoint(3389)
 			.provision();		
-			
+		
 		// List virtual machines
 		List<String> vmNames = azure.virtualMachines().names();
 		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));

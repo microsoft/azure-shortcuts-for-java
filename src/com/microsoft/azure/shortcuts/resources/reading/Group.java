@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources.reading;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
@@ -32,6 +32,6 @@ public interface Group extends
 	
 	String region() throws Exception;
 	String id() throws Exception;
-	HashMap<String, String> tags() throws Exception;
-	String getProvisioningState() throws Exception;
+	Map<String, String> tags() throws Exception;
+	String provisioningState() throws Exception;
 }

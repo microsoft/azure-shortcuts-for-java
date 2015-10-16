@@ -20,8 +20,10 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
@@ -61,8 +63,8 @@ public class GroupsImpl
 	@Override
 	// Gets a specific resource group
 	public Group get(String name) throws Exception {
-		GroupImpl group = new GroupImpl(name, false);
-		return group.refresh();
+		ResourceGroupExtended azureGroup = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
+		return new GroupImpl(azureGroup);
 	}
 	
 	
@@ -75,15 +77,23 @@ public class GroupsImpl
 
 	@Override
 	public GroupUpdatableBlank update(String name) {
-		return new GroupImpl(name, false);
+		return new GroupImpl(createAzureGroup(name));
 	}
 
 
 	@Override
 	public GroupDefinitionBlank define(String name) {
-		return new GroupImpl(name, true);
+		return new GroupImpl(createAzureGroup(name));
 	}
 
+	
+	// Creates new Azure group object
+	private static ResourceGroupExtended createAzureGroup(String name) {
+		ResourceGroupExtended azureGroup = new ResourceGroupExtended();
+		azureGroup.setName(name);
+		return azureGroup;
+	}
+	
 	
 	// Implements logic for individual resource group
 	private class GroupImpl 
@@ -95,11 +105,11 @@ public class GroupsImpl
 			GroupDefinitionBlank,
 			Group {
 		
-		private HashMap<String, String> tags = new HashMap<String, String>();
-		private String region, id, provisioningState;
-
-		private GroupImpl(String name, boolean initialized) {
-			super(name.toLowerCase(), initialized);
+		private ResourceGroupExtended azureGroup;
+		
+		private GroupImpl(ResourceGroupExtended azureGroup) {
+			super(azureGroup.getName(), true);
+			this.azureGroup = azureGroup;
 		}
 
 
@@ -109,27 +119,22 @@ public class GroupsImpl
 		
 		@Override
 		public String region() throws Exception {
-			ensureInitialized();
-			return this.region;
+			return this.azureGroup.getLocation();
 		}
 
 		@Override
 		public String id() throws Exception {
-			ensureInitialized();
-			return this.id;
+			return this.azureGroup.getId();
 		}
 
 		@Override
-		public HashMap<String, String> tags() throws Exception {
-			ensureInitialized();
-			return this.tags;
+		public Map<String, String> tags() throws Exception {
+			return Collections.unmodifiableMap(this.azureGroup.getTags());
 		}
 
 		@Override
-		public String getProvisioningState() throws Exception {
-			// This property is not cached because it is useful to read it in real time
-			this.refresh();
-			return this.provisioningState;
+		public String provisioningState() throws Exception {
+			return this.azureGroup.getProvisioningState();
 		}
 
 		
@@ -139,25 +144,28 @@ public class GroupsImpl
 		
 		@Override
 		public GroupImpl withTags(HashMap<String, String> tags) {
-			this.tags = tags;
+			this.azureGroup.setTags(tags);
 			return this;
 		}
 
 		@Override
 		public GroupImpl withTag(String key, String value) {
-			this.tags.put(key, value);
+			if(this.azureGroup.getTags() == null) {
+				this.azureGroup.setTags(new HashMap<String, String>());
+			}
+			this.azureGroup.getTags().put(key, value);
 			return this;
 		}
 
 		@Override
 		public GroupImpl withoutTag(String key) {
-			this.tags.remove(key);
+			this.azureGroup.getTags().remove(key);
 			return this;
 		}
 
 		@Override
 		public GroupImpl withRegion(String region) {
-			this.region = region;
+			this.azureGroup.setLocation(region);
 			return this;
 		}
 
@@ -171,11 +179,11 @@ public class GroupsImpl
 			ResourceGroup params = new ResourceGroup();
 			Group group;
 			
-			params.setTags(this.tags);
+			params.setTags(this.azureGroup.getTags());
 			
 			// Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
-			if(this.region != null) {
-				params.setLocation(this.region);
+			if(this.azureGroup.getLocation() != null) {
+				params.setLocation(this.azureGroup.getLocation());
 			} else if(null == (group = azure.groups().get(this.name))) {
 				throw new Exception("Resource group not found");
 			} else {
@@ -196,8 +204,8 @@ public class GroupsImpl
 		@Override
 		public GroupImpl provision() throws Exception {
 			ResourceGroup params = new ResourceGroup();
-			params.setLocation(this.region);
-			params.setTags(this.tags);
+			params.setLocation(this.azureGroup.getLocation());
+			params.setTags(this.azureGroup.getTags());
 			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.name, params);
 			return this;
 		}
@@ -205,11 +213,7 @@ public class GroupsImpl
 		
 		@Override
 		public GroupImpl refresh() throws Exception {
-			ResourceGroupExtended response = azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup();
-			this.region = response.getLocation();
-			this.id = response.getId();
-			this.tags = response.getTags();
-			this.provisioningState = response.getProvisioningState();
+			this.azureGroup =  azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup();
 			this.initialized = true;
 			return this;
 		}
