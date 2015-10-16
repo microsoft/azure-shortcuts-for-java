@@ -19,11 +19,11 @@
 */
 package com.microsoft.azure.shortcuts.resources.listing;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
 public interface Providers extends 
-	SupportsListingNames,
-	SupportsReading<Provider> {
+	SupportsReading<Provider>,
+	SupportsListingEntities<Provider> {
 }

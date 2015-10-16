@@ -19,17 +19,18 @@
 */
 package com.microsoft.azure.shortcuts.resources.reading;
 
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 
 public interface Provider extends Named {
 	String registrationState() throws Exception;
-	HashMap<String, ResourceType> resourceTypes() throws Exception;
+	Map<String, ResourceType> resourceTypes() throws Exception;
 	ResourceType resourceTypes(String name) throws Exception;
 	
 	public interface ResourceType extends Named {
-		String[] apiVersions();
+		List<String> apiVersions();
 		String latestApiVersion();
 		
 	}

@@ -20,8 +20,7 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,9 +40,14 @@ public class Providers {
     }
 
     public static void test(Azure azure) throws Exception {
-		// List providers
-    	List<String> providers = azure.providers().names();
-    	System.out.println("Providers: \n\t" + StringUtils.join(providers, ",\n\t"));
+    	// List provider namespaces
+    	Map<String, Provider> providers = azure.providers().list();
+    	System.out.println(String.format("Provider namespaces: %s", StringUtils.join(providers.keySet(), ", ")));
+    	
+    	// List providers
+    	for(Provider provider : providers.values()) {
+    		System.out.println(provider.name() + " - " + provider.registrationState());
+    	}
     	
     	if(providers.size() > 0) {
     		// Get information about a specific provider
@@ -56,7 +60,7 @@ public class Providers {
     				provider.registrationState()));
     		
     		for(ResourceType t : provider.resourceTypes().values()) {
-    			System.out.println(String.format("\t\t%s: %s", t.name(), Arrays.toString(t.apiVersions())));
+    			System.out.println(String.format("\t\t%s: %s", t.name(), StringUtils.join(t.apiVersions(), ", ")));
     		}
     		
     		// Get latest API version for a specific resource type

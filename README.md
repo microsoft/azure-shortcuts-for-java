@@ -641,11 +641,20 @@ resource.delete();
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-#### Listing resource providers (by namespace)
+#### Listing resource providers
+
+Provider objects, indexed by namespace:
 
 ```java
-List<String> providerNamespaces = azure.providers().names();
+Map<String, Provider> providers = azure.providers().list();
 ```
+
+Namespaces only:
+
+```java
+Set<String> providerNamespaces = azure.providers().list().keySet();
+```
+
 
 #### Reading information about a resource provider
 

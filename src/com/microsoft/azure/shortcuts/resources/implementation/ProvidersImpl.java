@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
@@ -31,7 +32,7 @@ import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
-public class ProvidersImpl 
+public class ProvidersImpl
 	extends EntitiesImpl<Azure>
 	implements Providers {
 	
@@ -39,28 +40,35 @@ public class ProvidersImpl
 		super(azure);
 	}
 	
-	@Override
-	// Returns list of resource names in the subscription
-	public List<String> names() throws Exception {
-		ArrayList<com.microsoft.azure.management.resources.models.Provider> items = 
-			azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();
-
-		ArrayList<String> names = new ArrayList<>();
-		for(com.microsoft.azure.management.resources.models.Provider item : items) {
-			names.add(item.getNamespace());
-		}
-
-		return names;
-	}
 	
+	@Override
+	public Map<String, Provider> list() throws Exception {
+		ArrayList<com.microsoft.azure.management.resources.models.Provider> azureProviders = getProviders(azure);
+		HashMap<String, Provider> providers = new HashMap<>();
+		for(com.microsoft.azure.management.resources.models.Provider azureProvider : azureProviders) {
+			ProviderImpl provider = new ProviderImpl(azureProvider);
+			providers.put(azureProvider.getNamespace(), provider);
+		}
+		
+		return Collections.unmodifiableMap(providers);
+	}
+
 	
 	@Override
 	public Provider get(String namespace) throws Exception {
-		ProviderImpl provider = new ProviderImpl(namespace, false);
-		return provider.refresh();
+		com.microsoft.azure.management.resources.models.Provider azureProvider = 
+				azure.resourceManagementClient().getProvidersOperations().get(namespace).getProvider();
+
+		return new ProviderImpl(azureProvider);
 	}
 
-	
+
+	// Get providers from Azure
+	private static ArrayList<com.microsoft.azure.management.resources.models.Provider> getProviders(Azure azure) throws Exception {
+		return azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();		
+	}
+		
+
 	// Implements logic for individual provider
 	private class ProviderImpl
 		extends
@@ -68,10 +76,11 @@ public class ProvidersImpl
 		implements 
 			Provider {
 		
-		private String registrationState;
-		private HashMap<String, ResourceType> resourceTypes = new HashMap<>();		
-		private ProviderImpl(String id, boolean initialized) {
-			super(id, initialized);
+		com.microsoft.azure.management.resources.models.Provider azureProvider;
+
+		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider) {
+			super(azureProvider.getNamespace(), true);
+			this.azureProvider = azureProvider;
 		}
 
 
@@ -82,13 +91,18 @@ public class ProvidersImpl
 
 		@Override
 		public String registrationState() throws Exception {
-			return this.registrationState;
+			return this.azureProvider.getRegistrationState();
 		}
 		
 
 		@Override
-		public HashMap<String, ResourceType> resourceTypes() throws Exception {
-			return this.resourceTypes;
+		public Map<String, ResourceType> resourceTypes() throws Exception {
+			HashMap<String, ResourceType> resourceTypes = new HashMap<>();
+			for(ProviderResourceType item : azureProvider.getResourceTypes()) {
+				ResourceTypeImpl resourceType = new ResourceTypeImpl(item);
+				resourceTypes.put(item.getName(), resourceType);
+			}
+			return Collections.unmodifiableMap(resourceTypes);
 		}
 		
 		
@@ -103,23 +117,29 @@ public class ProvidersImpl
 			extends NamedImpl<ResourceType>
 			implements Provider.ResourceType {
 
-			private ArrayList<String> apiVersions = new ArrayList<>();
-			private ResourceTypeImpl(String name) {
-				super(name);
+			final private ProviderResourceType azureResourceType;
+			
+			private ResourceTypeImpl(ProviderResourceType azureResourceType) {
+				super(azureResourceType.getName());
+				this.azureResourceType = azureResourceType;
 			}
 
 			@Override
-			public String[] apiVersions() {
-				return this.apiVersions.toArray(new String[0]);
+			public List<String> apiVersions() {
+				return Collections.unmodifiableList(this.azureResourceType.getApiVersions());
 			}
 
 			@Override
 			public String latestApiVersion() {
 				// Assume the collection is sorted in ascending order
-				if(this.apiVersions.size() > 0) {
-					return this.apiVersions.get(this.apiVersions.size() -1);
-				} else {
+				ArrayList<String> versions = azureResourceType.getApiVersions();
+				if(versions == null || versions.isEmpty()) {
 					return null;
+				} else if(versions.size() == 1) {
+					return versions.get(0);
+				} else {
+					Collections.sort(versions);
+					return versions.get(versions.size() -1);
 				}
 			}
 		}
@@ -131,21 +151,11 @@ public class ProvidersImpl
 
 		@Override
 		public ProviderImpl refresh() throws Exception {
-			com.microsoft.azure.management.resources.models.Provider response = 
+			com.microsoft.azure.management.resources.models.Provider azureProvider = 
 					azure.resourceManagementClient().getProvidersOperations().get(this.name).getProvider();
-			this.setName(response.getNamespace());
-			this.registrationState = response.getRegistrationState();
-			
-			ArrayList<ProviderResourceType> resourceTypes = response.getResourceTypes();
-			for(ProviderResourceType r : resourceTypes) {
-				ProviderImpl.ResourceTypeImpl resourceType = this.new ResourceTypeImpl(r.getName());
-				this.resourceTypes.put(r.getName(), resourceType);
-				resourceType.apiVersions = r.getApiVersions();
-				Collections.sort(resourceType.apiVersions);
-			}
-			
-			this.initialized = true;
+			this.azureProvider = azureProvider;
 			return this;
 		}
 	}
+
 }
