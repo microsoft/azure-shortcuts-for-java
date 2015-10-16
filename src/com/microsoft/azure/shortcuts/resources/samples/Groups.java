@@ -20,7 +20,8 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -38,10 +39,29 @@ public class Groups {
         }
     }
 
+    private static void printGroup(Group group) throws Exception {
+		System.out.println(String.format("Group: %s\n"
+			+ "\tRegion: %s\n"
+			+ "\tID: %s\n"
+			+ "\tTags: %s\n"
+			+ "\tProvisioning state: %s\n",
+			group.name(),
+			group.region(),
+			group.id(),
+			group.tags().toString(),
+			group.provisioningState()));
+    }
+    
+    
     public static void test(Azure azure) throws Exception {
 		// List resource groups
-    	List<String> groups = azure.groups().names();
-    	System.out.println("Groups: \n\t" + StringUtils.join(groups, ",\n\t"));
+    	Set<String> groupNames = azure.groups().list().keySet();
+    	System.out.println("Group names: \n\t" + StringUtils.join(groupNames, ",\n\t"));
+    	
+    	Map<String, Group> groups = azure.groups().list();
+    	for(Group group : groups.values()) {
+    		printGroup(group);
+    	}
     	
     	// Create a resource group
     	String groupName = "group" + String.valueOf(System.currentTimeMillis());
@@ -53,17 +73,8 @@ public class Groups {
     	
     	// Read a specific resource group
 		Group resourceGroup = azure.groups().get(groupName);
-		System.out.println(String.format("Found group: %s\n"
-				+ "\tRegion: %s\n"
-				+ "\tID: %s\n"
-				+ "\tTags: %s\n"
-				+ "\tProvisioning state: %s\n",
-				resourceGroup.name(),
-				resourceGroup.region(),
-				resourceGroup.id(),
-				resourceGroup.tags().toString(),
-				resourceGroup.provisioningState()));
-				
+		printGroup(resourceGroup);
+		
 		// Update a resource group
 		azure.groups().update(groupName)
 			.withTag("foo", "bar")

@@ -46,19 +46,18 @@ public class GroupsImpl
 		super(azure);
 	}
 	
-	@Override
-	public List<String> names() throws Exception {
-		ArrayList<ResourceGroupExtended> groups = 
-			azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
-		
-		ArrayList<String> names = new ArrayList<>();
-		for(ResourceGroupExtended group : groups) {
-			names.add(group.getName());
-		}
-		
-		return names;		
-	}
 	
+	@Override
+	public Map<String, Group> list() throws Exception {
+		ArrayList<ResourceGroupExtended> azureGroups = 
+				azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
+		HashMap<String, Group> groups = new HashMap<>();
+		for(ResourceGroupExtended azureGroup : azureGroups) {
+			groups.put(azureGroup.getName(), new GroupImpl(azureGroup));
+		}
+		return Collections.unmodifiableMap(groups);
+	}
+
 		
 	@Override
 	// Gets a specific resource group

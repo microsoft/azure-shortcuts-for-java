@@ -514,8 +514,15 @@ azure.groups().define("myResourceGroup")
 
 #### Listing resource groups
 
+Indexed by name:
+
 ```java
-List<String> resourceGroupNames = azure.groups().names();
+Map<String, Group> groups = azure.groups().list();
+```
+
+Names only:
+```java
+Set<String> groupNames = azure.groups().list().keySet();
 ```
 
 #### Updating a resource group (changing its tags)
