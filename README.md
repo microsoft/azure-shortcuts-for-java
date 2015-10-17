@@ -575,23 +575,23 @@ System.out.println("Deleting group " + group);
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-#### Listing resources (by ID)
+#### Listing resources
 
-All resources in a subscription:
-
+All resources in a subscription, indexed by id:
+ 
 ```java
-List<String> resourceIds = azure.resources().names();
+Map<String, Resource> resources = azure.resources().list();
 ```
 
 Resources in a specific group:
 
 ```java
-List<String> resourceIds = azure.resources().list("<resource-group-name>");
+Map<String, Resource> resources = azure.resources().list("<resource-group-name>");
 ```
 
 #### Reading information about a resource
 
-If you know the full ID of the resource (e.g. you got it from the `resources().names()`), then:
+If you know the full ID of the resource (e.g. you got it from the `resources().list().keySet()`), then:
 
 ```java
 Resource resource = azure.resources().get("<resource-id>");
@@ -625,7 +625,7 @@ System.out.println(String.format("Found resource ID: %s\n"
 	resource.shortName(),
 	resource.tags(),
 	resource.type(),
-	resource.getProvisioningState()
+	resource.provisioningState()
 ));
 ```
 
