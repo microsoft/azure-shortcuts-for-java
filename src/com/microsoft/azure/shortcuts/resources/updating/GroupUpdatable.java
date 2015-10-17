@@ -21,5 +21,7 @@ package com.microsoft.azure.shortcuts.resources.updating;
 
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
 
-public interface GroupUpdatable extends GroupUpdatableBlank, Updatable<GroupUpdatable> {
+public interface GroupUpdatable extends 
+	GroupUpdatableBlank, 
+	Updatable<GroupUpdatable> {
 }

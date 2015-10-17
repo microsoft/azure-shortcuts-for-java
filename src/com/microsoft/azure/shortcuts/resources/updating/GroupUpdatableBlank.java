@@ -21,5 +21,7 @@ package com.microsoft.azure.shortcuts.resources.updating;
 
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 
-public interface GroupUpdatableBlank extends Deletable, Taggable<GroupUpdatable>  {
+public interface GroupUpdatableBlank extends 
+	Deletable, 
+	Taggable<GroupUpdatable>  {
 }

@@ -21,5 +21,7 @@ package com.microsoft.azure.shortcuts.resources.updating;
 
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
 
-public interface StorageAccountUpdatable extends StorageAccountUpdatableBlank, Updatable<StorageAccountUpdatable> {
+public interface StorageAccountUpdatable extends 
+	StorageAccountUpdatableBlank, 
+	Updatable<StorageAccountUpdatable> {
 }

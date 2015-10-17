@@ -23,10 +23,12 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.updating.Deletable;
 
 public interface Resource extends 
 	Named,
-	Refreshable<Resource> {
+	Refreshable<Resource>,
+	Deletable {
 	
     String group() throws Exception;
     String region() throws Exception;

@@ -23,7 +23,10 @@ import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 
-public interface StorageAccountUpdatableBlank extends Deletable, Taggable<StorageAccountUpdatable> {
+public interface StorageAccountUpdatableBlank extends 
+	Deletable, 
+	Taggable<StorageAccountUpdatable> {
+	
     StorageAccountUpdatable withRegion(String region);
     StorageAccountUpdatable withType(AccountType type);
     StorageAccountUpdatable withCustomDomain(CustomDomain customDomain);

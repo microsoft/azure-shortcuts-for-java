@@ -64,19 +64,15 @@ public class Resources {
         	resource.group());
         printResource(resource);	
     	    	
-    	// Delete a resource based on its metadata
+    	// Delete a resource 
         System.out.println(String.format("Deleting resource '%s' of type '%s' by provider '%s' in group '%s'",
         	resource.shortName(),
         	resource.type(),
         	resource.provider(),
         	resource.group()));
 
-        azure.resources().delete(
-    		resource.shortName(),
-    		resource.type(),
-    		resource.provider(),
-    		resource.group());
-    	
+        resource.delete();
+        
     	// Delete a resource based on its ID
     	String resourceToDelete = "ThisMustFail";
     	System.out.println("Deleting resource " + resourceToDelete);
