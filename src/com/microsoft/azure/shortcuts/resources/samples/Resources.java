@@ -50,7 +50,7 @@ public class Resources {
     	System.out.println("Resources inside group '" + groupName + "': \n\t" + StringUtils.join(resourceIds2, ",\n\t"));
     	
         // Getting information about a specific resource based on ID
-    	Resource resource = azure.resources().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1443631726509/providers/Microsoft.Storage/storageAccounts/store1443631965630");
+    	Resource resource = azure.resources().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1444089227523/providers/Microsoft.Storage/storageAccounts/store1444089227523");
     	printResource(resource);
     		
     	// Getting information about a specific resource based on name, type, provider and group
@@ -100,7 +100,7 @@ public class Resources {
 			resource.shortName(),
 			resource.tags(),
 			resource.type(),
-			resource.getProvisioningState()
+			resource.provisioningState()
 			));    	
     }
 }
