@@ -22,9 +22,11 @@ package com.microsoft.azure.shortcuts.resources.reading;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 
 public interface Resource extends 
-	Named {
+	Named,
+	Refreshable<Resource> {
 	
     String group() throws Exception;
     String region() throws Exception;

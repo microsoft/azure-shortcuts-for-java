@@ -21,7 +21,9 @@ package com.microsoft.azure.shortcuts.resources.reading;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 
-public interface Size extends Named {
+public interface Size extends 
+	Named {
+	
 	int maxDataDiskCount();
 	int memoryInMB();
 	int numberOfCores();

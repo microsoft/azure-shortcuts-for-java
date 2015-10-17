@@ -23,8 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 
-public interface Provider extends Named {
+public interface Provider extends 
+	Named,
+	Refreshable<Provider> {
+	
 	String registrationState() throws Exception;
 	Map<String, ResourceType> resourceTypes() throws Exception;
 	ResourceType resourceTypes(String name) throws Exception;
