@@ -22,6 +22,8 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,13 +46,6 @@ public class ResourcesImpl
 	ResourcesImpl(Azure azure) {
 		super(azure);
 	}
-	
-	@Override
-	// Returns list of resource names in the subscription
-	public List<String> names() {
-		return names(null);
-	}
-	
 	
 	// Returns list of resource names in the specified resource group
 	public List<String> names(String group) {
@@ -131,7 +126,7 @@ public class ResourcesImpl
 	}
 	
 	
-	// Gets a resource based on its name, type, provider and group
+	@Override
 	public Resource get(String name, String type, String provider, String group) throws Exception {
 		ResourceIdentity resourceIdentity = createResourceIdentity(name, type, provider);
 		return this.get(group, resourceIdentity);
@@ -154,13 +149,34 @@ public class ResourcesImpl
 	}
 	
 	
-	// Deletes a resource based on its name, type, provider and group
+	@Override
 	public void delete(String name, String type, String provider, String group) throws Exception {
 		azure.resourceManagementClient().getResourcesOperations().delete(
 			group, 
 			createResourceIdentity(name, type, provider));
 	}
 	
+	
+	@Override
+	public Map<String, Resource> list() throws Exception {
+		return this.list(null);
+	}
+
+	
+	@Override
+	public Map<String, Resource> list(String groupName) throws Exception {
+		ResourceListParameters params = new ResourceListParameters(); 
+		params.setResourceGroupName(groupName);
+		ArrayList<GenericResourceExtended> azureResources =  
+				azure.resourceManagementClient().getResourcesOperations().list(params).getResources(); 
+		HashMap<String, Resource> resources = new HashMap<>();
+		for(GenericResourceExtended azureResource : azureResources) {
+			ResourceImpl resource = new ResourceImpl(azureResource);
+			resources.put(azureResource.getId(), resource);
+		}
+		return Collections.unmodifiableMap(resources);
+	}
+
 
 	// Implements the individual resource logic
 	private class ResourceImpl 

@@ -20,7 +20,7 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,17 +40,20 @@ public class Resources {
     
 
     public static void test(Azure azure) throws Exception {
-    	// Listing all resources 
-    	List<String> resourceIds = azure.resources().names();
-    	System.out.println("Resources: \n\t" + StringUtils.join(resourceIds, ",\n\t"));
+    	// Listing all resource names
+    	Map<String, Resource> resources = azure.resources().list();
+    	System.out.println(String.format("Resource ids: %s\n\t", StringUtils.join(resources.keySet(), ",\n\t")));
 
     	// Listing resources in a specific group
     	String groupName = "azchat";
-    	List<String> resourceIds2 = azure.resources().names(groupName);
-    	System.out.println("Resources inside group '" + groupName + "': \n\t" + StringUtils.join(resourceIds2, ",\n\t"));
+    	Map<String, Resource> resources2 = azure.resources().list(groupName);
+    	System.out.println("Resources inside group '" + groupName + "':");
+    	for(Resource resource : resources2.values()) {
+    		printResource(resource);
+    	}
     	
         // Getting information about a specific resource based on ID
-    	Resource resource = azure.resources().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/group1444089227523/providers/Microsoft.Storage/storageAccounts/store1444089227523");
+    	Resource resource = azure.resources().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/Default-Web-WestUS/providers/microsoft.insights/components/marcinstest");
     	printResource(resource);
     		
     	// Getting information about a specific resource based on name, type, provider and group
@@ -67,7 +70,7 @@ public class Resources {
         	resource.type(),
         	resource.provider(),
         	resource.group()));
-        		
+
         azure.resources().delete(
     		resource.shortName(),
     		resource.type(),

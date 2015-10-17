@@ -1,14 +1,14 @@
 package com.microsoft.azure.shortcuts.resources.listing;
 
-import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
 
 public interface Resources extends
-	SupportsListingNames,
+	SupportsListingEntities<Resource>,
 	SupportsReading<Resource>,
 	SupportsDeleting {
 
@@ -16,8 +16,9 @@ public interface Resources extends
 	 * Lists the names of resources in a specific group
 	 * @param groupName
 	 * @return
+	 * @throws Exception 
 	 */
-	List<String> names(String groupName);
+	Map<String, Resource> list(String groupName) throws Exception;
 
 	/**
 	 * Gets a resource using its name, type, provider namespace and group name
