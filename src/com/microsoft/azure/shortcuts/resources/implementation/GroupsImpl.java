@@ -36,6 +36,7 @@ import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
+
 public class GroupsImpl 
 	extends EntitiesImpl<Azure>
 	implements Groups {
@@ -49,13 +50,10 @@ public class GroupsImpl
 	
 	@Override
 	public Map<String, Group> list() throws Exception {
-		ArrayList<ResourceGroupExtended> azureGroups = 
-				azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();
-		HashMap<String, Group> groups = new HashMap<>();
-		for(ResourceGroupExtended azureGroup : azureGroups) {
-			groups.put(azureGroup.getName(), new GroupImpl(azureGroup));
-		}
-		return Collections.unmodifiableMap(groups);
+		return super.list(
+			getGroups(azure),
+			(a) -> new GroupImpl(a),
+			(o) -> o.getName());
 	}
 
 		
@@ -91,6 +89,12 @@ public class GroupsImpl
 		ResourceGroupExtended azureGroup = new ResourceGroupExtended();
 		azureGroup.setName(name);
 		return azureGroup;
+	}
+
+	
+	// Helper to get the resource groups from Azure
+	private static ArrayList<ResourceGroupExtended> getGroups(Azure azure) throws Exception {
+		return azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();		
 	}
 	
 	

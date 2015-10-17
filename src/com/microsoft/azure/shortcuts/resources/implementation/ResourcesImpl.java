@@ -19,12 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
@@ -36,7 +31,6 @@ import com.microsoft.azure.shortcuts.resources.listing.Resources;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
 import com.microsoft.windowsazure.core.ResourceIdentity;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 
 public class ResourcesImpl
@@ -47,27 +41,7 @@ public class ResourcesImpl
 		super(azure);
 	}
 	
-	// Returns list of resource names in the specified resource group
-	public List<String> names(String group) {
-		try {
-			ResourceListParameters params = new ResourceListParameters();
-			params.setResourceGroupName(group);
-			ArrayList<GenericResourceExtended> items = 
-					azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
-			
-			ArrayList<String> names = new ArrayList<>();
-			for(GenericResourceExtended item : items) {
-				names.add(item.getId());
-			}
 
-			return names;
-
-		} catch (IOException | ServiceException | URISyntaxException e) {
-			return new ArrayList<String>();
-		}
-	}
-
- 
 	// Indexes to the parts in the resource id
 	private enum RESOURCE_ID {
 		// Assumes this format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -168,13 +142,12 @@ public class ResourcesImpl
 		ResourceListParameters params = new ResourceListParameters(); 
 		params.setResourceGroupName(groupName);
 		ArrayList<GenericResourceExtended> azureResources =  
-				azure.resourceManagementClient().getResourcesOperations().list(params).getResources(); 
-		HashMap<String, Resource> resources = new HashMap<>();
-		for(GenericResourceExtended azureResource : azureResources) {
-			ResourceImpl resource = new ResourceImpl(azureResource);
-			resources.put(azureResource.getId(), resource);
-		}
-		return Collections.unmodifiableMap(resources);
+				azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
+		
+		return super.list(
+				azureResources, 
+				a -> new ResourceImpl(a),
+				o -> o.getId());
 	}
 
 

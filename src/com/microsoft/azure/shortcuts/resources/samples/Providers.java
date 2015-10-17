@@ -42,7 +42,7 @@ public class Providers {
     public static void test(Azure azure) throws Exception {
     	// List provider namespaces
     	Map<String, Provider> providers = azure.providers().list();
-    	System.out.println(String.format("Provider namespaces: %s", StringUtils.join(providers.keySet(), ", ")));
+    	System.out.println(String.format("Provider namespaces: %s\t", StringUtils.join(providers.keySet(), "\n\t")));
     	
     	// List providers
     	for(Provider provider : providers.values()) {

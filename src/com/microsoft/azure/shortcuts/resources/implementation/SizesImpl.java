@@ -20,8 +20,6 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
@@ -48,12 +46,10 @@ public class SizesImpl
 	@Override
 	public Map<String, Size> list(String region) throws Exception {
 		ArrayList<VirtualMachineSize> items = azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
-		HashMap<String, Size> entities = new HashMap<>();
-		for(VirtualMachineSize item : items) {
-			SizeImpl size = new SizeImpl(item);
-			entities.put(item.getName(), size);
-		}
-		return Collections.unmodifiableMap(entities);
+		return super.list(
+			items, 
+			a -> new SizeImpl(a),
+			o -> o.getName());
 	}
 
 
