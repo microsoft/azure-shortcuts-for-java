@@ -19,7 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -53,8 +54,8 @@ public class CloudServices {
 			.withRegion("West US")
 			.provision();
 
-		// List cloud services
-		List<String> cloudServiceNames = azure.cloudServices().names();
+		// List cloud service names
+		Set<String> cloudServiceNames = azure.cloudServices().list().keySet();
 		System.out.println("Available cloud services: " + StringUtils.join(cloudServiceNames, ", "));
 
 		// Get cloud service info
@@ -75,6 +76,12 @@ public class CloudServices {
 		// Delete the newly created cloud service
 		System.out.println(String.format("Deleting cloud service named '%s'...", serviceName));
 		azure.cloudServices().delete(serviceName);
+		
+		// List all cloud services
+		Collection<CloudService> cloudServices = azure.cloudServices().list().values();
+		for(CloudService c : cloudServices) {
+			printCloudService(c);
+		}
 	}
 	
 	

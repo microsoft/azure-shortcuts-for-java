@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
@@ -65,26 +65,18 @@ public class CloudServicesImpl
 	
 	
 	@Override
-	public List<String> names() {
-		try {
-			final ArrayList<HostedService> items = azure.computeManagementClient().getHostedServicesOperations().list().getHostedServices();
-			ArrayList<String> names = new ArrayList<>();
-			for(HostedService item : items) {
-				names.add(item.getServiceName());
-			}
-
-			return names;
-		} catch (Exception e) {
-			// Not very actionable, so just return an empty array
-			return new ArrayList<String>();
-		}
-	}
-	
-	
-	@Override
 	public CloudService get(String name) throws Exception {
 		return createCloudService(name).refresh();
 	}
+
+	
+	@Override
+	public Map<String, CloudService> list() throws Exception {
+		return super.list(
+			getHostedService(this.azure),
+			a -> new CloudServiceImpl(a),
+			o -> o.getServiceName());
+	}	
 
 	
 	// Helper to create a blank hosted service
@@ -94,6 +86,12 @@ public class CloudServicesImpl
 		azureService.setProperties(new HostedServiceProperties());
 		azureService.setComputeCapabilities(new ComputeCapabilities());
 		return new CloudServiceImpl(azureService);
+	}
+	
+	
+	// Helper to return list of hosted services
+	private static ArrayList<HostedService> getHostedService(Azure azure) throws Exception {
+		return azure.computeManagementClient().getHostedServicesOperations().list().getHostedServices();
 	}
 	
 	
@@ -231,7 +229,7 @@ public class CloudServicesImpl
 				.withRegion(props.getLocation())
 				.withReverseDnsFqdn(props.getReverseDnsFqdn());
 			}
-	}	
+	}
 }
 
 

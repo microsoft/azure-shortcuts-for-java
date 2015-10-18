@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
 
@@ -155,7 +156,7 @@ public class VirtualMachinesImpl
 	
 	@Override
 	public List<String> names() throws Exception {
-		List<String> serviceNames = azure.cloudServices().names();
+		Set<String> serviceNames = azure.cloudServices().list().keySet();
 		ArrayList<String> vms = new ArrayList<String>();
 		
 		// Find all virtual machine roles within cloud services 

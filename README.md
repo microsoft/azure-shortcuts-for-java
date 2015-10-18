@@ -319,8 +319,16 @@ azure.cloudServices().define("myservice")
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
+Cloud services as a map, indexed by name:
+
 ```java
-List<String> cloudServiceNames = azure.cloudServices().names();
+Collection<CloudService> cloudServices = azure.cloudServices().list().values();
+```
+
+Cloud service names only:
+
+```java
+Set<String> cloudServiceNames = azure.cloudServices().list().keySet();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -655,7 +663,7 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 
 #### Listing resource providers
 
-Provider objects, indexed by namespace:
+Providers as a map, indexed by namespace:
 
 ```java
 Map<String, Provider> providers = azure.providers().list();

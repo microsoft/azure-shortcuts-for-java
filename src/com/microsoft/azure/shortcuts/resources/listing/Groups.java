@@ -28,11 +28,10 @@ import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
-public interface Groups 
-	extends 
-		SupportsListingEntities<Group>,
-		SupportsReading<Group>,
-		SupportsDeleting,
-		SupportsUpdating<GroupUpdatableBlank>,
-		SupportsCreating<GroupDefinitionBlank> {
+public interface Groups extends 
+	SupportsListingEntities<Group>,
+	SupportsReading<Group>,
+	SupportsCreating<GroupDefinitionBlank>,
+	SupportsDeleting,
+	SupportsUpdating<GroupUpdatableBlank> {
 }
