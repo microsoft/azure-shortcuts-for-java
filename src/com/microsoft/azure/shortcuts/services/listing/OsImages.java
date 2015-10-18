@@ -19,11 +19,11 @@
 */
 package com.microsoft.azure.shortcuts.services.listing;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.implementation.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
 import com.microsoft.azure.shortcuts.services.reading.OSImage;
 
 public interface OsImages extends
-	SupportsListingNames,
+	SupportsListingEntities<OSImage>,
 	SupportsReading<OSImage>  {
 }

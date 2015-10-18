@@ -19,7 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -42,15 +43,23 @@ public class OSImages {
 		}
 	}
 
+	
 	public static void test(Azure azure) throws Exception {
 		final String imageName = "b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB";
 
 		// List the OS images
-		List<String> OsImageNames = azure.osImages().names();
-		System.out.println("Available OS images: \n\t" + StringUtils.join(OsImageNames, ",\n\t"));
+		Map<String, OSImage> osImages = azure.osImages().list();
+		Set<String> osImageNames = osImages.keySet();
+		
+		System.out.println("Available OS images: \n\t" + StringUtils.join(osImageNames, ",\n\t"));
 		
 		// Get information about a specific OS image
 		OSImage osImage = azure.osImages().get(imageName);
+		printOsImage(osImage);
+	}
+	
+	
+	private static void printOsImage(OSImage osImage) throws Exception {
 		System.out.println(String.format("Found image: %s\n"
 				+ "\tCategory: %s\n"
 				+ "\tDescription: %s\n"
@@ -91,6 +100,6 @@ public class OSImages {
 				osImage.recommendedVMSize(),
 				StringUtils.join(osImage.regions(), ", "),
 				osImage.smallIconUri()
-				));
+				));		
 	}
 }

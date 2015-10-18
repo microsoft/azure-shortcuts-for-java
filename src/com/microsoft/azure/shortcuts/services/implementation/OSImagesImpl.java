@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
@@ -43,28 +44,28 @@ public class OSImagesImpl
 
 
 	@Override
-	public List<String> names() {
-		try {
-			ArrayList<VirtualMachineOSImage> items = 
-				azure.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();			
-			ArrayList<String> names = new ArrayList<>();
-			for(VirtualMachineOSImage item : items) {
-				names.add(item.getName());
-			}
-
-			return names;
-		} catch (Exception e) {
-			// Not very actionable, so just return an empty array
-			return new ArrayList<>();
-		}
-	}
-	
-
-	@Override
 	public OSImage get(String name) throws Exception {
 		return createOsImage(name).refresh();
 	}
 
+	
+	@Override
+	public Map<String, OSImage> list() throws Exception {
+		return super.list(
+			getOSImages(), 
+			(a) -> new OSImageImpl(a),
+			(o) -> o.getName());
+	}	
+
+	
+	/*********************************************************
+	 * Helpers
+	 *********************************************************/
+	
+	// Helper to list OSImages in Azure
+	private ArrayList<VirtualMachineOSImage> getOSImages() throws Exception {
+		return azure.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();			
+	}
 	
 	// Helper to create an instance of Azure' native OS image class
 	private OSImageImpl createOsImage(String name) {
@@ -83,6 +84,7 @@ public class OSImagesImpl
 		
 		private OSImageImpl(VirtualMachineOSImage osImage) {
 			super(osImage.getName(), true);
+			this.azureOsImage = osImage;
 		}
 
 		
@@ -192,7 +194,7 @@ public class OSImagesImpl
 
 		@Override
 		public OSImage refresh() throws Exception {
-			VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(this.name);
+			VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(this.azureOsImage.getName());
 			this.azureOsImage.setCategory(response.getCategory());
 			this.azureOsImage.setDescription(response.getDescription());
 			this.azureOsImage.setEula(response.getEula());
@@ -214,5 +216,5 @@ public class OSImagesImpl
 			this.azureOsImage.setShowInGui(response.isShowInGui());
 			return this;
 		}
-	}	
+	}
 }

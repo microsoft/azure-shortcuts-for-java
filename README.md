@@ -213,8 +213,16 @@ Set<String> sizeNames = azure.sizes().list("westus").keySet();
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
+OS images as a map, indexed by name:
+
 ```java
-List<String> OsImageNames = azure.osImages().names();
+Map<String, OSImage> osImages = azure.osImages().list();
+```
+
+Cloud service names only:
+
+```java
+Set<String> osImageNames = azure.osImages().list().keySet();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -322,7 +330,7 @@ azure.cloudServices().define("myservice")
 Cloud services as a map, indexed by name:
 
 ```java
-Collection<CloudService> cloudServices = azure.cloudServices().list().values();
+Map<String, CloudService> cloudServices = azure.cloudServices().list();
 ```
 
 Cloud service names only:
