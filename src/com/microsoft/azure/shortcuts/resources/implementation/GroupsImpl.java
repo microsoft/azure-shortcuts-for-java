@@ -98,7 +98,9 @@ public class GroupsImpl
 	}
 	
 	
-	// Implements logic for individual resource group
+	/***************************************************************
+	 * Implements logic for individual resource group
+	 ***************************************************************/
 	private class GroupImpl 
 		extends 
 			NamedRefreshableImpl<Group>

@@ -59,7 +59,27 @@ public class CloudServices {
 
 		// Get cloud service info
 		CloudService cloudService = azure.cloudServices().get(serviceName);
-		System.out.println(String.format("Found cloud service: %s\n"
+		printCloudService(cloudService);
+
+		// Update cloud service
+		System.out.println(String.format("Updating cloud service named '%s'...", serviceName));
+
+		azure.cloudServices().update(serviceName)
+			.withDescription("Updated")
+			.withLabel("Updated")
+			.apply();
+
+		cloudService = azure.cloudServices().get(serviceName);
+		printCloudService(cloudService);
+
+		// Delete the newly created cloud service
+		System.out.println(String.format("Deleting cloud service named '%s'...", serviceName));
+		azure.cloudServices().delete(serviceName);
+	}
+	
+	
+	private static void printCloudService(CloudService cloudService) throws Exception {
+		System.out.println(String.format("Cloud service: %s\n"
 				+ "\tLabel: %s\n"
 				+ "\tDescription: %s\n"
 				+ "\tRegion: %s\n"
@@ -75,27 +95,5 @@ public class CloudServices {
 				cloudService.modified().getTime(),
 				cloudService.affinityGroup(),
 				cloudService.reverseDnsFqdn()));
-
-		// Update cloud service
-		System.out.println(String.format("Updating cloud service named '%s'...", serviceName));
-
-		azure.cloudServices().update(serviceName)
-			.withDescription("Updated")
-			.withLabel("Updated")
-			.apply();
-
-		cloudService = azure.cloudServices().get(serviceName);
-		System.out.println(String.format("Updated cloud service: %s\n"
-				+ "\tLabel: %s\n"
-				+ "\tDescription: %s\n",
-				cloudService.name(),
-				cloudService.label(),
-				cloudService.description()
-				));
-
-		
-		// Delete the newly created cloud service
-		System.out.println(String.format("Deleting cloud service named '%s'...", serviceName));
-		azure.cloudServices().delete(serviceName);
 	}
 }

@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
@@ -32,9 +30,8 @@ import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionPro
 import com.microsoft.azure.shortcuts.services.listing.CloudServices;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
-import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;
+import com.microsoft.windowsazure.management.compute.models.ComputeCapabilities;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateParameters;
-import com.microsoft.windowsazure.management.compute.models.HostedServiceGetResponse;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceUpdateParameters;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceProperties;
@@ -50,8 +47,8 @@ public class CloudServicesImpl
 	
 
 	@Override
-	public CloudServiceDefinitionBlank define(String name) {
-		return new CloudServiceImpl(name, true);
+	public CloudServiceImpl define(String name) {
+		return createCloudService(name);
 	}
 	
 	
@@ -62,16 +59,15 @@ public class CloudServicesImpl
 	
 	
 	@Override
-	public CloudServiceUpdatableBlank update(String name) {
-		return new CloudServiceImpl(name, false);
+	public CloudServiceImpl update(String name) {
+		return createCloudService(name);
 	}
 	
 	
 	@Override
 	public List<String> names() {
 		try {
-			final ArrayList<HostedService> items = azure.computeManagementClient().getHostedServicesOperations()
-					.list().getHostedServices();
+			final ArrayList<HostedService> items = azure.computeManagementClient().getHostedServicesOperations().list().getHostedServices();
 			ArrayList<String> names = new ArrayList<>();
 			for(HostedService item : items) {
 				names.add(item.getServiceName());
@@ -87,24 +83,37 @@ public class CloudServicesImpl
 	
 	@Override
 	public CloudService get(String name) throws Exception {
-		CloudServiceImpl cloudService = new CloudServiceImpl(name, false);
-		return cloudService.refresh();
+		return createCloudService(name).refresh();
 	}
 
 	
+	// Helper to create a blank hosted service
+	private CloudServiceImpl createCloudService(String name) {
+		HostedService azureService = new HostedService();
+		azureService.setServiceName(name);
+		azureService.setProperties(new HostedServiceProperties());
+		azureService.setComputeCapabilities(new ComputeCapabilities());
+		return new CloudServiceImpl(azureService);
+	}
+	
+	
+	/************************************************************
+	 * Nested class implementing a cloud service
+	 ************************************************************/
 	private class CloudServiceImpl 
-		extends NamedRefreshableImpl<CloudService>
+		extends 
+			NamedRefreshableImpl<CloudService>
 		implements 
 			CloudServiceDefinitionBlank, 
 			CloudServiceDefinitionProvisionable,
 			CloudService,
 			CloudServiceUpdatable {
 		
-		private String region, description, affinityGroup, label, reverseDnsFqdn;
-		Calendar created, lastModified;
+		private HostedService azureService;
 		
-		private CloudServiceImpl(String name, boolean initialized) {
-			super(name.toLowerCase(), initialized);
+		private CloudServiceImpl(HostedService azureService) {
+			super(azureService.getServiceName().toLowerCase(), true);
+			this.azureService = azureService;
 		}
 
 
@@ -114,38 +123,31 @@ public class CloudServicesImpl
 		 ***********************************************************/
 
 		public String region() throws Exception {
-			ensureInitialized();
-			return this.region;
+			return this.azureService.getProperties().getLocation();
 		}
 
 		public String description() throws Exception {
-			ensureInitialized();
-			return this.description;
+			return this.azureService.getProperties().getDescription();
 		}
 
 		public String label() throws Exception {
-			ensureInitialized();
-			return this.label;
+			return this.azureService.getProperties().getLabel();
 		}
 
 		public String reverseDnsFqdn() throws Exception {
-			ensureInitialized();
-			return this.reverseDnsFqdn;
+			return this.azureService.getProperties().getReverseDnsFqdn();
 		}
 
 		public Calendar created() throws Exception {
-			ensureInitialized();
-			return this.created;
+			return this.azureService.getProperties().getDateCreated();
 		}
 
 		public Calendar modified() throws Exception {
-			ensureInitialized();
-			return this.lastModified;
+			return this.azureService.getProperties().getDateLastModified();
 		}
 
 		public String affinityGroup() throws Exception {
-			ensureInitialized();
-			return this.affinityGroup;
+			return this.azureService.getProperties().getAffinityGroup();
 		}
 
 
@@ -154,28 +156,29 @@ public class CloudServicesImpl
 		 **************************************************************/
 
 		public CloudServiceImpl withRegion(String region) {
-			this.region =region;
+			this.azureService.getProperties().setLocation(region);
 			return this;
 		}
 		
 		public CloudServiceImpl withAffinityGroup(String affinityGroup) {
-			this.affinityGroup = affinityGroup;
-			throw new NotImplementedException("withNetwork() not yet implemented");
-			//TODO: return this;
+			this.azureService.getProperties().setAffinityGroup(affinityGroup);
+			return this;
 		}
 		
+		//TODO withNetwork
+		
 		public CloudServiceImpl withDescription(String description) {
-			this.description = description;
+			this.azureService.getProperties().setDescription(description);
 			return this;
 		}
 		
 		public CloudServiceImpl withLabel(String label) {
-			this.label = label;
+			this.azureService.getProperties().setLabel(label);
 			return this;
 		}
 		
 		public CloudServiceImpl withReverseDnsFqdn(String fqdn) {
-			this.reverseDnsFqdn= fqdn;
+			this.azureService.getProperties().setReverseDnsFqdn(fqdn);
 			return this;
 		}
 		
@@ -193,14 +196,14 @@ public class CloudServicesImpl
 		@Override
 		public CloudServiceImpl provision() throws Exception {
 			final HostedServiceCreateParameters params = new HostedServiceCreateParameters();
-			params.setAffinityGroup(this.affinityGroup);
-			params.setDescription(this.description);
-			params.setLabel((this.label == null) ? this.name : this.label);
-			params.setLocation(this.region);
-			params.setServiceName(this.name);
-			params.setReverseDnsFqdn(this.reverseDnsFqdn);
+			params.setAffinityGroup(this.affinityGroup());
+			params.setDescription(this.description());
+			params.setLabel((this.label() == null) ? this.name() : this.label());
+			params.setLocation(this.region());
+			params.setServiceName(this.name());
+			params.setReverseDnsFqdn(this.reverseDnsFqdn());
 
-			azure.computeManagementClient().getHostedServicesOperations().create(params);
+			azure.computeManagementClient().getHostedServicesOperations().create(params);			
 			return this;
 		}
 
@@ -208,9 +211,9 @@ public class CloudServicesImpl
 		@Override
 		public CloudServiceImpl apply() throws Exception {
 			HostedServiceUpdateParameters params = new HostedServiceUpdateParameters();
-			params.setDescription(this.description);
-			params.setLabel(this.label);
-			params.setReverseDnsFqdn(this.reverseDnsFqdn);
+			params.setDescription(this.description());
+			params.setLabel(this.label());
+			params.setReverseDnsFqdn(this.reverseDnsFqdn());
 			azure.computeManagementClient().getHostedServicesOperations().update(this.name, params);
 			return this;
 		}
@@ -218,19 +221,16 @@ public class CloudServicesImpl
 
 		@Override
 		public CloudServiceImpl refresh() throws Exception {
-			HostedServiceGetResponse response = azure.computeManagementClient().getHostedServicesOperations().get(this.name);
-			HostedServiceProperties props = response.getProperties();
-			this.description = props.getDescription();
-			this.label = props.getLabel();
-			this.region = props.getLocation();
-			this.reverseDnsFqdn = props.getReverseDnsFqdn();
-			this.created = props.getDateCreated();
-			this.lastModified = props.getDateLastModified();
-			this.affinityGroup = props.getAffinityGroup();
-			this.initialized = true;
-
-			return this;
-		}
+			HostedServiceProperties props = azure.computeManagementClient().getHostedServicesOperations().get(this.name()).getProperties();
+			this.azureService.getProperties().setDateCreated(props.getDateCreated());
+			this.azureService.getProperties().setDateLastModified(props.getDateLastModified());
+			return this
+				.withAffinityGroup(props.getAffinityGroup())
+				.withDescription(props.getDescription())
+				.withLabel(props.getLabel())
+				.withRegion(props.getLocation())
+				.withReverseDnsFqdn(props.getReverseDnsFqdn());
+			}
 	}	
 }
 
