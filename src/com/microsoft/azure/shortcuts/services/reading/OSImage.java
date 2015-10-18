@@ -21,6 +21,7 @@ package com.microsoft.azure.shortcuts.services.reading;
 
 import java.net.URI;
 import java.util.Calendar;
+import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 
@@ -33,7 +34,7 @@ public interface OSImage extends Named {
 	String ioType() throws Exception;
 	String label() throws Exception;
 	String language() throws Exception;
-	String[] regions() throws Exception;
+	List<String> regions() throws Exception;
 	double logicalSizeInGB() throws Exception;
 	URI mediaLink() throws Exception;
 	String operatingSystemType() throws Exception;

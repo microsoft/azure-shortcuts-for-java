@@ -43,12 +43,14 @@ public class NetworksImpl
 		super(azure);
 	}
 
+	
 	@Override
 	// Returns information about existing network
 	public NetworkImpl get(String name) throws Exception {
 		NetworkImpl network  = new NetworkImpl(name, false);
 		return network.refresh();
 	}
+	
 	
 	@Override
 	// Starts a new network definition

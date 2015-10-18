@@ -19,7 +19,6 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -90,7 +89,7 @@ public class OSImages {
 				osImage.publishedDate().getTime(),
 				osImage.publisher(),
 				osImage.recommendedVMSize(),
-				Arrays.toString(osImage.regions()),
+				StringUtils.join(osImage.regions(), ", "),
 				osImage.smallIconUri()
 				));
 	}
