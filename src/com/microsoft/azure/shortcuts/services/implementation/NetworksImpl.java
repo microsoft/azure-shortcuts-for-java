@@ -238,7 +238,7 @@ public class NetworksImpl
 			return this;
 		}
 		
-		private NetworkDefinitionProvisionable withSubnet(String name, String cidr, String securityGroup) {
+		private NetworkImpl withSubnet(String name, String cidr, String securityGroup) {
 			com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet = 
 					new com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet();
 			azureSubnet.setAddressPrefix(cidr);
@@ -250,7 +250,7 @@ public class NetworksImpl
 	
 
 		@Override
-		public NetworkDefinitionProvisionable withSubnet(String name, String cidr) {
+		public NetworkImpl withSubnet(String name, String cidr) {
 			return this.withSubnet(name,  cidr, null);
 		}
 		
