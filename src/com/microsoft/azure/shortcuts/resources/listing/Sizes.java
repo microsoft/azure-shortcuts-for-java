@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.resources.listing;
 
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.resources.reading.Size;
 
 public interface Sizes extends 

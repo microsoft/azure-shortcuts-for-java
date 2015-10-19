@@ -19,10 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.services.listing;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
+import com.microsoft.azure.shortcuts.common.creation.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
+import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.reading.Network;
 

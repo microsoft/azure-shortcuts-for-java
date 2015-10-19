@@ -19,11 +19,11 @@
 */
 package com.microsoft.azure.shortcuts.services.listing;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsUpdating;
+import com.microsoft.azure.shortcuts.common.creation.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
+import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.updating.SupportsUpdating;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;

@@ -17,11 +17,9 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.common.implementation;
+package com.microsoft.azure.shortcuts.common.reading;
 
-import java.util.List;
-
-// Requires class to support listing entities
-public interface SupportsListingNames {
-	List<String> names() throws Exception;
+// Requires class to support reading entities
+public interface SupportsReading<T> {
+	T get(String name) throws Exception;
 }
