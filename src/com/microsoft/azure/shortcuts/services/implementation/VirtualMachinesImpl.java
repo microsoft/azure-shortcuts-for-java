@@ -331,7 +331,12 @@ public class VirtualMachinesImpl
 			this.network = network;
 			return this;
 		}
-		
+
+		@Override
+		public VirtualMachineImpl withNetwork(Network network) {
+			return this.withNetwork(network.name());
+		}
+
 		@Override
 		public VirtualMachineImpl withSize(String size) {
 			this.size = size;
@@ -643,7 +648,7 @@ public class VirtualMachinesImpl
 			final VirtualMachineGetResponse vmResponse = azure.computeManagementClient().getVirtualMachinesOperations().get(
 					this.cloudService(), this.deployment(), this.roleName());
 			this.size = vmResponse.getRoleSize();
-
+			
 			// Get service-level data
 			//TODO Make it lazily evaluated
 			CloudService service = azure.cloudServices().get(this.cloudService());

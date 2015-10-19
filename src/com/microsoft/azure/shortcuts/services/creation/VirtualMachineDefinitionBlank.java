@@ -20,12 +20,14 @@
 package com.microsoft.azure.shortcuts.services.creation;
 
 import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithSize;
+import com.microsoft.azure.shortcuts.services.reading.Network;
 import com.microsoft.azure.shortcuts.services.reading.Region;
 
 public interface VirtualMachineDefinitionBlank {
 	VirtualMachineDefinitionWithSize withRegion(String region);
 	VirtualMachineDefinitionWithSize withRegion(Region region);
 	VirtualMachineDefinitionWithSize withNetwork(String network);
+	VirtualMachineDefinitionWithSize withNetwork(Network network);
 	VirtualMachineDefinitionWithSize withExistingCloudService(String service);
 }
 
