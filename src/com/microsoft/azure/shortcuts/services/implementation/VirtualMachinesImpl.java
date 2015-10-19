@@ -497,7 +497,7 @@ public class VirtualMachinesImpl
 				
 				// Enable first subnet from network by default, if none specified
 				if(this.subnet == null) {
-					this.subnet = network.subnets()[0].name();
+					this.subnet = (String)network.subnets().keySet().toArray()[0];
 				}
 			}
 			

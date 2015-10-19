@@ -278,20 +278,10 @@ List<String> virtualNetworkNames = azure.networks().names();
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
+By providing the virtual network name:
+
 ```java
 Network network = azure.networks().get("mynetwork");
-
-System.out.println(String.format("Network found: %s\n"
-	+ "\tRegion: %s\n"
-	+ "\tCIDR: %s\n"
-	+ "\tAffinity group: %s\n"
-	+ "\tSubnets: %s\n",
-	network.name(),
-	network.region(),
-	network.cidr(),
-	network.affinityGroup(),
-	Arrays.toString(network.subnets())
-));
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages

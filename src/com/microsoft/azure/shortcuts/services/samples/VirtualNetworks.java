@@ -19,13 +19,13 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
 import com.microsoft.azure.shortcuts.services.reading.Network;
+import com.microsoft.azure.shortcuts.services.reading.Network.Subnet;
 
 //Tests Virtual Networks
 public class VirtualNetworks {
@@ -63,17 +63,7 @@ public class VirtualNetworks {
 
 		// Get created virtual network
 		network = azure.networks().get(networkName);
-		System.out.println(String.format("Network found: %s\n"
-				+ "\tRegion: %s\n"
-				+ "\tCIDR: %s\n"
-				+ "\tAffinity group: %s\n"
-				+ "\tSubnets: %s\n",
-				network.name(),
-				network.region(),
-				network.cidr(),
-				network.affinityGroup(),
-				Arrays.toString(network.subnets())
-				));
+		printNetwork(network);
 
 		// Delete the newly created virtual network
 		System.out.println(String.format("Deleting virtual network named '%s'...", network.name()));
@@ -93,20 +83,39 @@ public class VirtualNetworks {
 
 		// Get created virtual network
 		network = azure.networks().get(networkName);
-		System.out.println(String.format("Network found: %s\n"
-				+ "\tRegion: %s\n"
-				+ "\tCIDR: %s\n"
-				+ "\tAffinity group: %s\n"
-				+ "\tSubnets: %s\n",
-				network.name(),
-				network.region(),
-				network.cidr(),
-				network.affinityGroup(),
-				Arrays.toString(network.subnets())
-				));
+		printNetwork(network);
 
 		// Delete the newly created virtual network
 		System.out.println(String.format("Deleting virtual network named '%s'...", network.name()));
 		azure.networks().delete(network.name());
+	}
+	
+	
+	private static void printNetwork(Network network) throws Exception {
+		StringBuilder subnets = new StringBuilder();
+		for(Subnet subnet : network.subnets().values()) {
+			subnets
+				.append("\tSubnet: ").append(subnet.name())
+				.append("\n\t\tCIDR: ").append(subnet.addressPrefix())
+				.append("\n\t\tNetwork security group: ").append(subnet.networkSecurityGroup())
+				.append("\n");
+			
+		}
+		
+		System.out.println(String.format("Network: %s\n"
+				+ "\tRegion: %s\n"
+				+ "\tCIDR: %s\n"
+				+ "\tAffinity group: %s\n"
+				+ "\tState: %s"
+				+ "\tID: %s"
+				+ "%s",
+				network.name(),
+				network.region(),
+				network.addressPrefixes(),
+				network.affinityGroup(),
+				network.state(),
+				network.id(),
+				subnets
+				));
 	}
 }

@@ -19,6 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.services.reading;
 
+import java.util.List;
+import java.util.Map;
+
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatableBlank;
 
@@ -26,13 +29,18 @@ public interface Network extends
 	Named,
 	NetworkUpdatableBlank {
 	
-	String cidr() throws Exception;
+	List<String> addressPrefixes() throws Exception;
 	String region() throws Exception;
 	String affinityGroup() throws Exception;
 	String label() throws Exception;
-	Subnet[] subnets() throws Exception;
+	Map<String, Subnet> subnets() throws Exception;
+	String state() throws Exception;
+	String id() throws Exception;
 	
 	public interface Subnet extends Named {	
-		String cidr();
+		String addressPrefix();
+		String networkSecurityGroup();
 	}
+
+
 }

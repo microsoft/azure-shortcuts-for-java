@@ -20,7 +20,11 @@
 package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
@@ -32,6 +36,7 @@ import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionWithCidr
 import com.microsoft.azure.shortcuts.services.listing.Networks;
 import com.microsoft.azure.shortcuts.services.reading.Network;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
+import com.microsoft.windowsazure.management.network.models.NetworkListResponse.AddressSpace;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
 
 // Class encapsulating the API related to virtual networks
@@ -47,23 +52,14 @@ public class NetworksImpl
 	@Override
 	// Returns information about existing network
 	public NetworkImpl get(String name) throws Exception {
-		NetworkImpl network  = new NetworkImpl(name, false);
-		return network.refresh();
+		return createVirtualNetworkWrapper(name).refresh();
 	}
 	
 	
 	@Override
 	// Starts a new network definition
 	public NetworkDefinitionBlank define(String name) {
-		return new NetworkImpl(name, true);
-	}
-	
-	
-	// Requests a network configuration update based on the XML netconfig representation
-	private void updateNetworkConfig(String xml) throws Exception {
-		NetworkSetConfigurationParameters params = new NetworkSetConfigurationParameters();
-		params.setConfiguration(xml);
-		azure.networkManagementClient().getNetworksOperations().setConfiguration(params);
+		return createVirtualNetworkWrapper(name);
 	}
 	
 	
@@ -95,8 +91,8 @@ public class NetworksImpl
 	// Lists existing virtual networks
 	public List<String> names() {
 		try {
-			final ArrayList<VirtualNetworkSite> items = azure.networkManagementClient().getNetworksOperations()
-					.list().getVirtualNetworkSites();
+			final ArrayList<VirtualNetworkSite> items = 
+				azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites();
 			ArrayList<String> names = new ArrayList<>();
 			for(VirtualNetworkSite item : items) {
 				names.add(item.getName());
@@ -109,6 +105,32 @@ public class NetworksImpl
 	}
 	
 	
+	/*******************************************************
+	 * Helpers
+	 *******************************************************/
+	
+	// Requests a network configuration update based on the XML netconfig representation
+	private void updateNetworkConfig(String xml) throws Exception {
+		NetworkSetConfigurationParameters params = new NetworkSetConfigurationParameters();
+		params.setConfiguration(xml);
+		azure.networkManagementClient().getNetworksOperations().setConfiguration(params);
+	}
+	
+	
+	// Wraps a native VirtualNetworkSite
+	private NetworkImpl createVirtualNetworkWrapper(String name)
+	{
+		VirtualNetworkSite site = new VirtualNetworkSite();
+		site.setName(name);
+		AddressSpace azureAddressSpace = new AddressSpace();
+		azureAddressSpace.setAddressPrefixes(new ArrayList<String>());
+		site.setAddressSpace(azureAddressSpace);
+		site.setSubnets(new ArrayList<com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet>());
+		
+		return new NetworkImpl(site);
+	}
+	
+	
 	// Encapsulates the required and optional parameters for a network
 	private class NetworkImpl 
 		extends NamedRefreshableImpl<Network>
@@ -118,42 +140,56 @@ public class NetworksImpl
 			NetworkDefinitionProvisionable,
 			Network {
 
-		private String region, cidr, affinityGroup, label;
-		private ArrayList<NetworkImpl.SubnetImpl> subnets = new ArrayList<NetworkImpl.SubnetImpl>();
+		private VirtualNetworkSite azureSite;
 		
-		private NetworkImpl(String name, boolean initialized) {
-			super(name, initialized);
+		public NetworkImpl(VirtualNetworkSite site) {
+			super(site.getName(), true);
+			this.azureSite = site;
 		}
-		
-		
+
+
 		/***********************************************************
 		 * Getters
-		 * @throws Exception 
 		 ***********************************************************/
 
-		public String cidr() throws Exception {
-			ensureInitialized();
-			return this.cidr;
+		@Override
+		public List<String> addressPrefixes() throws Exception {
+			return Collections.unmodifiableList(this.azureSite.getAddressSpace().getAddressPrefixes());
 		}
 		
+		@Override
 		public String region() throws Exception {
-			ensureInitialized();
-			return this.region;
-		}
-
-		public String affinityGroup() throws Exception {
-			ensureInitialized(); 
-			return this.affinityGroup;
-		}
-
-		public String label() throws Exception {
-			ensureInitialized();
-			return this.label;
+			return this.azureSite.getLocation();
 		}
 
 		@Override
-		public Subnet[] subnets() {
-			return subnets.toArray(new Subnet[0]);
+		public String affinityGroup() throws Exception {
+			return this.azureSite.getAffinityGroup();
+		}
+
+		@Override
+		public String label() throws Exception {
+			return this.azureSite.getLabel();
+		}
+		
+		@Override
+		public String state() throws Exception {
+			return this.azureSite.getState();
+		}
+		
+		@Override
+		public String id() throws Exception {
+			return this.azureSite.getId();
+		}
+		
+		@Override
+		public Map<String, Subnet> subnets() {
+			HashMap<String, Subnet> subnets = new HashMap<>();
+			for(com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet : this.azureSite.getSubnets()) {
+				SubnetImpl subnet = new SubnetImpl(azureSubnet);
+				subnets.put(azureSubnet.getName(), subnet);
+			}
+			return Collections.unmodifiableMap(subnets);
 		}
 		
 		// Implementation of Subnet
@@ -161,15 +197,21 @@ public class NetworksImpl
 			extends NamedImpl
 			implements Network.Subnet {
 			
-			private String cidr;
+			private com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet;
 
-			private SubnetImpl(String name) {
-				super(name);
+			public SubnetImpl(com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet) {
+				super(azureSubnet.getName());
+				this.azureSubnet = azureSubnet;
 			}
-			
+
 			@Override
-			public String cidr() {
-				return this.cidr;
+			public String addressPrefix() {
+				return this.azureSubnet.getAddressPrefix();
+			}
+
+			@Override
+			public String networkSecurityGroup() {
+				return this.azureSubnet.getNetworkSecurityGroup();
 			}
 		}
 
@@ -180,24 +222,32 @@ public class NetworksImpl
 
 		@Override
 		public NetworkImpl withRegion(String region) {
-			this.region = region;
+			this.azureSite.setLocation(region);
 			return this;
 		}
 		
 		@Override
 		public NetworkImpl withCidr(String cidr) {
-			this.cidr = cidr;
+			this.azureSite.getAddressSpace().getAddressPrefixes().add(cidr);
 			return this;
 		}
 		
-		@Override
-		public NetworkDefinitionProvisionable withSubnet(String name, String cidr) {
-			SubnetImpl subnet = new SubnetImpl(name);
-			subnet.cidr = cidr;
-			this.subnets.add(subnet);
+		private NetworkDefinitionProvisionable withSubnet(String name, String cidr, String securityGroup) {
+			com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet = 
+					new com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet();
+			azureSubnet.setAddressPrefix(cidr);
+			azureSubnet.setName(name);
+			azureSubnet.setNetworkSecurityGroup(securityGroup);
+			this.azureSite.getSubnets().add(azureSubnet);
 			return this;
 		}
 	
+
+		@Override
+		public NetworkDefinitionProvisionable withSubnet(String name, String cidr) {
+			return this.withSubnet(name,  cidr, null);
+		}
+		
 
 		/************************************************************
 		 * Verbs
@@ -211,34 +261,44 @@ public class NetworksImpl
 
 		@Override
 		public NetworkImpl provision() throws Exception {
-			// If no subnets specified, create a default subnet containing the whole network
-			if(this.subnets.size() == 0) {
-				SubnetImpl subnet = new SubnetImpl("Subnet-1");
-				subnet.cidr = this.cidr;
-				this.subnets.add(subnet);
+			// If no subnets specified, create a default subnet containing the first CIDR of the network
+			if(this.azureSite.getSubnets().size() == 0) {
+				com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet = 
+						new com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet();
+				azureSubnet.setAddressPrefix(this.addressPrefixes().get(0));
+				azureSubnet.setName("Subnet-1");
+				this.azureSite.getSubnets().add(azureSubnet);
 			}
 
 			// Declare the subnets
 			final String subnetTemplate = "<Subnet name=\"${subnetName}\"><AddressPrefix>${subnetCidr}</AddressPrefix></Subnet>";				
 			StringBuilder subnetsSection = new StringBuilder();
-			for(SubnetImpl subnet : this.subnets) {
+			for(Subnet subnet : this.subnets().values()) {
 				subnetsSection.append(subnetTemplate
 					.replace("${subnetName}", subnet.name())
-					.replace("${subnetCidr}", subnet.cidr()));
+					.replace("${subnetCidr}", subnet.addressPrefix()));
+				// TODO: securityGroup
 			}
 			
+			// Address space XML template
+			final String addressPrefixTemplate = "<AddressPrefix>${cidr}</AddressPrefix>";
+			StringBuilder addressSpaceSection = new StringBuilder();
+			for(String addressPrefix : this.addressPrefixes()) {
+				addressSpaceSection.append(addressPrefixTemplate.replace("${cidr}", addressPrefix));
+			}
+				
 			// Network site XML template
 			final String networkTemplate = 
 				"<VirtualNetworkSite name=\"${name}\" Location=\"${location}\">"
-				+ "<AddressSpace><AddressPrefix>${cidr}</AddressPrefix></AddressSpace>"
+				+ "<AddressSpace>${addressSpace}</AddressSpace>"
 				+ "<Subnets>${subnets}</Subnets>"
 				+ "</VirtualNetworkSite>";
 			
 			// Create network site description based on the inputs and the template
 			final String networkDescription = networkTemplate
-				.replace("${name}", this.name)
-				.replace("${location}", this.region)
-				.replace("${cidr}", this.cidr)
+				.replace("${name}", this.azureSite.getName())
+				.replace("${location}", this.region())
+				.replace("${addressSpace}", addressSpaceSection.toString())
 				.replace("${subnets}", subnetsSection.toString());
 			
 			// Get current network configuration
@@ -264,40 +324,16 @@ public class NetworksImpl
 
 		@Override
 		public NetworkImpl refresh() throws Exception {
-			String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
-
-			// Correct for garbage prefix in XML returned by Azure
-			networkConfig = networkConfig.substring(networkConfig.indexOf('<'));
-
-			final String siteXpath = "/*[local-name()='NetworkConfiguration']"
-					+ "/*[local-name()='VirtualNetworkConfiguration']"
-					+ "/*[local-name()='VirtualNetworkSites']"
-					+ "/*[local-name()='VirtualNetworkSite' and @name='" + name + "']";
-
-			final String cidrXpath = siteXpath + "/*[local-name()='AddressSpace']/*[local-name()='AddressPrefix']";
-			this.cidr = Utils.findXMLNode(networkConfig, cidrXpath).getTextContent();
-
-			// Determine affinity group
-			for(VirtualNetworkSite site : azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites()) {
-				if(site.getName().equalsIgnoreCase(name)) {
-					this.affinityGroup = site.getAffinityGroup();
-					this.label = site.getLabel();
-					this.region = site.getLocation();
-					// Read subnets
-					for(com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet s : site.getSubnets()) {
-						// TODO: Other subnet properties
-						
-						NetworkImpl.SubnetImpl subnet = this.new SubnetImpl(s.getName());
-						this.subnets.add(subnet);
-						subnet.cidr = s.getAddressPrefix();
-					}
-					// TODO Other data
-					break;
+			ArrayList<VirtualNetworkSite> azureSites = azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites();
+			
+			for(VirtualNetworkSite s : azureSites) {
+				if(s.getName().equals(this.azureSite.getName())) {
+					this.azureSite = s;
+					return this;
 				}
 			}
 			
-			this.initialized = true;
-			return this;
+			throw new NoSuchElementException(String.format("Virtual network '%s' not found.", this.azureSite.getName()));
 		}
 	}
 }
