@@ -22,5 +22,5 @@ package com.microsoft.azure.shortcuts.services.updating;
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 
 public interface NetworkUpdatableBlank extends Deletable {
-
+	// TODO?
 }

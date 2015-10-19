@@ -35,6 +35,7 @@ import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionProvisio
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionWithCidr;
 import com.microsoft.azure.shortcuts.services.listing.Networks;
 import com.microsoft.azure.shortcuts.services.reading.Network;
+import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.AddressSpace;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
@@ -224,6 +225,11 @@ public class NetworksImpl
 		public NetworkImpl withRegion(String region) {
 			this.azureSite.setLocation(region);
 			return this;
+		}
+		
+		@Override
+		public NetworkImpl withRegion(Region region) {
+			return this.withRegion(region.name());
 		}
 		
 		@Override

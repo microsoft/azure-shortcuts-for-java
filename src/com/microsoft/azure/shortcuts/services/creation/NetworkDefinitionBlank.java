@@ -20,7 +20,9 @@
 package com.microsoft.azure.shortcuts.services.creation;
 
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionWithCidr;
+import com.microsoft.azure.shortcuts.services.reading.Region;
 
 public interface NetworkDefinitionBlank {
 	NetworkDefinitionWithCidr withRegion(String region);
+	NetworkDefinitionWithCidr withRegion(Region region);
 }
