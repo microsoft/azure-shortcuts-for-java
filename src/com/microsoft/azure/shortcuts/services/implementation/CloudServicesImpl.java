@@ -173,7 +173,7 @@ public class CloudServicesImpl
 		}
 		
 		@Override
-		public CloudServiceDefinitionProvisionable withRegion(Region region) {
+		public CloudServiceImpl withRegion(Region region) {
 			return this.withRegion(region.name());
 		}
 
