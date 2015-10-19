@@ -42,6 +42,7 @@ import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionW
 import com.microsoft.azure.shortcuts.services.listing.VirtualMachines;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
 import com.microsoft.azure.shortcuts.services.reading.Network;
+import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 import com.microsoft.azure.shortcuts.services.reading.VirtualMachine;
 import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatable;
@@ -342,7 +343,12 @@ public class VirtualMachinesImpl
 			this.region = region;
 			return this;
 		}
-		
+
+		@Override
+		public VirtualMachineImpl withRegion(Region region) {
+			return this.withRegion(region.name());
+		}
+
 		@Override
 		public VirtualMachineImpl withLinuxImage(String image) {
 			this.linuxImage = image;
