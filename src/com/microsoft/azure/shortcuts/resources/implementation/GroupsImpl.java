@@ -34,7 +34,6 @@ import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvision
 import com.microsoft.azure.shortcuts.resources.listing.Groups;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatable;
-import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
 
 public class GroupsImpl 
@@ -51,7 +50,7 @@ public class GroupsImpl
 	@Override
 	public Map<String, Group> list() throws Exception {
 		HashMap<String, Group> wrappers = new HashMap<>();
-		for(ResourceGroupExtended nativeItem : getGroups(azure)) {
+		for(ResourceGroupExtended nativeItem : getAzureGroups()) {
 			GroupImpl wrapper = new GroupImpl(nativeItem);
 			wrappers.put(nativeItem.getName(), wrapper);
 		}
@@ -62,7 +61,7 @@ public class GroupsImpl
 		
 	@Override
 	// Gets a specific resource group
-	public Group get(String name) throws Exception {
+	public GroupImpl get(String name) throws Exception {
 		ResourceGroupExtended azureGroup = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
 		return new GroupImpl(azureGroup);
 	}
@@ -76,28 +75,32 @@ public class GroupsImpl
 	
 
 	@Override
-	public GroupUpdatableBlank update(String name) {
-		return new GroupImpl(createAzureGroup(name));
+	public GroupImpl update(String name) {
+		return createStorageAccountWrapper(name);
 	}
 
 
 	@Override
-	public GroupDefinitionBlank define(String name) {
-		return new GroupImpl(createAzureGroup(name));
+	public GroupImpl define(String name) {
+		return createStorageAccountWrapper(name);
 	}
 
 	
-	// Creates new Azure group object
-	private static ResourceGroupExtended createAzureGroup(String name) {
+	/***************************************************
+	 * Helpers
+	 ***************************************************/
+	
+	// Wraps native Azure group
+	private GroupImpl createStorageAccountWrapper(String name) {
 		ResourceGroupExtended azureGroup = new ResourceGroupExtended();
 		azureGroup.setName(name);
-		return azureGroup;
+		return new GroupImpl(azureGroup);
+		
 	}
-
 	
 	// Helper to get the resource groups from Azure
-	private static ArrayList<ResourceGroupExtended> getGroups(Azure azure) throws Exception {
-		return azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();		
+	private ArrayList<ResourceGroupExtended> getAzureGroups() throws Exception {
+		return this.azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();		
 	}
 	
 	
@@ -222,7 +225,6 @@ public class GroupsImpl
 		@Override
 		public GroupImpl refresh() throws Exception {
 			this.azureGroup =  azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup();
-			this.initialized = true;
 			return this;
 		}
 	}
