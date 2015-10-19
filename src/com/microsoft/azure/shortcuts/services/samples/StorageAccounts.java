@@ -19,8 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -54,8 +53,8 @@ public class StorageAccounts {
 			.provision();
 
 		// List storage accounts
-		List<String> storageAccountNames = azure.storageAccounts().names();
-		System.out.println("Available storage accounts: " + StringUtils.join(storageAccountNames, ", "));
+		Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
+		System.out.println("Available storage accounts:\n\t" + StringUtils.join(storageAccounts.keySet(), ",\n\t"));
 
 		// Get storage account information
 		StorageAccount storageAccount = azure.storageAccounts().get(accountName);
@@ -84,7 +83,7 @@ public class StorageAccounts {
 				(storageAccount.lastGeoFailoverTime()!=null) ? storageAccount.lastGeoFailoverTime().getTime() : null,
 				storageAccount.region(),
 				storageAccount.status(),
-				Arrays.toString(storageAccount.endpoints()),
+				StringUtils.join(storageAccount.endpoints(), ", "),
 				storageAccount.type()
 				));
 		

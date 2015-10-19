@@ -416,8 +416,16 @@ azure.storageAccounts().define("mystorage")
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
+As a map, indexed by name:
+
 ```java
-List<String> storageAccountNames = azure.storageAccounts().names();
+Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
+```
+
+Names only:
+
+```java
+List<String> storageAccountNames = azure.storageAccounts().list().keySet();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -470,7 +478,7 @@ System.out.println(String.format("Found storage account: %s\n"
 	(storageAccount.lastGeoFailoverTime()!=null) ? storageAccount.lastGeoFailoverTime().getTime() : null,
 	storageAccount.region(),
 	storageAccount.status(),
-	Arrays.toString(storageAccount.endpoints()),
+	StringUtils.join(storageAccount.endpoints(), ", "),
 	storageAccount.type()
 ));
 ```

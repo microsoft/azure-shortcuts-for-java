@@ -21,8 +21,10 @@ package com.microsoft.azure.shortcuts.services.reading;
 
 import java.net.URI;
 import java.util.Calendar;
+import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
@@ -30,6 +32,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus
 
 public interface StorageAccount extends 
 	Named,
+	Refreshable<StorageAccount>,
 	StorageAccountUpdatableBlank {
 	
 	String affinityGroup() throws Exception;
@@ -42,6 +45,6 @@ public interface StorageAccount extends
 	String region() throws Exception;
 	StorageAccountStatus status() throws Exception;
 	Calendar lastGeoFailoverTime() throws Exception;
-	URI[] endpoints() throws Exception;
+	List<URI> endpoints() throws Exception;
 	String type() throws Exception;
 }
