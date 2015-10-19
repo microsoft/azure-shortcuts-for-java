@@ -23,6 +23,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -51,10 +53,13 @@ public class OSImagesImpl
 	
 	@Override
 	public Map<String, OSImage> list() throws Exception {
-		return super.list(
-			getOSImages(), 
-			(a) -> new OSImageImpl(a),
-			(o) -> o.getName());
+		HashMap<String, OSImage> wrappers = new HashMap<>();
+		for(VirtualMachineOSImage nativeItem : getOSImages()) {
+			OSImageImpl wrapper = new OSImageImpl(nativeItem);
+			wrappers.put(nativeItem.getName(), wrapper);
+		}
+		
+		return Collections.unmodifiableMap(wrappers);
 	}	
 
 	
@@ -90,8 +95,8 @@ public class OSImagesImpl
 		
 		/***********************************************************
 		 * Getters
-		 * @throws Exception 
 		 ***********************************************************/
+		
 		@Override
 		public String category() throws Exception {
 			return this.azureOsImage.getCategory();

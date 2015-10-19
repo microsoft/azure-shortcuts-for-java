@@ -19,33 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.common.implementation;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-
 public abstract class EntitiesImpl<T> {
 	final protected T azure;
 	protected EntitiesImpl(T azure) {
 		this.azure = azure;
 	}
-	
-	
-	protected <A, B, I extends B> Map<String, B> list(
-			ArrayList<A> nativeItems, 
-			Function<A, I> wrapperConstructor,
-			Function<A, String> keyExtractor
-			) throws Exception {
-		HashMap<String, B> wrappers = new HashMap<>();
-		for(A nativeItem : nativeItems) {
-			I wrapper = wrapperConstructor.apply(nativeItem);
-			wrappers.put(keyExtractor.apply(nativeItem), wrapper);
-		}
-		
-		return Collections.unmodifiableMap(wrappers);		
-	}
-	
-	
-
 }

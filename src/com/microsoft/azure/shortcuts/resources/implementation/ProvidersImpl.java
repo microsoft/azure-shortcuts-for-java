@@ -43,10 +43,13 @@ public class ProvidersImpl
 	
 	@Override
 	public Map<String, Provider> list() throws Exception {
-		return super.list(
-			getProviders(azure),
-			(a) -> new ProviderImpl(a),
-			(o) -> o.getNamespace());
+		HashMap<String, Provider> wrappers = new HashMap<>();
+		for(com.microsoft.azure.management.resources.models.Provider nativeItem : getProviders(azure)) {
+			ProviderImpl wrapper = new ProviderImpl(nativeItem);
+			wrappers.put(nativeItem.getNamespace(), wrapper);
+		}
+			
+		return Collections.unmodifiableMap(wrappers);
 	}
 
 	

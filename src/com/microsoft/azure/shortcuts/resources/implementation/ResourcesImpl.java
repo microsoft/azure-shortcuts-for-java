@@ -19,7 +19,11 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
@@ -31,6 +35,7 @@ import com.microsoft.azure.shortcuts.resources.listing.Resources;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
 import com.microsoft.windowsazure.core.ResourceIdentity;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 
 public class ResourcesImpl
@@ -139,17 +144,29 @@ public class ResourcesImpl
 	
 	@Override
 	public Map<String, Resource> list(String groupName) throws Exception {
-		ResourceListParameters params = new ResourceListParameters(); 
-		params.setResourceGroupName(groupName);
-		ArrayList<GenericResourceExtended> azureResources =  
-				azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
+		HashMap<String, Resource> wrappers = new HashMap<>();
+		for(GenericResourceExtended nativeItem : getResources(groupName)) {
+			ResourceImpl wrapper = new ResourceImpl(nativeItem);
+			wrappers.put(nativeItem.getId(), wrapper);
+		}
 		
-		return super.list(
-				azureResources, 
-				a -> new ResourceImpl(a),
-				o -> o.getId());
+		return Collections.unmodifiableMap(wrappers);
 	}
 
+	
+	/***********************************************************
+	 * Helpers
+	 * @throws URISyntaxException 
+	 * @throws ServiceException 
+	 * @throws IOException 
+	 ***********************************************************/
+	
+	private ArrayList<GenericResourceExtended> getResources(String groupName) throws Exception {
+		ResourceListParameters params = new ResourceListParameters(); 
+		params.setResourceGroupName(groupName);
+		return azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
+	}
+	
 
 	// Implements the individual resource logic
 	private class ResourceImpl 

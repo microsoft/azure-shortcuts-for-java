@@ -21,6 +21,8 @@ package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
@@ -72,10 +74,13 @@ public class CloudServicesImpl
 	
 	@Override
 	public Map<String, CloudService> list() throws Exception {
-		return super.list(
-			getHostedService(this.azure),
-			a -> new CloudServiceImpl(a),
-			o -> o.getServiceName());
+		HashMap<String, CloudService> wrappers = new HashMap<>();
+		for(HostedService nativeItem : getHostedServices()) {
+			CloudServiceImpl wrapper = new CloudServiceImpl(nativeItem);
+			wrappers.put(nativeItem.getServiceName(), wrapper);
+		}
+		
+		return Collections.unmodifiableMap(wrappers);
 	}	
 
 	
@@ -90,8 +95,8 @@ public class CloudServicesImpl
 	
 	
 	// Helper to return list of hosted services
-	private static ArrayList<HostedService> getHostedService(Azure azure) throws Exception {
-		return azure.computeManagementClient().getHostedServicesOperations().list().getHostedServices();
+	private ArrayList<HostedService> getHostedServices() throws Exception {
+		return this.azure.computeManagementClient().getHostedServicesOperations().list().getHostedServices();
 	}
 	
 	

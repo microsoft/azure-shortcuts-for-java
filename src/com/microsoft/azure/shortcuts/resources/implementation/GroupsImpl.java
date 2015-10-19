@@ -50,10 +50,13 @@ public class GroupsImpl
 	
 	@Override
 	public Map<String, Group> list() throws Exception {
-		return super.list(
-			getGroups(azure),
-			(a) -> new GroupImpl(a),
-			(o) -> o.getName());
+		HashMap<String, Group> wrappers = new HashMap<>();
+		for(ResourceGroupExtended nativeItem : getGroups(azure)) {
+			GroupImpl wrapper = new GroupImpl(nativeItem);
+			wrappers.put(nativeItem.getName(), wrapper);
+		}
+		
+		return Collections.unmodifiableMap(wrappers);
 	}
 
 		

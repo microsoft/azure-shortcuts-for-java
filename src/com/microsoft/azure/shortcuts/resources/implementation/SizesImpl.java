@@ -19,7 +19,11 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
@@ -27,6 +31,7 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Sizes;
 import com.microsoft.azure.shortcuts.resources.reading.Size;
+import com.microsoft.windowsazure.exception.ServiceException;
 
 public class SizesImpl 
 	extends EntitiesImpl<Azure>
@@ -45,14 +50,28 @@ public class SizesImpl
 	
 	@Override
 	public Map<String, Size> list(String region) throws Exception {
-		ArrayList<VirtualMachineSize> items = azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
-		return super.list(
-			items, 
-			a -> new SizeImpl(a),
-			o -> o.getName());
+		HashMap<String, Size> wrappers = new HashMap<>();
+		for(VirtualMachineSize nativeItem : getSizes(region)) {
+			SizeImpl wrapper = new SizeImpl(nativeItem);
+			wrappers.put(nativeItem.getName(), wrapper);
+		}
+		
+		return Collections.unmodifiableMap(wrappers);
 	}
 
+	
+	/*******************************************************
+	 * Helpers
+	 * @throws URISyntaxException 
+	 * @throws ServiceException 
+	 * @throws IOException 
+	 *******************************************************/
+	
+	private ArrayList<VirtualMachineSize> getSizes(String region) throws Exception {
+		return azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
+	}
 
+	
 	// Implementation of a Size
 	private class SizeImpl
 		extends NamedImpl
