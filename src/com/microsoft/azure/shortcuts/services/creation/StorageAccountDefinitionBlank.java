@@ -19,7 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.services.creation;
 
+import com.microsoft.azure.shortcuts.services.reading.Region;
+
 // creating a storage account
 public interface StorageAccountDefinitionBlank {
 	StorageAccountDefinitionProvisionable withRegion(String region);
+	StorageAccountDefinitionProvisionable withRegion(Region region);
 }

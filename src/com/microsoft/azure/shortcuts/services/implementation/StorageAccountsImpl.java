@@ -32,6 +32,7 @@ import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.listing.StorageAccounts;
+import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatable;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
@@ -203,7 +204,12 @@ public class StorageAccountsImpl
 			this.azureStorageAccount.getProperties().setLocation(region);
 			return this;
 		}
-					
+		
+		@Override
+		public StorageAccountImpl withRegion(Region region) {
+			return this.withRegion(region.name());
+		}
+
 		@Override
 		public StorageAccountImpl withType(String type) {
 			this.azureStorageAccount.getProperties().setAccountType(type);
