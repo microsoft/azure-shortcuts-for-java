@@ -19,8 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.services.creation;
 
+import com.microsoft.azure.shortcuts.services.reading.Region;
 
 public interface CloudServiceDefinitionBlank {
 	CloudServiceDefinitionProvisionable withRegion(String region);
+	CloudServiceDefinitionProvisionable withRegion(Region region);
 	CloudServiceDefinitionProvisionable withAffinityGroup(String affinityGroup);
 }

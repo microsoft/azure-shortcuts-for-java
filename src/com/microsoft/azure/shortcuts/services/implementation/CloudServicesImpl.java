@@ -31,6 +31,7 @@ import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBla
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.listing.CloudServices;
 import com.microsoft.azure.shortcuts.services.reading.CloudService;
+import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
 import com.microsoft.windowsazure.management.compute.models.ComputeCapabilities;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateParameters;
@@ -125,30 +126,37 @@ public class CloudServicesImpl
 		 * @throws Exception 
 		 ***********************************************************/
 
+		@Override
 		public String region() throws Exception {
 			return this.azureService.getProperties().getLocation();
 		}
 
+		@Override
 		public String description() throws Exception {
 			return this.azureService.getProperties().getDescription();
 		}
 
+		@Override
 		public String label() throws Exception {
 			return this.azureService.getProperties().getLabel();
 		}
 
+		@Override
 		public String reverseDnsFqdn() throws Exception {
 			return this.azureService.getProperties().getReverseDnsFqdn();
 		}
 
+		@Override
 		public Calendar created() throws Exception {
 			return this.azureService.getProperties().getDateCreated();
 		}
 
+		@Override
 		public Calendar modified() throws Exception {
 			return this.azureService.getProperties().getDateLastModified();
 		}
 
+		@Override
 		public String affinityGroup() throws Exception {
 			return this.azureService.getProperties().getAffinityGroup();
 		}
@@ -158,11 +166,18 @@ public class CloudServicesImpl
 		 * Setters (fluent interface)
 		 **************************************************************/
 
+		@Override
 		public CloudServiceImpl withRegion(String region) {
 			this.azureService.getProperties().setLocation(region);
 			return this;
 		}
 		
+		@Override
+		public CloudServiceDefinitionProvisionable withRegion(Region region) {
+			return this.withRegion(region.name());
+		}
+
+		@Override
 		public CloudServiceImpl withAffinityGroup(String affinityGroup) {
 			this.azureService.getProperties().setAffinityGroup(affinityGroup);
 			return this;
@@ -170,16 +185,19 @@ public class CloudServicesImpl
 		
 		//TODO withNetwork
 		
+		@Override
 		public CloudServiceImpl withDescription(String description) {
 			this.azureService.getProperties().setDescription(description);
 			return this;
 		}
 		
+		@Override
 		public CloudServiceImpl withLabel(String label) {
 			this.azureService.getProperties().setLabel(label);
 			return this;
 		}
 		
+		@Override
 		public CloudServiceImpl withReverseDnsFqdn(String fqdn) {
 			this.azureService.getProperties().setReverseDnsFqdn(fqdn);
 			return this;
