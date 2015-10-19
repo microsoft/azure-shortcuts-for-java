@@ -24,8 +24,12 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 
-public interface OSImage extends Named {
+public interface OSImage extends 
+	Named,
+	Refreshable<OSImage> {
+	
 	String category() throws Exception;
 	String description() throws Exception;
 	String eula() throws Exception;
