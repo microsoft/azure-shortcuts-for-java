@@ -17,22 +17,21 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.listing;
+package com.microsoft.azure.shortcuts.services.reading;
 
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.implementation.SupportsListingNames;
-import com.microsoft.azure.shortcuts.common.implementation.SupportsReading;
-import com.microsoft.azure.shortcuts.services.reading.Region;
+import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 
-public interface Regions extends
-	SupportsListingNames,
-	SupportsReading<Region> {
+public interface Region extends 
+	Named,
+	Refreshable<Region> {
+	String displayName() throws Exception;
 
-	/**
-	 * 
-	 * @param serviceType
-	 * @return Regions supporting a specific service type from the LocationAvailableServiceNames class
-	 */
-	List<String> names(String serviceType);
+	List<String> availableVirtualMachineSizes() throws Exception;
+	List<String> availableWebWorkerRoleSizes() throws Exception;
+	List<String> availableServices() throws Exception;
+	List<String> availableStorageAccountTypes() throws Exception;
+
 }

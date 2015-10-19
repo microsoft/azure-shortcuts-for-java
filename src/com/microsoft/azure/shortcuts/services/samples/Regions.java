@@ -24,6 +24,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
+import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
 
 // Tests Regions
@@ -42,8 +43,31 @@ public class Regions {
 		}
 	}
 
+	
 	public static void test(Azure azure) throws Exception {
+		// List regions supporting VM
 		List<String> regionNames = azure.regions().names(LocationAvailableServiceNames.PERSISTENTVMROLE);
-		System.out.println("Available regions: " + StringUtils.join(regionNames, ", "));
+		System.out.println("Available regions supporting VMs: " + StringUtils.join(regionNames, ", "));
+		
+		// Get info about a specific region
+		Region region = azure.regions().get("West US");
+		printRegion(region);
 	}
+	
+	
+	private static void printRegion(Region region) throws Exception {
+		System.out.println(String.format("Region: %s\n"
+				+ "\tDisplay name: %s\n"
+				+ "\tAvailable VM sizes: %s\n"
+				+ "\tAvailable web/worker role sizes: %s\n"
+				+ "\tAvailable services: %s\n"
+				+ "\tAvailable storage account types: %s\n",
+				region.name(),
+				region.displayName(),
+				StringUtils.join(region.availableVirtualMachineSizes(), ", "),
+				StringUtils.join(region.availableWebWorkerRoleSizes(), ", "),
+				StringUtils.join(region.availableServices(), ", "),
+				StringUtils.join(region.availableStorageAccountTypes(), ", ")
+				));
+		}
 }

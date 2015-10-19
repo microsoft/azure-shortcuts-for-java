@@ -20,10 +20,14 @@
 package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.listing.Regions;
+import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 
 // Class encapsulating the API related to locations
@@ -51,8 +55,88 @@ public class RegionsImpl
 	}
 
 	@Override
-	// Lists all regions
 	public List<String> names() {
 		return names(null);
+	}
+	
+	
+	@Override
+	public Region get(String name) throws Exception {
+		return createRegion(name).refresh();
+	}
+
+	
+	/***************************************************
+	 * Helpers
+	 ***************************************************/
+	
+	private RegionImpl createRegion(String name) {
+		Location azureLocation = new Location();
+		azureLocation.setName(name);
+		return new RegionImpl(azureLocation);
+	}
+	
+	
+	/***************************************************
+	 * Implementation of an individual region
+	 ***************************************************/
+	
+	private class RegionImpl
+		extends NamedRefreshableImpl<Region>
+		implements Region {
+		
+		private Location azureLocation;
+		
+		private RegionImpl(Location azureLocation) {
+			super(azureLocation.getName(), true);
+			this.azureLocation =  azureLocation;
+		}
+
+		
+		/**************************************************
+		 * Getters
+		 **************************************************/
+		
+		@Override
+		public String displayName() throws Exception {
+			return this.azureLocation.getDisplayName();
+		}
+		
+		@Override
+		public List<String> availableVirtualMachineSizes() throws Exception {
+			return Collections.unmodifiableList(this.azureLocation.getComputeCapabilities().getVirtualMachinesRoleSizes());
+		}
+
+		@Override
+		public List<String> availableWebWorkerRoleSizes() throws Exception {
+			return Collections.unmodifiableList(this.azureLocation.getComputeCapabilities().getWebWorkerRoleSizes());
+		}
+		
+		@Override
+		public List<String> availableServices() throws Exception {
+			return Collections.unmodifiableList(this.azureLocation.getAvailableServices());
+		}
+		
+		@Override
+		public List<String> availableStorageAccountTypes() throws Exception {
+			return Collections.unmodifiableList(this.azureLocation.getStorageCapabilities().getStorageAccountTypes());
+		}
+
+		
+		/***************************************************
+		 * Verbs
+		 ***************************************************/
+		
+		@Override
+		public Region refresh() throws Exception {
+			ArrayList<Location> azureLocations = azure.managementClient().getLocationsOperations().list().getLocations();
+			for(Location azureLocation : azureLocations) {
+				if(azureLocation.getName().equals(this.azureLocation.getName())) {
+					this.azureLocation = azureLocation;
+					return this;
+				}
+			}
+			throw new NoSuchElementException(String.format("Region '%s' not found.", this.azureLocation.getName()));
+		}
 	}
 }
