@@ -249,7 +249,6 @@ public class ResourcesImpl
 		// Refreshes the resource based on the group and identity information
 		private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
 			this.azureResource = azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
-			this.initialized = true;
 			return this;
 		}
 	}

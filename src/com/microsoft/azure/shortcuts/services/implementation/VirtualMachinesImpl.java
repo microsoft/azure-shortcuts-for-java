@@ -214,8 +214,7 @@ public class VirtualMachinesImpl
 	// or "<cloud-service-name>" where deployment slot is assumed to be Production and the first role is assumed to be the right one
 	@Override
 	public VirtualMachine get(String name) throws Exception {
-		VirtualMachineImpl vm = new VirtualMachineImpl(name, false);
-		return vm.refresh();
+		return new VirtualMachineImpl(name, false).refresh();
 	}
 
 
@@ -265,26 +264,21 @@ public class VirtualMachinesImpl
 
 		@Override
 		public DeploymentStatus status() throws Exception {
-			//TODO: This should be getStatus and should call Azure each time (never cached)
-			ensureInitialized();
 			return this.status;
 		}
 
 		@Override
 		public String network() throws Exception {
-			ensureInitialized();
 			return this.network;
 		}
 
 		@Override
 		public String size() throws Exception {
-			ensureInitialized();
 			return this.size;
 		}
 		
 		@Override
 		public String region() throws Exception {
-			ensureInitialized();
 			return this.region;
 		}
 		
@@ -305,19 +299,16 @@ public class VirtualMachinesImpl
 
 		@Override
 		public boolean isLinux() throws Exception  {
-			ensureInitialized();
 			return this.isLinux;
 		}
 
 		@Override
 		public boolean isWindows() throws Exception  {
-			ensureInitialized();
 			return this.isWindows;
 		}
 
 		@Override
 		public String affinityGroup() throws Exception  {
-			ensureInitialized();
 			return this.affinityGroup;
 		}
 
@@ -609,7 +600,7 @@ public class VirtualMachinesImpl
 				vmCreateParams.setDeploymentSlot(DeploymentSlot.Production);
 				vmCreateParams.setLabel(this.deploymentLabel);
 				vmCreateParams.setName(this.deployment());
-				vmCreateParams.setVirtualNetworkName(this.network == null ? "" : this.network);
+				vmCreateParams.setVirtualNetworkName(this.network); //TODO: I this the missing network is causing a bug
 				
 				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);
 				
@@ -696,7 +687,6 @@ public class VirtualMachinesImpl
 			}
 			
 			// TODO Get other data
-			this.initialized = true;
 			return this;
 		}
 	}

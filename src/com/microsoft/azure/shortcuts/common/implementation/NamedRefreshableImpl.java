@@ -25,19 +25,9 @@ public abstract class NamedRefreshableImpl<T>
 	extends NamedImpl
 	implements Refreshable<T> {
 
-	protected boolean initialized = false;
-	
 	protected NamedRefreshableImpl(String name, boolean initialized) {
 		super(name);
-		this.initialized = initialized;
 	}
 
 	public abstract T refresh() throws Exception;
-	
-	protected void ensureInitialized() throws Exception {
-		if(!this.initialized) {
-			refresh();
-			this.initialized = true;
-		}
-	}
 }
