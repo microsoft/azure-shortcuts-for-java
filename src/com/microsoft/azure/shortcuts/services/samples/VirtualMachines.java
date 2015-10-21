@@ -46,6 +46,30 @@ public class VirtualMachines {
 	public static void test(Azure azure) throws Exception {
 		final String timeStamp = String.valueOf(System.currentTimeMillis()).substring(5);
 			
+		// Create a Linux VM in a new service
+		final String vmName = "vm" + timeStamp;
+		System.out.println(String.format("Creating virtual machine named '%s'...", vmName));
+		azure.virtualMachines().define(vmName)
+			.withRegion("West US")
+			.withSize("Small")
+			.withAdminUsername("marcins")
+			.withAdminPassword("Abcd.1234")
+			.withLinuxImage("b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB")
+			.withHostName(vmName)
+			.withTcpEndpoint(22)
+			.provision();
+
+		// Add a Windows VM to the same service deployment
+		final String vmNameWin = "wm" + timeStamp;
+		azure.virtualMachines().define(vmNameWin)
+			.withExistingCloudService(vmName)
+			.withSize("Small")
+			.withAdminUsername("marcins")
+			.withAdminPassword("Abcd.1234")
+			.withWindowsImage("3a50f22b388a4ff7ab41029918570fa6__Windows-Server-2012-Essentials-20140715-enus")
+			.withTcpEndpoint(3389)
+			.provision();
+		
 		// Create a new network
 		final String network = "net" + timeStamp;
 		System.out.println(String.format("Creating virtual network named '%s'...", network));
@@ -71,80 +95,24 @@ public class VirtualMachines {
 			.withSubnet("Foo")
 			.provision();
 
-		// Create a Linux VM in a new service
-		final String vmName = "vm" + timeStamp;
-		System.out.println(String.format("Creating virtual machine named '%s'...", vmName));
-		azure.virtualMachines().define(vmName)
-			.withRegion("West US")
-			.withSize("Small")
-			.withAdminUsername("marcins")
-			.withAdminPassword("Abcd.1234")
-			.withLinuxImage("b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB")
-			.withHostName(vmName)
-			.withTcpEndpoint(22)
-			.provision();
-
-		// Add a Windows VM to the same service deployment
-		final String vmNameWin = "wm" + timeStamp;
-		azure.virtualMachines().define(vmNameWin)
-			.withExistingCloudService(vmName)
-			.withSize("Small")
-			.withAdminUsername("marcins")
-			.withAdminPassword("Abcd.1234")
-			.withWindowsImage("a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201504.01-en.us-127GB.vhd")
-			.withTcpEndpoint(3389)
-			.provision();		
-		
 		// List virtual machines
 		List<String> vmNames = azure.virtualMachines().names();
 		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));
 			
 		// Get information about the created Linux vm
 		VirtualMachine vm = azure.virtualMachines().get(vmName);
-		System.out.println(String.format("Reading information about vm: %s\n"
-				+ "\tDeployment name: %s\n"
-				+ "\tService name: %s\n"
-				+ "\tSize: %s\n"
-				+ "\tStatus: %s\n"
-				+ "\tWindows? %s\n"
-				+ "\tLinux? %s\n"
-				+ "\tNetwork %s\n"
-				+ "\tAffinity group %s\n",
-				vm.name(),
-				vm.deployment(),
-				vm.cloudService(),
-				vm.size(),
-				vm.status().toString(),
-				vm.isWindows(),
-				vm.isLinux(),
-				vm.network(),
-				vm.affinityGroup()
-				));
+		printVM(vm);
 			
 		// Get information about the created Windows vm
 		vm = azure.virtualMachines().get(vmName + "." + vmNameWin);
-		System.out.println(String.format("Reading information about vm: %s\n"
-				+ "\tDeployment name: %s\n"
-				+ "\tService name: %s\n"
-				+ "\tSize: %s\n"
-				+ "\tStatus: %s\n"
-				+ "\tWindows? %s\n"
-				+ "\tLinux? %s\n"
-				+ "\tNetwork %s\n"
-				+ "\tAffinity group %s\n",
-				vm.name(),
-				vm.deployment(),
-				vm.cloudService(),
-				vm.size(),
-				vm.status().toString(),
-				vm.isWindows(),
-				vm.isLinux(),
-				vm.network(),
-				vm.affinityGroup()
-				));
-			
+		printVM(vm);
+		
 		// Get information about the second Linux VM
 		vm = azure.virtualMachines().get(cloudService2 + "." + vmName2);
+		printVM(vm);
+	}
+	
+	private static void printVM(VirtualMachine vm) throws Exception {
 		System.out.println(String.format("Reading information about vm: %s\n"
 				+ "\tDeployment name: %s\n"
 				+ "\tService name: %s\n"
@@ -154,7 +122,7 @@ public class VirtualMachines {
 				+ "\tLinux? %s\n"
 				+ "\tNetwork %s\n"
 				+ "\tAffinity group %s\n",
-				vm.name(),
+				vm.roleName(),
 				vm.deployment(),
 				vm.cloudService(),
 				vm.size(),
@@ -164,6 +132,6 @@ public class VirtualMachines {
 				vm.network(),
 				vm.affinityGroup()
 				));
-	
+		
 	}
 }

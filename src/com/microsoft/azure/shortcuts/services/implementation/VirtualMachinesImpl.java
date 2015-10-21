@@ -541,7 +541,9 @@ public class VirtualMachinesImpl
 			ConfigurationSet netConfigSet = new ConfigurationSet();
 			netConfigSet.setConfigurationSetType(ConfigurationSetTypes.NETWORKCONFIGURATION);
 			netConfigSet.setInputEndpoints(endpoints);
-			netConfigSet.setSubnetNames(new ArrayList<String>(Arrays.asList(this.subnet)));
+			if(this.subnet != null) {
+				netConfigSet.setSubnetNames(new ArrayList<String>(Arrays.asList(this.subnet)));
+			}
 			
 			// Create login
 			String image = (this.linuxImage != null) ? this.linuxImage : this.windowsImage;
@@ -600,7 +602,7 @@ public class VirtualMachinesImpl
 				vmCreateParams.setDeploymentSlot(DeploymentSlot.Production);
 				vmCreateParams.setLabel(this.deploymentLabel);
 				vmCreateParams.setName(this.deployment());
-				vmCreateParams.setVirtualNetworkName(this.network); //TODO: I this the missing network is causing a bug
+				vmCreateParams.setVirtualNetworkName(this.network);
 				
 				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);
 				
@@ -610,8 +612,8 @@ public class VirtualMachinesImpl
 				
 				// Deploy into existing cloud service
 				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
-				vmCreateParams.setRoleName(this.name);
-				vmCreateParams.setRoleSize(this.size);
+				vmCreateParams.setRoleName(this.roleName());
+				vmCreateParams.setRoleSize(this.size());
 				vmCreateParams.setConfigurationSets(configs);
 				vmCreateParams.setOSVirtualHardDisk(osDisk);
 				vmCreateParams.setProvisionGuestAgent(this.guestAgent);	
