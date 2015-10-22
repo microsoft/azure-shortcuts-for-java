@@ -24,9 +24,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
@@ -53,8 +54,16 @@ public class OSImagesImpl
 	
 	@Override
 	public Map<String, OSImage> list() throws Exception {
-		HashMap<String, OSImage> wrappers = new HashMap<>();
-		for(VirtualMachineOSImage nativeItem : getOSImages()) {
+		ArrayList<VirtualMachineOSImage> osImages = getOSImages();
+		Collections.sort(osImages, new Comparator<VirtualMachineOSImage>() {
+			@Override
+			public int compare(VirtualMachineOSImage o1, VirtualMachineOSImage o2) {
+				return o1.getName().compareToIgnoreCase(o2.getName());
+			}
+		});
+		
+		TreeMap<String, OSImage> wrappers = new TreeMap<>();
+		for(VirtualMachineOSImage nativeItem : osImages) {
 			OSImageImpl wrapper = new OSImageImpl(nativeItem);
 			wrappers.put(nativeItem.getName(), wrapper);
 		}
