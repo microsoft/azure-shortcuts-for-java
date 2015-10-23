@@ -19,107 +19,107 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-compute</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-media</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-keyvault-extensions</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-keyvault-core</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-keyvault</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt-websites</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt-storage</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt-sql</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt-scheduler</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt-network</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt-media</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-utility</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt-compute</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-traffic-manager</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-network</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-dns</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-sql</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-storage</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-svc-mgmt</artifactId>
-            <version>0.8.3</version>
+            <version>0.9.0</version>
         </dependency>
     </dependencies>
 </project>

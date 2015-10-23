@@ -643,7 +643,6 @@ public class VirtualMachinesImpl
 			this.size = vmResponse.getRoleSize();
 			
 			// Get service-level data
-			//TODO Make it lazily evaluated
 			CloudService service = azure.cloudServices().get(this.cloudService());
 			this.affinityGroup = service.affinityGroup();
 			this.region = service.region();
