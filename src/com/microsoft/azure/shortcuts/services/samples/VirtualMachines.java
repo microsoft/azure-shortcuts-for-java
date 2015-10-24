@@ -121,25 +121,24 @@ public class VirtualMachines {
 	}
 	
 	private static void printVM(VirtualMachine vm) throws Exception {
-		System.out.println(String.format("Reading information about vm: %s\n"
-				+ "\tDeployment name: %s\n"
-				+ "\tService name: %s\n"
-				+ "\tSize: %s\n"
-				+ "\tStatus: %s\n"
-				+ "\tWindows? %s\n"
-				+ "\tLinux? %s\n"
-				+ "\tNetwork %s\n"
-				+ "\tAffinity group %s\n",
-				vm.roleName(),
-				vm.deployment(),
-				vm.cloudService(),
-				vm.size(),
-				vm.status().toString(),
-				//vm.isWindows(),
-				//vm.isLinux(),
-				vm.network(),
-				vm.affinityGroup()
-				));
+		StringBuilder info = new StringBuilder();
+		info
+			.append("Reading information about vm: ").append(vm.roleName()).append("\n")
+			.append("\tService name: ").append(vm.cloudService()).append("\n")
+			.append("\tDeployment name: ").append(vm.deployment()).append("\n")
+			.append("\tCreated time: ").append(vm.createdTime().toString()).append("\n")
+			.append("\tDeployment slot: ").append(vm.deploymentSlot()).append("\n")
+			.append("\tDeployment URI: ").append(vm.deploymentUri().toString()).append("\n")
+			.append("\tDeployment locked? ").append(vm.isDeploymentLocked()).append("\n")
+			.append("\tLast modified time: ").append(vm.lastModifiedTime()).append("\n")
+			.append("\tRegion: ").append(vm.region()).append("\n")
+			.append("\tReserved IP name: ").append(vm.reservedIPName()).append("\n")
+			.append("\tSize: ").append(vm.size()).append("\n")
+			.append("\tStatus: ").append(vm.status().toString()).append("\n")
+			.append("\tNetwork: ").append(vm.network()).append("\n")
+			.append("\tAffinity group: ").append(vm.affinityGroup()).append("\n");
+			
 		
+		System.out.println(info.toString());
 	}
 }

@@ -19,8 +19,13 @@
 */
 package com.microsoft.azure.shortcuts.services.reading;
 
+import java.net.URI;
+import java.util.Calendar;
+import java.util.Map;
+
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatableBlank;
+import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
 import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
 
 public interface VirtualMachine extends 
@@ -37,5 +42,12 @@ public interface VirtualMachine extends
 	//boolean isLinux() throws Exception; //TODO: Currently broken in the SDK/Azure
 	//boolean isWindows() throws Exception; // TODO: Currently broken in the SDK/Azure
 	String roleName() throws Exception;
+	Calendar createdTime() throws Exception;
+	DeploymentSlot deploymentSlot() throws Exception;
+	Map<String, String> extendedDeploymentProperties() throws Exception;
+	Calendar lastModifiedTime() throws Exception;
+	String reservedIPName() throws Exception;
+	URI deploymentUri() throws Exception;
+	Boolean isDeploymentLocked() throws Exception;
 }
 

@@ -164,8 +164,6 @@ System.out.println(String.format("Reading information about vm: %s\n"
 	+ "\tService name: %s\n"
 	+ "\tSize: %s\n"
 	+ "\tStatus: %s\n"
-	+ "\tWindows? %s\n"
-	+ "\tLinux? %s\n"
 	+ "\tNetwork %s\n"
 	+ "\tAffinity group %s\n",
 	vm.name(),
@@ -173,8 +171,6 @@ System.out.println(String.format("Reading information about vm: %s\n"
 	vm.cloudService(),
 	vm.size(),
 	vm.status().toString(),
-	vm.isWindows(),
-	vm.isLinux(),
 	vm.network(),
 	vm.affinityGroup()
 ));

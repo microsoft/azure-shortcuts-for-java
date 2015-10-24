@@ -22,8 +22,11 @@ package com.microsoft.azure.shortcuts.services.implementation;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -277,6 +280,46 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
+		public String deployment() throws Exception {
+			return this.azureDeployment.getName();
+		}
+		
+		@Override
+		public Calendar createdTime() throws Exception {
+			return this.azureDeployment.getCreatedTime();
+		}
+
+		@Override
+		public DeploymentSlot deploymentSlot() throws Exception {
+			return this.azureDeployment.getDeploymentSlot();
+		}
+
+		@Override
+		public Map<String, String> extendedDeploymentProperties() throws Exception {
+			return Collections.unmodifiableMap(this.azureDeployment.getExtendedProperties());
+		}
+
+		@Override
+		public Calendar lastModifiedTime() throws Exception {
+			return this.azureDeployment.getLastModifiedTime();
+		}
+		
+		@Override
+		public String reservedIPName() throws Exception {
+			return this.azureDeployment.getReservedIPName();
+		}
+		
+		@Override
+		public URI deploymentUri() throws Exception {
+			return this.azureDeployment.getUri();
+		}
+
+		@Override
+		public Boolean isDeploymentLocked() throws Exception {
+			return this.azureDeployment.isLocked();
+		}
+
+		@Override
 		public String size() throws Exception {
 			return this.size;
 		}
@@ -291,11 +334,6 @@ public class VirtualMachinesImpl
 			return VirtualMachineId.roleFromId(this.name);
 		}
 		
-		@Override
-		public String deployment() throws Exception {
-			return this.azureDeployment.getName();
-		}
-
 		@Override
 		public String cloudService() throws Exception  {
 			return VirtualMachineId.serviceFromId(this.name);
