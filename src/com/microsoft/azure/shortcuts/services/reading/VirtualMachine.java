@@ -34,8 +34,8 @@ public interface VirtualMachine extends
 	String region() throws Exception;
 	String affinityGroup() throws Exception;
 	DeploymentStatus status() throws Exception;
-	boolean isLinux() throws Exception;
-	boolean isWindows() throws Exception;
+	//boolean isLinux() throws Exception; //TODO: Currently broken in the SDK/Azure
+	//boolean isWindows() throws Exception; // TODO: Currently broken in the SDK/Azure
 	String roleName() throws Exception;
 }
 

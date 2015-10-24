@@ -45,7 +45,15 @@ public class VirtualMachines {
 	
 	public static void test(Azure azure) throws Exception {
 		final String timeStamp = String.valueOf(System.currentTimeMillis()).substring(5);
-			
+		
+		// List virtual machines
+		List<String> vmNames = azure.virtualMachines().names();
+		System.out.println("Virtual machines:\n\t"+ StringUtils.join(vmNames, ",\n\t"));
+
+		// Get information about the created Linux vm
+		VirtualMachine vm = azure.virtualMachines().get("vm60117961");
+		printVM(vm);
+
 		// Create a Linux VM in a new service
 		final String vmName = "vm" + timeStamp;
 		System.out.println(String.format("Creating virtual machine named '%s'...", vmName));
@@ -96,11 +104,11 @@ public class VirtualMachines {
 			.provision();
 
 		// List virtual machines
-		List<String> vmNames = azure.virtualMachines().names();
+		vmNames = azure.virtualMachines().names();
 		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));
 			
 		// Get information about the created Linux vm
-		VirtualMachine vm = azure.virtualMachines().get(vmName);
+		vm = azure.virtualMachines().get(vmName);
 		printVM(vm);
 			
 		// Get information about the created Windows vm
@@ -127,8 +135,8 @@ public class VirtualMachines {
 				vm.cloudService(),
 				vm.size(),
 				vm.status().toString(),
-				vm.isWindows(),
-				vm.isLinux(),
+				//vm.isWindows(),
+				//vm.isLinux(),
 				vm.network(),
 				vm.affinityGroup()
 				));

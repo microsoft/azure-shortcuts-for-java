@@ -22,5 +22,5 @@ package com.microsoft.azure.shortcuts.common.creation;
 
 // Requires class to support creating entities
 public interface SupportsCreating<T> {
-	T define(String name);
+	T define(String name) throws Exception;
 }

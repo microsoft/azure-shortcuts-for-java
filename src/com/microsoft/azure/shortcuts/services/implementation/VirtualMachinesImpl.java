@@ -179,28 +179,31 @@ public class VirtualMachinesImpl
 
 	
 	@Override
-	public VirtualMachineDefinitionBlank define(String name) {
+	public VirtualMachineDefinitionBlank define(String name) throws Exception {
 		return new VirtualMachineImpl(name, true);
 	}
 	
 	
 	// Gets the deployment from Azure based on the fully qualified vm name
 	private DeploymentGetResponse getDeployment(String vmName) throws Exception {
-		final String serviceName = VirtualMachineId.serviceFromId(vmName);
-		String deploymentName;
-		if(null == (deploymentName = VirtualMachineId.deploymentFromId(vmName))) {
+		final String serviceName = VirtualMachineId.serviceFromId(vmName); // If only role name given, assume cloud service name is the same
+		String deploymentName = VirtualMachineId.deploymentFromId(vmName);
+		if(null == deploymentName) {
+			// If no deployment name given, assume Production slot
 			return azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
 		} else {
+			// If deployment name given, use it
 			return azure.computeManagementClient().getDeploymentsOperations().getByName(serviceName, deploymentName);
 		}
 	}
 	
 	
 	// Gets the VM role (if any) from Azure from the deployment
-	private Role getVmRole(DeploymentGetResponse deployment) {
+	private Role getVmRole(DeploymentGetResponse deployment, String roleName) {
 		ArrayList<Role> roles = deployment.getRoles();
 		for(Role role : roles) {
-			if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString())) {
+			if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString())
+					&& role.getRoleName().equalsIgnoreCase(roleName)) {
 				return role;
 			}
 		}
@@ -251,10 +254,9 @@ public class VirtualMachinesImpl
 		final HashMap<Integer, Integer> privatePorts = new HashMap<Integer, Integer>();
 		final HashMap<Integer, String> endpointNames = new HashMap<Integer, String>();
 		
-		private VirtualMachineImpl(String name, boolean initialized) { 
+		private VirtualMachineImpl(String name, boolean initialized) throws Exception { 
 			super(name, initialized);
-			this.deploymentLabel = this.hostName = this.computerName = name;
-			withDeployment(name);
+			this.deploymentLabel = this.hostName = this.computerName = this.roleName();
 		}
 		
 		
@@ -297,12 +299,12 @@ public class VirtualMachinesImpl
 			return VirtualMachineId.serviceFromId(this.name);
 		}
 
-		@Override
+		//@Override //TODO: Currently broken in Azure SDK
 		public boolean isLinux() throws Exception  {
 			return this.isLinux;
 		}
 
-		@Override
+		//@Override //TODO: Currently broken in Azure SDK
 		public boolean isWindows() throws Exception  {
 			return this.isWindows;
 		}
@@ -626,11 +628,15 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachine refresh() throws Exception {
+			// Read deployment data
 			final DeploymentGetResponse deploymentResponse = getDeployment(this.name);
 			this.withDeployment(deploymentResponse.getName());
+			this.deploymentLabel = deploymentResponse.getLabel();
+			this.status = deploymentResponse.getStatus();
+			this.network = deploymentResponse.getVirtualNetworkName();
 
 			// Determine role
-			final Role role = getVmRole(deploymentResponse);
+			final Role role = getVmRole(deploymentResponse, this.roleName()); // TODO: This should accept the role name, since multiple VMs can be in the same servicd
 			if(role == null) {
 				throw new Exception("No virtual machine found in this service");
 			}
@@ -647,11 +653,6 @@ public class VirtualMachinesImpl
 			this.affinityGroup = service.affinityGroup();
 			this.region = service.region();
 			
-			// Get deployment-level data
-			this.deploymentLabel = deploymentResponse.getLabel();
-			this.status = deploymentResponse.getStatus();
-			this.network = deploymentResponse.getVirtualNetworkName();
-						
 			// Process config data
 			for(ConfigurationSet config : vmResponse.getConfigurationSets()) {
 				if(config.getAdminPassword() != null) {
