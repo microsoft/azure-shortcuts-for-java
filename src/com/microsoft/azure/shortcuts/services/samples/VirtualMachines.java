@@ -133,9 +133,16 @@ public class VirtualMachines {
 			.append("\tLast modified time: ").append(vm.lastModifiedTime()).append("\n")
 			.append("\tRegion: ").append(vm.region()).append("\n")
 			.append("\tReserved IP name: ").append(vm.reservedIPName()).append("\n")
-			.append("\tSize: ").append(vm.size()).append("\n")
 			.append("\tStatus: ").append(vm.status().toString()).append("\n")
 			.append("\tNetwork: ").append(vm.network()).append("\n")
+			.append("\tAvailability set: ").append(vm.availabilitySet()).append("\n")			
+			.append("\tWinRM certificate thumbprint: ").append(vm.defaultWinRmCertificateThumbprint()).append("\n")			
+			.append("\tSize: ").append(vm.size()).append("\n")
+			.append("\tRole label: ").append(vm.roleLabel()).append("\n")
+			.append("\tMedia location: ").append(vm.mediaLocation()).append("\n")
+			.append("\tOS version: ").append(vm.osVersion()).append("\n")
+			.append("\tImage name: ").append(vm.imageName()).append("\n")
+			.append("\tHas guest agent? ").append(vm.hasGuestAgent().toString()).append("\n")
 			.append("\tAffinity group: ").append(vm.affinityGroup()).append("\n");
 			
 		

@@ -250,6 +250,7 @@ public class VirtualMachinesImpl
 			VirtualMachineUpdatable {
 
 		private DeploymentGetResponse azureDeployment = new DeploymentGetResponse();
+		private Role azureRole = new Role();
 		
 		private String affinityGroup, size, region, linuxImage, windowsImage, adminUsername, adminPassword, 
 			computerName, hostName, storageAccountName, subnet;
@@ -261,6 +262,7 @@ public class VirtualMachinesImpl
 		private VirtualMachineImpl(String name) throws Exception { 
 			super(name);
 			this.azureDeployment.setName(this.roleName());
+			this.azureRole.setRoleName(this.roleName());
 			this.hostName = this.computerName = this.roleName();
 		}
 		
@@ -319,6 +321,41 @@ public class VirtualMachinesImpl
 			return this.azureDeployment.isLocked();
 		}
 
+		@Override
+		public String availabilitySet() throws Exception {
+			return this.azureRole.getAvailabilitySetName();
+		}
+		
+		@Override
+		public String defaultWinRmCertificateThumbprint() throws Exception {
+			return this.azureRole.getDefaultWinRmCertificateThumbprint();
+		}
+
+		@Override
+		public String roleLabel() throws Exception {
+			return this.azureRole.getLabel();
+		}
+		
+		@Override
+		public URI mediaLocation() throws Exception {
+			return this.azureRole.getMediaLocation();
+		}
+		
+		@Override
+		public String osVersion() throws Exception {
+			return this.azureRole.getOSVersion();
+		}
+		
+		@Override
+		public String imageName() throws Exception {
+			return this.azureRole.getVMImageName();
+		}
+		
+		@Override
+		public Boolean hasGuestAgent() throws Exception {
+			return this.azureRole.isProvisionGuestAgent();
+		}
+				
 		@Override
 		public String size() throws Exception {
 			return this.size;
@@ -674,12 +711,8 @@ public class VirtualMachinesImpl
 			this.withDeployment(this.azureDeployment.getName());
 
 			// Determine role
-			final Role role = getVmRole(this.azureDeployment, this.roleName());
-			if(role == null) {
-				throw new Exception("No virtual machine found in this service");
-			}
-			
-			this.withRoleName(role.getRoleName());
+			this.azureRole = getVmRole(this.azureDeployment, this.azureRole.getRoleName());
+			this.withRoleName(this.azureRole.getRoleName());
 
 			// Get role properties
 			final VirtualMachineGetResponse vmResponse = azure.computeManagementClient().getVirtualMachinesOperations().get(

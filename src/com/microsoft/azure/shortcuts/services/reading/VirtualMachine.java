@@ -49,5 +49,12 @@ public interface VirtualMachine extends
 	String reservedIPName() throws Exception;
 	URI deploymentUri() throws Exception;
 	Boolean isDeploymentLocked() throws Exception;
+	String availabilitySet() throws Exception;
+	String defaultWinRmCertificateThumbprint() throws Exception;
+	String roleLabel() throws Exception;
+	URI mediaLocation() throws Exception;
+	String osVersion() throws Exception;
+	String imageName() throws Exception;
+	Boolean hasGuestAgent() throws Exception;
 }
 
