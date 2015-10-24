@@ -59,7 +59,6 @@ import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.Role;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateDeploymentParameters;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineCreateParameters;
-import com.microsoft.windowsazure.management.compute.models.VirtualMachineGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineRoleType;
 
 /**
@@ -251,10 +250,9 @@ public class VirtualMachinesImpl
 
 		private DeploymentGetResponse azureDeployment = new DeploymentGetResponse();
 		private Role azureRole = new Role();
-		
-		private String affinityGroup, region, linuxImage, windowsImage, adminUsername, adminPassword, 
-			computerName, hostName, storageAccountName, subnet;
-		boolean autoUpdate = true, isLinux, isWindows, isExistingCloudService;
+				
+		private String affinityGroup, region, linuxImage, windowsImage, storageAccountName, subnet;
+		boolean isExistingCloudService;
 		final ArrayList<Integer> tcpPorts = new ArrayList<Integer>();
 		final HashMap<Integer, Integer> privatePorts = new HashMap<Integer, Integer>();
 		final HashMap<Integer, String> endpointNames = new HashMap<Integer, String>();
@@ -272,13 +270,42 @@ public class VirtualMachinesImpl
 			// Role defaults
 			this.azureRole.setRoleName(defaultRoleName);
 			this.azureRole.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
-			this.hostName = this.computerName = defaultRoleName;
+			this.azureRole.setConfigurationSets(new ArrayList<ConfigurationSet>());
+			
+			this.withComputerName(defaultRoleName);
+			this.withHostName(defaultRoleName);
 		}
 		
 		
 		/***********************************************************
 		 * Getters
 		 ***********************************************************/
+
+		//@Override TODO Not public because not currently returned by Azure
+		public String adminPassword() throws Exception {
+			return ensureOSConfigurationSet().getAdminPassword();
+		}
+		
+		//@Override TODO Not public because not currently returned by Azure
+		public String adminUserName() throws Exception {
+			return ensureOSConfigurationSet().getAdminUserName();
+		}
+		
+		//@Override TODO Not public because not currently returned by Azure
+		public String computerName() throws Exception {
+			return ensureOSConfigurationSet().getComputerName();
+		}
+
+		//@Override TODO Not public because not currently returned by Azure
+		public String hostName() throws Exception {
+			return ensureOSConfigurationSet().getHostName();
+		}
+		
+		//@Override TODO Not public because not currently returned by Azure
+		public boolean autoUpdate() {
+			ConfigurationSet config = ensureOSConfigurationSet();
+			return (config.isEnableAutomaticUpdates() != null) ? config.isEnableAutomaticUpdates().booleanValue() : false;
+		}
 
 		@Override
 		public DeploymentStatus status() throws Exception {
@@ -392,12 +419,12 @@ public class VirtualMachinesImpl
 
 		//@Override //TODO: Currently broken in Azure SDK
 		public boolean isLinux() throws Exception  {
-			return this.isLinux;
+			return ensureOSConfigurationSet().getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.LINUXPROVISIONINGCONFIGURATION);
 		}
 
 		//@Override //TODO: Currently broken in Azure SDK
 		public boolean isWindows() throws Exception  {
-			return this.isWindows;
+			return ensureOSConfigurationSet().getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
 		}
 
 		@Override
@@ -441,24 +468,34 @@ public class VirtualMachinesImpl
 		@Override
 		public VirtualMachineImpl withLinuxImage(String image) {
 			this.linuxImage = image;
+			ensureOSConfigurationSet().setConfigurationSetType(ConfigurationSetTypes.LINUXPROVISIONINGCONFIGURATION);
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl withWindowsImage(String image) {
 			this.windowsImage = image;
-			return this;
-		}
-		
-		@Override
-		public VirtualMachineImpl withAdminUsername(String userName) {
-			this.adminUsername = userName;
+			ensureOSConfigurationSet().setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl withAdminPassword(String password) {
-			this.adminPassword = password;
+			ConfigurationSet config = ensureOSConfigurationSet();
+			config.setAdminPassword(password);
+			if(config.getUserPassword()==null) {
+				config.setUserPassword(password);
+			}
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withAdminUsername(String userName) {
+			ConfigurationSet osConfig = ensureOSConfigurationSet();
+			osConfig.setAdminUserName(userName);
+			if(osConfig.getUserName()==null) {
+				osConfig.setUserName(userName);
+			}
 			return this;
 		}
 		
@@ -485,27 +522,19 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withAutoUpdate(boolean autoUpdate) {
-			this.autoUpdate = autoUpdate;
+			this.ensureOSConfigurationSet().setEnableAutomaticUpdates(autoUpdate);
 			return this;
 		}
 
 		@Override
 		public VirtualMachineImpl withComputerName(String name) throws Exception {
-			if(name == null || name.length() < 1 || name.length() > 15) {
-				throw new Exception("Computer name not valid");
-			} else {
-				this.computerName = name;
-			}
+			ensureOSConfigurationSet().setComputerName(name);
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl withHostName(String name) throws Exception {
-			if(name == null || name.length() < 1 || name.length() > 64) {
-				throw new Exception("Host name not valid.");
-			} else {
-				this.hostName = name;
-			}
+			ensureOSConfigurationSet().setHostName(name);
 			return this;
 		}
 
@@ -632,37 +661,14 @@ public class VirtualMachinesImpl
 			}
 			
 			// Create net configuration set
-			ConfigurationSet netConfigSet = new ConfigurationSet();
-			netConfigSet.setConfigurationSetType(ConfigurationSetTypes.NETWORKCONFIGURATION);
+			ConfigurationSet netConfigSet = this.ensureNetConfigurationSet();
 			netConfigSet.setInputEndpoints(endpoints);
 			if(this.subnet != null) {
 				netConfigSet.setSubnetNames(new ArrayList<String>(Arrays.asList(this.subnet)));
 			}
 			
-			// Create login
+			// Determine image
 			String image = (this.linuxImage != null) ? this.linuxImage : this.windowsImage;
-			ConfigurationSet osConfigSet = new ConfigurationSet();
-			if(this.linuxImage != null) {
-				isLinux = true;
-				osConfigSet.setConfigurationSetType(ConfigurationSetTypes.LINUXPROVISIONINGCONFIGURATION);
-				osConfigSet.setUserName(this.adminUsername);
-				osConfigSet.setUserPassword(this.adminPassword);
-				osConfigSet.setDisableSshPasswordAuthentication(false);
-				osConfigSet.setHostName(this.hostName);
-			} else if(this.windowsImage != null) {
-				isWindows = true;
-				osConfigSet.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
-				osConfigSet.setAdminUserName(this.adminUsername);
-				osConfigSet.setAdminPassword(this.adminPassword);
-				osConfigSet.setEnableAutomaticUpdates(this.autoUpdate);
-				osConfigSet.setComputerName(this.computerName);
-			} else {
-				throw new Exception("Missing image");
-			}
-			
-			// Prepare configuration sets collection
-			ArrayList<ConfigurationSet> configs = 
-				new ArrayList<ConfigurationSet>(Arrays.asList(netConfigSet, osConfigSet));
 			
 			// Creates OS virtual disk
 			OSVirtualHardDisk osDisk = new OSVirtualHardDisk();
@@ -680,7 +686,6 @@ public class VirtualMachinesImpl
 				serviceProvisionable.provision();
 				
 				// Prepare role definition
-				this.azureRole.setConfigurationSets(configs);
 				this.azureRole.setOSVirtualHardDisk(osDisk);
 				ArrayList<Role> roles = new ArrayList<Role>(Arrays.asList(this.azureRole));
 
@@ -705,7 +710,7 @@ public class VirtualMachinesImpl
 				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
 				vmCreateParams.setRoleName(this.roleName());
 				vmCreateParams.setRoleSize(this.size());
-				vmCreateParams.setConfigurationSets(configs);
+				vmCreateParams.setConfigurationSets(this.azureRole.getConfigurationSets());
 				vmCreateParams.setOSVirtualHardDisk(osDisk);
 				vmCreateParams.setProvisionGuestAgent(this.hasGuestAgent());	
 				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudService(), deploymentName, vmCreateParams);
@@ -732,43 +737,48 @@ public class VirtualMachinesImpl
 			this.affinityGroup = service.affinityGroup();
 			this.region = service.region();
 			
-			// Process config data
-			for(ConfigurationSet config : this.azureRole.getConfigurationSets()) {
-				if(config.getAdminPassword() != null) {
-					this.adminPassword = config.getAdminPassword();
-				}
-				
-				if(config.getAdminUserName() != null) {
-					this.adminUsername = config.getAdminUserName();
-				}
-				
-				if(config.getComputerName() != null) {
-					this.computerName = config.getComputerName();
-				}
-				
-				this.isLinux = (config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.LINUXPROVISIONINGCONFIGURATION));
-				this.isWindows = (config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION));
-				
-				if(config.getHostName() != null) {
-					this.hostName = config.getHostName();
-				}
-				
-				// TODO: Support endpoints
-				if(config.getInputEndpoints() != null) {
-					
-				}
-				
-				if(config.getUserName() != null) {
-					this.adminUsername = config.getUserName();
-				}
-				
-				if(config.getUserPassword() != null) {
-					this.adminPassword = config.getUserPassword();
+			// TODO Get other data
+			return this;
+		}
+		
+		
+		/*************************************************************
+		 * Helpers
+		 * @throws Exception 
+		 *************************************************************/
+		
+		// Helper returning or creating a default OS configuration
+		private ConfigurationSet ensureOSConfigurationSet() {
+			final ArrayList<ConfigurationSet> configSets = this.azureRole.getConfigurationSets();
+			for(ConfigurationSet config : configSets) {
+				if(config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.LINUXPROVISIONINGCONFIGURATION)						
+					|| config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION)) {
+					return config;
 				}
 			}
 			
-			// TODO Get other data
-			return this;
+			ConfigurationSet osConfig = new ConfigurationSet();
+			osConfig.setConfigurationSetType(ConfigurationSetTypes.WINDOWSPROVISIONINGCONFIGURATION);
+			configSets.add(osConfig);
+			osConfig.setDisableSshPasswordAuthentication(false);
+			return osConfig;
+		}
+		
+		
+		// Helper returning or creating a default network configuration
+		private ConfigurationSet ensureNetConfigurationSet() {
+			final ArrayList<ConfigurationSet> configSets = this.azureRole.getConfigurationSets();
+			for(ConfigurationSet config : configSets) {
+				if(config.getConfigurationSetType().equalsIgnoreCase(ConfigurationSetTypes.NETWORKCONFIGURATION)) {
+					return config;
+				}
+			}
+			
+			ConfigurationSet netConfig = new ConfigurationSet();
+			netConfig.setConfigurationSetType(ConfigurationSetTypes.NETWORKCONFIGURATION);
+			netConfig.setInputEndpoints(new ArrayList<InputEndpoint>());
+			configSets.add(netConfig);
+			return netConfig;
 		}
 	}
 }
