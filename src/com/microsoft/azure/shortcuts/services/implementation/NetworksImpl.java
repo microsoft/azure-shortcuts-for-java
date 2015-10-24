@@ -144,7 +144,7 @@ public class NetworksImpl
 		private VirtualNetworkSite azureSite;
 		
 		public NetworkImpl(VirtualNetworkSite site) {
-			super(site.getName(), true);
+			super(site.getName());
 			this.azureSite = site;
 		}
 

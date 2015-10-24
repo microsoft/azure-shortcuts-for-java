@@ -119,7 +119,7 @@ public class GroupsImpl
 		private ResourceGroupExtended azureGroup;
 		
 		private GroupImpl(ResourceGroupExtended azureGroup) {
-			super(azureGroup.getName(), true);
+			super(azureGroup.getName());
 			this.azureGroup = azureGroup;
 		}
 

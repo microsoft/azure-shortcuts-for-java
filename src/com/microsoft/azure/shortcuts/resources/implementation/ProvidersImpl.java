@@ -78,7 +78,7 @@ public class ProvidersImpl
 		com.microsoft.azure.management.resources.models.Provider azureProvider;
 
 		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider) {
-			super(azureProvider.getNamespace(), true);
+			super(azureProvider.getNamespace());
 			this.azureProvider = azureProvider;
 		}
 

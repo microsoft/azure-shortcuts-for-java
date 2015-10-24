@@ -116,7 +116,7 @@ public class CloudServicesImpl
 		private HostedService azureService;
 		
 		private CloudServiceImpl(HostedService azureService) {
-			super(azureService.getServiceName().toLowerCase(), true);
+			super(azureService.getServiceName().toLowerCase());
 			this.azureService = azureService;
 		}
 

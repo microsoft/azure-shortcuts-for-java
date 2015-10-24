@@ -97,7 +97,7 @@ public class OSImagesImpl
 		private VirtualMachineOSImage azureOsImage;
 		
 		private OSImageImpl(VirtualMachineOSImage osImage) {
-			super(osImage.getName(), true);
+			super(osImage.getName());
 			this.azureOsImage = osImage;
 		}
 

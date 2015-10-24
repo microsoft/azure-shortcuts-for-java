@@ -88,7 +88,7 @@ public class RegionsImpl
 		private Location azureLocation;
 		
 		private RegionImpl(Location azureLocation) {
-			super(azureLocation.getName(), true);
+			super(azureLocation.getName());
 			this.azureLocation =  azureLocation;
 		}
 

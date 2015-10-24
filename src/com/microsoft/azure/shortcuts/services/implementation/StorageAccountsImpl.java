@@ -124,7 +124,7 @@ public class StorageAccountsImpl
 		private com.microsoft.windowsazure.management.storage.models.StorageAccount azureStorageAccount;
 		
 		public StorageAccountImpl(com.microsoft.windowsazure.management.storage.models.StorageAccount azureStorageAccount) {
-			super(azureStorageAccount.getName(), true);
+			super(azureStorageAccount.getName());
 			this.azureStorageAccount = azureStorageAccount;
 		}
 

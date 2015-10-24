@@ -25,7 +25,7 @@ public abstract class NamedRefreshableImpl<T>
 	extends NamedImpl
 	implements Refreshable<T> {
 
-	protected NamedRefreshableImpl(String name, boolean initialized) {
+	protected NamedRefreshableImpl(String name) {
 		super(name);
 	}
 

@@ -178,7 +178,7 @@ public class ResourcesImpl
 		GenericResourceExtended azureResource;
 		
 		private ResourceImpl(GenericResourceExtended azureResource) {
-			super(azureResource.getId(), true);
+			super(azureResource.getId());
 			this.azureResource = azureResource;
 		}
 
