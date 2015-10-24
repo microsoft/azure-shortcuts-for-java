@@ -50,10 +50,6 @@ public class VirtualMachines {
 		List<String> vmNames = azure.virtualMachines().names();
 		System.out.println("Virtual machines:\n\t"+ StringUtils.join(vmNames, ",\n\t"));
 
-		// Get information about the created Linux vm
-		VirtualMachine vm = azure.virtualMachines().get("vm60117961");
-		printVM(vm);
-
 		// Create a Linux VM in a new service
 		final String vmName = "vm" + timeStamp;
 		System.out.println(String.format("Creating virtual machine named '%s'...", vmName));
@@ -108,7 +104,7 @@ public class VirtualMachines {
 		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));
 			
 		// Get information about the created Linux vm
-		vm = azure.virtualMachines().get(vmName);
+		VirtualMachine vm = azure.virtualMachines().get(vmName);
 		printVM(vm);
 			
 		// Get information about the created Windows vm
@@ -129,6 +125,7 @@ public class VirtualMachines {
 			.append("\tCreated time: ").append(vm.createdTime().toString()).append("\n")
 			.append("\tDeployment slot: ").append(vm.deploymentSlot()).append("\n")
 			.append("\tDeployment URI: ").append(vm.deploymentUri().toString()).append("\n")
+			.append("\tDeployment label: ").append(vm.deploymentLabel()).append("\n")
 			.append("\tDeployment locked? ").append(vm.isDeploymentLocked()).append("\n")
 			.append("\tLast modified time: ").append(vm.lastModifiedTime()).append("\n")
 			.append("\tRegion: ").append(vm.region()).append("\n")
@@ -142,7 +139,7 @@ public class VirtualMachines {
 			.append("\tMedia location: ").append(vm.mediaLocation()).append("\n")
 			.append("\tOS version: ").append(vm.osVersion()).append("\n")
 			.append("\tImage name: ").append(vm.imageName()).append("\n")
-			.append("\tHas guest agent? ").append(vm.hasGuestAgent().toString()).append("\n")
+			.append("\tHas guest agent? ").append(vm.hasGuestAgent()).append("\n")
 			.append("\tAffinity group: ").append(vm.affinityGroup()).append("\n");
 			
 		

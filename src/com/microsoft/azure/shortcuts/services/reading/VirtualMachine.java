@@ -55,6 +55,7 @@ public interface VirtualMachine extends
 	URI mediaLocation() throws Exception;
 	String osVersion() throws Exception;
 	String imageName() throws Exception;
-	Boolean hasGuestAgent() throws Exception;
+	boolean hasGuestAgent() throws Exception;
+	String deploymentLabel() throws Exception;
 }
 

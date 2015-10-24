@@ -252,18 +252,27 @@ public class VirtualMachinesImpl
 		private DeploymentGetResponse azureDeployment = new DeploymentGetResponse();
 		private Role azureRole = new Role();
 		
-		private String affinityGroup, size, region, linuxImage, windowsImage, adminUsername, adminPassword, 
+		private String affinityGroup, region, linuxImage, windowsImage, adminUsername, adminPassword, 
 			computerName, hostName, storageAccountName, subnet;
-		boolean autoUpdate = true, guestAgent = true, isLinux, isWindows, isExistingCloudService;
+		boolean autoUpdate = true, isLinux, isWindows, isExistingCloudService;
 		final ArrayList<Integer> tcpPorts = new ArrayList<Integer>();
 		final HashMap<Integer, Integer> privatePorts = new HashMap<Integer, Integer>();
 		final HashMap<Integer, String> endpointNames = new HashMap<Integer, String>();
 		
 		private VirtualMachineImpl(String name) throws Exception { 
 			super(name);
-			this.azureDeployment.setName(this.roleName());
-			this.azureRole.setRoleName(this.roleName());
-			this.hostName = this.computerName = this.roleName();
+			final String defaultRoleName = VirtualMachineId.roleFromId(name);
+			final String defaultDeploymentName = VirtualMachineId.deploymentFromId(name);
+			
+			// Deployment defaults
+			this.azureDeployment.setName(defaultDeploymentName);
+			this.azureDeployment.setDeploymentSlot(DeploymentSlot.Production);
+			this.azureDeployment.setLabel(defaultRoleName);
+			
+			// Role defaults
+			this.azureRole.setRoleName(defaultRoleName);
+			this.azureRole.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
+			this.hostName = this.computerName = defaultRoleName;
 		}
 		
 		
@@ -280,6 +289,11 @@ public class VirtualMachinesImpl
 		public String network() throws Exception {
 			return this.azureDeployment.getVirtualNetworkName();
 		}
+		
+		@Override
+		public String deploymentLabel() throws Exception {
+			return this.azureDeployment.getLabel();
+		}		
 
 		@Override
 		public String deployment() throws Exception {
@@ -352,13 +366,13 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
-		public Boolean hasGuestAgent() throws Exception {
-			return this.azureRole.isProvisionGuestAgent();
+		public boolean hasGuestAgent() throws Exception {
+			return ((this.azureRole.isProvisionGuestAgent() == null) ? false : this.azureRole.isProvisionGuestAgent().booleanValue());
 		}
 				
 		@Override
 		public String size() throws Exception {
-			return this.size;
+			return this.azureRole.getRoleSize();
 		}
 		
 		@Override
@@ -368,7 +382,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public String roleName() throws Exception {
-			return VirtualMachineId.roleFromId(this.name);
+			return this.azureRole.getRoleName();
 		}
 		
 		@Override
@@ -409,7 +423,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withSize(String size) {
-			this.size = size;
+			this.azureRole.setRoleSize(size);
 			return this;
 		}
 
@@ -497,14 +511,14 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withGuestAgent(boolean provision) {
-			this.guestAgent = provision;
+			this.azureRole.setProvisionGuestAgent(provision);
 			return this;
 		}
 
 		@Override
 		public VirtualMachineImpl withDeployment(String name)  {
 			this.setName(VirtualMachineId.withDeploymentName(name, this.name()));
-			this.azureDeployment.setName(name);
+			this.azureDeployment.setName(VirtualMachineId.deploymentFromId(this.name()));
 			return this;
 		}
 		
@@ -666,24 +680,21 @@ public class VirtualMachinesImpl
 				serviceProvisionable.provision();
 				
 				// Prepare role definition
-				Role role = new Role();
-				role.setConfigurationSets(configs);
-				role.setProvisionGuestAgent(this.guestAgent);
-				role.setRoleName(this.roleName());
-				role.setRoleSize(this.size);
-				role.setRoleType(VirtualMachineRoleType.PersistentVMRole.toString());
-				role.setOSVirtualHardDisk(osDisk);
-				
-				ArrayList<Role> roles = new ArrayList<Role>(Arrays.asList(role));
+				this.azureRole.setConfigurationSets(configs);
+				this.azureRole.setOSVirtualHardDisk(osDisk);
+				ArrayList<Role> roles = new ArrayList<Role>(Arrays.asList(this.azureRole));
 
 				// Create a new deployment
+				if(this.deployment() == null) {
+					this.withDeployment(this.cloudService());
+				}
 				final VirtualMachineCreateDeploymentParameters vmCreateParams = new VirtualMachineCreateDeploymentParameters();
 				vmCreateParams.setRoles(roles);
-				vmCreateParams.setDeploymentSlot(DeploymentSlot.Production);
-				vmCreateParams.setLabel(this.azureDeployment.getLabel());
+				vmCreateParams.setDeploymentSlot(this.deploymentSlot());
+				vmCreateParams.setLabel(this.deploymentLabel());
 				vmCreateParams.setName(this.deployment());
-				vmCreateParams.setVirtualNetworkName(this.azureDeployment.getVirtualNetworkName());
-				
+				vmCreateParams.setVirtualNetworkName(this.network());
+
 				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);
 				
 			} else {
@@ -696,7 +707,7 @@ public class VirtualMachinesImpl
 				vmCreateParams.setRoleSize(this.size());
 				vmCreateParams.setConfigurationSets(configs);
 				vmCreateParams.setOSVirtualHardDisk(osDisk);
-				vmCreateParams.setProvisionGuestAgent(this.guestAgent);	
+				vmCreateParams.setProvisionGuestAgent(this.hasGuestAgent());	
 				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudService(), deploymentName, vmCreateParams);
 			}
 			
@@ -707,17 +718,14 @@ public class VirtualMachinesImpl
 		@Override
 		public VirtualMachine refresh() throws Exception {
 			// Read deployment
-			this.azureDeployment =  getDeployment(this.name);
+			this.azureDeployment =  getDeployment(this.name());
 			this.withDeployment(this.azureDeployment.getName());
 
-			// Determine role
-			this.azureRole = getVmRole(this.azureDeployment, this.azureRole.getRoleName());
-			this.withRoleName(this.azureRole.getRoleName());
-
-			// Get role properties
-			final VirtualMachineGetResponse vmResponse = azure.computeManagementClient().getVirtualMachinesOperations().get(
-					this.cloudService(), this.deployment(), this.roleName());
-			this.size = vmResponse.getRoleSize();
+			// Read role
+			this.azureRole = getVmRole(this.azureDeployment, this.roleName());
+			this.withRoleName(this.roleName());
+			//final VirtualMachineGetResponse vmResponse = azure.computeManagementClient().getVirtualMachinesOperations().get(
+			//		this.cloudService(), this.deployment(), this.roleName());
 			
 			// Get service-level data
 			CloudService service = azure.cloudServices().get(this.cloudService());
@@ -725,7 +733,7 @@ public class VirtualMachinesImpl
 			this.region = service.region();
 			
 			// Process config data
-			for(ConfigurationSet config : vmResponse.getConfigurationSets()) {
+			for(ConfigurationSet config : this.azureRole.getConfigurationSets()) {
 				if(config.getAdminPassword() != null) {
 					this.adminPassword = config.getAdminPassword();
 				}
