@@ -21,13 +21,16 @@ package com.microsoft.azure.shortcuts.resources.reading;
 
 import java.util.Map;
 
+import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 
 public interface Resource extends 
 	Named,
 	Refreshable<Resource>,
+	Wrapper<GenericResourceExtended>,
 	Deletable {
 	
     String group() throws Exception;

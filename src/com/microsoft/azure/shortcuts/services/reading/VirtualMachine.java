@@ -24,12 +24,14 @@ import java.util.Calendar;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatableBlank;
 import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
 import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
 
 public interface VirtualMachine extends 
 	Named,
+	Refreshable<VirtualMachine>,
 	VirtualMachineUpdatableBlank {
 	
 	String size() throws Exception;

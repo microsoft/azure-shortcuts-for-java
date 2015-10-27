@@ -25,10 +25,13 @@ import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 
 public interface OSImage extends 
 	Named,
-	Refreshable<OSImage> {
+	Refreshable<OSImage>,
+	Wrapper<VirtualMachineOSImage> {
 	
 	String category() throws Exception;
 	String description() throws Exception;

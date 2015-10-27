@@ -21,14 +21,17 @@ package com.microsoft.azure.shortcuts.resources.reading;
 
 import java.util.Map;
 
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
 public interface Group extends 
 	Named,
-	GroupUpdatableBlank,
-	Refreshable<Group> {
+	Refreshable<Group>,
+	Wrapper<ResourceGroupExtended>,
+	GroupUpdatableBlank {
 	
 	String region() throws Exception;
 	String id() throws Exception;

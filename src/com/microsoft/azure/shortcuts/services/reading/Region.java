@@ -23,10 +23,13 @@ import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 
 public interface Region extends 
 	Named,
-	Refreshable<Region> {
+	Refreshable<Region>,
+	Wrapper<Location> {
 	String displayName() throws Exception;
 
 	List<String> availableVirtualMachineSizes() throws Exception;

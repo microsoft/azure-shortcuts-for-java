@@ -30,8 +30,6 @@ import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-import com.microsoft.azure.shortcuts.common.updating.Deletable;
 import com.microsoft.azure.shortcuts.resources.listing.Resources;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 import com.microsoft.azure.shortcuts.resources.reading.Resource;
@@ -174,9 +172,7 @@ public class ResourcesImpl
 		extends
 			NamedRefreshableWrapperImpl<Resource, GenericResourceExtended>
 		implements 
-			Wrapper<GenericResourceExtended>,
-			Resource, 
-			Deletable {
+			Resource {
 		
 		private ResourceImpl(GenericResourceExtended azureResource) {
 			super(azureResource.getId(), azureResource);

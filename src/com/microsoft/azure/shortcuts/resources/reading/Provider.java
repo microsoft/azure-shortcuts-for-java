@@ -24,10 +24,12 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 
 public interface Provider extends 
 	Named,
-	Refreshable<Provider> {
+	Refreshable<Provider>,
+	Wrapper<com.microsoft.azure.management.resources.models.Provider> {
 	
 	String registrationState() throws Exception;
 	Map<String, ResourceType> resourceTypes() throws Exception;

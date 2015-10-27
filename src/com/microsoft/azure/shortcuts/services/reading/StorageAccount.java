@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
@@ -33,6 +34,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus
 public interface StorageAccount extends 
 	Named,
 	Refreshable<StorageAccount>,
+	Wrapper<com.microsoft.windowsazure.management.storage.models.StorageAccount>,
 	StorageAccountUpdatableBlank {
 	
 	String affinityGroup() throws Exception;

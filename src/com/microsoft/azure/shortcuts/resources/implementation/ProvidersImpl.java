@@ -29,7 +29,6 @@ import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
@@ -74,7 +73,6 @@ public class ProvidersImpl
 		extends
 			NamedRefreshableWrapperImpl<Provider, com.microsoft.azure.management.resources.models.Provider>
 		implements 
-			Wrapper<com.microsoft.azure.management.resources.models.Provider>,
 			Provider {
 		
 		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider) {

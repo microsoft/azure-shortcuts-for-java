@@ -29,7 +29,6 @@ import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.resources.listing.Groups;
@@ -112,7 +111,6 @@ public class GroupsImpl
 		extends 
 			NamedRefreshableWrapperImpl<Group, ResourceGroupExtended>
 		implements
-			Wrapper<ResourceGroupExtended>,
 			GroupUpdatable,
 			GroupDefinitionProvisionable,
 			GroupDefinitionBlank,

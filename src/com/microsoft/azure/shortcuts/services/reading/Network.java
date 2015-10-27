@@ -23,10 +23,15 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatableBlank;
+import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
 
 public interface Network extends 
 	Named,
+	Refreshable<Network>,
+	Wrapper<VirtualNetworkSite>,
 	NetworkUpdatableBlank {
 	
 	List<String> addressPrefixes() throws Exception;
