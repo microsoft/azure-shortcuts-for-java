@@ -28,7 +28,8 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
@@ -71,33 +72,31 @@ public class ProvidersImpl
 	// Implements logic for individual provider
 	private class ProviderImpl
 		extends
-			NamedRefreshableImpl<Provider>
+			NamedRefreshableWrapperImpl<Provider, com.microsoft.azure.management.resources.models.Provider>
 		implements 
+			Wrapper<com.microsoft.azure.management.resources.models.Provider>,
 			Provider {
 		
-		com.microsoft.azure.management.resources.models.Provider azureProvider;
-
 		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider) {
-			super(azureProvider.getNamespace());
-			this.azureProvider = azureProvider;
+			super(azureProvider.getNamespace(), azureProvider);
 		}
 
 
 		/***********************************************************
 		 * Getters
 		 * @throws Exception 
-		 ***********************************************************/
+		 ***********************************************************/		
 
 		@Override
 		public String registrationState() throws Exception {
-			return this.azureProvider.getRegistrationState();
+			return this.inner().getRegistrationState();
 		}
 		
 
 		@Override
 		public Map<String, ResourceType> resourceTypes() throws Exception {
 			HashMap<String, ResourceType> resourceTypes = new HashMap<>();
-			for(ProviderResourceType item : azureProvider.getResourceTypes()) {
+			for(ProviderResourceType item : this.inner().getResourceTypes()) {
 				ResourceTypeImpl resourceType = new ResourceTypeImpl(item);
 				resourceTypes.put(item.getName(), resourceType);
 			}
@@ -152,9 +151,10 @@ public class ProvidersImpl
 		public ProviderImpl refresh() throws Exception {
 			com.microsoft.azure.management.resources.models.Provider azureProvider = 
 					azure.resourceManagementClient().getProvidersOperations().get(this.name).getProvider();
-			this.azureProvider = azureProvider;
+			this.innerObject = azureProvider;
 			return this;
 		}
+
 	}
 
 }

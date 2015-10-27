@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.listing.OsImages;
 import com.microsoft.azure.shortcuts.services.reading.OSImage;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
@@ -91,14 +91,11 @@ public class OSImagesImpl
 	
 	// Encapsulated information about an image
 	private class OSImageImpl 
-		extends NamedRefreshableImpl<OSImage> 
+		extends NamedRefreshableWrapperImpl<OSImage, VirtualMachineOSImage> 
 		implements OSImage {
 		
-		private VirtualMachineOSImage azureOsImage;
-		
 		private OSImageImpl(VirtualMachineOSImage osImage) {
-			super(osImage.getName());
-			this.azureOsImage = osImage;
+			super(osImage.getName(), osImage);
 		}
 
 		
@@ -108,97 +105,97 @@ public class OSImagesImpl
 		
 		@Override
 		public String category() throws Exception {
-			return this.azureOsImage.getCategory();
+			return this.inner().getCategory();
 		}
 
 		@Override
 		public String description() throws Exception {
-			return this.azureOsImage.getDescription();
+			return this.inner().getDescription();
 		}
 
 		@Override
 		public String eula() throws Exception {
-			return this.azureOsImage.getEula();
+			return this.inner().getEula();
 		}
 
 		@Override
 		public URI iconUri() throws Exception {
-			return new URI(this.azureOsImage.getIconUri());
+			return new URI(this.inner().getIconUri());
 		}
 
 		@Override
 		public String family() throws Exception {
-			return this.azureOsImage.getImageFamily();
+			return this.inner().getImageFamily();
 		}
 
 		@Override
 		public String ioType() throws Exception {
-			return this.azureOsImage.getIOType();
+			return this.inner().getIOType();
 		}
 		
 		@Override
 		public String label() throws Exception {
-			return this.azureOsImage.getLabel();
+			return this.inner().getLabel();
 		}
 
 		@Override
 		public String language() throws Exception {
-			return this.azureOsImage.getLanguage();
+			return this.inner().getLanguage();
 		}
 
 		@Override
 		public List<String> regions() throws Exception {
-			return  Arrays.asList(this.azureOsImage.getLocation().split(";"));
+			return  Arrays.asList(this.inner().getLocation().split(";"));
 		}
 
 		@Override
 		public double logicalSizeInGB() throws Exception {
-			return this.azureOsImage.getLogicalSizeInGB();
+			return this.inner().getLogicalSizeInGB();
 		}
 
 		@Override
 		public URI mediaLink() throws Exception {
-			return this.azureOsImage.getMediaLinkUri();
+			return this.inner().getMediaLinkUri();
 		}
 
 		@Override
 		public String operatingSystemType() throws Exception {
-			return this.azureOsImage.getOperatingSystemType();
+			return this.inner().getOperatingSystemType();
 		}
 
 		@Override
 		public URI privacyUri() throws Exception {
-			return this.azureOsImage.getPrivacyUri();
+			return this.inner().getPrivacyUri();
 		}
 
 		@Override
 		public Calendar publishedDate() throws Exception {
-			return this.azureOsImage.getPublishedDate();
+			return this.inner().getPublishedDate();
 		}
 
 		@Override
 		public String publisher() throws Exception {
-			return this.azureOsImage.getPublisherName();
+			return this.inner().getPublisherName();
 		}
 
 		@Override
 		public String recommendedVMSize() throws Exception {
-			return this.azureOsImage.getRecommendedVMSize();
+			return this.inner().getRecommendedVMSize();
 		}
 
 		@Override
 		public URI smallIconUri() throws Exception {
-			return new URI(this.azureOsImage.getSmallIconUri());
+			return new URI(this.inner().getSmallIconUri());
 		}
 
 		@Override
 		public boolean isPremium() throws Exception {
-			return this.azureOsImage.isPremium();
+			return this.inner().isPremium();
 		}
 
 		@Override
 		public boolean isShownInGui() throws Exception {
-			return this.azureOsImage.isShowInGui();
+			return this.inner().isShowInGui();
 		}
 
 		
@@ -208,26 +205,26 @@ public class OSImagesImpl
 
 		@Override
 		public OSImage refresh() throws Exception {
-			VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(this.azureOsImage.getName());
-			this.azureOsImage.setCategory(response.getCategory());
-			this.azureOsImage.setDescription(response.getDescription());
-			this.azureOsImage.setEula(response.getEula());
-			this.azureOsImage.setIconUri(response.getIconUri());
-			this.azureOsImage.setImageFamily(response.getImageFamily());
-			this.azureOsImage.setIOType(response.getIOType());
-			this.azureOsImage.setLabel(response.getLabel());
-			this.azureOsImage.setLanguage(response.getLanguage());
-			this.azureOsImage.setLocation(response.getLocation());
-			this.azureOsImage.setLogicalSizeInGB(response.getLogicalSizeInGB());
-			this.azureOsImage.setMediaLinkUri(response.getMediaLinkUri());
-			this.azureOsImage.setOperatingSystemType(response.getOperatingSystemType());
-			this.azureOsImage.setPrivacyUri(response.getPrivacyUri());
-			this.azureOsImage.setPublishedDate(response.getPublishedDate());
-			this.azureOsImage.setPublisherName(response.getPublisherName());
-			this.azureOsImage.setRecommendedVMSize(response.getRecommendedVMSize());
-			this.azureOsImage.setSmallIconUri(response.getSmallIconUri());
-			this.azureOsImage.setIsPremium(response.isPremium());
-			this.azureOsImage.setShowInGui(response.isShowInGui());
+			VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(this.inner().getName());
+			this.inner().setCategory(response.getCategory());
+			this.inner().setDescription(response.getDescription());
+			this.inner().setEula(response.getEula());
+			this.inner().setIconUri(response.getIconUri());
+			this.inner().setImageFamily(response.getImageFamily());
+			this.inner().setIOType(response.getIOType());
+			this.inner().setLabel(response.getLabel());
+			this.inner().setLanguage(response.getLanguage());
+			this.inner().setLocation(response.getLocation());
+			this.inner().setLogicalSizeInGB(response.getLogicalSizeInGB());
+			this.inner().setMediaLinkUri(response.getMediaLinkUri());
+			this.inner().setOperatingSystemType(response.getOperatingSystemType());
+			this.inner().setPrivacyUri(response.getPrivacyUri());
+			this.inner().setPublishedDate(response.getPublishedDate());
+			this.inner().setPublisherName(response.getPublisherName());
+			this.inner().setRecommendedVMSize(response.getRecommendedVMSize());
+			this.inner().setSmallIconUri(response.getSmallIconUri());
+			this.inner().setIsPremium(response.isPremium());
+			this.inner().setShowInGui(response.isShowInGui());
 			return this;
 		}
 	}

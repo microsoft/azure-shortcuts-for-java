@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.listing.Regions;
 import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
@@ -82,14 +82,11 @@ public class RegionsImpl
 	 ***************************************************/
 	
 	private class RegionImpl
-		extends NamedRefreshableImpl<Region>
+		extends NamedRefreshableWrapperImpl<Region, Location>
 		implements Region {
 		
-		private Location azureLocation;
-		
 		private RegionImpl(Location azureLocation) {
-			super(azureLocation.getName());
-			this.azureLocation =  azureLocation;
+			super(azureLocation.getName(), azureLocation);
 		}
 
 		
@@ -99,27 +96,27 @@ public class RegionsImpl
 		
 		@Override
 		public String displayName() throws Exception {
-			return this.azureLocation.getDisplayName();
+			return this.inner().getDisplayName();
 		}
 		
 		@Override
 		public List<String> availableVirtualMachineSizes() throws Exception {
-			return Collections.unmodifiableList(this.azureLocation.getComputeCapabilities().getVirtualMachinesRoleSizes());
+			return Collections.unmodifiableList(this.inner().getComputeCapabilities().getVirtualMachinesRoleSizes());
 		}
 
 		@Override
 		public List<String> availableWebWorkerRoleSizes() throws Exception {
-			return Collections.unmodifiableList(this.azureLocation.getComputeCapabilities().getWebWorkerRoleSizes());
+			return Collections.unmodifiableList(this.inner().getComputeCapabilities().getWebWorkerRoleSizes());
 		}
 		
 		@Override
 		public List<String> availableServices() throws Exception {
-			return Collections.unmodifiableList(this.azureLocation.getAvailableServices());
+			return Collections.unmodifiableList(this.inner().getAvailableServices());
 		}
 		
 		@Override
 		public List<String> availableStorageAccountTypes() throws Exception {
-			return Collections.unmodifiableList(this.azureLocation.getStorageCapabilities().getStorageAccountTypes());
+			return Collections.unmodifiableList(this.inner().getStorageCapabilities().getStorageAccountTypes());
 		}
 
 		
@@ -131,12 +128,12 @@ public class RegionsImpl
 		public Region refresh() throws Exception {
 			ArrayList<Location> azureLocations = azure.managementClient().getLocationsOperations().list().getLocations();
 			for(Location azureLocation : azureLocations) {
-				if(azureLocation.getName().equals(this.azureLocation.getName())) {
-					this.azureLocation = azureLocation;
+				if(azureLocation.getName().equals(this.inner().getName())) {
+					this.innerObject = azureLocation;
 					return this;
 				}
 			}
-			throw new NoSuchElementException(String.format("Region '%s' not found.", this.azureLocation.getName()));
+			throw new NoSuchElementException(String.format("Region '%s' not found.", this.inner().getName()));
 		}
 	}
 }

@@ -28,7 +28,8 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.resources.listing.Groups;
@@ -109,18 +110,16 @@ public class GroupsImpl
 	 ***************************************************************/
 	private class GroupImpl 
 		extends 
-			NamedRefreshableImpl<Group>
+			NamedRefreshableWrapperImpl<Group, ResourceGroupExtended>
 		implements
+			Wrapper<ResourceGroupExtended>,
 			GroupUpdatable,
 			GroupDefinitionProvisionable,
 			GroupDefinitionBlank,
 			Group {
 		
-		private ResourceGroupExtended azureGroup;
-		
 		private GroupImpl(ResourceGroupExtended azureGroup) {
-			super(azureGroup.getName());
-			this.azureGroup = azureGroup;
+			super(azureGroup.getName(), azureGroup);
 		}
 
 
@@ -130,22 +129,22 @@ public class GroupsImpl
 		
 		@Override
 		public String region() throws Exception {
-			return this.azureGroup.getLocation();
+			return this.inner().getLocation();
 		}
 
 		@Override
 		public String id() throws Exception {
-			return this.azureGroup.getId();
+			return this.inner().getId();
 		}
 
 		@Override
 		public Map<String, String> tags() throws Exception {
-			return Collections.unmodifiableMap(this.azureGroup.getTags());
+			return Collections.unmodifiableMap(this.inner().getTags());
 		}
 
 		@Override
 		public String provisioningState() throws Exception {
-			return this.azureGroup.getProvisioningState();
+			return this.inner().getProvisioningState();
 		}
 
 		
@@ -155,28 +154,28 @@ public class GroupsImpl
 		
 		@Override
 		public GroupImpl withTags(HashMap<String, String> tags) {
-			this.azureGroup.setTags(tags);
+			this.inner().setTags(tags);
 			return this;
 		}
 
 		@Override
 		public GroupImpl withTag(String key, String value) {
-			if(this.azureGroup.getTags() == null) {
-				this.azureGroup.setTags(new HashMap<String, String>());
+			if(this.inner().getTags() == null) {
+				this.inner().setTags(new HashMap<String, String>());
 			}
-			this.azureGroup.getTags().put(key, value);
+			this.inner().getTags().put(key, value);
 			return this;
 		}
 
 		@Override
 		public GroupImpl withoutTag(String key) {
-			this.azureGroup.getTags().remove(key);
+			this.inner().getTags().remove(key);
 			return this;
 		}
 
 		@Override
 		public GroupImpl withRegion(String region) {
-			this.azureGroup.setLocation(region);
+			this.inner().setLocation(region);
 			return this;
 		}
 
@@ -190,11 +189,11 @@ public class GroupsImpl
 			ResourceGroup params = new ResourceGroup();
 			Group group;
 			
-			params.setTags(this.azureGroup.getTags());
+			params.setTags(this.inner().getTags());
 			
 			// Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
-			if(this.azureGroup.getLocation() != null) {
-				params.setLocation(this.azureGroup.getLocation());
+			if(this.inner().getLocation() != null) {
+				params.setLocation(this.inner().getLocation());
 			} else if(null == (group = azure.groups().get(this.name))) {
 				throw new Exception("Resource group not found");
 			} else {
@@ -215,8 +214,8 @@ public class GroupsImpl
 		@Override
 		public GroupImpl provision() throws Exception {
 			ResourceGroup params = new ResourceGroup();
-			params.setLocation(this.azureGroup.getLocation());
-			params.setTags(this.azureGroup.getTags());
+			params.setLocation(this.inner().getLocation());
+			params.setTags(this.inner().getTags());
 			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.name, params);
 			return this;
 		}
@@ -224,7 +223,7 @@ public class GroupsImpl
 		
 		@Override
 		public GroupImpl refresh() throws Exception {
-			this.azureGroup =  azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup();
+			this.innerObject =  azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup();
 			return this;
 		}
 	}

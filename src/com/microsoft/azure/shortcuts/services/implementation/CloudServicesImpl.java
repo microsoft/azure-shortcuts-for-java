@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.listing.CloudServices;
@@ -106,18 +106,15 @@ public class CloudServicesImpl
 	 ************************************************************/
 	private class CloudServiceImpl 
 		extends 
-			NamedRefreshableImpl<CloudService>
+			NamedRefreshableWrapperImpl<CloudService, HostedService>
 		implements 
 			CloudServiceDefinitionBlank, 
 			CloudServiceDefinitionProvisionable,
 			CloudService,
 			CloudServiceUpdatable {
 		
-		private HostedService azureService;
-		
 		private CloudServiceImpl(HostedService azureService) {
-			super(azureService.getServiceName().toLowerCase());
-			this.azureService = azureService;
+			super(azureService.getServiceName().toLowerCase(), azureService);
 		}
 
 
@@ -128,37 +125,37 @@ public class CloudServicesImpl
 
 		@Override
 		public String region() throws Exception {
-			return this.azureService.getProperties().getLocation();
+			return this.inner().getProperties().getLocation();
 		}
 
 		@Override
 		public String description() throws Exception {
-			return this.azureService.getProperties().getDescription();
+			return this.inner().getProperties().getDescription();
 		}
 
 		@Override
 		public String label() throws Exception {
-			return this.azureService.getProperties().getLabel();
+			return this.inner().getProperties().getLabel();
 		}
 
 		@Override
 		public String reverseDnsFqdn() throws Exception {
-			return this.azureService.getProperties().getReverseDnsFqdn();
+			return this.inner().getProperties().getReverseDnsFqdn();
 		}
 
 		@Override
 		public Calendar created() throws Exception {
-			return this.azureService.getProperties().getDateCreated();
+			return this.inner().getProperties().getDateCreated();
 		}
 
 		@Override
 		public Calendar modified() throws Exception {
-			return this.azureService.getProperties().getDateLastModified();
+			return this.inner().getProperties().getDateLastModified();
 		}
 
 		@Override
 		public String affinityGroup() throws Exception {
-			return this.azureService.getProperties().getAffinityGroup();
+			return this.inner().getProperties().getAffinityGroup();
 		}
 
 
@@ -168,7 +165,7 @@ public class CloudServicesImpl
 
 		@Override
 		public CloudServiceImpl withRegion(String region) {
-			this.azureService.getProperties().setLocation(region);
+			this.inner().getProperties().setLocation(region);
 			return this;
 		}
 		
@@ -179,7 +176,7 @@ public class CloudServicesImpl
 
 		@Override
 		public CloudServiceImpl withAffinityGroup(String affinityGroup) {
-			this.azureService.getProperties().setAffinityGroup(affinityGroup);
+			this.inner().getProperties().setAffinityGroup(affinityGroup);
 			return this;
 		}
 		
@@ -187,19 +184,19 @@ public class CloudServicesImpl
 		
 		@Override
 		public CloudServiceImpl withDescription(String description) {
-			this.azureService.getProperties().setDescription(description);
+			this.inner().getProperties().setDescription(description);
 			return this;
 		}
 		
 		@Override
 		public CloudServiceImpl withLabel(String label) {
-			this.azureService.getProperties().setLabel(label);
+			this.inner().getProperties().setLabel(label);
 			return this;
 		}
 		
 		@Override
 		public CloudServiceImpl withReverseDnsFqdn(String fqdn) {
-			this.azureService.getProperties().setReverseDnsFqdn(fqdn);
+			this.inner().getProperties().setReverseDnsFqdn(fqdn);
 			return this;
 		}
 		
@@ -243,8 +240,8 @@ public class CloudServicesImpl
 		@Override
 		public CloudServiceImpl refresh() throws Exception {
 			HostedServiceProperties props = azure.computeManagementClient().getHostedServicesOperations().get(this.name()).getProperties();
-			this.azureService.getProperties().setDateCreated(props.getDateCreated());
-			this.azureService.getProperties().setDateLastModified(props.getDateLastModified());
+			this.inner().getProperties().setDateCreated(props.getDateCreated());
+			this.inner().getProperties().setDateLastModified(props.getDateLastModified());
 			return this
 				.withAffinityGroup(props.getAffinityGroup())
 				.withDescription(props.getDescription())

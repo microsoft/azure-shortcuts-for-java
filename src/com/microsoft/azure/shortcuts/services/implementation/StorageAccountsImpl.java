@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.listing.StorageAccounts;
@@ -114,18 +114,15 @@ public class StorageAccountsImpl
 
 	// Nested class encapsulating the API related to creating new storage accounts
 	private class StorageAccountImpl 
-		extends NamedRefreshableImpl<StorageAccount>
+		extends NamedRefreshableWrapperImpl<StorageAccount, com.microsoft.windowsazure.management.storage.models.StorageAccount>
 		implements 
 			StorageAccountDefinitionBlank, 
 			StorageAccountDefinitionProvisionable,
 			StorageAccountUpdatable,
 			StorageAccount {
 		
-		private com.microsoft.windowsazure.management.storage.models.StorageAccount azureStorageAccount;
-		
 		public StorageAccountImpl(com.microsoft.windowsazure.management.storage.models.StorageAccount azureStorageAccount) {
-			super(azureStorageAccount.getName());
-			this.azureStorageAccount = azureStorageAccount;
+			super(azureStorageAccount.getName(), azureStorageAccount);
 		}
 
 		/***********************************************************
@@ -135,63 +132,63 @@ public class StorageAccountsImpl
 
 		@Override
 		public String description() throws Exception {
-			return this.azureStorageAccount.getProperties().getDescription();
+			return this.inner().getProperties().getDescription();
 		}
 
 		@Override
 		public String label() throws Exception {
-			return this.azureStorageAccount.getProperties().getLabel();
+			return this.inner().getProperties().getLabel();
 		}
 
 		@Override
 		public String geoPrimaryRegion() throws Exception {
-			return this.azureStorageAccount.getProperties().getGeoPrimaryRegion();
+			return this.inner().getProperties().getGeoPrimaryRegion();
 		}
 
 		@Override
 		public GeoRegionStatus geoPrimaryRegionStatus() throws Exception {
-			return this.azureStorageAccount.getProperties().getStatusOfGeoPrimaryRegion();
+			return this.inner().getProperties().getStatusOfGeoPrimaryRegion();
 		}
 
 		@Override
 		public String geoSecondaryRegion() throws Exception {
-			return this.azureStorageAccount.getProperties().getGeoSecondaryRegion();
+			return this.inner().getProperties().getGeoSecondaryRegion();
 		}
 
 		@Override
 		public GeoRegionStatus geoSecondaryRegionStatus() throws Exception {
-			return this.azureStorageAccount.getProperties().getStatusOfGeoSecondaryRegion();
+			return this.inner().getProperties().getStatusOfGeoSecondaryRegion();
 		}
 
 		@Override
 		public String region() throws Exception {
-			return this.azureStorageAccount.getProperties().getLocation();
+			return this.inner().getProperties().getLocation();
 		}
 
 		@Override
 		public StorageAccountStatus status() throws Exception {
-			return this.azureStorageAccount.getProperties().getStatus();
+			return this.inner().getProperties().getStatus();
 		}
 
 		@Override
 		public Calendar lastGeoFailoverTime() throws Exception {
-			return this.azureStorageAccount.getProperties().getLastGeoFailoverTime();
+			return this.inner().getProperties().getLastGeoFailoverTime();
 		}
 
 		@Override
 		public List<URI> endpoints() throws Exception {
-			return Collections.unmodifiableList(this.azureStorageAccount.getProperties().getEndpoints());
+			return Collections.unmodifiableList(this.inner().getProperties().getEndpoints());
 		}
 
 		@Override
 		public String type() throws Exception {
-			return this.azureStorageAccount.getProperties().getAccountType();
+			return this.inner().getProperties().getAccountType();
 		}
 
 
 		@Override
 		public String affinityGroup() throws Exception {
-			return this.azureStorageAccount.getProperties().getAffinityGroup();
+			return this.inner().getProperties().getAffinityGroup();
 		}
 
 
@@ -201,7 +198,7 @@ public class StorageAccountsImpl
 
 		@Override
 		public StorageAccountImpl withRegion(String region) {
-			this.azureStorageAccount.getProperties().setLocation(region);
+			this.inner().getProperties().setLocation(region);
 			return this;
 		}
 		
@@ -212,19 +209,19 @@ public class StorageAccountsImpl
 
 		@Override
 		public StorageAccountImpl withType(String type) {
-			this.azureStorageAccount.getProperties().setAccountType(type);
+			this.inner().getProperties().setAccountType(type);
 			return this;
 		}
 		
 		@Override
 		public StorageAccountImpl withLabel(String label) {
-			this.azureStorageAccount.getProperties().setLabel(label);
+			this.inner().getProperties().setLabel(label);
 			return this;
 		}
 		
 		@Override
 		public StorageAccountImpl withDescription(String description) {
-			this.azureStorageAccount.getProperties().setDescription(description);
+			this.inner().getProperties().setDescription(description);
 			return this;
 		}
 
@@ -236,7 +233,7 @@ public class StorageAccountsImpl
 		@Override
 		public StorageAccountImpl provision() throws Exception {
 			final StorageAccountCreateParameters params = new StorageAccountCreateParameters();
-			params.setName(this.azureStorageAccount.getName().toLowerCase());
+			params.setName(this.inner().getName().toLowerCase());
 			params.setLocation(this.region());
 			params.setAffinityGroup(this.affinityGroup());
 			params.setDescription(this.description());
@@ -266,9 +263,9 @@ public class StorageAccountsImpl
 		
 		@Override
 		public StorageAccountImpl refresh() throws Exception {
-			StorageAccountGetResponse response = azure.storageManagementClient().getStorageAccountsOperations().get(this.azureStorageAccount.getName());
+			StorageAccountGetResponse response = azure.storageManagementClient().getStorageAccountsOperations().get(this.inner().getName());
 			StorageAccountProperties newProperties =  response.getStorageAccount().getProperties();
-			this.azureStorageAccount.setProperties(newProperties);
+			this.inner().setProperties(newProperties);
 			return this;
 		}
 	}

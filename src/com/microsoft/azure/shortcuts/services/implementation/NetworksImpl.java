@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
 import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionBlank;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionProvisionable;
 import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionWithCidr;
@@ -134,18 +134,15 @@ public class NetworksImpl
 	
 	// Encapsulates the required and optional parameters for a network
 	private class NetworkImpl 
-		extends NamedRefreshableImpl<Network>
+		extends NamedRefreshableWrapperImpl<Network, VirtualNetworkSite>
 		implements 
 			NetworkDefinitionBlank, 
 			NetworkDefinitionWithCidr, 
 			NetworkDefinitionProvisionable,
 			Network {
 
-		private VirtualNetworkSite azureSite;
-		
 		public NetworkImpl(VirtualNetworkSite site) {
-			super(site.getName());
-			this.azureSite = site;
+			super(site.getName(), site);
 		}
 
 
@@ -155,38 +152,38 @@ public class NetworksImpl
 
 		@Override
 		public List<String> addressPrefixes() throws Exception {
-			return Collections.unmodifiableList(this.azureSite.getAddressSpace().getAddressPrefixes());
+			return Collections.unmodifiableList(this.inner().getAddressSpace().getAddressPrefixes());
 		}
 		
 		@Override
 		public String region() throws Exception {
-			return this.azureSite.getLocation();
+			return this.inner().getLocation();
 		}
 
 		@Override
 		public String affinityGroup() throws Exception {
-			return this.azureSite.getAffinityGroup();
+			return this.inner().getAffinityGroup();
 		}
 
 		@Override
 		public String label() throws Exception {
-			return this.azureSite.getLabel();
+			return this.inner().getLabel();
 		}
 		
 		@Override
 		public String state() throws Exception {
-			return this.azureSite.getState();
+			return this.inner().getState();
 		}
 		
 		@Override
 		public String id() throws Exception {
-			return this.azureSite.getId();
+			return this.inner().getId();
 		}
 		
 		@Override
 		public Map<String, Subnet> subnets() {
 			HashMap<String, Subnet> subnets = new HashMap<>();
-			for(com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet : this.azureSite.getSubnets()) {
+			for(com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet : this.inner().getSubnets()) {
 				SubnetImpl subnet = new SubnetImpl(azureSubnet);
 				subnets.put(azureSubnet.getName(), subnet);
 			}
@@ -223,7 +220,7 @@ public class NetworksImpl
 
 		@Override
 		public NetworkImpl withRegion(String region) {
-			this.azureSite.setLocation(region);
+			this.inner().setLocation(region);
 			return this;
 		}
 		
@@ -234,7 +231,7 @@ public class NetworksImpl
 		
 		@Override
 		public NetworkImpl withCidr(String cidr) {
-			this.azureSite.getAddressSpace().getAddressPrefixes().add(cidr);
+			this.inner().getAddressSpace().getAddressPrefixes().add(cidr);
 			return this;
 		}
 		
@@ -244,7 +241,7 @@ public class NetworksImpl
 			azureSubnet.setAddressPrefix(cidr);
 			azureSubnet.setName(name);
 			azureSubnet.setNetworkSecurityGroup(securityGroup);
-			this.azureSite.getSubnets().add(azureSubnet);
+			this.inner().getSubnets().add(azureSubnet);
 			return this;
 		}
 	
@@ -268,12 +265,12 @@ public class NetworksImpl
 		@Override
 		public NetworkImpl provision() throws Exception {
 			// If no subnets specified, create a default subnet containing the first CIDR of the network
-			if(this.azureSite.getSubnets().size() == 0) {
+			if(this.inner().getSubnets().size() == 0) {
 				com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet = 
 						new com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet();
 				azureSubnet.setAddressPrefix(this.addressPrefixes().get(0));
 				azureSubnet.setName("Subnet-1");
-				this.azureSite.getSubnets().add(azureSubnet);
+				this.inner().getSubnets().add(azureSubnet);
 			}
 
 			// Declare the subnets
@@ -302,7 +299,7 @@ public class NetworksImpl
 			
 			// Create network site description based on the inputs and the template
 			final String networkDescription = networkTemplate
-				.replace("${name}", this.azureSite.getName())
+				.replace("${name}", this.inner().getName())
 				.replace("${location}", this.region())
 				.replace("${addressSpace}", addressSpaceSection.toString())
 				.replace("${subnets}", subnetsSection.toString());
@@ -333,13 +330,13 @@ public class NetworksImpl
 			ArrayList<VirtualNetworkSite> azureSites = azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites();
 			
 			for(VirtualNetworkSite s : azureSites) {
-				if(s.getName().equals(this.azureSite.getName())) {
-					this.azureSite = s;
+				if(s.getName().equals(this.inner().getName())) {
+					this.innerObject = s;
 					return this;
 				}
 			}
 			
-			throw new NoSuchElementException(String.format("Virtual network '%s' not found.", this.azureSite.getName()));
+			throw new NoSuchElementException(String.format("Virtual network '%s' not found.", this.inner().getName()));
 		}
 	}
 }

@@ -29,7 +29,8 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 import com.microsoft.azure.shortcuts.resources.listing.Resources;
 import com.microsoft.azure.shortcuts.resources.reading.Provider;
@@ -171,15 +172,14 @@ public class ResourcesImpl
 	// Implements the individual resource logic
 	private class ResourceImpl 
 		extends
-			NamedRefreshableImpl<Resource>
+			NamedRefreshableWrapperImpl<Resource, GenericResourceExtended>
 		implements 
-			Resource, Deletable {
-		
-		GenericResourceExtended azureResource;
+			Wrapper<GenericResourceExtended>,
+			Resource, 
+			Deletable {
 		
 		private ResourceImpl(GenericResourceExtended azureResource) {
-			super(azureResource.getId());
-			this.azureResource = azureResource;
+			super(azureResource.getId(), azureResource);
 		}
 
 		
@@ -189,42 +189,42 @@ public class ResourcesImpl
 
 		@Override
 		public String group() throws Exception {
-			return RESOURCE_ID.GROUP.from(this.azureResource.getId());
+			return RESOURCE_ID.GROUP.from(this.inner().getId());
 		}
 
 		@Override
 		public String region() throws Exception {
-			return this.azureResource.getLocation();
+			return this.inner().getLocation();
 		}
 
 		@Override
 		public String shortName() throws Exception {
-			return RESOURCE_ID.NAME.from(azureResource.getId());
+			return RESOURCE_ID.NAME.from(this.inner().getId());
 		}
 
 		@Override
 		public String provider() throws Exception {
-			return RESOURCE_ID.PROVIDER.from(this.azureResource.getId());
+			return RESOURCE_ID.PROVIDER.from(this.inner().getId());
 		}
 
 		@Override
 		public String type() throws Exception {
-			return RESOURCE_ID.TYPE.from(this.azureResource.getId());
+			return RESOURCE_ID.TYPE.from(this.inner().getId());
 		}
 
 		@Override
 		public Map<String, String> tags() throws Exception {
-			return this.azureResource.getTags();
+			return this.inner().getTags();
 		}
 
 		@Override
 		public String properties() throws Exception {
-			return this.azureResource.getProperties();
+			return this.inner().getProperties();
 		}
 
 		@Override
 		public String provisioningState() throws Exception {
-			return this.azureResource.getProvisioningState();
+			return this.inner().getProvisioningState();
 		}
 		
 		
@@ -248,7 +248,7 @@ public class ResourcesImpl
 		
 		// Refreshes the resource based on the group and identity information
 		private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
-			this.azureResource = azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
+			this.innerObject = azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
 			return this;
 		}
 	}
