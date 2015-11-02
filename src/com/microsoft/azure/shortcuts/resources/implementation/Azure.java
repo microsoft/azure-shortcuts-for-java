@@ -32,6 +32,7 @@ import com.microsoft.azure.shortcuts.resources.listing.Groups;
 import com.microsoft.azure.shortcuts.resources.listing.Providers;
 import com.microsoft.azure.shortcuts.resources.listing.Resources;
 import com.microsoft.azure.shortcuts.resources.listing.Sizes;
+import com.microsoft.azure.shortcuts.resources.listing.Networks;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -63,6 +64,7 @@ public class Azure {
     private final GroupsImpl groups;
     private final ProvidersImpl providers;
     private final SizesImpl sizes;
+    private final NetworksImpl networks;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -89,6 +91,7 @@ public class Azure {
         this.groups = new GroupsImpl(this);
         this.providers = new ProvidersImpl(this);
         this.sizes = new SizesImpl(this);
+        this.networks = new NetworksImpl(this);
     }
     
     
@@ -123,7 +126,11 @@ public class Azure {
     public Sizes sizes() {
     	return this.sizes;
     }
-    
+
+    public Networks networks() {
+    	return this.networks;
+    }
+
     
     // Returns an ARM authenticated configuration based on the provided Azure shortcuts authentication file
     // The assumed schema of the file is:

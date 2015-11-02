@@ -17,45 +17,15 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.samples;
+package com.microsoft.azure.shortcuts.resources.reading;
 
-import com.microsoft.azure.shortcuts.services.implementation.Azure;
 
-public class Samples {
-	public static void main(String[] args) {
-		String publishSettingsPath = "my.publishsettings";
-		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
+import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 
-		try {
-			// Instantiate Azure management class
-			final Azure azure = Azure.authenticate(publishSettingsPath, subscriptionId);
-
-			// List the sizes
-			Sizes.test(azure);
-
-			// List the regions
-			Regions.test(azure);
-
-			// Test OS images
-			OSImages.test(azure);
-			
-			// Test virtual machines
-			VirtualMachines.test(azure);
-			
-			// Test virtual networks
-			Networks.test(azure);
-			
-			// Test cloud services
-			CloudServices.test(azure);
-
-			// Test Azure storage
-			StorageAccounts.test(azure);
-			
-			// Test cert creation
-			Certificates.test(azure);
-			
-		} catch (Exception e) {
-			System.err.println(e.getMessage());
-		}		
-	}
+public interface Network extends 
+	Named,
+	Refreshable<Network>,
+	Wrapper<com.microsoft.azure.management.network.models.VirtualNetwork> {
 }

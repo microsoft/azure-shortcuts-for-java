@@ -71,6 +71,16 @@ public class ResourcesImpl
 	    }
 	}
  	
+
+	public static String groupFromResourceId(String id) {
+		return RESOURCE_ID.GROUP.from(id);
+	}
+	
+	
+	public static String nameFromResourceId(String id) {
+		return RESOURCE_ID.NAME.from(id);
+	}
+	
 	
     // Instantiates a ResourceIdentity from the ID
     public ResourceIdentity createResourceIdentity(String resourceId) throws Exception {
@@ -122,8 +132,8 @@ public class ResourcesImpl
 	@Override
 	public void delete(String id) throws Exception {
 		azure.resourceManagementClient().getResourcesOperations().delete(
-				RESOURCE_ID.GROUP.from(id), 
-				createResourceIdentity(id));
+			RESOURCE_ID.GROUP.from(id), 
+			createResourceIdentity(id));
 	}
 	
 	

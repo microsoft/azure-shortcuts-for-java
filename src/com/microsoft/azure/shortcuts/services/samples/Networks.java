@@ -28,7 +28,7 @@ import com.microsoft.azure.shortcuts.services.reading.Network;
 import com.microsoft.azure.shortcuts.services.reading.Network.Subnet;
 
 //Tests Virtual Networks
-public class VirtualNetworks {
+public class Networks {
 	public static void main(String[] args) {
 		String publishSettingsPath = "my.publishsettings";
 		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";

@@ -267,7 +267,18 @@ List<String> virtualNetworkNames = azure.networks().names();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+
+Networks as a map, indexed by resource id:
+
+```java
+Map<String, Network> networks = azure.networks().list();
+```
+
+Resource ids only:
+
+```java
+Set<String> networkIds = azure.networks().list().keySet();
+```
 
 
 #### Reading information about a virtual network
@@ -281,7 +292,13 @@ Network network = azure.networks().get("mynetwork");
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+
+By providing a virtual network resource ID (returned as a key in networks().list()):
+
+```java
+Network network = azure.networks().get("<network-resource-id>");
+```
+
 
 #### Deleting a virtual network
 
