@@ -20,6 +20,9 @@
 package com.microsoft.azure.shortcuts.resources.reading;
 
 
+import java.util.List;
+
+import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.common.reading.Wrapper;
@@ -27,5 +30,8 @@ import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 public interface Network extends 
 	Named,
 	Refreshable<Network>,
-	Wrapper<com.microsoft.azure.management.network.models.VirtualNetwork> {
+	Wrapper<VirtualNetwork> {
+	String provisioningState();
+	List<String> addressPrefixes();
+	List<String> dnsServers();
 }

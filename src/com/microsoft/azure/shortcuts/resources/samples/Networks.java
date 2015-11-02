@@ -53,8 +53,12 @@ public class Networks {
     
     private static void printNetwork(Network network) throws Exception {
     	
-		System.out.println(String.format("Network ID: %s\n",
-			network.name()
-			));    	
+    	StringBuilder output = new StringBuilder();
+    	output
+    		.append(String.format("Neywork ID: %s\n", network.name()))
+    		.append(String.format("Provisioning state: %s\n", network.provisioningState()))
+    		.append(String.format("Address prefixes: %s\n", StringUtils.join(network.addressPrefixes(), ", ")))
+    		.append(String.format("DNS servers: %s\n", StringUtils.join(network.dnsServers(), ", ")));
+    	System.out.println(output.toString());
     }
 }

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Networks;
@@ -45,7 +46,7 @@ public class NetworksImpl
 	@Override
 	public Map<String, Network> list() throws Exception {
 		HashMap<String, Network> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.network.models.VirtualNetwork nativeItem : getAzureVirtualNetworks()) {
+		for(VirtualNetwork nativeItem : getAzureVirtualNetworks()) {
 			NetworkImpl wrapper = new NetworkImpl(nativeItem);
 			wrappers.put(nativeItem.getId(), wrapper);
 		}
@@ -56,7 +57,7 @@ public class NetworksImpl
 		
 	@Override
 	public Network get(String resourceId) throws Exception {
-		com.microsoft.azure.management.network.models.VirtualNetwork azureVirtualNetwork = 
+		VirtualNetwork azureVirtualNetwork = 
 			azure.networkManagementClient().getVirtualNetworksOperations().get(
 				ResourcesImpl.groupFromResourceId(resourceId), 
 				ResourcesImpl.nameFromResourceId(resourceId)).getVirtualNetwork();
@@ -68,7 +69,7 @@ public class NetworksImpl
 	 * Helpers
 	 ***************************************************/
 	
-	// Helper to get the netqworks from Azure
+	// Helper to get the networks from Azure
 	private ArrayList<com.microsoft.azure.management.network.models.VirtualNetwork> getAzureVirtualNetworks() throws Exception {
 		return this.azure.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
 	}
@@ -79,11 +80,11 @@ public class NetworksImpl
 	 ***************************************************************/
 	private class NetworkImpl 
 		extends 
-			NamedRefreshableWrapperImpl<Network, com.microsoft.azure.management.network.models.VirtualNetwork>
+			NamedRefreshableWrapperImpl<Network, VirtualNetwork>
 		implements
 			Network {
 		
-		private NetworkImpl(com.microsoft.azure.management.network.models.VirtualNetwork azureVirtualNetwork) {
+		private NetworkImpl(VirtualNetwork azureVirtualNetwork) {
 			super(azureVirtualNetwork.getName(), azureVirtualNetwork);
 		}
 
@@ -91,8 +92,20 @@ public class NetworksImpl
 		/***********************************************************
 		 * Getters
 		 ***********************************************************/
+		@Override
+		public String provisioningState() {
+			return this.inner().getProvisioningState();
+		}
 		
-
+		@Override
+		public List<String> addressPrefixes() {
+			return Collections.unmodifiableList(this.inner().getAddressSpace().getAddressPrefixes());
+		}
+		
+		@Override
+		public List<String> dnsServers() {
+			return Collections.unmodifiableList(this.inner().getDhcpOptions().getDnsServers());
+		}
 		
 		/**************************************************************
 		 * Setters (fluent interface)

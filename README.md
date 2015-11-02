@@ -297,6 +297,14 @@ By providing a virtual network resource ID (returned as a key in networks().list
 
 ```java
 Network network = azure.networks().get("<network-resource-id>");
+
+StringBuilder output = new StringBuilder();
+output
+	.append(String.format("Neywork ID: %s\n", network.name()))
+	.append(String.format("Provisioning state: %s\n", network.provisioningState()))
+	.append(String.format("Address prefixes: %s\n", StringUtils.join(network.addressPrefixes(), ", ")))
+	.append(String.format("DNS servers: %s\n", StringUtils.join(network.dnsServers(), ", ")));
+System.out.println(output.toString());
 ```
 
 
