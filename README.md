@@ -293,7 +293,7 @@ Network network = azure.networks().get("mynetwork");
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-By providing a virtual network resource ID (returned as a key in networks().list()):
+By providing a virtual network resource ID (returned as a key in `networks().list()`):
 
 ```java
 Network network = azure.networks().get("<network-resource-id>");
