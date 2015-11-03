@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.reading.Network;
+import com.microsoft.azure.shortcuts.resources.reading.Network.Subnet;
 
 // Tests resources
 public class Networks {
@@ -42,7 +43,7 @@ public class Networks {
     public static void test(Azure azure) throws Exception {
     	// Listing all networks
     	Map<String, Network> networks = azure.networks().list();
-    	System.out.println(String.format("Network ids: %s\n\t", StringUtils.join(networks.keySet(), ",\n\t")));
+    	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	
     	// Get info about a specific network using its resource ID
@@ -52,13 +53,20 @@ public class Networks {
     
     
     private static void printNetwork(Network network) throws Exception {
-    	
     	StringBuilder output = new StringBuilder();
     	output
-    		.append(String.format("Neywork ID: %s\n", network.name()))
+    		.append(String.format("Network name: %s\n", network.name()))
     		.append(String.format("Provisioning state: %s\n", network.provisioningState()))
     		.append(String.format("Address prefixes: %s\n", StringUtils.join(network.addressPrefixes(), ", ")))
     		.append(String.format("DNS servers: %s\n", StringUtils.join(network.dnsServers(), ", ")));
+    	
+    	for(Subnet subnet : network.subnets().values()) {
+    		output
+    			.append(String.format("Subnet: %s\n", subnet.name()))
+    			.append(String.format("\tAddress prefix: %s\n", subnet.addressPrefix()))
+    			.append(String.format("\tNetwork security group: %s\n", subnet.networkSecurityGroup()));
+    	}
+    	
     	System.out.println(output.toString());
     }
 }

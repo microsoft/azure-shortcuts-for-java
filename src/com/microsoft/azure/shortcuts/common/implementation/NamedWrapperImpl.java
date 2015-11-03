@@ -17,28 +17,16 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.reading;
+package com.microsoft.azure.shortcuts.common.implementation;
 
-
-import java.util.List;
-import java.util.Map;
-
-import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-
-public interface Network extends 
-	Named,
-	Refreshable<Network>,
-	Wrapper<VirtualNetwork> {
-	String provisioningState();
-	List<String> addressPrefixes();
-	List<String> dnsServers();
-	Map<String, Subnet> subnets();
+public abstract class NamedWrapperImpl<I> extends NamedImpl {
+	protected I innerObject; 
+	protected NamedWrapperImpl(String name, I innerObject) {
+		super(name);
+		this.innerObject = innerObject;
+	}
 	
-	public interface Subnet extends Named, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
-		String addressPrefix();
-		String networkSecurityGroup();
+	public I inner() {
+		return this.innerObject;
 	}
 }

@@ -307,6 +307,8 @@ output
 System.out.println(output.toString());
 ```
 
+The subnets of a virtual network are available from `network.subnets()`.
+
 
 #### Deleting a virtual network
 

@@ -24,10 +24,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.listing.Networks;
 import com.microsoft.azure.shortcuts.resources.reading.Network;
 
@@ -106,7 +108,18 @@ public class NetworksImpl
 		public List<String> dnsServers() {
 			return Collections.unmodifiableList(this.inner().getDhcpOptions().getDnsServers());
 		}
+
+		@Override
+		public Map<String, Subnet> subnets() {
+			TreeMap<String, Subnet> wrappers = new TreeMap<>();
+			for(com.microsoft.azure.management.network.models.Subnet nativeObject : this.inner().getSubnets()) {
+				SubnetImpl wrapper = new SubnetImpl(nativeObject.getName(), nativeObject);
+				wrappers.put(wrapper.name(), wrapper);
+			}
+			return Collections.unmodifiableMap(wrappers);
+		}
 		
+
 		/**************************************************************
 		 * Setters (fluent interface)
 		 **************************************************************/
@@ -122,6 +135,33 @@ public class NetworksImpl
 					ResourcesImpl.groupFromResourceId(this.name()), 
 					ResourcesImpl.nameFromResourceId(this.name())).getVirtualNetwork();
 			return this;
+		}
+		
+		
+		/*****************************************************
+		 * Implements Subnet wrapper
+		 *****************************************************/
+		private class SubnetImpl
+			extends NamedWrapperImpl<com.microsoft.azure.management.network.models.Subnet>
+			implements Subnet {
+
+			protected SubnetImpl(String name, com.microsoft.azure.management.network.models.Subnet innerObject) {
+				super(name, innerObject);
+			}
+
+			@Override
+			public String addressPrefix() {
+				return this.inner().getAddressPrefix();
+			}
+
+			@Override
+			public String networkSecurityGroup() {
+				if(this.inner().getNetworkSecurityGroup() != null) {
+					return this.inner().getNetworkSecurityGroup().getId();
+				} else {
+					return null;
+				}
+			}	
 		}
 	}
 }
