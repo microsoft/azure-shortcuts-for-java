@@ -33,22 +33,12 @@ import org.apache.commons.lang3.NotImplementedException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
-import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
-import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionBlank;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionLinuxProvisionable;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWindowsProvisionable;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithAdminPassword;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithAdminUsername;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithImage;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionWithSize;
-import com.microsoft.azure.shortcuts.services.listing.VirtualMachines;
-import com.microsoft.azure.shortcuts.services.reading.CloudService;
-import com.microsoft.azure.shortcuts.services.reading.Network;
-import com.microsoft.azure.shortcuts.services.reading.Region;
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
-import com.microsoft.azure.shortcuts.services.reading.VirtualMachine;
-import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatable;
+import com.microsoft.azure.shortcuts.services.CloudService;
+import com.microsoft.azure.shortcuts.services.Network;
+import com.microsoft.azure.shortcuts.services.Region;
+import com.microsoft.azure.shortcuts.services.StorageAccount;
+import com.microsoft.azure.shortcuts.services.VirtualMachine;
+import com.microsoft.azure.shortcuts.services.VirtualMachines;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSet;
 import com.microsoft.windowsazure.management.compute.models.ConfigurationSetTypes;
 import com.microsoft.windowsazure.management.compute.models.DeploymentGetResponse;
@@ -181,7 +171,7 @@ public class VirtualMachinesImpl
 
 	
 	@Override
-	public VirtualMachineDefinitionBlank define(String name) throws Exception {
+	public VirtualMachineImpl define(String name) throws Exception {
 		return new VirtualMachineImpl(name);
 	}
 	
@@ -238,15 +228,15 @@ public class VirtualMachinesImpl
 	private class VirtualMachineImpl 
 		extends NamedRefreshableImpl<VirtualMachine>
 		implements 
-			VirtualMachineDefinitionBlank, 
-			VirtualMachineDefinitionLinuxProvisionable,
-			VirtualMachineDefinitionWindowsProvisionable,
-			VirtualMachineDefinitionWithAdminUsername, 
-			VirtualMachineDefinitionWithImage, 
-			VirtualMachineDefinitionWithAdminPassword, 
-			VirtualMachineDefinitionWithSize,
+			VirtualMachine.DefinitionBlank, 
+			VirtualMachine.DefinitionLinuxProvisionable,
+			VirtualMachine.DefinitionWindowsProvisionable,
+			VirtualMachine.DefinitionWithAdminUsername, 
+			VirtualMachine.DefinitionWithImage, 
+			VirtualMachine.DefinitionWithAdminPassword, 
+			VirtualMachine.DefinitionWithSize,
 			VirtualMachine,
-			VirtualMachineUpdatable {
+			VirtualMachine.Update {
 
 		private DeploymentGetResponse azureDeployment = new DeploymentGetResponse();
 		private Role azureRole = new Role();
@@ -616,7 +606,7 @@ public class VirtualMachinesImpl
 				this.region = cloudService.region();
 			} else if(this.azureDeployment.getVirtualNetworkName() != null) {
 				// Get from network
-				final Network network = azure.networks().get(this.azureDeployment.getVirtualNetworkName() );
+				final Network network = azure.networks().get(this.azureDeployment.getVirtualNetworkName());
 				this.affinityGroup = network.affinityGroup();
 				this.region = network.region();
 				
@@ -678,8 +668,8 @@ public class VirtualMachinesImpl
 			// Determine if to create a new cloud service deployment or add to existing
 			if(!this.isExistingCloudService) {
 				// Create a new cloud service using the same name as the VM
-				CloudServiceDefinitionBlank serviceDefinition = azure.cloudServices().define(this.cloudService());
-				CloudServiceDefinitionProvisionable serviceProvisionable = 
+				CloudService.DefinitionBlank serviceDefinition = azure.cloudServices().define(this.cloudService());
+				CloudService.DefinitionProvisionable serviceProvisionable = 
 						(this.affinityGroup != null) 
 						? serviceDefinition.withAffinityGroup(this.affinityGroup) 
 						: serviceDefinition.withRegion(this.region);

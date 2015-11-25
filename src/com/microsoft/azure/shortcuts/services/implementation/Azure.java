@@ -22,13 +22,13 @@ package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.io.IOException;
 
-import com.microsoft.azure.shortcuts.services.listing.CloudServices;
-import com.microsoft.azure.shortcuts.services.listing.Networks;
-import com.microsoft.azure.shortcuts.services.listing.OsImages;
-import com.microsoft.azure.shortcuts.services.listing.Regions;
-import com.microsoft.azure.shortcuts.services.listing.Sizes;
-import com.microsoft.azure.shortcuts.services.listing.StorageAccounts;
-import com.microsoft.azure.shortcuts.services.listing.VirtualMachines;
+import com.microsoft.azure.shortcuts.services.CloudServices;
+import com.microsoft.azure.shortcuts.services.Networks;
+import com.microsoft.azure.shortcuts.services.OsImages;
+import com.microsoft.azure.shortcuts.services.Regions;
+import com.microsoft.azure.shortcuts.services.Sizes;
+import com.microsoft.azure.shortcuts.services.StorageAccounts;
+import com.microsoft.azure.shortcuts.services.VirtualMachines;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 import com.microsoft.windowsazure.management.ManagementClient;

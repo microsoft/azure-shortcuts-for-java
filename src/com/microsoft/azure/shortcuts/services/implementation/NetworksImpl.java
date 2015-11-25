@@ -30,12 +30,9 @@ import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionBlank;
-import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionWithCidr;
-import com.microsoft.azure.shortcuts.services.listing.Networks;
-import com.microsoft.azure.shortcuts.services.reading.Network;
-import com.microsoft.azure.shortcuts.services.reading.Region;
+import com.microsoft.azure.shortcuts.services.Network;
+import com.microsoft.azure.shortcuts.services.Networks;
+import com.microsoft.azure.shortcuts.services.Region;
 import com.microsoft.windowsazure.management.network.models.NetworkSetConfigurationParameters;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.AddressSpace;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
@@ -59,7 +56,7 @@ public class NetworksImpl
 	
 	@Override
 	// Starts a new network definition
-	public NetworkDefinitionBlank define(String name) {
+	public Network.DefinitionBlank define(String name) {
 		return createVirtualNetworkWrapper(name);
 	}
 	
@@ -136,9 +133,10 @@ public class NetworksImpl
 	private class NetworkImpl 
 		extends NamedRefreshableWrapperImpl<Network, VirtualNetworkSite>
 		implements 
-			NetworkDefinitionBlank, 
-			NetworkDefinitionWithCidr, 
-			NetworkDefinitionProvisionable,
+			Network.DefinitionBlank, 
+			Network.DefinitionWithCidr, 
+			Network.DefinitionProvisionable,
+			Network.UpdateBlank,
 			Network {
 
 		public NetworkImpl(VirtualNetworkSite site) {

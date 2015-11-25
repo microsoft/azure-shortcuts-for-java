@@ -17,21 +17,16 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.listing;
+package com.microsoft.azure.shortcuts.services;
 
 import com.microsoft.azure.shortcuts.common.creation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
 import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
 import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.updating.SupportsUpdating;
-import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
-import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
 
-public interface StorageAccounts extends
-	SupportsCreating<StorageAccountDefinitionBlank>, 
-	SupportsUpdating<StorageAccountUpdatableBlank>,
-	SupportsListingEntities<StorageAccount>,
-	SupportsReading<StorageAccount>,
+public interface VirtualMachines extends
+	SupportsCreating<VirtualMachine.DefinitionBlank>,
+	SupportsReading<VirtualMachine>,
+	SupportsListingNames,
 	SupportsDeleting {
 }

@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.microsoft.azure.shortcuts.services.Network;
+import com.microsoft.azure.shortcuts.services.Network.Subnet;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
-import com.microsoft.azure.shortcuts.services.reading.Network;
-import com.microsoft.azure.shortcuts.services.reading.Network.Subnet;
 
 //Tests Virtual Networks
 public class Networks {

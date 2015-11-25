@@ -17,15 +17,18 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.creation;
+package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.common.creation.Provisionable;
-import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;
+import com.microsoft.azure.shortcuts.common.creation.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
+import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.updating.SupportsUpdating;
 
-// Optional parameter settings and provisioning
-public interface CloudServiceDefinitionProvisionable extends Provisionable<CloudServiceUpdatableBlank> {
-	public CloudServiceDefinitionProvisionable withDescription(String description);
-	public CloudServiceDefinitionProvisionable withLabel(String label);
-	public CloudServiceDefinitionProvisionable withReverseDnsFqdn(String fqdn);
+public interface CloudServices extends 
+	SupportsListingEntities<CloudService>,
+	SupportsReading<CloudService>,
+	SupportsCreating<CloudService.DefinitionBlank>,
+	SupportsDeleting,
+	SupportsUpdating<CloudService.UpdateBlank> {
 }

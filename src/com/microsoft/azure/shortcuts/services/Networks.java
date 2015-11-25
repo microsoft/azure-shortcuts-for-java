@@ -17,28 +17,16 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.reading;
+package com.microsoft.azure.shortcuts.services;
 
-import java.util.Calendar;
+import com.microsoft.azure.shortcuts.common.creation.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
+import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
 
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatableBlank;
-import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
-
-// Encapsulates the readable properties of a cloud service
-public interface CloudService extends 
-	Named,
-	Refreshable<CloudService>,
-	Wrapper<HostedService>,
-	CloudServiceUpdatableBlank {
-	
-	String region() throws Exception;
-	String description() throws Exception;
-	String label() throws Exception;
-	String reverseDnsFqdn() throws Exception;
-	Calendar created() throws Exception;
-	Calendar modified() throws Exception;
-	String affinityGroup() throws Exception;
+public interface Networks extends
+	SupportsCreating<Network.DefinitionBlank>,
+	SupportsDeleting,
+	SupportsListingNames,
+	SupportsReading<Network> {
 }

@@ -29,12 +29,9 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionBlank;
-import com.microsoft.azure.shortcuts.services.creation.StorageAccountDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.listing.StorageAccounts;
-import com.microsoft.azure.shortcuts.services.reading.Region;
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
-import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatable;
+import com.microsoft.azure.shortcuts.services.Region;
+import com.microsoft.azure.shortcuts.services.StorageAccount;
+import com.microsoft.azure.shortcuts.services.StorageAccounts;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountGetResponse;
@@ -116,9 +113,9 @@ public class StorageAccountsImpl
 	private class StorageAccountImpl 
 		extends NamedRefreshableWrapperImpl<StorageAccount, com.microsoft.windowsazure.management.storage.models.StorageAccount>
 		implements 
-			StorageAccountDefinitionBlank, 
-			StorageAccountDefinitionProvisionable,
-			StorageAccountUpdatable,
+			StorageAccount.DefinitionBlank, 
+			StorageAccount.DefinitionProvisionable,
+			StorageAccount.Update,
 			StorageAccount {
 		
 		public StorageAccountImpl(com.microsoft.windowsazure.management.storage.models.StorageAccount azureStorageAccount) {

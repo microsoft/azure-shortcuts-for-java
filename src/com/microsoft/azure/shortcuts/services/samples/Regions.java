@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.microsoft.azure.shortcuts.services.Region;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
-import com.microsoft.azure.shortcuts.services.reading.Region;
 import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
 
 // Tests Regions

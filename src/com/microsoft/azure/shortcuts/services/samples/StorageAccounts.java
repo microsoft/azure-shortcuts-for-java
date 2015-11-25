@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.microsoft.azure.shortcuts.services.StorageAccount;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
-import com.microsoft.azure.shortcuts.services.reading.StorageAccount;
 
 //Tests Storage Accounts
 public class StorageAccounts {

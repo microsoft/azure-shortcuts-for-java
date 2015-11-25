@@ -31,8 +31,8 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.services.listing.OsImages;
-import com.microsoft.azure.shortcuts.services.reading.OSImage;
+import com.microsoft.azure.shortcuts.services.OSImage;
+import com.microsoft.azure.shortcuts.services.OsImages;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 

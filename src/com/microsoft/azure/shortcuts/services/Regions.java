@@ -17,22 +17,21 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.creation;
+package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.common.creation.Provisionable;
-import com.microsoft.azure.shortcuts.services.creation.VirtualMachineDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.updating.VirtualMachineUpdatableBlank;
+import java.util.List;
 
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
 
-// Optional parameters
-public interface VirtualMachineDefinitionProvisionable extends Provisionable<VirtualMachineUpdatableBlank> {
-	VirtualMachineDefinitionProvisionable withTcpEndpoint(int publicPort);
-	VirtualMachineDefinitionProvisionable withTcpEndpoint(int publicPort, int privatePort);
-	VirtualMachineDefinitionProvisionable withTcpEndpoint(int publicPort, int privatePort, String name);
-	VirtualMachineDefinitionProvisionable withGuestAgent(boolean enabled);
-	VirtualMachineDefinitionProvisionable withDeployment(String name);
-	VirtualMachineDefinitionProvisionable withDeploymentLabel(String name);
-	VirtualMachineDefinitionProvisionable withStorageAccount(String name);
-	VirtualMachineDefinitionProvisionable withNewCloudService(String name);
-	VirtualMachineDefinitionProvisionable withSubnet(String subnet);
+public interface Regions extends
+	SupportsListingNames,
+	SupportsReading<Region> {
+
+	/**
+	 * 
+	 * @param serviceType
+	 * @return Regions supporting a specific service type from the LocationAvailableServiceNames class
+	 */
+	List<String> names(String serviceType);
 }

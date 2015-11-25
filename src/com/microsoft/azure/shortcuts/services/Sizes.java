@@ -17,13 +17,19 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.listing;
+package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
-import com.microsoft.azure.shortcuts.services.reading.OSImage;
+import java.util.List;
 
-public interface OsImages extends
-	SupportsListingEntities<OSImage>,
-	SupportsReading<OSImage>  {
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
+
+public interface Sizes extends
+	SupportsListingNames {
+
+	/**
+	 * @param supportingVM
+	 * @param supportingCloudServices
+	 * @return List of available size names supporting the specified type of compute service
+	 */
+	List<String> names(boolean supportingVM, boolean supportingCloudServices);
 }

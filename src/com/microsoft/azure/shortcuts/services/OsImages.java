@@ -17,12 +17,12 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.creation;
+package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.services.reading.Region;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
 
-// creating a storage account
-public interface StorageAccountDefinitionBlank {
-	StorageAccountDefinitionProvisionable withRegion(String region);
-	StorageAccountDefinitionProvisionable withRegion(Region region);
+public interface OsImages extends
+	SupportsListingEntities<OSImage>,
+	SupportsReading<OSImage>  {
 }

@@ -26,8 +26,8 @@ import java.util.NoSuchElementException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.services.listing.Regions;
-import com.microsoft.azure.shortcuts.services.reading.Region;
+import com.microsoft.azure.shortcuts.services.Region;
+import com.microsoft.azure.shortcuts.services.Regions;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
 
 // Class encapsulating the API related to locations

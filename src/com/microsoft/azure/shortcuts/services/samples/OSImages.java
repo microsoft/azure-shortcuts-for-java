@@ -24,8 +24,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.shortcuts.services.OSImage;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
-import com.microsoft.azure.shortcuts.services.reading.OSImage;
 
 //Tests OS images
 public class OSImages {

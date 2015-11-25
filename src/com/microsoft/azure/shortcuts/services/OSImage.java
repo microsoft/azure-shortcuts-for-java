@@ -17,24 +17,39 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.reading;
+package com.microsoft.azure.shortcuts.services;
 
+import java.net.URI;
+import java.util.Calendar;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
+import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 
-public interface Region extends 
+public interface OSImage extends 
 	Named,
-	Refreshable<Region>,
-	Wrapper<Location> {
-	String displayName() throws Exception;
-
-	List<String> availableVirtualMachineSizes() throws Exception;
-	List<String> availableWebWorkerRoleSizes() throws Exception;
-	List<String> availableServices() throws Exception;
-	List<String> availableStorageAccountTypes() throws Exception;
-
+	Refreshable<OSImage>,
+	Wrapper<VirtualMachineOSImage> {
+	
+	String category() throws Exception;
+	String description() throws Exception;
+	String eula() throws Exception;
+	URI iconUri() throws Exception;
+	String family() throws Exception;
+	String ioType() throws Exception;
+	String label() throws Exception;
+	String language() throws Exception;
+	List<String> regions() throws Exception;
+	double logicalSizeInGB() throws Exception;
+	URI mediaLink() throws Exception;
+	String operatingSystemType() throws Exception;
+	URI privacyUri() throws Exception;
+	Calendar publishedDate() throws Exception;
+	String publisher() throws Exception;
+	String recommendedVMSize() throws Exception;
+	URI smallIconUri() throws Exception;
+	boolean isPremium() throws Exception;
+	boolean isShownInGui() throws Exception;
 }

@@ -17,16 +17,18 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.reading;
+package com.microsoft.azure.shortcuts.services;
 
 import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
 
+import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-import com.microsoft.azure.shortcuts.services.updating.StorageAccountUpdatableBlank;
+import com.microsoft.azure.shortcuts.common.updating.Deletable;
+import com.microsoft.azure.shortcuts.common.updating.Updatable;
 import com.microsoft.windowsazure.management.storage.models.GeoRegionStatus;
 import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus;
 
@@ -34,8 +36,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus
 public interface StorageAccount extends 
 	Named,
 	Refreshable<StorageAccount>,
-	Wrapper<com.microsoft.windowsazure.management.storage.models.StorageAccount>,
-	StorageAccountUpdatableBlank {
+	Wrapper<com.microsoft.windowsazure.management.storage.models.StorageAccount> {
 	
 	String affinityGroup() throws Exception;
 	String description() throws Exception;
@@ -49,4 +50,40 @@ public interface StorageAccount extends
 	Calendar lastGeoFailoverTime() throws Exception;
 	List<URI> endpoints() throws Exception;
 	String type() throws Exception;
+	
+	
+	/**
+	 * A new blank storage account definition
+	 */
+	public interface DefinitionBlank {
+		DefinitionProvisionable withRegion(String region);
+		DefinitionProvisionable withRegion(Region region);
+	}
+	
+	
+	/**
+	 * A storage account definition with sufficient input parameters specified to be provisioned in the cloud
+	 */
+	public interface DefinitionProvisionable extends Provisionable<UpdateBlank> {
+		DefinitionProvisionable withType(String type);
+		DefinitionProvisionable withLabel(String label);
+		DefinitionProvisionable withDescription(String description);
+	}
+	
+
+	/**
+	 * An existing storage account update ready to be applied in the cloud
+	 */
+	public interface Update extends UpdateBlank, Updatable<Update> {
+	}
+
+	
+	/**
+	 * A blank update request for an existing storage account
+	 */
+	public interface UpdateBlank extends Deletable {
+		StorageAccount.Update withType(String type);
+		StorageAccount.Update withDescription(String description);
+		StorageAccount.Update withLabel(String label);
+	}
 }

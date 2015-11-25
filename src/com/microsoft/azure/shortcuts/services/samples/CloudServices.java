@@ -24,8 +24,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.microsoft.azure.shortcuts.services.CloudService;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
-import com.microsoft.azure.shortcuts.services.reading.CloudService;
 
 //Tests Cloud Services
 public class CloudServices {

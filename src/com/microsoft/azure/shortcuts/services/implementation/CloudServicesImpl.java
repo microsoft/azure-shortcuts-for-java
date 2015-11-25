@@ -27,12 +27,9 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionBlank;
-import com.microsoft.azure.shortcuts.services.creation.CloudServiceDefinitionProvisionable;
-import com.microsoft.azure.shortcuts.services.listing.CloudServices;
-import com.microsoft.azure.shortcuts.services.reading.CloudService;
-import com.microsoft.azure.shortcuts.services.reading.Region;
-import com.microsoft.azure.shortcuts.services.updating.CloudServiceUpdatable;
+import com.microsoft.azure.shortcuts.services.CloudService;
+import com.microsoft.azure.shortcuts.services.CloudServices;
+import com.microsoft.azure.shortcuts.services.Region;
 import com.microsoft.windowsazure.management.compute.models.ComputeCapabilities;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceCreateParameters;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceUpdateParameters;
@@ -108,10 +105,10 @@ public class CloudServicesImpl
 		extends 
 			NamedRefreshableWrapperImpl<CloudService, HostedService>
 		implements 
-			CloudServiceDefinitionBlank, 
-			CloudServiceDefinitionProvisionable,
+			CloudService.DefinitionBlank, 
+			CloudService.DefinitionProvisionable,
 			CloudService,
-			CloudServiceUpdatable {
+			CloudService.Update {
 		
 		private CloudServiceImpl(HostedService azureService) {
 			super(azureService.getServiceName().toLowerCase(), azureService);

@@ -17,22 +17,23 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.reading;
+package com.microsoft.azure.shortcuts.services;
 
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-import com.microsoft.azure.shortcuts.services.updating.NetworkUpdatableBlank;
+import com.microsoft.azure.shortcuts.common.updating.Deletable;
+import com.microsoft.azure.shortcuts.common.updating.Updatable;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
 
 public interface Network extends 
 	Named,
 	Refreshable<Network>,
-	Wrapper<VirtualNetworkSite>,
-	NetworkUpdatableBlank {
+	Wrapper<VirtualNetworkSite> {
 	
 	List<String> addressPrefixes() throws Exception;
 	String region() throws Exception;
@@ -47,5 +48,42 @@ public interface Network extends
 		String networkSecurityGroup();
 	}
 
+	/**
+	 * A new blank network definition
+	 */
+	public interface DefinitionBlank {
+		DefinitionWithCidr withRegion(String region);
+		DefinitionWithCidr withRegion(Region region);
+	}
+	
+	
+	/**
+	 * A new network definition with sufficient input parameters specified to be provisioned in the cloud
+	 */
+	public interface DefinitionProvisionable extends Provisionable<UpdateBlank> {
+		DefinitionProvisionable withSubnet(String name, String cidr);
+	}
+	
+	/**
+	 * A new network definition requiring the CIDR input parameter to be specified
+	 */
+	public interface DefinitionWithCidr {
+		DefinitionProvisionable withCidr(String cidr);
+	}
+	
+	
+	/**
+	 * A blank update request for an existing network
+	 */
+	public interface UpdateBlank extends Deletable {
+		// TODO?
+	}
+	
+	
+	/**
+	 * An existing network update request ready to be applied in the cloud
+	 */
+	public interface Update extends UpdateBlank, Updatable<Update> {
+	}
 
 }

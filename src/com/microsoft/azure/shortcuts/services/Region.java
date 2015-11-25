@@ -17,10 +17,24 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.services.creation;
+package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.services.creation.NetworkDefinitionProvisionable;
+import java.util.List;
 
-public interface NetworkDefinitionWithCidr {
-	NetworkDefinitionProvisionable withCidr(String cidr);
+import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
+
+public interface Region extends 
+	Named,
+	Refreshable<Region>,
+	Wrapper<Location> {
+	String displayName() throws Exception;
+
+	List<String> availableVirtualMachineSizes() throws Exception;
+	List<String> availableWebWorkerRoleSizes() throws Exception;
+	List<String> availableServices() throws Exception;
+	List<String> availableStorageAccountTypes() throws Exception;
+
 }
