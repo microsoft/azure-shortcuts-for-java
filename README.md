@@ -21,7 +21,7 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 ## Usage pre-requisites
 
 * Java 7+
-* Azure SDK for Java v0.8.0 or higher
+* Azure SDK for Java v0.9.0 or higher
 * An Azure subscription
 
 ## Examples
@@ -64,7 +64,7 @@ String subscriptionId = "<subscription-GUID>";
 Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 ```
 
-*Note: Active Directory auth for ARM currently requires a lot of inputs and token management logic. So to simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:*
+*Note: Active Directory auth for ARM currently requires a lot of inputs and token management logic. To simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:*
 
 ```xml
 <azureShortcutsAuth>
