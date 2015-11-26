@@ -19,10 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.resources.reading;
 
-import java.util.HashMap;
-import java.util.Map;
 
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
+import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.shortcuts.common.creation.Provisionable;
 import com.microsoft.azure.shortcuts.common.reading.Named;
 import com.microsoft.azure.shortcuts.common.reading.Refreshable;
@@ -31,48 +30,46 @@ import com.microsoft.azure.shortcuts.common.updating.Deletable;
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
 import com.microsoft.azure.shortcuts.resources.updating.Taggable;
 
-public interface Group extends 
+public interface StorageAccount extends 
 	Named,
-	Refreshable<Group>,
-	Wrapper<ResourceGroupExtended> {
+	Refreshable<StorageAccount>,
+	Wrapper<com.microsoft.azure.management.storage.models.StorageAccount> {
 	
-	String region() throws Exception;
-	String id() throws Exception;
-	Map<String, String> tags() throws Exception;
-	String provisioningState() throws Exception;
 	
-
 	/**
-	 * A new blank resource group definition
+	 * A new blank storage account definition
 	 */
 	public interface DefinitionBlank {
-		DefinitionProvisionable withRegion(String region);
+	    DefinitionProvisionable withRegion(String region);
 	}
 	
 	
 	/**
-	 * A new resource group definition with sufficient input parameters specified to be provisioned in the cloud
+	 * A new storage account definition with sufficient input parameters specified already to be provisioned in the cloud
 	 */
 	public interface DefinitionProvisionable extends Provisionable<UpdateBlank> {
-		DefinitionProvisionable withTags(HashMap<String, String> tags);
-		DefinitionProvisionable withTag(String key, String value);
+	    DefinitionProvisionable withType(AccountType type);
 	}
 	
 	
 	/**
-	 * An existing resource group modification request ready to be applied in the cloud
+	 * An existing storage account update request ready to be applied in the cloud.
 	 */
 	public interface Update extends 
 		UpdateBlank, 
 		Updatable<Update> {
 	}
 	
-
+	
 	/**
-	 * A blank modification request for an existing resource group
+	 * A blank modification request for an existing storage account
 	 */
 	public interface UpdateBlank extends 
 		Deletable, 
-		Taggable<Update>  {
+		Taggable<Update> {
+	
+		Update withRegion(String region);
+		Update withType(AccountType type);
+		Update withCustomDomain(CustomDomain customDomain);
 	}
 }

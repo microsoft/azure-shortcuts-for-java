@@ -24,14 +24,12 @@ import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
 import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.updating.SupportsUpdating;
-import com.microsoft.azure.shortcuts.resources.creation.GroupDefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.reading.Group;
-import com.microsoft.azure.shortcuts.resources.updating.GroupUpdatableBlank;
 
 public interface Groups extends 
 	SupportsListingEntities<Group>,
 	SupportsReading<Group>,
-	SupportsCreating<GroupDefinitionBlank>,
+	SupportsCreating<Group.DefinitionBlank>,
 	SupportsDeleting,
-	SupportsUpdating<GroupUpdatableBlank> {
+	SupportsUpdating<Group.UpdateBlank> {
 }
