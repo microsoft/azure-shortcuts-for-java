@@ -21,12 +21,12 @@ package com.microsoft.azure.shortcuts.services;
 
 import java.util.Calendar;
 
-import com.microsoft.azure.shortcuts.common.creation.Provisionable;
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-import com.microsoft.azure.shortcuts.common.updating.Deletable;
-import com.microsoft.azure.shortcuts.common.updating.Updatable;
+import com.microsoft.azure.shortcuts.common.Deletable;
+import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Refreshable;
+import com.microsoft.azure.shortcuts.common.Updatable;
+import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
 
 // Encapsulates the readable properties of a cloud service

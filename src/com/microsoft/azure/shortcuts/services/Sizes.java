@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.services;
 
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.SupportsListingNames;
 
 public interface Sizes extends
 	SupportsListingNames {

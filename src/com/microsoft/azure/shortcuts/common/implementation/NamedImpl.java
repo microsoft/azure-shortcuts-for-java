@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.common.implementation;
 
-import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.Named;
 
 // Base implementation for named entities
 public abstract class NamedImpl implements Named {

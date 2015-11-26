@@ -2,9 +2,9 @@ package com.microsoft.azure.shortcuts.resources;
 
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
-import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.SupportsReading;
 
 public interface Resources extends
 	SupportsListingEntities<Resource>,

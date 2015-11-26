@@ -19,10 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.common.creation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
-import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
-import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.SupportsReading;
 
 public interface VirtualMachines extends
 	SupportsCreating<VirtualMachine.DefinitionBlank>,

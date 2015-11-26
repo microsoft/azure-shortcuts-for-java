@@ -19,11 +19,11 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.creation.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
-import com.microsoft.azure.shortcuts.common.updating.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.updating.SupportsUpdating;
+import com.microsoft.azure.shortcuts.common.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.SupportsReading;
+import com.microsoft.azure.shortcuts.common.SupportsUpdating;
 
 public interface Groups extends 
 	SupportsListingEntities<Group>,

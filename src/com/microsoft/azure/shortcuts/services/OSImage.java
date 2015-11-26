@@ -23,9 +23,9 @@ import java.net.URI;
 import java.util.Calendar;
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Refreshable;
+import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 
 public interface OSImage extends 

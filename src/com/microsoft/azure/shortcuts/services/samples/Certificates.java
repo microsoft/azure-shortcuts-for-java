@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.services.samples;
 
 import java.io.File;
 
-import com.microsoft.azure.shortcuts.common.Utils;
+import com.microsoft.azure.shortcuts.common.implementation.Utils;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
 
 // Tests VM sizes

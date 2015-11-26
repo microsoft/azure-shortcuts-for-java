@@ -27,7 +27,7 @@ import com.microsoft.azure.management.resources.ResourceManagementClient;
 import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
-import com.microsoft.azure.shortcuts.common.Utils;
+import com.microsoft.azure.shortcuts.common.implementation.Utils;
 import com.microsoft.azure.shortcuts.resources.Groups;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Providers;

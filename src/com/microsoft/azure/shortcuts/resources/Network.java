@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Refreshable;
+import com.microsoft.azure.shortcuts.common.Wrapper;
 
 public interface Network extends 
 	Named,

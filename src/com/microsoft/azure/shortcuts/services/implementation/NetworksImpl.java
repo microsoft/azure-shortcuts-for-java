@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import com.microsoft.azure.shortcuts.common.Utils;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.Utils;
 import com.microsoft.azure.shortcuts.services.Network;
 import com.microsoft.azure.shortcuts.services.Networks;
 import com.microsoft.azure.shortcuts.services.Region;

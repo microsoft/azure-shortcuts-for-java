@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.common.implementation;
 
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.Refreshable;
 
 public abstract class NamedRefreshableImpl<T> 
 	extends NamedImpl

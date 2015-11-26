@@ -17,8 +17,11 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.common.reading;
+package com.microsoft.azure.shortcuts.common;
 
-public interface Wrapper<T> {
-	T inner();
+import java.util.Map;
+
+// Requires class to support listing entities
+public interface SupportsListingEntities<T> {
+	Map<String, T> list() throws Exception;
 }

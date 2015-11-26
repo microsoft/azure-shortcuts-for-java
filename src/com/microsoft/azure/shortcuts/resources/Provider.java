@@ -22,9 +22,9 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Refreshable;
+import com.microsoft.azure.shortcuts.common.Wrapper;
 
 public interface Provider extends 
 	Named,

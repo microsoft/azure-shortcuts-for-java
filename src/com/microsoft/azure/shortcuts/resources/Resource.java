@@ -22,10 +22,10 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
-import com.microsoft.azure.shortcuts.common.updating.Deletable;
+import com.microsoft.azure.shortcuts.common.Deletable;
+import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Refreshable;
+import com.microsoft.azure.shortcuts.common.Wrapper;
 
 public interface Resource extends 
 	Named,

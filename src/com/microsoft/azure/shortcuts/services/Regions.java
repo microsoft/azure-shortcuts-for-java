@@ -21,8 +21,8 @@ package com.microsoft.azure.shortcuts.services;
 
 import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingNames;
-import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
+import com.microsoft.azure.shortcuts.common.SupportsListingNames;
+import com.microsoft.azure.shortcuts.common.SupportsReading;
 
 public interface Regions extends
 	SupportsListingNames,

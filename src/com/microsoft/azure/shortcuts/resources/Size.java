@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.Named;
 
 public interface Size extends 
 	Named {
