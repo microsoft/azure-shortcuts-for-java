@@ -17,7 +17,7 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.reading;
+package com.microsoft.azure.shortcuts.resources;
 
 
 import com.microsoft.azure.management.storage.models.AccountType;
@@ -28,7 +28,6 @@ import com.microsoft.azure.shortcuts.common.reading.Refreshable;
 import com.microsoft.azure.shortcuts.common.reading.Wrapper;
 import com.microsoft.azure.shortcuts.common.updating.Deletable;
 import com.microsoft.azure.shortcuts.common.updating.Updatable;
-import com.microsoft.azure.shortcuts.resources.updating.Taggable;
 
 public interface StorageAccount extends 
 	Named,

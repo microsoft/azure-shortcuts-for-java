@@ -25,8 +25,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
-import com.microsoft.azure.shortcuts.resources.reading.Group;
 
 // Tests resources
 public class Groups {

@@ -30,8 +30,8 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedWrapperImpl;
-import com.microsoft.azure.shortcuts.resources.listing.Networks;
-import com.microsoft.azure.shortcuts.resources.reading.Network;
+import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.Networks;
 
 
 public class NetworksImpl 

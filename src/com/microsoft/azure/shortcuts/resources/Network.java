@@ -17,13 +17,28 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.listing;
+package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
-import com.microsoft.azure.shortcuts.resources.reading.Provider;
 
-public interface Providers extends 
-	SupportsReading<Provider>,
-	SupportsListingEntities<Provider> {
+import java.util.List;
+import java.util.Map;
+
+import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.shortcuts.common.reading.Named;
+import com.microsoft.azure.shortcuts.common.reading.Refreshable;
+import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+
+public interface Network extends 
+	Named,
+	Refreshable<Network>,
+	Wrapper<VirtualNetwork> {
+	String provisioningState();
+	List<String> addressPrefixes();
+	List<String> dnsServers();
+	Map<String, Subnet> subnets();
+	
+	public interface Subnet extends Named, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
+		String addressPrefix();
+		String networkSecurityGroup();
+	}
 }

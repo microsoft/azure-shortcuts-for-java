@@ -29,8 +29,8 @@ import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.resources.listing.Groups;
-import com.microsoft.azure.shortcuts.resources.reading.Group;
+import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Groups;
 
 
 public class GroupsImpl 

@@ -17,12 +17,12 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.updating;
+package com.microsoft.azure.shortcuts.resources;
 
-import java.util.HashMap;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.reading.SupportsReading;
 
-public interface Taggable<T> {
-	T withTags(HashMap<String, String> tags);
-	T withTag(String key, String value);
-	T withoutTag(String key);
+public interface Providers extends 
+	SupportsReading<Provider>,
+	SupportsListingEntities<Provider> {
 }

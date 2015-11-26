@@ -30,9 +30,9 @@ import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.resources.listing.Resources;
-import com.microsoft.azure.shortcuts.resources.reading.Provider;
-import com.microsoft.azure.shortcuts.resources.reading.Resource;
+import com.microsoft.azure.shortcuts.resources.Provider;
+import com.microsoft.azure.shortcuts.resources.Resource;
+import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.windowsazure.core.ResourceIdentity;
 import com.microsoft.windowsazure.exception.ServiceException;
 

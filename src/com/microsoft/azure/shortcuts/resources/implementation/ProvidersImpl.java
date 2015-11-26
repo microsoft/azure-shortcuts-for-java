@@ -29,8 +29,8 @@ import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.resources.listing.Providers;
-import com.microsoft.azure.shortcuts.resources.reading.Provider;
+import com.microsoft.azure.shortcuts.resources.Provider;
+import com.microsoft.azure.shortcuts.resources.Providers;
 
 public class ProvidersImpl
 	extends EntitiesImpl<Azure>

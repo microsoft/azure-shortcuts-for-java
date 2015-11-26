@@ -17,26 +17,19 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.reading;
+package com.microsoft.azure.shortcuts.resources;
 
-import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.reading.Named;
-import com.microsoft.azure.shortcuts.common.reading.Refreshable;
-import com.microsoft.azure.shortcuts.common.reading.Wrapper;
+import com.microsoft.azure.shortcuts.common.listing.SupportsListingEntities;
 
-public interface Provider extends 
-	Named,
-	Refreshable<Provider>,
-	Wrapper<com.microsoft.azure.management.resources.models.Provider> {
-	
-	String registrationState() throws Exception;
-	Map<String, ResourceType> resourceTypes() throws Exception;
-	ResourceType resourceTypes(String name) throws Exception;
-	
-	public interface ResourceType extends Named {
-		List<String> apiVersions();
-		String latestApiVersion();
-	}
+public interface Sizes extends 
+	SupportsListingEntities<Size> {
+
+	/**
+	 * @param region
+	 * @return Virtual machine sizes available in the specified region
+	 * @throws Exception 
+	 */
+	Map<String, Size> list(String region) throws Exception;
 }

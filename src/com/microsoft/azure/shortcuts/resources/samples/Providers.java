@@ -24,9 +24,9 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.shortcuts.resources.Provider;
+import com.microsoft.azure.shortcuts.resources.Provider.ResourceType;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
-import com.microsoft.azure.shortcuts.resources.reading.Provider;
-import com.microsoft.azure.shortcuts.resources.reading.Provider.ResourceType;
 
 // Tests resources
 public class Providers {

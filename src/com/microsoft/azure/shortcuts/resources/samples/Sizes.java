@@ -25,8 +25,8 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
-import com.microsoft.azure.shortcuts.resources.reading.Size;
 
 // Tests sizes
 public class Sizes {

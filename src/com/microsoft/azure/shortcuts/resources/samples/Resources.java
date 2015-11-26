@@ -24,8 +24,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
-import com.microsoft.azure.shortcuts.resources.reading.Resource;
 
 // Tests resources
 public class Resources {
