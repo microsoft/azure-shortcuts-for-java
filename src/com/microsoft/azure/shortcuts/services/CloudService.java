@@ -45,21 +45,57 @@ public interface CloudService extends
 	
 	
 	/**
-	 * A new blank cloud service definition
+	 * A cloud service definition requiring a region to be specified
 	 */
-	public interface DefinitionBlank {
-		DefinitionProvisionable withRegion(String region);
-		DefinitionProvisionable withRegion(Region region);
-		DefinitionProvisionable withAffinityGroup(String affinityGroup);
+	public interface WithRegion<T> {
+		T withRegion(String region);
+		T withRegion(Region region);
+	}
+	
+	/** 
+	 * A cloud service definition requiring an affinity group to be specified
+	 */
+	public interface WithAffinityGroup<T> {
+		T withAffinityGroup(String affinityGroup);
 	}
 	
 	/**
+	 * A new blank cloud service definition
+	 */
+	public interface DefinitionBlank extends
+		WithRegion<DefinitionProvisionable>,
+		WithAffinityGroup<DefinitionProvisionable> {
+	}
+	
+	/** 
+	 * A cloud service definition requiring a description to be specified
+	 */
+	public interface WithDescription<T> {
+		public T withDescription(String description);
+	}
+
+	/** 
+	 * A cloud service definition requiring a label to be specified
+	 */
+	public interface WithLabel<T> {
+		public T withLabel(String label);
+	}
+
+	/** 
+	 * A cloud service definition requiring a reverse DNS fully qualified domain name to be specified
+	 */
+	public interface WithReverseDnsFqdn<T> {
+		public T withReverseDnsFqdn(String fqdn);
+	}
+
+	/**
 	 * A new cloud service definition with sufficient settings to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends Provisionable<UpdateBlank> {
-		public DefinitionProvisionable withDescription(String description);
-		public DefinitionProvisionable withLabel(String label);
-		public DefinitionProvisionable withReverseDnsFqdn(String fqdn);
+	public interface DefinitionProvisionable extends 
+		WithDescription<DefinitionProvisionable>,
+		WithLabel<DefinitionProvisionable>,
+		WithReverseDnsFqdn<DefinitionProvisionable>,
+		Provisionable<UpdateBlank> {
 	}
 
 	/**
@@ -72,9 +108,10 @@ public interface CloudService extends
 	/**
 	 * A blank existing cloud service update request
 	 */
-	public interface UpdateBlank extends Deletable {
-		CloudService.Update withDescription(String description);
-		CloudService.Update withLabel(String label);
-		CloudService.Update withReverseDnsFqdn(String fqdn);
+	public interface UpdateBlank extends 
+		WithDescription<Update>,
+		WithLabel<Update>,
+		WithReverseDnsFqdn<Update>,
+		Deletable {
 	}
 }
