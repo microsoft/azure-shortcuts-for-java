@@ -39,8 +39,13 @@ public class VirtualMachinesSample {
     
 
     public static void test(Azure azure) throws Exception {
-    	// Listing all virtual machines names
+    	// Listing all virtual machines names in a subscription
     	List<String> vmNames = azure.virtualMachines().names();
     	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmNames, ",\n\t")));
+    	
+    	// Listing virtual machine names in a specific resource group
+    	String groupName = "group1444089227523";
+    	vmNames = azure.virtualMachines().names(groupName);
+    	System.out.println(String.format("Virtual machines in group '%s': \n\t%s", groupName, StringUtils.join(vmNames, ",\n\t")));
 	}
  }

@@ -141,7 +141,9 @@ azure.virtualMachines().define("mywinvm")
 *[TODO]*
 
 
-#### Listing VMs in a subscription
+#### Listing VMs
+
+All virtual machines in a subscription: 
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 *ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
@@ -149,6 +151,13 @@ azure.virtualMachines().define("mywinvm")
 ```java
 List<String> vmNames = azure.virtualMachines().names();
 ```
+
+Virtual machines in a specific resource group (resource model "ARM" only)
+
+```java
+List<String> vmNames = azure.virtualMachines().names(<"resource-group-name>");
+```
+
 
 #### Reading information about a VM
 

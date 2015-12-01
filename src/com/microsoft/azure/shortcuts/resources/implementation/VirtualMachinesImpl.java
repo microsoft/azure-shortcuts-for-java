@@ -36,12 +36,21 @@ public class VirtualMachinesImpl
 
 	@Override
 	public List<String> names() throws Exception {
-		// TODO Auto-generated method stub
 		ArrayList<String> vmNames = new ArrayList<String>();
 		ArrayList<VirtualMachine> vms = azure.computeManagementClient().getVirtualMachinesOperations().listAll(null).getVirtualMachines();
 		for(VirtualMachine vm : vms) {
 			vmNames.add(vm.getName());
 		}
 		return vmNames;
+	}
+	
+	@Override
+	public List<String> names(String groupName) throws Exception {
+		ArrayList<String> vmNames = new ArrayList<String>();
+		ArrayList<VirtualMachine> vms = azure.computeManagementClient().getVirtualMachinesOperations().list(groupName).getVirtualMachines();
+		for(VirtualMachine vm : vms) {
+			vmNames.add(vm.getName());
+		}
+		return vmNames;		
 	}
 }
