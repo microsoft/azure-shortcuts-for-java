@@ -19,8 +19,6 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +32,6 @@ import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.windowsazure.core.ResourceIdentity;
-import com.microsoft.windowsazure.exception.ServiceException;
 
 
 public class ResourcesImpl
@@ -165,9 +162,6 @@ public class ResourcesImpl
 	
 	/***********************************************************
 	 * Helpers
-	 * @throws URISyntaxException 
-	 * @throws ServiceException 
-	 * @throws IOException 
 	 ***********************************************************/
 	
 	private ArrayList<GenericResourceExtended> getResources(String groupName) throws Exception {

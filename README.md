@@ -264,9 +264,11 @@ azure.networks().define("mynetwork")
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 *[TODO]*
 
-#### Listing virtual networks in a subscription
+#### Listing virtual networks 
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+All network names in a subscription:
 
 ```java
 List<String> virtualNetworkNames = azure.networks().names();
@@ -274,7 +276,7 @@ List<String> virtualNetworkNames = azure.networks().names();
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-Networks as a map, indexed by resource id:
+All networks in a subscription, as a map indexed by resource id:
 
 ```java
 Map<String, Network> networks = azure.networks().list();
@@ -284,6 +286,12 @@ Resource ids only:
 
 ```java
 Set<String> networkIds = azure.networks().list().keySet();
+```
+
+Networks in a specific resource group:
+
+```java
+Map<String, Network> networks = azure.networks().list("<resource-group-name">);
 ```
 
 

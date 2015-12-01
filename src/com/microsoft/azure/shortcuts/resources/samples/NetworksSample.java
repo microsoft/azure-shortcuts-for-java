@@ -45,6 +45,10 @@ public class NetworksSample {
     	Map<String, Network> networks = azure.networks().list();
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
+    	// Listing networks in a specific resource group
+    	String groupName = "group1444089227523";
+    	networks = azure.networks().list(groupName);
+    	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
     	Network network = azure.networks().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup1/providers/Microsoft.Network/virtualNetworks/javasampleresourcegroup1vnetqwsks");

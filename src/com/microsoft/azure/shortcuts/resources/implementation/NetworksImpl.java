@@ -47,8 +47,14 @@ public class NetworksImpl
 	
 	@Override
 	public Map<String, Network> list() throws Exception {
+		return this.list(null);
+	}
+
+	
+	@Override
+	public Map<String, Network> list(String groupName) throws Exception {
 		HashMap<String, Network> wrappers = new HashMap<>();
-		for(VirtualNetwork nativeItem : getAzureVirtualNetworks()) {
+		for(VirtualNetwork nativeItem : getAzureVirtualNetworks(groupName)) {
 			NetworkImpl wrapper = new NetworkImpl(nativeItem);
 			wrappers.put(nativeItem.getId(), wrapper);
 		}
@@ -56,7 +62,7 @@ public class NetworksImpl
 		return Collections.unmodifiableMap(wrappers);
 	}
 
-		
+	
 	@Override
 	public Network get(String resourceId) throws Exception {
 		VirtualNetwork azureVirtualNetwork = 
@@ -72,8 +78,12 @@ public class NetworksImpl
 	 ***************************************************/
 	
 	// Helper to get the networks from Azure
-	private ArrayList<com.microsoft.azure.management.network.models.VirtualNetwork> getAzureVirtualNetworks() throws Exception {
-		return this.azure.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
+	private ArrayList<com.microsoft.azure.management.network.models.VirtualNetwork> getAzureVirtualNetworks(String resourceGroupName) throws Exception {
+		if(resourceGroupName == null) {
+			return this.azure.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
+		} else {
+			return this.azure.networkManagementClient().getVirtualNetworksOperations().list(resourceGroupName).getVirtualNetworks();
+		}
 	}
 	
 	
