@@ -51,23 +51,51 @@ public interface StorageAccount extends
 	List<URI> endpoints() throws Exception;
 	String type() throws Exception;
 	
+
+	/**
+	 * A storage account definition requiring the region (location) to be specified
+	 */
+	public interface WithRegion<T> {
+		T withRegion(String region);
+		T withRegion(Region region);		
+	}
 	
 	/**
 	 * A new blank storage account definition
 	 */
-	public interface DefinitionBlank {
-		DefinitionProvisionable withRegion(String region);
-		DefinitionProvisionable withRegion(Region region);
+	public interface DefinitionBlank extends 
+		WithRegion<DefinitionProvisionable> {
 	}
 	
+	/**
+	 * A storage account definition requring the label to be specified
+	 */
+	public interface WithLabel<T> {
+		T withLabel(String label);
+	}
+	
+	/**
+	 * A storage account definition requiring the storage type to be specified
+	 */
+	public interface WithType<T> {
+		T withType(String type);
+	}
+
+	/**
+	 * A storage account definition requiring the description to be specified
+	 */
+	public interface WithDescription<T> {
+		T withDescription(String description);
+	}
 	
 	/**
 	 * A storage account definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends Provisionable<UpdateBlank> {
-		DefinitionProvisionable withType(String type);
-		DefinitionProvisionable withLabel(String label);
-		DefinitionProvisionable withDescription(String description);
+	public interface DefinitionProvisionable extends 
+		WithType<DefinitionProvisionable>,
+		WithLabel<DefinitionProvisionable>,
+		WithDescription<DefinitionProvisionable>,
+		Provisionable<UpdateBlank> {
 	}
 	
 
@@ -81,9 +109,10 @@ public interface StorageAccount extends
 	/**
 	 * A blank update request for an existing storage account
 	 */
-	public interface UpdateBlank extends Deletable {
-		StorageAccount.Update withType(String type);
-		StorageAccount.Update withDescription(String description);
-		StorageAccount.Update withLabel(String label);
+	public interface UpdateBlank extends 
+		Deletable,
+		WithType<Update>,
+		WithDescription<Update>,
+		WithLabel<Update> {
 	}
 }
