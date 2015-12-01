@@ -28,6 +28,7 @@ import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.Taggable;
 
 public interface StorageAccount extends 
 	Named,
