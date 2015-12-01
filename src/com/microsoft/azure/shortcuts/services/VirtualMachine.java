@@ -64,26 +64,26 @@ public interface VirtualMachine extends
 	
 	
 	/**
-	 * A new virtual machine definition requiring a region (location) to be specified 
+	 * A virtual machine definition requiring a region (location) to be specified 
 	 */
-	public interface DefinitionWithRegion<T> {
+	public interface WithRegion<T> {
 		T withRegion(String region);
 		T withRegion(Region region);
 	}
 	
 	/**
-	 * A new virtual machine definition requiring an existing virtual network to be specified
+	 * A virtual machine definition requiring an existing virtual network to be specified
 	 */
-	public interface DefinitionWithExistingNetwork<T> {
+	public interface WithExistingNetwork<T> {
 		T withExistingNetwork(String network);
 		T withExistingNetwork(Network network);		
 	}
 	
 	
 	/**
-	 * A new virtual machine definition requiring an existing cloud service to be specified
+	 * A virtual machine definition requiring an existing cloud service to be specified
 	 */
-	public interface DefinitionWithExistingCloudService<T> {
+	public interface WithExistingCloudService<T> {
 		T withExistingCloudService(String serviceName);
 		T withExistingCloudService(CloudService cloudService);
 		T withExistingCloudService(HostedService hostedService);
@@ -93,16 +93,16 @@ public interface VirtualMachine extends
 	 * A new blank virtual machine definition requiring the initial required set of parameters to be specified
 	 */
 	public interface DefinitionBlank extends 
-		DefinitionWithRegion<DefinitionWithSize>,
-		DefinitionWithExistingNetwork<DefinitionWithSize>,
-		DefinitionWithExistingCloudService<DefinitionWithSize> {
+		WithRegion<DefinitionWithSize>,
+		WithExistingNetwork<DefinitionWithSize>,
+		WithExistingCloudService<DefinitionWithSize> {
 	}
 
 	
 	/**
 	 * A virtual machine definition requiring a TCP endpoint to be specified
 	 */
-	public interface DefinitionWithTcpEndpoint<T> {
+	public interface WithTcpEndpoint<T> {
 		T withTcpEndpoint(int publicPort);
 		T withTcpEndpoint(int publicPort, int privatePort);
 		T withTcpEndpoint(int publicPort, int privatePort, String name);		
@@ -111,28 +111,28 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring the presence of a guest agent to be specified
 	 */
-	public interface DefinitionWithGuestAgent<T> {
+	public interface WithGuestAgent<T> {
 		T withGuestAgent(boolean enabled);		
 	}
 	
 	/**
 	 * A virtual machine definition requiring a deployment name to be specified
 	 */
-	public interface DefinitionWithDeployment<T> {
+	public interface WithDeployment<T> {
 		T withDeployment(String name);
 	}
 	
 	/**
 	 * A virtual machine definition requiring a deployment label to be specified
 	 */
-	public interface DefinitionWithDeploymentLabel<T> {
+	public interface WithDeploymentLabel<T> {
 		T withDeploymentLabel(String label);
 	}
 
 	/**
 	 * A virtual machine definition requiring an existing storage account to specified
 	 */
-	public interface DefinitionWithExistingStorageAccount<T> {
+	public interface WithExistingStorageAccount<T> {
 		T withExistingStorageAccount(String name);
 		T withExistingStorageAccount(StorageAccount account);
 		T withExistingStorageAccount(com.microsoft.windowsazure.management.storage.models.StorageAccount account);
@@ -141,7 +141,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring an new cloud service to be specified
 	 */
-	public interface DefinitionWithNewCloudService<T> {
+	public interface WithNewCloudService<T> {
 		T withNewCloudService(String name);
 		T withNewCloudService(CloudService.DefinitionProvisionable cloudServiceDefinition);
 	}
@@ -149,7 +149,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring a subnet to be specified
 	 */
-	public interface DefinitionWithSubnet<T> {
+	public interface WithSubnet<T> {
 		T withSubnet(String subnet);
 	}
 
@@ -157,13 +157,13 @@ public interface VirtualMachine extends
 	 * A new virtual machine definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
 	public interface DefinitionProvisionable extends 
-		DefinitionWithTcpEndpoint<DefinitionProvisionable>,
-		DefinitionWithGuestAgent<DefinitionProvisionable>,
-		DefinitionWithDeployment<DefinitionProvisionable>,
-		DefinitionWithDeploymentLabel<DefinitionProvisionable>,
-		DefinitionWithExistingStorageAccount<DefinitionProvisionable>,
-		DefinitionWithNewCloudService<DefinitionProvisionable>,
-		DefinitionWithSubnet<DefinitionProvisionable>,
+		WithTcpEndpoint<DefinitionProvisionable>,
+		WithGuestAgent<DefinitionProvisionable>,
+		WithDeployment<DefinitionProvisionable>,
+		WithDeploymentLabel<DefinitionProvisionable>,
+		WithExistingStorageAccount<DefinitionProvisionable>,
+		WithNewCloudService<DefinitionProvisionable>,
+		WithSubnet<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 	}
 	
@@ -171,7 +171,7 @@ public interface VirtualMachine extends
 	/**
 	 * A new virtual machine definition requiring the host name to be specified
 	 */
-	public interface DefinitionWithHostName<T> {
+	public interface WithHostName<T> {
 		T withHostName(String name) throws Exception;
 	}
 	
@@ -179,21 +179,21 @@ public interface VirtualMachine extends
 	 * A new Linux virtual machine definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
 	public interface DefinitionLinuxProvisionable extends 
-		DefinitionWithHostName<DefinitionLinuxProvisionable>,
+		WithHostName<DefinitionLinuxProvisionable>,
 		DefinitionProvisionable {
 	}
 	
 	/** 
 	 * A new virtual machine definition requiring the enablement of AutoUpdate to be specified
 	 */
-	public interface DefinitionWithAutoUpdate<T> {
+	public interface WithAutoUpdate<T> {
 		T withAutoUpdate(boolean autoUpdate);
 	}
 
 	/** 
 	 * A new virtual machine definition requiring the computer name to be specified
 	 */
-	public interface DefinitionWithComputerName<T> {
+	public interface WithComputerName<T> {
 		T withComputerName(String name) throws Exception;
 	}
 
@@ -201,8 +201,8 @@ public interface VirtualMachine extends
 	 * A new Windows virtual machine definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
 	public interface DefinitionWindowsProvisionable extends 
-		DefinitionWithAutoUpdate<DefinitionWindowsProvisionable>,
-		DefinitionWithComputerName<DefinitionWindowsProvisionable>,
+		WithAutoUpdate<DefinitionWindowsProvisionable>,
+		WithComputerName<DefinitionWindowsProvisionable>,
 		DefinitionProvisionable {
 	}
 	
