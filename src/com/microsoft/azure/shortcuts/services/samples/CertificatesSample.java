@@ -19,14 +19,13 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.List;
+import java.io.File;
 
-import org.apache.commons.lang.StringUtils;
-
+import com.microsoft.azure.shortcuts.common.implementation.Utils;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
 
 // Tests VM sizes
-public class Sizes {
+public class CertificatesSample {
 	public static void main(String[] args) {
 		String publishSettingsPath = "my.publishsettings";
 		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
@@ -42,7 +41,12 @@ public class Sizes {
 	}
 
 	public static void test(Azure azure) throws Exception {
-		List<String> sizeNames = azure.sizes().names(true, false);
-		System.out.println("Available VM sizes: " + StringUtils.join(sizeNames, ", "));
+		File pfxFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.pfx");
+		File jdkFilePath = new File(System.getenv("JAVA_HOME"));
+		File cerFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.cer");
+		String password = "Abcd.1234", alias = "test";
+		
+		Utils.createCertPkcs12(pfxFile, jdkFilePath, alias, password, alias, 3650);
+		Utils.createCertPublicFromPkcs12(pfxFile, cerFile, jdkFilePath, alias, password);
 	}
 }

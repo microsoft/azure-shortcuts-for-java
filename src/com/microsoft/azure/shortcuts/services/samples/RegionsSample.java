@@ -19,13 +19,16 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.io.File;
+import java.util.List;
 
-import com.microsoft.azure.shortcuts.common.implementation.Utils;
+import org.apache.commons.lang.StringUtils;
+
+import com.microsoft.azure.shortcuts.services.Region;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
+import com.microsoft.windowsazure.management.models.LocationAvailableServiceNames;
 
-// Tests VM sizes
-public class Certificates {
+// Tests Regions
+public class RegionsSample {
 	public static void main(String[] args) {
 		String publishSettingsPath = "my.publishsettings";
 		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
@@ -40,13 +43,31 @@ public class Certificates {
 		}
 	}
 
+	
 	public static void test(Azure azure) throws Exception {
-		File pfxFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.pfx");
-		File jdkFilePath = new File(System.getenv("JAVA_HOME"));
-		File cerFile = new File(new File(System.getProperty("user.home"), "Desktop"), "test.cer");
-		String password = "Abcd.1234", alias = "test";
+		// List regions supporting VM
+		List<String> regionNames = azure.regions().names(LocationAvailableServiceNames.PERSISTENTVMROLE);
+		System.out.println("Available regions supporting VMs: " + StringUtils.join(regionNames, ", "));
 		
-		Utils.createCertPkcs12(pfxFile, jdkFilePath, alias, password, alias, 3650);
-		Utils.createCertPublicFromPkcs12(pfxFile, cerFile, jdkFilePath, alias, password);
+		// Get info about a specific region
+		Region region = azure.regions().get("West US");
+		printRegion(region);
 	}
+	
+	
+	private static void printRegion(Region region) throws Exception {
+		System.out.println(String.format("Region: %s\n"
+				+ "\tDisplay name: %s\n"
+				+ "\tAvailable VM sizes: %s\n"
+				+ "\tAvailable web/worker role sizes: %s\n"
+				+ "\tAvailable services: %s\n"
+				+ "\tAvailable storage account types: %s\n",
+				region.name(),
+				region.displayName(),
+				StringUtils.join(region.availableVirtualMachineSizes(), ", "),
+				StringUtils.join(region.availableWebWorkerRoleSizes(), ", "),
+				StringUtils.join(region.availableServices(), ", "),
+				StringUtils.join(region.availableStorageAccountTypes(), ", ")
+				));
+		}
 }

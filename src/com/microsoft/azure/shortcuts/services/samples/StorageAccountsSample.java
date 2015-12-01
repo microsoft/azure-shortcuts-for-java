@@ -27,7 +27,7 @@ import com.microsoft.azure.shortcuts.services.StorageAccount;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
 
 //Tests Storage Accounts
-public class StorageAccounts {
+public class StorageAccountsSample {
 	public static void main(String[] args) {
 		String publishSettingsPath = "my.publishsettings";
 		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";

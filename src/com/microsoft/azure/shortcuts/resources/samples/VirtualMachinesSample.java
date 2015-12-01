@@ -27,7 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 // Tests resources
-public class VirtualMachines {
+public class VirtualMachinesSample {
     public static void main(String[] args) {
         try {
             Azure azure = Azure.authenticate("my.azureauth", null);

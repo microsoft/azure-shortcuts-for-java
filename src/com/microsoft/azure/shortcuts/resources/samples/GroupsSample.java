@@ -29,7 +29,7 @@ import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 // Tests resources
-public class Groups {
+public class GroupsSample {
     public static void main(String[] args) {
         try {
             Azure azure = Azure.authenticate("my.azureauth", null);

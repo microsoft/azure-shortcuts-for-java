@@ -29,7 +29,7 @@ import com.microsoft.azure.shortcuts.resources.Network.Subnet;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 // Tests resources
-public class Networks {
+public class NetworksSample {
     public static void main(String[] args) {
         try {
             Azure azure = Azure.authenticate("my.azureauth", null);

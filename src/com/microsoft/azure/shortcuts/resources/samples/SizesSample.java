@@ -21,15 +21,15 @@
 package com.microsoft.azure.shortcuts.resources.samples;
 
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.microsoft.azure.shortcuts.resources.Provider;
-import com.microsoft.azure.shortcuts.resources.Provider.ResourceType;
+import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
-// Tests resources
-public class Providers {
+// Tests sizes
+public class SizesSample {
     public static void main(String[] args) {
         try {
             Azure azure = Azure.authenticate("my.azureauth", null);
@@ -40,37 +40,26 @@ public class Providers {
     }
 
     public static void test(Azure azure) throws Exception {
-    	// List provider namespaces
-    	Map<String, Provider> providers = azure.providers().list();
-    	System.out.println(String.format("Provider namespaces: %s\t", StringUtils.join(providers.keySet(), "\n\t")));
+		// List size names in a specific region
+    	Set<String> sizeNames = azure.sizes().list("westus").keySet();
+    	System.out.println("VM sizes: \n\t" + StringUtils.join(sizeNames, ",\n\t"));
     	
-    	// List providers
-    	for(Provider provider : providers.values()) {
-    		System.out.println(provider.name() + " - " + provider.registrationState());
-    	}
-    	
-    	if(providers.size() > 0) {
-    		// Get information about a specific provider
-    		Provider provider = azure.providers().get("microsoft.classicstorage");
-    		
-    		System.out.println(String.format("Found provider: %s\n" 
-    				+ "\tRegistration State: %s\n"
-    				+ "\tAPI versions for resource types:",
-    				provider.name(),
-    				provider.registrationState()));
-    		
-    		for(ResourceType t : provider.resourceTypes().values()) {
-    			System.out.println(String.format("\t\t%s: %s", t.name(), StringUtils.join(t.apiVersions(), ", ")));
-    		}
-    		
-    		// Get latest API version for a specific resource type
-    		String resourceType = "storageAccounts";
-    		System.out.println(String.format("\n\t\tLatest version for type %s: %s", resourceType, 
-    			provider.resourceTypes().get(resourceType).latestApiVersion()));
-
-    		// Get latest API version for a specific resource type - shortcut
-    		System.out.println(String.format("\n\t\tLatest version for type %s: %s", resourceType, 
-        		provider.resourceTypes(resourceType).latestApiVersion()));
+    	// List sizes in a specific region
+    	Map<String, Size> sizes = azure.sizes().list("westus");
+    	for(Size size : sizes.values()) {
+        	System.out.println(String.format("VM size: %s\n"
+        		+ "\tMax data disk count: %d\n"
+        		+ "\tMemory in MB: %d\n"
+        		+ "\tNumber of cores: %d\n"
+        		+ "\tOS disk size in MB: %d\n"
+        		+ "\tResource disk size in MB: %d\n",
+        		size.name(),
+        		size.maxDataDiskCount(),
+        		size.memoryInMB(),
+        		size.numberOfCores(),
+        		size.osDiskSizeInMB(),
+        		size.resourceDiskSizeInMB()
+        		));
     	}
     }
 }

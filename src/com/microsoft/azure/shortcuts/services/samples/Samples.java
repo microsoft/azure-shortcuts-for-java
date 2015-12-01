@@ -31,28 +31,28 @@ public class Samples {
 			final Azure azure = Azure.authenticate(publishSettingsPath, subscriptionId);
 
 			// List the sizes
-			Sizes.test(azure);
+			SizesSample.test(azure);
 
 			// List the regions
-			Regions.test(azure);
+			RegionsSample.test(azure);
 
 			// Test OS images
-			OSImages.test(azure);
+			OSImagesSample.test(azure);
 			
 			// Test virtual machines
-			VirtualMachines.test(azure);
+			VirtualMachinesSample.test(azure);
 			
 			// Test virtual networks
-			Networks.test(azure);
+			NetworksSample.test(azure);
 			
 			// Test cloud services
-			CloudServices.test(azure);
+			CloudServicesSample.test(azure);
 
 			// Test Azure storage
-			StorageAccounts.test(azure);
+			StorageAccountsSample.test(azure);
 			
 			// Test cert creation
-			Certificates.test(azure);
+			CertificatesSample.test(azure);
 			
 		} catch (Exception e) {
 			System.err.println(e.getMessage());

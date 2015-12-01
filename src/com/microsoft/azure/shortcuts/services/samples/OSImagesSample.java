@@ -28,7 +28,7 @@ import com.microsoft.azure.shortcuts.services.OSImage;
 import com.microsoft.azure.shortcuts.services.implementation.Azure;
 
 //Tests OS images
-public class OSImages {
+public class OSImagesSample {
 	public static void main(String[] args) {
 		String publishSettingsPath = "my.publishsettings";
 		String subscriptionId = "9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef";
