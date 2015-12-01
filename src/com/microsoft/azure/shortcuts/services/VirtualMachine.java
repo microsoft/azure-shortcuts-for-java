@@ -69,8 +69,8 @@ public interface VirtualMachine extends
 	public interface DefinitionBlank {
 		DefinitionWithSize withRegion(String region);
 		DefinitionWithSize withRegion(Region region);
-		DefinitionWithSize withNetwork(String network);
-		DefinitionWithSize withNetwork(Network network);
+		DefinitionWithSize withExistingNetwork(String network);
+		DefinitionWithSize withExistingNetwork(Network network);
 		DefinitionWithSize withExistingCloudService(String serviceName);
 		DefinitionWithSize withExistingCloudService(CloudService cloudService);
 		DefinitionWithSize withExistingCloudService(HostedService hostedService);
