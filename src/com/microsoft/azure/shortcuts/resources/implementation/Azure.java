@@ -33,6 +33,7 @@ import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Providers;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.azure.shortcuts.resources.Sizes;
+import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.ManagementConfiguration;
@@ -65,6 +66,7 @@ public class Azure {
     private final ProvidersImpl providers;
     private final SizesImpl sizes;
     private final NetworksImpl networks;
+    private final VirtualMachinesImpl virtualMachines;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -92,6 +94,7 @@ public class Azure {
         this.providers = new ProvidersImpl(this);
         this.sizes = new SizesImpl(this);
         this.networks = new NetworksImpl(this);
+        this.virtualMachines = new VirtualMachinesImpl(this);
     }
     
     
@@ -129,6 +132,10 @@ public class Azure {
 
     public Networks networks() {
     	return this.networks;
+    }
+    
+    public VirtualMachines virtualMachines() {
+    	return this.virtualMachines;
     }
 
     

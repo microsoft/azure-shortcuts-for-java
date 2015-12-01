@@ -144,14 +144,11 @@ azure.virtualMachines().define("mywinvm")
 #### Listing VMs in a subscription
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+*ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
 List<String> vmNames = azure.virtualMachines().names();
 ```
-
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
-
 
 #### Reading information about a VM
 
