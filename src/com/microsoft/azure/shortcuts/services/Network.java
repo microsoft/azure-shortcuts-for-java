@@ -52,13 +52,13 @@ public interface Network extends
 	 * A new blank network definition
 	 */
 	public interface DefinitionBlank extends 
-		WithRegion<DefinitionWithCidr> {
+		DefinitionWithRegion<DefinitionWithCidr> {
 	}
 	
 	/**
 	 * A virtual network definition requiring a region to be specified
 	 */
-	public interface WithRegion<T> {
+	public interface DefinitionWithRegion<T> {
 		T withRegion(String region);
 		T withRegion(Region region);		
 	}
@@ -66,7 +66,7 @@ public interface Network extends
 	/**
 	 * A virtual network definition requiring a new subnet to be specified
 	 */
-	public interface WithSubnet<T> {
+	public interface DefinitionWithSubnet<T> {
 		T withSubnet(String name, String cidr);		
 	}
 	
@@ -74,7 +74,7 @@ public interface Network extends
 	 * A new network definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
 	public interface DefinitionProvisionable extends 
-		WithSubnet<DefinitionProvisionable>,
+		DefinitionWithSubnet<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 	}
 	
