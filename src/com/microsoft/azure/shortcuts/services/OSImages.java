@@ -22,7 +22,7 @@ package com.microsoft.azure.shortcuts.services;
 import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.common.SupportsReading;
 
-public interface OsImages extends
+public interface OSImages extends
 	SupportsListingEntities<OSImage>,
 	SupportsReading<OSImage>  {
 }

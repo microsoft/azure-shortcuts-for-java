@@ -24,7 +24,7 @@ import java.io.IOException;
 
 import com.microsoft.azure.shortcuts.services.CloudServices;
 import com.microsoft.azure.shortcuts.services.Networks;
-import com.microsoft.azure.shortcuts.services.OsImages;
+import com.microsoft.azure.shortcuts.services.OSImages;
 import com.microsoft.azure.shortcuts.services.Regions;
 import com.microsoft.azure.shortcuts.services.Sizes;
 import com.microsoft.azure.shortcuts.services.StorageAccounts;
@@ -94,7 +94,7 @@ public class Azure {
 	/**
 	 * @return The interface exposing functionality related to OS images
 	 */
-	public OsImages osImages() {
+	public OSImages osImages() {
 		return this.osImages;
 	}
 	

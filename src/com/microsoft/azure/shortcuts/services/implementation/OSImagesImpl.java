@@ -32,14 +32,14 @@ import java.util.TreeMap;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.OSImage;
-import com.microsoft.azure.shortcuts.services.OsImages;
+import com.microsoft.azure.shortcuts.services.OSImages;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageListResponse.VirtualMachineOSImage;
 
 // Class encapsulating the API related to OS images
 public class OSImagesImpl 
 	extends EntitiesImpl<Azure>
-	implements OsImages {
+	implements OSImages {
 	
 	OSImagesImpl(Azure azure) {
 		super(azure);
