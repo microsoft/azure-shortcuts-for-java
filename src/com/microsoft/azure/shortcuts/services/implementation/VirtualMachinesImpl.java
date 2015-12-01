@@ -44,6 +44,7 @@ import com.microsoft.windowsazure.management.compute.models.ConfigurationSetType
 import com.microsoft.windowsazure.management.compute.models.DeploymentGetResponse;
 import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
 import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
+import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
 import com.microsoft.windowsazure.management.compute.models.InputEndpoint;
 import com.microsoft.windowsazure.management.compute.models.OSVirtualHardDisk;
 import com.microsoft.windowsazure.management.compute.models.Role;
@@ -243,6 +244,8 @@ public class VirtualMachinesImpl
 				
 		private String affinityGroup, region, linuxImage, windowsImage, storageAccountName, subnet;
 		boolean isExistingCloudService;
+		CloudService.DefinitionProvisionable cloudServiceDefinition;
+		
 		final ArrayList<Integer> tcpPorts = new ArrayList<Integer>();
 		final HashMap<Integer, Integer> privatePorts = new HashMap<Integer, Integer>();
 		final HashMap<Integer, String> endpointNames = new HashMap<Integer, String>();
@@ -555,8 +558,25 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
+		public DefinitionWithSize withExistingCloudService(CloudService cloudService) {
+			return this.withExistingCloudService(cloudService.name());
+		}
+
+		@Override
+		public DefinitionWithSize withExistingCloudService(HostedService hostedService) {
+			return this.withExistingCloudService(hostedService.getServiceName());
+		}
+
+		@Override
 		public VirtualMachineImpl withNewCloudService(String name) {
 			this.setName(VirtualMachineId.withServiceName(name.toLowerCase(), this.name()));			
+			this.isExistingCloudService = false;
+			return this;
+		}
+
+		@Override
+		public DefinitionProvisionable withNewCloudService(CloudService.DefinitionProvisionable cloudServiceDefinition) {
+			this.cloudServiceDefinition = cloudServiceDefinition;
 			this.isExistingCloudService = false;
 			return this;
 		}
@@ -568,11 +588,23 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withStorageAccount(String name) {
+		public VirtualMachineImpl withExistingStorageAccount(String name) {
 			this.storageAccountName = name.toLowerCase();
 			return this;
 		}
-		
+
+		@Override
+		public VirtualMachineImpl withExistingStorageAccount(StorageAccount account) {
+			return this.withExistingStorageAccount(account.name());
+		}
+
+		@Override
+		public DefinitionProvisionable withExistingStorageAccount(
+				com.microsoft.windowsazure.management.storage.models.StorageAccount account) {
+			this.storageAccountName = account.getName();
+			return this;
+		}
+
 		private VirtualMachineImpl withRoleName(String name) {
 			this.setName(VirtualMachineId.withRoleName(name.toLowerCase(), this.name()));			
 			return this;
@@ -666,14 +698,29 @@ public class VirtualMachinesImpl
 			osDisk.setSourceImageName(image);
 
 			// Determine if to create a new cloud service deployment or add to existing
-			if(!this.isExistingCloudService) {
+			if(this.isExistingCloudService) {
+				// Get existing deployment from production
+				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudService(), DeploymentSlot.Production).getName();
+				
+				// Deploy into existing cloud service
+				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
+				vmCreateParams.setRoleName(this.roleName());
+				vmCreateParams.setRoleSize(this.size());
+				vmCreateParams.setConfigurationSets(this.azureRole.getConfigurationSets());
+				vmCreateParams.setOSVirtualHardDisk(osDisk);
+				vmCreateParams.setProvisionGuestAgent(this.hasGuestAgent());	
+				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudService(), deploymentName, vmCreateParams);
+			
+			} else {
 				// Create a new cloud service using the same name as the VM
-				CloudService.DefinitionBlank serviceDefinition = azure.cloudServices().define(this.cloudService());
-				CloudService.DefinitionProvisionable serviceProvisionable = 
-						(this.affinityGroup != null) 
-						? serviceDefinition.withAffinityGroup(this.affinityGroup) 
-						: serviceDefinition.withRegion(this.region);
-				serviceProvisionable.provision();
+				if(this.cloudServiceDefinition == null) {
+					CloudService.DefinitionBlank cloudServiceBlank = azure.cloudServices().define(this.cloudService());
+					this.cloudServiceDefinition = (this.affinityGroup != null) 
+						? cloudServiceBlank.withAffinityGroup(this.affinityGroup) 
+						: cloudServiceBlank.withRegion(this.region);
+				}
+				
+				this.cloudServiceDefinition.provision();
 				
 				// Prepare role definition
 				this.azureRole.setOSVirtualHardDisk(osDisk);
@@ -690,20 +737,7 @@ public class VirtualMachinesImpl
 				vmCreateParams.setName(this.deployment());
 				vmCreateParams.setVirtualNetworkName(this.network());
 
-				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);
-				
-			} else {
-				// Get existing deployment from production
-				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudService(), DeploymentSlot.Production).getName();
-				
-				// Deploy into existing cloud service
-				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
-				vmCreateParams.setRoleName(this.roleName());
-				vmCreateParams.setRoleSize(this.size());
-				vmCreateParams.setConfigurationSets(this.azureRole.getConfigurationSets());
-				vmCreateParams.setOSVirtualHardDisk(osDisk);
-				vmCreateParams.setProvisionGuestAgent(this.hasGuestAgent());	
-				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudService(), deploymentName, vmCreateParams);
+				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);				
 			}
 			
 			return this;

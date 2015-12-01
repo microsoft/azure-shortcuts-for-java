@@ -30,6 +30,7 @@ import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.windowsazure.management.compute.models.DeploymentSlot;
 import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
+import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
 
 public interface VirtualMachine extends 
 	Named,
@@ -70,7 +71,9 @@ public interface VirtualMachine extends
 		DefinitionWithSize withRegion(Region region);
 		DefinitionWithSize withNetwork(String network);
 		DefinitionWithSize withNetwork(Network network);
-		DefinitionWithSize withExistingCloudService(String service);
+		DefinitionWithSize withExistingCloudService(String serviceName);
+		DefinitionWithSize withExistingCloudService(CloudService cloudService);
+		DefinitionWithSize withExistingCloudService(HostedService hostedService);
 	}
 
 	
@@ -84,8 +87,11 @@ public interface VirtualMachine extends
 		DefinitionProvisionable withGuestAgent(boolean enabled);
 		DefinitionProvisionable withDeployment(String name);
 		DefinitionProvisionable withDeploymentLabel(String name);
-		DefinitionProvisionable withStorageAccount(String name);
+		DefinitionProvisionable withExistingStorageAccount(String name);
+		DefinitionProvisionable withExistingStorageAccount(StorageAccount account);
+		DefinitionProvisionable withExistingStorageAccount(com.microsoft.windowsazure.management.storage.models.StorageAccount account);
 		DefinitionProvisionable withNewCloudService(String name);
+		DefinitionProvisionable withNewCloudService(CloudService.DefinitionProvisionable cloudServiceDefinition);
 		DefinitionProvisionable withSubnet(String subnet);
 	}
 	
