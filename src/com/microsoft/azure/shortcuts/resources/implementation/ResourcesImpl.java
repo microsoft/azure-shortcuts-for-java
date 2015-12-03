@@ -193,7 +193,7 @@ public class ResourcesImpl
 		}
 
 		@Override
-		public String region() throws Exception {
+		public String region() {
 			return this.inner().getLocation();
 		}
 
@@ -208,13 +208,13 @@ public class ResourcesImpl
 		}
 
 		@Override
-		public String type() throws Exception {
+		public String type() {
 			return RESOURCE_ID.TYPE.from(this.inner().getId());
 		}
 
 		@Override
-		public Map<String, String> tags() throws Exception {
-			return this.inner().getTags();
+		public Map<String, String> tags() {
+			return Collections.unmodifiableMap(this.inner().getTags());
 		}
 
 		@Override
@@ -250,6 +250,12 @@ public class ResourcesImpl
 		private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
 			this.innerObject = azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
 			return this;
+		}
+
+
+		@Override
+		public String id() {
+			return this.inner().getId();
 		}
 	}
 }

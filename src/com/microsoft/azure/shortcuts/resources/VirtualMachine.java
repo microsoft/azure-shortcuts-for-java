@@ -27,17 +27,16 @@ import com.microsoft.azure.management.compute.models.DataDisk;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.shortcuts.common.Named;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
 
 public interface VirtualMachine extends 
-	Named,
+	ResourceBaseExtended,
 	Refreshable<VirtualMachine>,
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine> {
 	
 	String size();
-
 	URI bootDiagnosticsStorage();
 	boolean isBootDiagnosticsEnabled();
 	URI availabilitySet();
@@ -46,7 +45,6 @@ public interface VirtualMachine extends
 	Integer platformUpdateDomain();
 	String remoteDesktopThumbprint();
 	String vmAgentVersion();
-	String region();
 	ArrayList<NetworkInterfaceReference> networkInterfaces();
 	String adminUserName();
 	String computerName();

@@ -129,6 +129,28 @@ public class NetworksImpl
 			return Collections.unmodifiableMap(wrappers);
 		}
 		
+		@Override
+		public String id() {
+			return this.inner().getId();
+		}
+
+
+		@Override
+		public String type() {
+			return this.inner().getType();
+		}
+
+
+		@Override
+		public String region() {
+			return this.inner().getLocation();
+		}
+
+
+		@Override
+		public Map<String, String> tags() {
+			return Collections.unmodifiableMap(this.inner().getTags());
+		}
 
 		/**************************************************************
 		 * Setters (fluent interface)

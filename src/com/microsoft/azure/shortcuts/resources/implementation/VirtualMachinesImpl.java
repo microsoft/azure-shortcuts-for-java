@@ -219,5 +219,20 @@ public class VirtualMachinesImpl
 			
 			return Collections.unmodifiableList(p.getDataDisks());
 		}
+
+		@Override
+		public String id() {
+			return this.innerObject.getId();
+		}
+
+		@Override
+		public String type() {
+			return this.innerObject.getType();
+		}
+
+		@Override
+		public Map<String, String> tags() {
+			return Collections.unmodifiableMap(this.innerObject.getTags());
+		}
 	}
 }

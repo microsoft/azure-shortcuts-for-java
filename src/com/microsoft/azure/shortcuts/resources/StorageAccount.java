@@ -23,15 +23,15 @@ package com.microsoft.azure.shortcuts.resources;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Named;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
 import com.microsoft.azure.shortcuts.resources.common.Taggable;
 
 public interface StorageAccount extends 
-	Named,
+	ResourceBaseExtended,
 	Refreshable<StorageAccount>,
 	Wrapper<com.microsoft.azure.management.storage.models.StorageAccount> {
 	

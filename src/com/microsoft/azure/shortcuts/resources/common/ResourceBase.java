@@ -17,23 +17,11 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources;
+package com.microsoft.azure.shortcuts.resources.common;
 
-import com.microsoft.azure.management.resources.models.GenericResourceExtended;
-import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Refreshable;
-import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
+import java.util.Map;
 
-public interface Resource extends 
-	ResourceBaseExtended,
-	Refreshable<Resource>,
-	Wrapper<GenericResourceExtended>,
-	Deletable {
-	
-    String group() throws Exception;
-    String shortName() throws Exception;
-    String provider() throws Exception;
-    String properties() throws Exception;
-    String provisioningState() throws Exception;
+public interface ResourceBase {
+	public String region();
+	public Map<String, String> tags();
 }

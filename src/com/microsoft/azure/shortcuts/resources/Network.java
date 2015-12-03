@@ -27,9 +27,10 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.Named;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
 
 public interface Network extends 
-	Named,
+	ResourceBaseExtended,
 	Refreshable<Network>,
 	Wrapper<VirtualNetwork> {
 	String provisioningState();
