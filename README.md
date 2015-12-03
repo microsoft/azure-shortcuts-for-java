@@ -82,7 +82,7 @@ Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 
 ### Getting access to the inner objects
 
-Many shortcut objects are wrappers of more complex Azure SDK objects. Since they might not expose all of the settings available on the Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the '.inner()' call.
+Many shortcut objects are wrappers of more complex Azure SDK objects. Since they might not expose all of the settings available on the Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the `.inner()` call.
 
 ### Virtual Machines
 
@@ -182,7 +182,7 @@ System.out.println(String.format("Reading information about vm: %s\n"
 	+ "\tStatus: %s\n"
 	+ "\tNetwork %s\n"
 	+ "\tAffinity group %s\n",
-	vm.name(),
+	vm.id(),
 	vm.deployment(),
 	vm.cloudService(),
 	vm.size(),
@@ -418,7 +418,7 @@ System.out.println(String.format("Found cloud service: %s\n"
 	+ "\tModified: %s\n"
 	+ "\tAffinity group: %s\n"
 	+ "\tReverse DNS FQDN: %s\n",
-	cloudService.name(),
+	cloudService.id(),
 	cloudService.label(),
 	cloudService.description(),
 	cloudService.region(),
@@ -513,7 +513,7 @@ System.out.println(String.format("Found storage account: %s\n"
 	+ "\tEndpoints: %s\n"
 	+ "\tType: %s\n",
 
-	storageAccount.name(),
+	storageAccount.id(),
 	storageAccount.affinityGroup(),
 	storageAccount.label(),
 	storageAccount.description(),
@@ -688,7 +688,7 @@ System.out.println(String.format("Found resource ID: %s\n"
 	+ "\tType: %s\n"
 	+ "\tProvisioning state %s\n",
 			
-	resource.name(),
+	resource.id(),
 	resource.group(),
 	resource.provider(),
 	resource.region(),
@@ -747,7 +747,7 @@ Provider provider = azure.providers("microsoft.classicstorage");
 System.out.println(String.format("Found provider: %s\n" 
     + "\tRegistration State: %s\n"
     + "\tAPI versions for resource types:",
-    provider.name(),
+    provider.id(),
     provider.registrationState()));
 ```
 
