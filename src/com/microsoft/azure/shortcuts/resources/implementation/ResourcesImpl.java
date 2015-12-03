@@ -217,15 +217,15 @@ public class ResourcesImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.resources().delete(this.name);
+			azure.resources().delete(this.id);
 		}
 		
 
 		@Override
 		public ResourceImpl refresh() throws Exception {
 			return refresh(
-				RESOURCE_ID.GROUP.from(this.name),
-				createResourceIdentity(this.name));
+				RESOURCE_ID.GROUP.from(this.id),
+				createResourceIdentity(this.id));
 		}
 		
 		

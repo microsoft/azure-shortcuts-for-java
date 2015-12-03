@@ -28,7 +28,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineSize;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableImpl;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.Sizes;
 import com.microsoft.windowsazure.exception.ServiceException;
@@ -74,7 +74,7 @@ public class SizesImpl
 	
 	// Implementation of a Size
 	private class SizeImpl
-		extends NamedImpl
+		extends IndexableImpl
 		implements Size {
 
 		final VirtualMachineSize azureSize;

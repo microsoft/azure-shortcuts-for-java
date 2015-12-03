@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
@@ -33,7 +33,7 @@ import com.microsoft.windowsazure.management.compute.models.DeploymentStatus;
 import com.microsoft.windowsazure.management.compute.models.HostedServiceListResponse.HostedService;
 
 public interface VirtualMachine extends 
-	Named,
+	Indexable,
 	Refreshable<VirtualMachine> {
 	
 	String size() throws Exception;

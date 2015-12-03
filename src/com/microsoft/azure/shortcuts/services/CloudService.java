@@ -22,7 +22,7 @@ package com.microsoft.azure.shortcuts.services;
 import java.util.Calendar;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
@@ -31,7 +31,7 @@ import com.microsoft.windowsazure.management.compute.models.HostedServiceListRes
 
 // Encapsulates the readable properties of a cloud service
 public interface CloudService extends 
-	Named,
+	Indexable,
 	Refreshable<CloudService>,
 	Wrapper<HostedService> {
 	

@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.CloudService;
 import com.microsoft.azure.shortcuts.services.CloudServices;
 import com.microsoft.azure.shortcuts.services.Region;
@@ -103,7 +103,7 @@ public class CloudServicesImpl
 	 ************************************************************/
 	private class CloudServiceImpl 
 		extends 
-			NamedRefreshableWrapperImpl<CloudService, HostedService>
+			IndexableRefreshableWrapperImpl<CloudService, HostedService>
 		implements 
 			CloudService.DefinitionBlank, 
 			CloudService.DefinitionProvisionable,
@@ -204,7 +204,7 @@ public class CloudServicesImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.cloudServices().delete(this.name);
+			azure.cloudServices().delete(this.id);
 		}
 		
 		
@@ -229,7 +229,7 @@ public class CloudServicesImpl
 			params.setDescription(this.description());
 			params.setLabel(this.label());
 			params.setReverseDnsFqdn(this.reverseDnsFqdn());
-			azure.computeManagementClient().getHostedServicesOperations().update(this.name, params);
+			azure.computeManagementClient().getHostedServicesOperations().update(this.id, params);
 			return this;
 		}
 

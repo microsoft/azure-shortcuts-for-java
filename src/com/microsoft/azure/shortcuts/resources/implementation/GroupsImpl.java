@@ -28,7 +28,7 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Groups;
 
@@ -106,7 +106,7 @@ public class GroupsImpl
 	 ***************************************************************/
 	private class GroupImpl 
 		extends 
-			NamedRefreshableWrapperImpl<Group, ResourceGroupExtended>
+			IndexableRefreshableWrapperImpl<Group, ResourceGroupExtended>
 		implements
 			Group.Update,
 			Group.DefinitionProvisionable,
@@ -189,20 +189,20 @@ public class GroupsImpl
 			// Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
 			if(this.inner().getLocation() != null) {
 				params.setLocation(this.inner().getLocation());
-			} else if(null == (group = azure.groups().get(this.name))) {
+			} else if(null == (group = azure.groups().get(this.id))) {
 				throw new Exception("Resource group not found");
 			} else {
 				params.setLocation(group.region());
 			}
 
-			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.name, params);
+			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
 			return this;
 		}
 
 		
 		@Override
 		public void delete() throws Exception {
-			azure.groups().delete(this.name);
+			azure.groups().delete(this.id);
 		}
 
 		
@@ -211,14 +211,14 @@ public class GroupsImpl
 			ResourceGroup params = new ResourceGroup();
 			params.setLocation(this.inner().getLocation());
 			params.setTags(this.inner().getTags());
-			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.name, params);
+			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
 			return this;
 		}
 
 		
 		@Override
 		public GroupImpl refresh() throws Exception {
-			this.setInner(azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup());
+			this.setInner(azure.resourceManagementClient().getResourceGroupsOperations().get(this.id).getResourceGroup());
 			return this;
 		}
 	}

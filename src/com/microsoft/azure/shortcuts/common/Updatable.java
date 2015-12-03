@@ -19,6 +19,6 @@
 */
 package com.microsoft.azure.shortcuts.common;
 
-public interface Updatable<T> extends Named, Deletable {
+public interface Updatable<T> extends Indexable, Deletable {
 	T apply() throws Exception;
 }

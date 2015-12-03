@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.Region;
 import com.microsoft.azure.shortcuts.services.Regions;
 import com.microsoft.windowsazure.management.models.LocationsListResponse.Location;
@@ -82,7 +82,7 @@ public class RegionsImpl
 	 ***************************************************/
 	
 	private class RegionImpl
-		extends NamedRefreshableWrapperImpl<Region, Location>
+		extends IndexableRefreshableWrapperImpl<Region, Location>
 		implements Region {
 		
 		private RegionImpl(Location azureLocation) {

@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.OSImage;
 import com.microsoft.azure.shortcuts.services.OSImages;
 import com.microsoft.windowsazure.management.compute.models.VirtualMachineOSImageGetResponse;
@@ -91,7 +91,7 @@ public class OSImagesImpl
 	
 	// Encapsulated information about an image
 	private class OSImageImpl 
-		extends NamedRefreshableWrapperImpl<OSImage, VirtualMachineOSImage> 
+		extends IndexableRefreshableWrapperImpl<OSImage, VirtualMachineOSImage> 
 		implements OSImage {
 		
 		private OSImageImpl(VirtualMachineOSImage osImage) {

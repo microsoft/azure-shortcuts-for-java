@@ -28,7 +28,7 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
 
@@ -152,7 +152,7 @@ public class NetworksImpl
 		 * Implements Subnet wrapper
 		 *****************************************************/
 		private class SubnetImpl
-			extends NamedWrapperImpl<com.microsoft.azure.management.network.models.Subnet>
+			extends IndexableWrapperImpl<com.microsoft.azure.management.network.models.Subnet>
 			implements Subnet {
 
 			protected SubnetImpl(String name, com.microsoft.azure.management.network.models.Subnet innerObject) {

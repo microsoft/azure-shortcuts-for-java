@@ -22,12 +22,12 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import java.util.Collections;
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
 
 
 public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
-	extends NamedRefreshableWrapperImpl<T, I>
+	extends IndexableRefreshableWrapperImpl<T, I>
 	implements ResourceBaseExtended {
 
 	protected ResourceBaseExtendedImpl(String name, I innerObject) {

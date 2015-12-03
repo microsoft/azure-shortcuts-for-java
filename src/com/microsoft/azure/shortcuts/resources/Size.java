@@ -19,10 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 
 public interface Size extends 
-	Named {
+	Indexable {
 	
 	int maxDataDiskCount();
 	int memoryInMB();

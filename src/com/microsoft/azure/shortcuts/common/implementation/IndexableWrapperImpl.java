@@ -17,9 +17,16 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.common;
+package com.microsoft.azure.shortcuts.common.implementation;
 
-// Encapsulates the name accessor
-public interface Named {
-	String name();
+public abstract class IndexableWrapperImpl<I> extends IndexableImpl {
+	protected I innerObject; 
+	protected IndexableWrapperImpl(String name, I innerObject) {
+		super(name);
+		this.innerObject = innerObject;
+	}
+	
+	public I inner() {
+		return this.innerObject;
+	}
 }

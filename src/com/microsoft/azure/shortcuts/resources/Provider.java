@@ -22,12 +22,12 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 
 public interface Provider extends 
-	Named,
+	Indexable,
 	Refreshable<Provider>,
 	Wrapper<com.microsoft.azure.management.resources.models.Provider> {
 	
@@ -35,7 +35,7 @@ public interface Provider extends
 	Map<String, ResourceType> resourceTypes() throws Exception;
 	ResourceType resourceTypes(String name) throws Exception;
 	
-	public interface ResourceType extends Named {
+	public interface ResourceType extends Indexable {
 		List<String> apiVersions();
 		String latestApiVersion();
 	}

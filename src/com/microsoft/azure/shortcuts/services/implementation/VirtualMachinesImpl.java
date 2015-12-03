@@ -32,7 +32,7 @@ import java.util.Set;
 import org.apache.commons.lang3.NotImplementedException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableImpl;
 import com.microsoft.azure.shortcuts.services.CloudService;
 import com.microsoft.azure.shortcuts.services.Network;
 import com.microsoft.azure.shortcuts.services.Region;
@@ -227,7 +227,7 @@ public class VirtualMachinesImpl
 
 	// Implements virtual machine logic
 	private class VirtualMachineImpl 
-		extends NamedRefreshableImpl<VirtualMachine>
+		extends IndexableRefreshableImpl<VirtualMachine>
 		implements 
 			VirtualMachine.DefinitionBlank, 
 			VirtualMachine.DefinitionLinuxProvisionable,
@@ -407,7 +407,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public String cloudService() throws Exception  {
-			return VirtualMachineId.serviceFromId(this.name);
+			return VirtualMachineId.serviceFromId(this.id);
 		}
 
 		//@Override //TODO: Currently broken in Azure SDK
@@ -624,7 +624,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public void delete() throws Exception {
-			azure.virtualMachines().delete(this.name);
+			azure.virtualMachines().delete(this.id);
 		}
 		
 
@@ -669,7 +669,7 @@ public class VirtualMachinesImpl
 					break;
 				}
 			}
-			vhdURL += "vhd/" + this.name + ".vhd";
+			vhdURL += "vhd/" + this.id + ".vhd";
 
 			// Prepare TCP endpoints
 			final ArrayList<InputEndpoint> endpoints = new ArrayList<InputEndpoint>();

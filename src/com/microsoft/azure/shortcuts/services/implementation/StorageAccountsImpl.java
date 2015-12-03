@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.services.Region;
 import com.microsoft.azure.shortcuts.services.StorageAccount;
 import com.microsoft.azure.shortcuts.services.StorageAccounts;
@@ -111,7 +111,7 @@ public class StorageAccountsImpl
 
 	// Nested class encapsulating the API related to creating new storage accounts
 	private class StorageAccountImpl 
-		extends NamedRefreshableWrapperImpl<StorageAccount, com.microsoft.windowsazure.management.storage.models.StorageAccount>
+		extends IndexableRefreshableWrapperImpl<StorageAccount, com.microsoft.windowsazure.management.storage.models.StorageAccount>
 		implements 
 			StorageAccount.DefinitionBlank, 
 			StorageAccount.DefinitionProvisionable,
@@ -254,7 +254,7 @@ public class StorageAccountsImpl
 		
 		@Override
 		public void delete() throws Exception {
-			azure.storageAccounts().delete(this.name);
+			azure.storageAccounts().delete(this.id);
 		}
 
 		

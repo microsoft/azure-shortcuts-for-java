@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
@@ -34,7 +34,7 @@ import com.microsoft.windowsazure.management.storage.models.StorageAccountStatus
 
 
 public interface StorageAccount extends 
-	Named,
+	Indexable,
 	Refreshable<StorageAccount>,
 	Wrapper<com.microsoft.windowsazure.management.storage.models.StorageAccount> {
 	

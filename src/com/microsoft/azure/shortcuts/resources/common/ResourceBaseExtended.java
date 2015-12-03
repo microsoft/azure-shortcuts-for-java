@@ -19,11 +19,11 @@
 */
 package com.microsoft.azure.shortcuts.resources.common;
 
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 
 public interface ResourceBaseExtended extends 
 	ResourceBase, 
-	Named {
+	Indexable {
 	
 	public String id();
 	public String type();

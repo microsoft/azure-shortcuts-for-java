@@ -19,23 +19,23 @@
 */
 package com.microsoft.azure.shortcuts.common.implementation;
 
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 
-// Base implementation for named entities
-public abstract class NamedImpl implements Named {
-	protected String name;
+// Base implementation for indexable entities
+public abstract class IndexableImpl implements Indexable {
+	protected String id;
 	
-	protected NamedImpl(String name) {
-		this.name = name;
+	protected IndexableImpl(String name) {
+		this.id = name;
 	}
 	
 	public void setName(String name) {
-		this.name = name;
+		this.id = name;
 	}
 	
 	@Override
 	public String name() {
-		return this.name;
+		return this.id;
 	}
 	
 	@Override

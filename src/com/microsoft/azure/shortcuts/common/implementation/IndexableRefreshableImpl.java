@@ -19,20 +19,15 @@
 */
 package com.microsoft.azure.shortcuts.common.implementation;
 
-public abstract class NamedRefreshableWrapperImpl<T, I> extends NamedRefreshableImpl<T> {
+import com.microsoft.azure.shortcuts.common.Refreshable;
 
-	private I innerObject; 
-	protected NamedRefreshableWrapperImpl(String name, I innerObject) {
+public abstract class IndexableRefreshableImpl<T> 
+	extends IndexableImpl
+	implements Refreshable<T> {
+
+	protected IndexableRefreshableImpl(String name) {
 		super(name);
-		this.innerObject = innerObject;
-	}
-	
-	public I inner() {
-		return this.innerObject;
-	}
-	
-	protected void setInner(I inner) {
-		this.innerObject = inner;
 	}
 
+	public abstract T refresh() throws Exception;
 }

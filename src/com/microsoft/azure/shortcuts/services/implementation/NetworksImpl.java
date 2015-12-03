@@ -27,8 +27,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.common.implementation.Utils;
 import com.microsoft.azure.shortcuts.services.Network;
 import com.microsoft.azure.shortcuts.services.Networks;
@@ -131,7 +131,7 @@ public class NetworksImpl
 	
 	// Encapsulates the required and optional parameters for a network
 	private class NetworkImpl 
-		extends NamedRefreshableWrapperImpl<Network, VirtualNetworkSite>
+		extends IndexableRefreshableWrapperImpl<Network, VirtualNetworkSite>
 		implements 
 			Network.DefinitionBlank, 
 			Network.DefinitionWithCidr, 
@@ -190,7 +190,7 @@ public class NetworksImpl
 		
 		// Implementation of Subnet
 		private class SubnetImpl 
-			extends NamedImpl
+			extends IndexableImpl
 			implements Network.Subnet {
 			
 			private com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet;
@@ -256,7 +256,7 @@ public class NetworksImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.networks().delete(this.name);
+			azure.networks().delete(this.id);
 		}
 
 

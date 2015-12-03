@@ -27,8 +27,8 @@ import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableImpl;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
 
@@ -71,7 +71,7 @@ public class ProvidersImpl
 	// Implements logic for individual provider
 	private class ProviderImpl
 		extends
-			NamedRefreshableWrapperImpl<Provider, com.microsoft.azure.management.resources.models.Provider>
+			IndexableRefreshableWrapperImpl<Provider, com.microsoft.azure.management.resources.models.Provider>
 		implements 
 			Provider {
 		
@@ -110,7 +110,7 @@ public class ProvidersImpl
 		
 		// Implementation of resource type
 		private class ResourceTypeImpl
-			extends NamedImpl
+			extends IndexableImpl
 			implements Provider.ResourceType {
 
 			final private ProviderResourceType azureResourceType;
@@ -148,7 +148,7 @@ public class ProvidersImpl
 		@Override
 		public ProviderImpl refresh() throws Exception {
 			com.microsoft.azure.management.resources.models.Provider azureProvider = 
-					azure.resourceManagementClient().getProvidersOperations().get(this.name).getProvider();
+					azure.resourceManagementClient().getProvidersOperations().get(this.id).getProvider();
 			this.setInner(azureProvider);
 			return this;
 		}

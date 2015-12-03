@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
@@ -32,7 +32,7 @@ import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.Taggable;
 
 public interface Group extends 
-	Named,
+	Indexable,
 	Refreshable<Group>,
 	Wrapper<ResourceGroupExtended> {
 	

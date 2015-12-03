@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
@@ -31,7 +31,7 @@ import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.windowsazure.management.network.models.NetworkListResponse.VirtualNetworkSite;
 
 public interface Network extends 
-	Named,
+	Indexable,
 	Refreshable<Network>,
 	Wrapper<VirtualNetworkSite> {
 	
@@ -43,7 +43,7 @@ public interface Network extends
 	String state() throws Exception;
 	String id() throws Exception;
 	
-	public interface Subnet extends Named {	
+	public interface Subnet extends Indexable {	
 		String addressPrefix();
 		String networkSecurityGroup();
 	}

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.shortcuts.common.Named;
+import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
@@ -38,7 +38,7 @@ public interface Network extends
 	List<String> dnsServers();
 	Map<String, Subnet> subnets();
 	
-	public interface Subnet extends Named, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
+	public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
 		String addressPrefix();
 		String networkSecurityGroup();
 	}

@@ -19,9 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.common.implementation;
 
-public abstract class NamedWrapperImpl<I> extends NamedImpl {
-	protected I innerObject; 
-	protected NamedWrapperImpl(String name, I innerObject) {
+public abstract class IndexableRefreshableWrapperImpl<T, I> extends IndexableRefreshableImpl<T> {
+
+	private I innerObject; 
+	protected IndexableRefreshableWrapperImpl(String name, I innerObject) {
 		super(name);
 		this.innerObject = innerObject;
 	}
@@ -29,4 +30,9 @@ public abstract class NamedWrapperImpl<I> extends NamedImpl {
 	public I inner() {
 		return this.innerObject;
 	}
+	
+	protected void setInner(I inner) {
+		this.innerObject = inner;
+	}
+
 }
