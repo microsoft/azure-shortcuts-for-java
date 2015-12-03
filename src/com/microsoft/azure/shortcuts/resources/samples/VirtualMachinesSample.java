@@ -57,8 +57,15 @@ public class VirtualMachinesSample {
     private static void printVM(VirtualMachine vm) {
 		StringBuilder info = new StringBuilder();
 		info
-			.append("Information about vm: ").append(vm.name()).append("\n");
-		
+			.append(String.format("Information about vm: %s\n", vm.name()))
+			.append(String.format("\tAdmin username: %s\n", vm.adminUserName()))
+			.append(String.format("\tAvailability set URI: %s\n", vm.availabilitySet()))
+			.append(String.format("\tBoot diagnostics storage URI: %s\n", vm.bootDiagnosticsStorage()))
+			.append(String.format("\tComputer name: %s\n", vm.computerName()))
+			.append(String.format("\tCustom data: %s\n", vm.customData()))
+			.append(String.format("\tNumber of data disks: %d\n", vm.dataDisks().size()))
+			.append(String.format("\tNumber of extensions: %d\n", vm.extensions().size()));
+			
 		System.out.println(info.toString());
     }
  }

@@ -19,6 +19,14 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.microsoft.azure.management.compute.models.DataDisk;
+import com.microsoft.azure.management.compute.models.ImageReference;
+import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.Named;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -27,4 +35,24 @@ public interface VirtualMachine extends
 	Named,
 	Refreshable<VirtualMachine>,
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine> {
+	
+	String size();
+
+	URI bootDiagnosticsStorage();
+	boolean isBootDiagnosticsEnabled();
+	URI availabilitySet();
+	ArrayList<VirtualMachineExtension> extensions();
+	Integer platformFaultDomain();
+	Integer platformUpdateDomain();
+	String remoteDesktopThumbprint();
+	String vmAgentVersion();
+	String region();
+	ArrayList<NetworkInterfaceReference> networkInterfaces();
+	String adminUserName();
+	String computerName();
+	String customData();
+	boolean isLinux();
+	boolean isWindows();
+	ImageReference image();
+	List<DataDisk> dataDisks();
 }

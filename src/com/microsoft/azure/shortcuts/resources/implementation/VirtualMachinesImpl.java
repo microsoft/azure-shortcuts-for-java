@@ -19,11 +19,23 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.compute.models.AvailabilitySetReference;
+import com.microsoft.azure.management.compute.models.BootDiagnostics;
+import com.microsoft.azure.management.compute.models.DataDisk;
+import com.microsoft.azure.management.compute.models.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.models.ImageReference;
+import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.models.OSProfile;
+import com.microsoft.azure.management.compute.models.StorageProfile;
+import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
@@ -82,6 +94,130 @@ public class VirtualMachinesImpl
 				ResourcesImpl.groupFromResourceId(this.name()),
 				ResourcesImpl.nameFromResourceId(this.name())).getVirtualMachine();
 			return this;
+		}
+
+		@Override
+		public String size() {
+			return this.innerObject.getHardwareProfile().getVirtualMachineSize();
+		}
+
+		@Override
+		public URI bootDiagnosticsStorage() {
+			DiagnosticsProfile p = this.innerObject.getDiagnosticsProfile();
+			if(p == null) {
+				return null;
+			}
+			
+			BootDiagnostics d = p.getBootDiagnostics();
+			if(d == null) {
+				return null;
+			}
+			
+			return d.getStorageUri();
+		}
+
+		@Override
+		public boolean isBootDiagnosticsEnabled() {
+			return this.innerObject.getDiagnosticsProfile().getBootDiagnostics().isEnabled();
+		}
+		
+		@Override
+		public URI availabilitySet()  {
+			try {
+				AvailabilitySetReference s = this.innerObject.getAvailabilitySetReference();
+				if(s == null) {
+					return null;
+				} else {
+					return new URI(s.getReferenceUri());
+				}
+			} catch (URISyntaxException e) {
+				return null;
+			}
+		}
+
+		@Override
+		public ArrayList<VirtualMachineExtension> extensions() {
+			return this.innerObject.getExtensions();
+		}
+
+		@Override
+		public Integer platformFaultDomain() {
+			return this.innerObject.getInstanceView().getPlatformFaultDomain();
+		}
+
+		@Override
+		public Integer platformUpdateDomain() {
+			return this.innerObject.getInstanceView().getPlatformUpdateDomain();
+		}
+
+		@Override
+		public String remoteDesktopThumbprint() {
+			return this.innerObject.getInstanceView().getRemoteDesktopThumbprint();
+		}
+
+		@Override
+		public String vmAgentVersion() {
+			return this.innerObject.getInstanceView().getVMAgent().getVMAgentVersion();
+		}
+
+		@Override
+		public String region() {
+			return this.innerObject.getLocation();
+		}
+
+		@Override
+		public ArrayList<NetworkInterfaceReference> networkInterfaces() {
+			return this.innerObject.getNetworkProfile().getNetworkInterfaces();
+		}
+
+		@Override
+		public String adminUserName() {
+			return this.innerObject.getOSProfile().getAdminUsername();
+		}
+
+		@Override
+		public String computerName() {
+			OSProfile p = this.innerObject.getOSProfile();
+			if(p == null) {
+				return null;
+			} else {
+				return p.getComputerName();
+			}
+		}
+		
+		@Override
+		public String customData() {
+			OSProfile p = this.innerObject.getOSProfile();
+			if(p == null) {
+				return null;
+			} else {
+				return p.getCustomData();
+			}
+		}
+		
+		@Override
+		public boolean isLinux() {
+			return this.innerObject.getOSProfile().getLinuxConfiguration() != null;
+		}
+		
+		@Override
+		public boolean isWindows() {
+			return this.innerObject.getOSProfile().getWindowsConfiguration() != null;
+		}
+				
+		@Override
+		public ImageReference image() {
+			return this.innerObject.getStorageProfile().getImageReference();
+		}
+		
+		@Override
+		public List<DataDisk> dataDisks() {
+			StorageProfile p = this.innerObject.getStorageProfile();
+			if(p == null) {
+				return null;
+			}
+			
+			return Collections.unmodifiableList(p.getDataDisks());
 		}
 	}
 }
