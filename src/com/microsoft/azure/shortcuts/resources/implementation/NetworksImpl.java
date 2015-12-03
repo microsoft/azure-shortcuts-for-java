@@ -64,14 +64,20 @@ public class NetworksImpl
 	
 	@Override
 	public Network get(String resourceId) throws Exception {
-		VirtualNetwork azureVirtualNetwork = 
-			azure.networkManagementClient().getVirtualNetworksOperations().get(
-				ResourcesImpl.groupFromResourceId(resourceId), 
-				ResourcesImpl.nameFromResourceId(resourceId)).getVirtualNetwork();
-		return new NetworkImpl(azureVirtualNetwork);
+		return this.get(
+			ResourcesImpl.groupFromResourceId(resourceId), 
+			ResourcesImpl.nameFromResourceId(resourceId));
 	}
 	
-		
+
+	@Override
+	public Network get(String groupName, String name) throws Exception {
+		VirtualNetwork azureVirtualNetwork = 
+			azure.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
+		return new NetworkImpl(azureVirtualNetwork);
+	}
+
+	
 	/***************************************************
 	 * Helpers
 	 ***************************************************/

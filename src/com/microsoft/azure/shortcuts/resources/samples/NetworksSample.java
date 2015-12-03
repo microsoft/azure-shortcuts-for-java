@@ -53,6 +53,11 @@ public class NetworksSample {
     	// Get info about a specific network using its resource ID
     	Network network = azure.networks("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup1/providers/Microsoft.Network/virtualNetworks/javasampleresourcegroup1vnetqwsks");
     	printNetwork(network);
+
+    	// Get info about a specific network using its group and name
+    	network = azure.networks("javasampleresourcegroup1", "javasampleresourcegroup1vnetqwsks");
+    	printNetwork(network);
+
     }
     
     

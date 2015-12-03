@@ -17,16 +17,9 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources;
+package com.microsoft.azure.shortcuts.resources.common;
 
-import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.SupportsGetting;
-import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
-import com.microsoft.azure.shortcuts.resources.common.SupportsListingEntitiesByGroup;
-
-public interface Networks extends 
-	SupportsListingEntities<Network>,
-	SupportsListingEntitiesByGroup<Network>,
-	SupportsGetting<Network>,
-	SupportsGettingByGroup<Network> {
+// Requires class to support reading entities with a supplied group name
+public interface SupportsGettingByGroup<T> {
+	T get(String groupName, String name) throws Exception;
 }

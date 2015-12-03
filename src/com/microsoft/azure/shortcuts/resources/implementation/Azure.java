@@ -155,6 +155,10 @@ public class Azure {
     	return this.networks().get(id);
     }
     
+    public Network networks(String group, String name) throws Exception {
+    	return this.networks().get(group, name);
+    }
+    
     public VirtualMachines virtualMachines() {
     	return this.virtualMachines;
     }

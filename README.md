@@ -332,14 +332,12 @@ By providing a virtual network resource ID (returned as a key in `networks().lis
 
 ```java
 Network network = azure.networks("<network-resource-id>");
+```
 
-StringBuilder output = new StringBuilder();
-output
-	.append(String.format("Network ID: %s\n", network.name()))
-	.append(String.format("Provisioning state: %s\n", network.provisioningState()))
-	.append(String.format("Address prefixes: %s\n", StringUtils.join(network.addressPrefixes(), ", ")))
-	.append(String.format("DNS servers: %s\n", StringUtils.join(network.dnsServers(), ", ")));
-System.out.println(output.toString());
+or by providing the group name and the virtual network name:
+
+```java
+Network network = azure.networks("<group-name>", "<network-name>");
 ```
 
 The subnets of a virtual network are available from `network.subnets()`.
