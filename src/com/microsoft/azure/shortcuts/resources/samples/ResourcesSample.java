@@ -53,7 +53,7 @@ public class ResourcesSample {
     	}
     	
         // Getting information about a specific resource based on ID
-    	Resource resource = azure.resources().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/Default-Web-WestUS/providers/microsoft.insights/components/marcinstest");
+    	Resource resource = azure.resources("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup/providers/Microsoft.Storage/storageAccounts/javastojzgsg");
     	printResource(resource);
     		
     	// Getting information about a specific resource based on name, type, provider and group

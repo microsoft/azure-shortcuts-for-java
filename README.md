@@ -197,7 +197,7 @@ System.out.println(String.format("Reading information about vm: %s\n"
 Using the resource id:
 
 ```java
-VirtualMachine vm = azure.virtualMachines().get("<resource-id>");
+VirtualMachine vm = azure.virtualMachines("<resource-id>");
 ```
 
 Using the group name and virtual machine name:
@@ -331,11 +331,11 @@ Network network = azure.networks().get("mynetwork");
 By providing a virtual network resource ID (returned as a key in `networks().list()`):
 
 ```java
-Network network = azure.networks().get("<network-resource-id>");
+Network network = azure.networks("<network-resource-id>");
 
 StringBuilder output = new StringBuilder();
 output
-	.append(String.format("Neywork ID: %s\n", network.name()))
+	.append(String.format("Network ID: %s\n", network.name()))
 	.append(String.format("Provisioning state: %s\n", network.provisioningState()))
 	.append(String.format("Address prefixes: %s\n", StringUtils.join(network.addressPrefixes(), ", ")))
 	.append(String.format("DNS servers: %s\n", StringUtils.join(network.dnsServers(), ", ")));
@@ -622,7 +622,7 @@ azure.groups().update("<resource-group-name>")
 
 ```java
 String resourceGroup="<resource-group-name>";		
-Group resourceGroup = azure.groups().get(resourceGroup);
+Group resourceGroup = azure.groups(resourceGroup);
 System.out.println(String.format("Found group: %s\n"
 		+ "\tRegion: %s\n"
 		+ "\tID: %s\n"
@@ -666,7 +666,7 @@ Map<String, Resource> resources = azure.resources().list("<resource-group-name>"
 If you know the full ID of the resource (e.g. you got it from the `resources().list().keySet()`), then:
 
 ```java
-Resource resource = azure.resources().get("<resource-id>");
+Resource resource = azure.resources("<resource-id>");
 ```
 Else, if you know the resource name, type, provider and group, then:
 
@@ -745,7 +745,7 @@ Set<String> providerNamespaces = azure.providers().list().keySet();
 Using the namespace of the provider you can get from `providers().names()`:
 
 ```java
-Provider provider = azure.providers().get("microsoft.classicstorage");
+Provider provider = azure.providers("microsoft.classicstorage");
 System.out.println(String.format("Found provider: %s\n" 
     + "\tRegistration State: %s\n"
     + "\tAPI versions for resource types:",
@@ -803,7 +803,7 @@ System.out.println(String.format("Found provider: %s\n"
 #### Listing provider resource types and their versions
 
 ```java
-Provider provider = azure.providers().get("<provider-namespace>");
+Provider provider = azure.providers("<provider-namespace>");
 for(ResourceType t : provider.resourceTypes().values()) {
 	System.out.println(String.format("%s: %s", t.name(), Arrays.toString(t.apiVersions())));
 }
@@ -812,11 +812,11 @@ for(ResourceType t : provider.resourceTypes().values()) {
 #### Finding the latest API version of a resource type
 
 ```java
-String latestAPIVersion = azure.providers().get("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
+String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
 ```
 
 Or shortcut:
 
 ```java
-String latestAPIVersion = azure.providers().get("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
+String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
 ```

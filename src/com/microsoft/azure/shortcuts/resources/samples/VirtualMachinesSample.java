@@ -57,7 +57,7 @@ public class VirtualMachinesSample {
     	}
     	
     	// Getting a specific virtual machine using its id
-    	VirtualMachine vm = azure.virtualMachines().get(vmID);
+    	VirtualMachine vm = azure.virtualMachines(vmID);
     	printVM(vm);
     	
     	// Getting a specific virtual machine using its group and name

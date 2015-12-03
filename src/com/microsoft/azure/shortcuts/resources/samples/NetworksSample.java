@@ -51,9 +51,9 @@ public class NetworksSample {
     	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
-    	Network network = azure.networks().get("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup1/providers/Microsoft.Network/virtualNetworks/javasampleresourcegroup1vnetqwsks");
+    	Network network = azure.networks("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup1/providers/Microsoft.Network/virtualNetworks/javasampleresourcegroup1vnetqwsks");
     	printNetwork(network);
-	}
+    }
     
     
     private static void printNetwork(Network network) throws Exception {

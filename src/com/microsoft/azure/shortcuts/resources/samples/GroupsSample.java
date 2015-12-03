@@ -72,7 +72,7 @@ public class GroupsSample {
     		.provision();
     	
     	// Read a specific resource group
-		Group resourceGroup = azure.groups().get(groupName);
+		Group resourceGroup = azure.groups(groupName);
 		printGroup(resourceGroup);
 		
 		// Update a resource group

@@ -51,7 +51,7 @@ public class ProvidersSample {
     	
     	if(providers.size() > 0) {
     		// Get information about a specific provider
-    		Provider provider = azure.providers().get("microsoft.classicstorage");
+    		Provider provider = azure.providers("microsoft.classicstorage");
     		
     		System.out.println(String.format("Found provider: %s\n" 
     				+ "\tRegistration State: %s\n"

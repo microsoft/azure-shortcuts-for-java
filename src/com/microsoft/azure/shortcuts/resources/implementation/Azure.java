@@ -28,12 +28,16 @@ import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.implementation.Utils;
+import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Groups;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
+import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
+import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.azure.shortcuts.resources.Sizes;
+import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 import com.microsoft.azure.utility.AuthHelper;
 import com.microsoft.windowsazure.Configuration;
@@ -119,12 +123,24 @@ public class Azure {
     	return this.groups;
     }
     
+    public Group groups(String name) throws Exception {
+    	return this.groups().get(name);
+    }
+    
     public Providers providers() {
     	return this.providers;
+    }
+
+    public Provider providers(String name) throws Exception {
+    	return this.providers().get(name);
     }
     
     public Resources resources() {
     	return this.resources;
+    }
+    
+    public Resource resources(String id) throws Exception {
+    	return this.resources().get(id);
     }
     
     public Sizes sizes() {
@@ -136,13 +152,16 @@ public class Azure {
     }
     
     public Network networks(String id) throws Exception {
-    	return this.networks.get(id);
+    	return this.networks().get(id);
     }
     
     public VirtualMachines virtualMachines() {
     	return this.virtualMachines;
     }
 
+    public VirtualMachine virtualMachines(String id) throws Exception {
+    	return this.virtualMachines().get(id);
+    }
     
     // Returns an ARM authenticated configuration based on the provided Azure shortcuts authentication file
     // The assumed schema of the file is:

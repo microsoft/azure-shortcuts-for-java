@@ -28,6 +28,7 @@ import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
+import com.microsoft.azure.shortcuts.resources.Provider.ResourceType;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.windowsazure.core.ResourceIdentity;
@@ -96,7 +97,11 @@ public class ResourcesImpl
 		
 		// Find latest API version
 		final Provider p = azure.providers().get(provider);
-		final String latestApiVersion = p.resourceTypes(type).latestApiVersion();
+		ResourceType t = p.resourceTypes(type);
+		if(t == null) {
+			return identity;
+		}
+		final String latestApiVersion = t.latestApiVersion();
 		identity.setResourceProviderApiVersion(latestApiVersion);
     	return identity;
     }
