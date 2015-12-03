@@ -80,6 +80,7 @@ public class VirtualMachinesImpl
 				ResourcesImpl.groupFromResourceId(resourceId), 
 				ResourcesImpl.nameFromResourceId(resourceId));
 	}
+
 	
 	@Override
 	public VirtualMachine get(String resourceGroup, String name) throws Exception {

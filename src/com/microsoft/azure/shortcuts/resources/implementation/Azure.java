@@ -167,6 +167,10 @@ public class Azure {
     	return this.virtualMachines().get(id);
     }
     
+    public VirtualMachine virtualMachines(String group, String name) throws Exception {
+    	return this.virtualMachines().get(group, name);
+    }
+    
     // Returns an ARM authenticated configuration based on the provided Azure shortcuts authentication file
     // The assumed schema of the file is:
     // <azureShortcutsAuth>

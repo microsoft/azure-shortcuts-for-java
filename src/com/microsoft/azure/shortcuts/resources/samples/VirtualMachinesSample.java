@@ -61,7 +61,7 @@ public class VirtualMachinesSample {
     	printVM(vm);
     	
     	// Getting a specific virtual machine using its group and name
-    	vm = azure.virtualMachines().get(groupName, vm.computerName());
+    	vm = azure.virtualMachines(groupName, vm.computerName());
     	printVM(vm);
 	}
     

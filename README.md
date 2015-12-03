@@ -203,7 +203,7 @@ VirtualMachine vm = azure.virtualMachines("<resource-id>");
 Using the group name and virtual machine name:
 
 ```java
-VirtualMachine vm = azure.virtualMachines().get("<group-name>", "<vm-name>");
+VirtualMachine vm = azure.virtualMachines("<group-name>", "<vm-name>");
 ```
 
 
