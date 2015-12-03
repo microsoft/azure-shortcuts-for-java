@@ -20,10 +20,9 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 // Tests resources
@@ -39,13 +38,27 @@ public class VirtualMachinesSample {
     
 
     public static void test(Azure azure) throws Exception {
-    	// Listing all virtual machines names in a subscription
-    	List<String> vmNames = azure.virtualMachines().names();
-    	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmNames, ",\n\t")));
-    	
-    	// Listing virtual machine names in a specific resource group
+    	// Listing all virtual machine ids in a subscription
+    	Map<String, VirtualMachine> vms = azure.virtualMachines().list();
+    	System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
+
+    	// Listing vms in a specific group
     	String groupName = "group1444089227523";
-    	vmNames = azure.virtualMachines().names(groupName);
-    	System.out.println(String.format("Virtual machines in group '%s': \n\t%s", groupName, StringUtils.join(vmNames, ",\n\t")));
+    	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().list(groupName);
+    	System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vmsInGroup.keySet())));
+    	
+    	// Listing virtual machines as objects
+    	for(VirtualMachine vm : vms.values()) {
+    		printVM(vm);
+    	}
 	}
+    
+    
+    private static void printVM(VirtualMachine vm) {
+		StringBuilder info = new StringBuilder();
+		info
+			.append("Information about vm: ").append(vm.name()).append("\n");
+		
+		System.out.println(info.toString());
+    }
  }

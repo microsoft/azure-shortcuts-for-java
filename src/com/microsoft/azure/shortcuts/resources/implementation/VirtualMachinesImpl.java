@@ -20,10 +20,13 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.microsoft.azure.management.compute.models.VirtualMachine;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
@@ -34,23 +37,51 @@ public class VirtualMachinesImpl
 		super(azure);
 	}
 
-	@Override
-	public List<String> names() throws Exception {
-		ArrayList<String> vmNames = new ArrayList<String>();
-		ArrayList<VirtualMachine> vms = azure.computeManagementClient().getVirtualMachinesOperations().listAll(null).getVirtualMachines();
-		for(VirtualMachine vm : vms) {
-			vmNames.add(vm.getName());
-		}
-		return vmNames;
-	}
 	
 	@Override
-	public List<String> names(String groupName) throws Exception {
-		ArrayList<String> vmNames = new ArrayList<String>();
-		ArrayList<VirtualMachine> vms = azure.computeManagementClient().getVirtualMachinesOperations().list(groupName).getVirtualMachines();
-		for(VirtualMachine vm : vms) {
-			vmNames.add(vm.getName());
+	public Map<String, VirtualMachine> list() throws Exception {
+		return this.list(null);
+	}
+
+	
+	@Override
+	public Map<String, VirtualMachine> list(String groupName) throws Exception {
+		ArrayList<com.microsoft.azure.management.compute.models.VirtualMachine> nativeItems;
+		HashMap<String, VirtualMachine> wrappers = new HashMap<>();
+		if(groupName != null) {
+			nativeItems = azure.computeManagementClient().getVirtualMachinesOperations().list(groupName).getVirtualMachines();
+		} else {
+			nativeItems = azure.computeManagementClient().getVirtualMachinesOperations().listAll(null).getVirtualMachines();
 		}
-		return vmNames;		
+		
+		for(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem : nativeItems) {
+			VirtualMachineImpl wrapper = new VirtualMachineImpl(nativeItem);
+			wrappers.put(nativeItem.getId(), wrapper);
+		}
+		
+		return Collections.unmodifiableMap(wrappers);
+	}
+
+	
+	/***************************************************
+	 * Implements logic for individual Virtual Machine
+	 ***************************************************/
+	private class VirtualMachineImpl
+		extends 
+			NamedRefreshableWrapperImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine> 
+		implements 
+			VirtualMachine {
+
+		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
+			super(azureVM.getId(), azureVM);
+		}
+
+		@Override
+		public VirtualMachineImpl refresh() throws Exception {
+			this.innerObject =  azure.computeManagementClient().getVirtualMachinesOperations().get(
+				ResourcesImpl.groupFromResourceId(this.name()),
+				ResourcesImpl.nameFromResourceId(this.name())).getVirtualMachine();
+			return this;
+		}
 	}
 }

@@ -119,7 +119,7 @@ public class VirtualMachinesSample {
 	private static void printVM(VirtualMachine vm) throws Exception {
 		StringBuilder info = new StringBuilder();
 		info
-			.append("Reading information about vm: ").append(vm.roleName()).append("\n")
+			.append("Information about vm: ").append(vm.roleName()).append("\n")
 			.append("\tService name: ").append(vm.cloudService()).append("\n")
 			.append("\tDeployment name: ").append(vm.deployment()).append("\n")
 			.append("\tCreated time: ").append(vm.createdTime().toString()).append("\n")
