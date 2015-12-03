@@ -329,7 +329,7 @@ public class NetworksImpl
 			
 			for(VirtualNetworkSite s : azureSites) {
 				if(s.getName().equals(this.inner().getName())) {
-					this.innerObject = s;
+					this.setInner(s);
 					return this;
 				}
 			}

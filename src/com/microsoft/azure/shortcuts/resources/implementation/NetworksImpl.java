@@ -163,9 +163,9 @@ public class NetworksImpl
 		
 		@Override
 		public NetworkImpl refresh() throws Exception {
-			this.innerObject =  azure.networkManagementClient().getVirtualNetworksOperations().get(
+			this.setInner(azure.networkManagementClient().getVirtualNetworksOperations().get(
 					ResourcesImpl.groupFromResourceId(this.name()), 
-					ResourcesImpl.nameFromResourceId(this.name())).getVirtualNetwork();
+					ResourcesImpl.nameFromResourceId(this.name())).getVirtualNetwork());
 			return this;
 		}
 		

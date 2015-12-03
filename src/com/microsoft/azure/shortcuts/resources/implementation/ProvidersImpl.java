@@ -149,7 +149,7 @@ public class ProvidersImpl
 		public ProviderImpl refresh() throws Exception {
 			com.microsoft.azure.management.resources.models.Provider azureProvider = 
 					azure.resourceManagementClient().getProvidersOperations().get(this.name).getProvider();
-			this.innerObject = azureProvider;
+			this.setInner(azureProvider);
 			return this;
 		}
 

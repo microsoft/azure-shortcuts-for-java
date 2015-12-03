@@ -218,7 +218,7 @@ public class GroupsImpl
 		
 		@Override
 		public GroupImpl refresh() throws Exception {
-			this.innerObject =  azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup();
+			this.setInner(azure.resourceManagementClient().getResourceGroupsOperations().get(this.name).getResourceGroup());
 			return this;
 		}
 	}

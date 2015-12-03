@@ -129,7 +129,7 @@ public class RegionsImpl
 			ArrayList<Location> azureLocations = azure.managementClient().getLocationsOperations().list().getLocations();
 			for(Location azureLocation : azureLocations) {
 				if(azureLocation.getName().equals(this.inner().getName())) {
-					this.innerObject = azureLocation;
+					this.setInner(azureLocation);
 					return this;
 				}
 			}

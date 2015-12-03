@@ -227,6 +227,10 @@ public class ResourcesImpl
 			return this.inner().getProvisioningState();
 		}
 		
+		@Override
+		public String id() {
+			return this.inner().getId();
+		}
 		
 		/************************************************************
 		 * Verbs
@@ -248,14 +252,8 @@ public class ResourcesImpl
 		
 		// Refreshes the resource based on the group and identity information
 		private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
-			this.innerObject = azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
+			this.setInner(azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource());
 			return this;
-		}
-
-
-		@Override
-		public String id() {
-			return this.inner().getId();
 		}
 	}
 }

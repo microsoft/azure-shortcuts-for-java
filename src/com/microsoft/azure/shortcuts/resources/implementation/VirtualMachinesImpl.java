@@ -90,20 +90,20 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl refresh() throws Exception {
-			this.innerObject =  azure.computeManagementClient().getVirtualMachinesOperations().get(
+			this.setInner(azure.computeManagementClient().getVirtualMachinesOperations().get(
 				ResourcesImpl.groupFromResourceId(this.name()),
-				ResourcesImpl.nameFromResourceId(this.name())).getVirtualMachine();
+				ResourcesImpl.nameFromResourceId(this.name())).getVirtualMachine());
 			return this;
 		}
 
 		@Override
 		public String size() {
-			return this.innerObject.getHardwareProfile().getVirtualMachineSize();
+			return this.inner().getHardwareProfile().getVirtualMachineSize();
 		}
 
 		@Override
 		public URI bootDiagnosticsStorage() {
-			DiagnosticsProfile p = this.innerObject.getDiagnosticsProfile();
+			DiagnosticsProfile p = this.inner().getDiagnosticsProfile();
 			if(p == null) {
 				return null;
 			}
@@ -118,13 +118,23 @@ public class VirtualMachinesImpl
 
 		@Override
 		public boolean isBootDiagnosticsEnabled() {
-			return this.innerObject.getDiagnosticsProfile().getBootDiagnostics().isEnabled();
+			DiagnosticsProfile p  = this.inner().getDiagnosticsProfile();
+			if(p == null) {
+				return false;
+			}
+			
+			BootDiagnostics d = p.getBootDiagnostics();
+			if(d == null) {
+				return false;
+			}
+			
+			return d.isEnabled();
 		}
 		
 		@Override
 		public URI availabilitySet()  {
 			try {
-				AvailabilitySetReference s = this.innerObject.getAvailabilitySetReference();
+				AvailabilitySetReference s = this.inner().getAvailabilitySetReference();
 				if(s == null) {
 					return null;
 				} else {
@@ -137,47 +147,47 @@ public class VirtualMachinesImpl
 
 		@Override
 		public ArrayList<VirtualMachineExtension> extensions() {
-			return this.innerObject.getExtensions();
+			return this.inner().getExtensions();
 		}
 
 		@Override
 		public Integer platformFaultDomain() {
-			return this.innerObject.getInstanceView().getPlatformFaultDomain();
+			return this.inner().getInstanceView().getPlatformFaultDomain();
 		}
 
 		@Override
 		public Integer platformUpdateDomain() {
-			return this.innerObject.getInstanceView().getPlatformUpdateDomain();
+			return this.inner().getInstanceView().getPlatformUpdateDomain();
 		}
 
 		@Override
 		public String remoteDesktopThumbprint() {
-			return this.innerObject.getInstanceView().getRemoteDesktopThumbprint();
+			return this.inner().getInstanceView().getRemoteDesktopThumbprint();
 		}
 
 		@Override
 		public String vmAgentVersion() {
-			return this.innerObject.getInstanceView().getVMAgent().getVMAgentVersion();
+			return this.inner().getInstanceView().getVMAgent().getVMAgentVersion();
 		}
 
 		@Override
 		public String region() {
-			return this.innerObject.getLocation();
+			return this.inner().getLocation();
 		}
 
 		@Override
 		public ArrayList<NetworkInterfaceReference> networkInterfaces() {
-			return this.innerObject.getNetworkProfile().getNetworkInterfaces();
+			return this.inner().getNetworkProfile().getNetworkInterfaces();
 		}
 
 		@Override
 		public String adminUserName() {
-			return this.innerObject.getOSProfile().getAdminUsername();
+			return this.inner().getOSProfile().getAdminUsername();
 		}
 
 		@Override
 		public String computerName() {
-			OSProfile p = this.innerObject.getOSProfile();
+			OSProfile p = this.inner().getOSProfile();
 			if(p == null) {
 				return null;
 			} else {
@@ -187,7 +197,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public String customData() {
-			OSProfile p = this.innerObject.getOSProfile();
+			OSProfile p = this.inner().getOSProfile();
 			if(p == null) {
 				return null;
 			} else {
@@ -197,22 +207,22 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public boolean isLinux() {
-			return this.innerObject.getOSProfile().getLinuxConfiguration() != null;
+			return this.inner().getOSProfile().getLinuxConfiguration() != null;
 		}
 		
 		@Override
 		public boolean isWindows() {
-			return this.innerObject.getOSProfile().getWindowsConfiguration() != null;
+			return this.inner().getOSProfile().getWindowsConfiguration() != null;
 		}
 				
 		@Override
 		public ImageReference image() {
-			return this.innerObject.getStorageProfile().getImageReference();
+			return this.inner().getStorageProfile().getImageReference();
 		}
 		
 		@Override
 		public List<DataDisk> dataDisks() {
-			StorageProfile p = this.innerObject.getStorageProfile();
+			StorageProfile p = this.inner().getStorageProfile();
 			if(p == null) {
 				return null;
 			}
@@ -222,17 +232,17 @@ public class VirtualMachinesImpl
 
 		@Override
 		public String id() {
-			return this.innerObject.getId();
+			return this.inner().getId();
 		}
 
 		@Override
 		public String type() {
-			return this.innerObject.getType();
+			return this.inner().getType();
 		}
 
 		@Override
 		public Map<String, String> tags() {
-			return Collections.unmodifiableMap(this.innerObject.getTags());
+			return Collections.unmodifiableMap(this.inner().getTags());
 		}
 	}
 }
