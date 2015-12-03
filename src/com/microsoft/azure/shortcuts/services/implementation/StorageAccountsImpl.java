@@ -201,7 +201,7 @@ public class StorageAccountsImpl
 		
 		@Override
 		public StorageAccountImpl withRegion(Region region) {
-			return this.withRegion(region.name());
+			return this.withRegion(region.id());
 		}
 
 		@Override
@@ -234,7 +234,7 @@ public class StorageAccountsImpl
 			params.setLocation(this.region());
 			params.setAffinityGroup(this.affinityGroup());
 			params.setDescription(this.description());
-			params.setLabel((this.label() == null) ? this.name() : this.label());
+			params.setLabel((this.label() == null) ? this.id() : this.label());
 			params.setAccountType((this.type()== null) ? StorageAccountTypes.STANDARD_LRS : this.type());
 			azure.storageManagementClient().getStorageAccountsOperations().create(params);
 			return this;
@@ -247,7 +247,7 @@ public class StorageAccountsImpl
 			params.setAccountType(this.type());
 			params.setDescription(this.description());
 			params.setLabel(this.label());
-			azure.storageManagementClient().getStorageAccountsOperations().update(this.name().toLowerCase(), params);
+			azure.storageManagementClient().getStorageAccountsOperations().update(this.id().toLowerCase(), params);
 			return this;
 		}
 

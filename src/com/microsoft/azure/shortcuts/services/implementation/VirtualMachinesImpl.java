@@ -438,7 +438,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withExistingNetwork(Network network) {
-			return this.withExistingNetwork(network.name());
+			return this.withExistingNetwork(network.id());
 		}
 
 		@Override
@@ -455,7 +455,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withRegion(Region region) {
-			return this.withRegion(region.name());
+			return this.withRegion(region.id());
 		}
 
 		@Override
@@ -539,8 +539,8 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withDeployment(String name)  {
-			this.setName(VirtualMachineId.withDeploymentName(name, this.name()));
-			this.azureDeployment.setName(VirtualMachineId.deploymentFromId(this.name()));
+			this.setId(VirtualMachineId.withDeploymentName(name, this.id()));
+			this.azureDeployment.setName(VirtualMachineId.deploymentFromId(this.id()));
 			return this;
 		}
 		
@@ -552,14 +552,14 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public VirtualMachineImpl withExistingCloudService(String name) {
-			this.setName(VirtualMachineId.withServiceName(name.toLowerCase(), this.name()));			
+			this.setId(VirtualMachineId.withServiceName(name.toLowerCase(), this.id()));			
 			this.isExistingCloudService = true;
 			return this;
 		}
 		
 		@Override
 		public DefinitionWithSize withExistingCloudService(CloudService cloudService) {
-			return this.withExistingCloudService(cloudService.name());
+			return this.withExistingCloudService(cloudService.id());
 		}
 
 		@Override
@@ -569,7 +569,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withNewCloudService(String name) {
-			this.setName(VirtualMachineId.withServiceName(name.toLowerCase(), this.name()));			
+			this.setId(VirtualMachineId.withServiceName(name.toLowerCase(), this.id()));			
 			this.isExistingCloudService = false;
 			return this;
 		}
@@ -595,7 +595,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withExistingStorageAccount(StorageAccount account) {
-			return this.withExistingStorageAccount(account.name());
+			return this.withExistingStorageAccount(account.id());
 		}
 
 		@Override
@@ -606,7 +606,7 @@ public class VirtualMachinesImpl
 		}
 
 		private VirtualMachineImpl withRoleName(String name) {
-			this.setName(VirtualMachineId.withRoleName(name.toLowerCase(), this.name()));			
+			this.setId(VirtualMachineId.withRoleName(name.toLowerCase(), this.id()));			
 			return this;
 		}
 
@@ -747,7 +747,7 @@ public class VirtualMachinesImpl
 		@Override
 		public VirtualMachine refresh() throws Exception {
 			// Read deployment
-			this.azureDeployment =  getDeployment(this.name());
+			this.azureDeployment =  getDeployment(this.id());
 			this.withDeployment(this.azureDeployment.getName());
 
 			// Read role

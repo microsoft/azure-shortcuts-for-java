@@ -129,7 +129,7 @@ public class NetworksImpl
 			TreeMap<String, Subnet> wrappers = new TreeMap<>();
 			for(com.microsoft.azure.management.network.models.Subnet nativeObject : this.inner().getSubnets()) {
 				SubnetImpl wrapper = new SubnetImpl(nativeObject.getName(), nativeObject);
-				wrappers.put(wrapper.name(), wrapper);
+				wrappers.put(wrapper.id(), wrapper);
 			}
 			return Collections.unmodifiableMap(wrappers);
 		}
@@ -147,8 +147,8 @@ public class NetworksImpl
 		@Override
 		public NetworkImpl refresh() throws Exception {
 			this.setInner(azure.networkManagementClient().getVirtualNetworksOperations().get(
-					ResourcesImpl.groupFromResourceId(this.name()), 
-					ResourcesImpl.nameFromResourceId(this.name())).getVirtualNetwork());
+					ResourcesImpl.groupFromResourceId(this.id()), 
+					ResourcesImpl.nameFromResourceId(this.id())).getVirtualNetwork());
 			return this;
 		}
 		

@@ -62,7 +62,7 @@ public class RegionsSample {
 				+ "\tAvailable web/worker role sizes: %s\n"
 				+ "\tAvailable services: %s\n"
 				+ "\tAvailable storage account types: %s\n",
-				region.name(),
+				region.id(),
 				region.displayName(),
 				StringUtils.join(region.availableVirtualMachineSizes(), ", "),
 				StringUtils.join(region.availableWebWorkerRoleSizes(), ", "),

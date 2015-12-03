@@ -168,7 +168,7 @@ public class CloudServicesImpl
 		
 		@Override
 		public CloudServiceImpl withRegion(Region region) {
-			return this.withRegion(region.name());
+			return this.withRegion(region.id());
 		}
 
 		@Override
@@ -213,9 +213,9 @@ public class CloudServicesImpl
 			final HostedServiceCreateParameters params = new HostedServiceCreateParameters();
 			params.setAffinityGroup(this.affinityGroup());
 			params.setDescription(this.description());
-			params.setLabel((this.label() == null) ? this.name() : this.label());
+			params.setLabel((this.label() == null) ? this.id() : this.label());
 			params.setLocation(this.region());
-			params.setServiceName(this.name());
+			params.setServiceName(this.id());
 			params.setReverseDnsFqdn(this.reverseDnsFqdn());
 
 			azure.computeManagementClient().getHostedServicesOperations().create(params);			
@@ -236,7 +236,7 @@ public class CloudServicesImpl
 
 		@Override
 		public CloudServiceImpl refresh() throws Exception {
-			HostedServiceProperties props = azure.computeManagementClient().getHostedServicesOperations().get(this.name()).getProperties();
+			HostedServiceProperties props = azure.computeManagementClient().getHostedServicesOperations().get(this.id()).getProperties();
 			this.inner().getProperties().setDateCreated(props.getDateCreated());
 			this.inner().getProperties().setDateLastModified(props.getDateLastModified());
 			return this

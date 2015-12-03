@@ -92,7 +92,7 @@ public class ResourcesSample {
 			+ "\tType: %s\n"
 			+ "\tProvisioning state %s\n",
 			
-			resource.name(),
+			resource.id(),
 			resource.group(),
 			resource.provider(),
 			resource.region(),

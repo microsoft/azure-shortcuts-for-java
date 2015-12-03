@@ -45,7 +45,7 @@ public class GroupsSample {
 			+ "\tID: %s\n"
 			+ "\tTags: %s\n"
 			+ "\tProvisioning state: %s\n",
-			group.name(),
+			group.id(),
 			group.region(),
 			group.id(),
 			group.tags().toString(),

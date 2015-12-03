@@ -25,22 +25,22 @@ import com.microsoft.azure.shortcuts.common.Indexable;
 public abstract class IndexableImpl implements Indexable {
 	protected String id;
 	
-	protected IndexableImpl(String name) {
-		this.id = name;
+	protected IndexableImpl(String id) {
+		this.id = id;
 	}
 	
-	public void setName(String name) {
-		this.id = name;
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	@Override
-	public String name() {
+	public String id() {
 		return this.id;
 	}
 	
 	@Override
 	public String toString() {
-		return this.name();
+		return this.id();
 	}
 }
 

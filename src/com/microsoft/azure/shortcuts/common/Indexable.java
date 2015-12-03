@@ -21,5 +21,5 @@ package com.microsoft.azure.shortcuts.common;
 
 // Encapsulates the name accessor
 public interface Indexable {
-	String name();
+	String id();
 }

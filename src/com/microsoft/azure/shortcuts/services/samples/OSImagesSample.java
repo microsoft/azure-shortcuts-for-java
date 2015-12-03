@@ -80,7 +80,7 @@ public class OSImagesSample {
 				+ "\tRecommended VM size: %s\n"
 				+ "\tRegions: %s\n"
 				+ "\tSmall icon URI %s\n",
-				osImage.name(),
+				osImage.id(),
 				osImage.category(),
 				osImage.description(),
 				osImage.eula(),

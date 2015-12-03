@@ -107,8 +107,8 @@ public class VirtualMachinesImpl
 		@Override
 		public VirtualMachineImpl refresh() throws Exception {
 			this.setInner(azure.computeManagementClient().getVirtualMachinesOperations().get(
-				ResourcesImpl.groupFromResourceId(this.name()),
-				ResourcesImpl.nameFromResourceId(this.name())).getVirtualMachine());
+				ResourcesImpl.groupFromResourceId(this.id()),
+				ResourcesImpl.nameFromResourceId(this.id())).getVirtualMachine());
 			return this;
 		}
 

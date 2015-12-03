@@ -64,14 +64,14 @@ public class NetworksSample {
     private static void printNetwork(Network network) throws Exception {
     	StringBuilder output = new StringBuilder();
     	output
-    		.append(String.format("Network name: %s\n", network.name()))
+    		.append(String.format("Network name: %s\n", network.id()))
     		.append(String.format("Provisioning state: %s\n", network.provisioningState()))
     		.append(String.format("Address prefixes: %s\n", StringUtils.join(network.addressPrefixes(), ", ")))
     		.append(String.format("DNS servers: %s\n", StringUtils.join(network.dnsServers(), ", ")));
     	
     	for(Subnet subnet : network.subnets().values()) {
     		output
-    			.append(String.format("Subnet: %s\n", subnet.name()))
+    			.append(String.format("Subnet: %s\n", subnet.id()))
     			.append(String.format("\tAddress prefix: %s\n", subnet.addressPrefix()))
     			.append(String.format("\tNetwork security group: %s\n", subnet.networkSecurityGroup()));
     	}

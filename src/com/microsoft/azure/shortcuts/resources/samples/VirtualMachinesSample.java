@@ -69,7 +69,7 @@ public class VirtualMachinesSample {
     private static void printVM(VirtualMachine vm) {
 		StringBuilder info = new StringBuilder();
 		info
-			.append(String.format("Information about vm: %s\n", vm.name()))
+			.append(String.format("Information about vm: %s\n", vm.id()))
 			.append(String.format("\tAdmin username: %s\n", vm.adminUserName()))
 			.append(String.format("\tAvailability set URI: %s\n", vm.availabilitySet()))
 			.append(String.format("\tBoot diagnostics storage URI: %s\n", vm.bootDiagnosticsStorage()))

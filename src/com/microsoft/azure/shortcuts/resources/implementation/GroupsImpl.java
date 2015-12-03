@@ -128,11 +128,6 @@ public class GroupsImpl
 		}
 
 		@Override
-		public String id() throws Exception {
-			return this.inner().getId();
-		}
-
-		@Override
 		public Map<String, String> tags() throws Exception {
 			return Collections.unmodifiableMap(this.inner().getTags());
 		}
@@ -142,6 +137,11 @@ public class GroupsImpl
 			return this.inner().getProvisioningState();
 		}
 
+		@Override
+		public String name() {
+			return this.inner().getName();
+		}
+		
 		
 		/**************************************************************
 		 * Setters (fluent interface)

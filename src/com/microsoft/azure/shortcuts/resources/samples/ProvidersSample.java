@@ -46,7 +46,7 @@ public class ProvidersSample {
     	
     	// List providers
     	for(Provider provider : providers.values()) {
-    		System.out.println(provider.name() + " - " + provider.registrationState());
+    		System.out.println(provider.id() + " - " + provider.registrationState());
     	}
     	
     	if(providers.size() > 0) {
@@ -56,11 +56,11 @@ public class ProvidersSample {
     		System.out.println(String.format("Found provider: %s\n" 
     				+ "\tRegistration State: %s\n"
     				+ "\tAPI versions for resource types:",
-    				provider.name(),
+    				provider.id(),
     				provider.registrationState()));
     		
     		for(ResourceType t : provider.resourceTypes().values()) {
-    			System.out.println(String.format("\t\t%s: %s", t.name(), StringUtils.join(t.apiVersions(), ", ")));
+    			System.out.println(String.format("\t\t%s: %s", t.id(), StringUtils.join(t.apiVersions(), ", ")));
     		}
     		
     		// Get latest API version for a specific resource type

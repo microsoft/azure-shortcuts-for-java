@@ -66,8 +66,8 @@ public class NetworksSample {
 		printNetwork(network);
 
 		// Delete the newly created virtual network
-		System.out.println(String.format("Deleting virtual network named '%s'...", network.name()));
-		azure.networks().delete(network.name());
+		System.out.println(String.format("Deleting virtual network named '%s'...", network.id()));
+		azure.networks().delete(network.id());
 
 		// Create network with default subnet
 		networkName = "net" + String.valueOf(System.currentTimeMillis());
@@ -86,8 +86,8 @@ public class NetworksSample {
 		printNetwork(network);
 
 		// Delete the newly created virtual network
-		System.out.println(String.format("Deleting virtual network named '%s'...", network.name()));
-		azure.networks().delete(network.name());
+		System.out.println(String.format("Deleting virtual network named '%s'...", network.id()));
+		azure.networks().delete(network.id());
 	}
 	
 	
@@ -95,7 +95,7 @@ public class NetworksSample {
 		StringBuilder subnets = new StringBuilder();
 		for(Subnet subnet : network.subnets().values()) {
 			subnets
-				.append("\tSubnet: ").append(subnet.name())
+				.append("\tSubnet: ").append(subnet.id())
 				.append("\n\t\tCIDR: ").append(subnet.addressPrefix())
 				.append("\n\t\tNetwork security group: ").append(subnet.networkSecurityGroup())
 				.append("\n");
@@ -109,7 +109,7 @@ public class NetworksSample {
 				+ "\tState: %s"
 				+ "\tID: %s"
 				+ "%s",
-				network.name(),
+				network.id(),
 				network.region(),
 				network.addressPrefixes(),
 				network.affinityGroup(),

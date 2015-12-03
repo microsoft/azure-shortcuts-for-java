@@ -72,7 +72,7 @@ public class StorageAccountsSample {
 				+ "\tEndpoints: %s\n"
 				+ "\tType: %s\n",
 		
-				storageAccount.name(),
+				storageAccount.id(),
 				storageAccount.affinityGroup(),
 				storageAccount.label(),
 				storageAccount.description(),
@@ -100,7 +100,7 @@ public class StorageAccountsSample {
 		System.out.println(String.format("Updated storage account: %s\n"
 				+ "\tLabel: %s\n"
 				+ "\tDescription: %s\n",		
-				storageAccount.name(),
+				storageAccount.id(),
 				storageAccount.label(),
 				storageAccount.description()));
 		

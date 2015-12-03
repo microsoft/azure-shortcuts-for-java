@@ -41,7 +41,6 @@ public interface Network extends
 	String label() throws Exception;
 	Map<String, Subnet> subnets() throws Exception;
 	String state() throws Exception;
-	String id() throws Exception;
 	
 	public interface Subnet extends Indexable {	
 		String addressPrefix();

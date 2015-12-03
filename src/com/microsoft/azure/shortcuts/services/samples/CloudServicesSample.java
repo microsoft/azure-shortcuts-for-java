@@ -94,7 +94,7 @@ public class CloudServicesSample {
 				+ "\tModified: %s\n"
 				+ "\tAffinity group: %s\n"
 				+ "\tReverse DNS FQDN: %s\n",
-				cloudService.name(),
+				cloudService.id(),
 				cloudService.label(),
 				cloudService.description(),
 				cloudService.region(),

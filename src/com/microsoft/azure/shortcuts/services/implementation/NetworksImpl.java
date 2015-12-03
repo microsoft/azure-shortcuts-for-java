@@ -172,12 +172,7 @@ public class NetworksImpl
 		public String state() throws Exception {
 			return this.inner().getState();
 		}
-		
-		@Override
-		public String id() throws Exception {
-			return this.inner().getId();
-		}
-		
+				
 		@Override
 		public Map<String, Subnet> subnets() {
 			HashMap<String, Subnet> subnets = new HashMap<>();
@@ -224,7 +219,7 @@ public class NetworksImpl
 		
 		@Override
 		public NetworkImpl withRegion(Region region) {
-			return this.withRegion(region.name());
+			return this.withRegion(region.id());
 		}
 		
 		@Override
@@ -276,7 +271,7 @@ public class NetworksImpl
 			StringBuilder subnetsSection = new StringBuilder();
 			for(Subnet subnet : this.subnets().values()) {
 				subnetsSection.append(subnetTemplate
-					.replace("${subnetName}", subnet.name())
+					.replace("${subnetName}", subnet.id())
 					.replace("${subnetCidr}", subnet.addressPrefix()));
 				// TODO: securityGroup
 			}

@@ -53,7 +53,7 @@ public class SizesSample {
         		+ "\tNumber of cores: %d\n"
         		+ "\tOS disk size in MB: %d\n"
         		+ "\tResource disk size in MB: %d\n",
-        		size.name(),
+        		size.id(),
         		size.maxDataDiskCount(),
         		size.memoryInMB(),
         		size.numberOfCores(),

@@ -37,10 +37,9 @@ public interface Group extends
 	Wrapper<ResourceGroupExtended> {
 	
 	String region() throws Exception;
-	String id() throws Exception;
 	Map<String, String> tags() throws Exception;
 	String provisioningState() throws Exception;
-	
+	String name();
 
 	/**
 	 * A new blank resource group definition

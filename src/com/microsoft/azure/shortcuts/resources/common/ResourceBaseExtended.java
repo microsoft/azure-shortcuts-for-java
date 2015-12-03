@@ -25,6 +25,6 @@ public interface ResourceBaseExtended extends
 	ResourceBase, 
 	Indexable {
 	
-	public String id();
 	public String type();
+	public String name();
 }

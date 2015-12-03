@@ -30,8 +30,8 @@ public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.window
 	extends IndexableRefreshableWrapperImpl<T, I>
 	implements ResourceBaseExtended {
 
-	protected ResourceBaseExtendedImpl(String name, I innerObject) {
-		super(name, innerObject);
+	protected ResourceBaseExtendedImpl(String id, I innerObject) {
+		super(id, innerObject);
 	}
 
 	@Override
@@ -52,5 +52,10 @@ public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.window
 	@Override
 	public String type() {
 		return this.inner().getType();
-	}	
+	}
+	
+	@Override
+	public String name() {
+		return this.inner().getName();
+	}
 }
