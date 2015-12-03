@@ -27,7 +27,6 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
@@ -174,7 +173,7 @@ public class ResourcesImpl
 	// Implements the individual resource logic
 	private class ResourceImpl 
 		extends
-			NamedRefreshableWrapperImpl<Resource, GenericResourceExtended>
+			ResourceBaseExtendedImpl<Resource, GenericResourceExtended>
 		implements 
 			Resource {
 		
@@ -193,11 +192,6 @@ public class ResourcesImpl
 		}
 
 		@Override
-		public String region() {
-			return this.inner().getLocation();
-		}
-
-		@Override
 		public String shortName() throws Exception {
 			return RESOURCE_ID.NAME.from(this.inner().getId());
 		}
@@ -208,16 +202,6 @@ public class ResourcesImpl
 		}
 
 		@Override
-		public String type() {
-			return RESOURCE_ID.TYPE.from(this.inner().getId());
-		}
-
-		@Override
-		public Map<String, String> tags() {
-			return Collections.unmodifiableMap(this.inner().getTags());
-		}
-
-		@Override
 		public String properties() throws Exception {
 			return this.inner().getProperties();
 		}
@@ -225,11 +209,6 @@ public class ResourcesImpl
 		@Override
 		public String provisioningState() throws Exception {
 			return this.inner().getProvisioningState();
-		}
-		
-		@Override
-		public String id() {
-			return this.inner().getId();
 		}
 		
 		/************************************************************

@@ -37,7 +37,6 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
@@ -80,7 +79,7 @@ public class VirtualMachinesImpl
 	 ***************************************************/
 	private class VirtualMachineImpl
 		extends 
-			NamedRefreshableWrapperImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine> 
+			ResourceBaseExtendedImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
 		implements 
 			VirtualMachine {
 
@@ -171,11 +170,6 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public String region() {
-			return this.inner().getLocation();
-		}
-
-		@Override
 		public ArrayList<NetworkInterfaceReference> networkInterfaces() {
 			return this.inner().getNetworkProfile().getNetworkInterfaces();
 		}
@@ -228,21 +222,6 @@ public class VirtualMachinesImpl
 			}
 			
 			return Collections.unmodifiableList(p.getDataDisks());
-		}
-
-		@Override
-		public String id() {
-			return this.inner().getId();
-		}
-
-		@Override
-		public String type() {
-			return this.inner().getType();
-		}
-
-		@Override
-		public Map<String, String> tags() {
-			return Collections.unmodifiableMap(this.inner().getTags());
 		}
 	}
 }

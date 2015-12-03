@@ -28,7 +28,6 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.common.implementation.NamedRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.common.implementation.NamedWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
@@ -92,7 +91,8 @@ public class NetworksImpl
 	 ***************************************************************/
 	private class NetworkImpl 
 		extends 
-			NamedRefreshableWrapperImpl<Network, VirtualNetwork>
+			ResourceBaseExtendedImpl<Network, VirtualNetwork>
+			/* TODO NamedRefreshableWrapperImpl<Network, VirtualNetwork> */
 		implements
 			Network {
 		
@@ -128,30 +128,8 @@ public class NetworksImpl
 			}
 			return Collections.unmodifiableMap(wrappers);
 		}
+
 		
-		@Override
-		public String id() {
-			return this.inner().getId();
-		}
-
-
-		@Override
-		public String type() {
-			return this.inner().getType();
-		}
-
-
-		@Override
-		public String region() {
-			return this.inner().getLocation();
-		}
-
-
-		@Override
-		public Map<String, String> tags() {
-			return Collections.unmodifiableMap(this.inner().getTags());
-		}
-
 		/**************************************************************
 		 * Setters (fluent interface)
 		 **************************************************************/
