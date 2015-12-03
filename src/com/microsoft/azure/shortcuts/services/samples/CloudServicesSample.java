@@ -59,7 +59,7 @@ public class CloudServicesSample {
 		System.out.println("Available cloud services: " + StringUtils.join(cloudServiceNames, ", "));
 
 		// Get cloud service info
-		CloudService cloudService = azure.cloudServices().get(serviceName);
+		CloudService cloudService = azure.cloudServices(serviceName);
 		printCloudService(cloudService);
 
 		// Update cloud service
@@ -70,7 +70,7 @@ public class CloudServicesSample {
 			.withLabel("Updated")
 			.apply();
 
-		cloudService = azure.cloudServices().get(serviceName);
+		cloudService = azure.cloudServices(serviceName);
 		printCloudService(cloudService);
 
 		// Delete the newly created cloud service

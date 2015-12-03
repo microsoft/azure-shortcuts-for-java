@@ -22,12 +22,18 @@ package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.io.IOException;
 
+import com.microsoft.azure.shortcuts.services.CloudService;
 import com.microsoft.azure.shortcuts.services.CloudServices;
+import com.microsoft.azure.shortcuts.services.Network;
 import com.microsoft.azure.shortcuts.services.Networks;
+import com.microsoft.azure.shortcuts.services.OSImage;
 import com.microsoft.azure.shortcuts.services.OSImages;
+import com.microsoft.azure.shortcuts.services.Region;
 import com.microsoft.azure.shortcuts.services.Regions;
 import com.microsoft.azure.shortcuts.services.Sizes;
+import com.microsoft.azure.shortcuts.services.StorageAccount;
 import com.microsoft.azure.shortcuts.services.StorageAccounts;
+import com.microsoft.azure.shortcuts.services.VirtualMachine;
 import com.microsoft.azure.shortcuts.services.VirtualMachines;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
@@ -82,6 +88,10 @@ public class Azure {
 		return this.cloudServices;
 	}
 	
+	public CloudService cloudServices(String name) throws Exception {
+		return this.cloudServices().get(name);
+	}
+	
 	
 	/**
 	 * @return The interface exposing functionality related to virtual networks
@@ -91,6 +101,10 @@ public class Azure {
 	}
 	
 	
+	public Network networks(String name) throws Exception {
+		return this.networks().get(name);
+	}
+	
 	/**
 	 * @return The interface exposing functionality related to OS images
 	 */
@@ -99,12 +113,22 @@ public class Azure {
 	}
 	
 	
+	public OSImage osImages(String name) throws Exception {
+		return this.osImages().get(name);
+	}
+	
 	/**
 	 * @return The interface exposing functionality related to OS images
 	 */
 	public Regions regions() {
 		return this.regions;
 	}
+	
+	
+	public Region regions(String name) throws Exception {
+		return this.regions().get(name);
+	}
+	
 	
 	/**
 	 * @return The interface exposing functionality related to virtual machine sizes
@@ -121,11 +145,22 @@ public class Azure {
 		return this.virtualMachines;
 	}
 	
+	
+	public VirtualMachine virtualMachines(String id) throws Exception {
+		return this.virtualMachines().get(id);
+	}
+	
+	
 	/**
 	 * @return The interface exposing functionality related to storage accounts
 	 */
 	public StorageAccounts storageAccounts() {
 		return this.storageAccounts;
+	}
+	
+	
+	public StorageAccount storageAccounts(String name) throws Exception {
+		return this.storageAccounts().get(name);
 	}
 	
 	

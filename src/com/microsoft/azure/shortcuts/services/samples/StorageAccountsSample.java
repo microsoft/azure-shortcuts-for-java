@@ -57,7 +57,7 @@ public class StorageAccountsSample {
 		System.out.println("Available storage accounts:\n\t" + StringUtils.join(storageAccounts.keySet(), ",\n\t"));
 
 		// Get storage account information
-		StorageAccount storageAccount = azure.storageAccounts().get(accountName);
+		StorageAccount storageAccount = azure.storageAccounts(accountName);
 		System.out.println(String.format("Found storage account: %s\n"
 				+ "\tAffinity group: %s\n"
 				+ "\tLabel: %s\n"
@@ -96,7 +96,7 @@ public class StorageAccountsSample {
 			.withLabel("Updated")
 			.apply();
 		
-		storageAccount = azure.storageAccounts().get(accountName);
+		storageAccount = azure.storageAccounts(accountName);
 		System.out.println(String.format("Updated storage account: %s\n"
 				+ "\tLabel: %s\n"
 				+ "\tDescription: %s\n",		

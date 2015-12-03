@@ -174,7 +174,7 @@ System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t",
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-VirtualMachine vm = azure.virtualMachines().get("mylinuxvm");
+VirtualMachine vm = azure.virtualMachines("mylinuxvm");
 System.out.println(String.format("Reading information about vm: %s\n"
 	+ "\tDeployment name: %s\n"
 	+ "\tService name: %s\n"
@@ -323,7 +323,7 @@ Map<String, Network> networks = azure.networks().list("<resource-group-name">);
 By providing the virtual network name:
 
 ```java
-Network network = azure.networks().get("mynetwork");
+Network network = azure.networks("<network-name>");
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -410,7 +410,7 @@ azure.cloudServices().update("myservice")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-CloudService cloudService = azure.cloudServices().get("myservice");
+CloudService cloudService = azure.cloudServices("myservice");
 
 System.out.println(String.format("Found cloud service: %s\n"
 	+ "\tLabel: %s\n"
@@ -499,7 +499,7 @@ azure.storageAccounts().update("mystorage")
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-StorageAccount storageAccount = azure.storageAccounts().get(accountName);
+StorageAccount storageAccount = azure.storageAccounts(accountName);
 
 System.out.println(String.format("Found storage account: %s\n"
 	+ "\tAffinity group: %s\n"

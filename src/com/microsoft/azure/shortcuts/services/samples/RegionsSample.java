@@ -50,7 +50,7 @@ public class RegionsSample {
 		System.out.println("Available regions supporting VMs: " + StringUtils.join(regionNames, ", "));
 		
 		// Get info about a specific region
-		Region region = azure.regions().get("West US");
+		Region region = azure.regions("West US");
 		printRegion(region);
 	}
 	

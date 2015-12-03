@@ -62,7 +62,7 @@ public class NetworksSample {
 		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network
-		network = azure.networks().get(networkName);
+		network = azure.networks(networkName);
 		printNetwork(network);
 
 		// Delete the newly created virtual network
@@ -82,7 +82,7 @@ public class NetworksSample {
 		System.out.println("Available virtual networks: " + StringUtils.join(virtualNetworkNames, ", "));
 
 		// Get created virtual network
-		network = azure.networks().get(networkName);
+		network = azure.networks(networkName);
 		printNetwork(network);
 
 		// Delete the newly created virtual network

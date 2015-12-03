@@ -54,7 +54,7 @@ public class OSImagesSample {
 		System.out.println("Available OS images: \n\t" + StringUtils.join(osImageNames, ",\n\t"));
 		
 		// Get information about a specific OS image
-		OSImage osImage = azure.osImages().get(imageName);
+		OSImage osImage = azure.osImages(imageName);
 		printOsImage(osImage);
 	}
 	

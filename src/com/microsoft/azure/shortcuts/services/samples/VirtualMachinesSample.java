@@ -104,15 +104,15 @@ public class VirtualMachinesSample {
 		System.out.println("Virtual machines: "+ StringUtils.join(vmNames, ", "));
 			
 		// Get information about the created Linux vm
-		VirtualMachine vm = azure.virtualMachines().get(vmName);
+		VirtualMachine vm = azure.virtualMachines(vmName);
 		printVM(vm);
 			
 		// Get information about the created Windows vm
-		vm = azure.virtualMachines().get(vmName + "." + vmNameWin);
+		vm = azure.virtualMachines(vmName + "." + vmNameWin);
 		printVM(vm);
 		
 		// Get information about the second Linux VM
-		vm = azure.virtualMachines().get(cloudService2 + "." + vmName2);
+		vm = azure.virtualMachines(cloudService2 + "." + vmName2);
 		printVM(vm);
 	}
 	
