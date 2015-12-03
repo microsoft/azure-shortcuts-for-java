@@ -22,11 +22,11 @@ package com.microsoft.azure.shortcuts.services;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.SupportsListingNames;
-import com.microsoft.azure.shortcuts.common.SupportsReading;
+import com.microsoft.azure.shortcuts.common.SupportsGetting;
 
 public interface Regions extends
 	SupportsListingNames,
-	SupportsReading<Region> {
+	SupportsGetting<Region> {
 
 	/**
 	 * 

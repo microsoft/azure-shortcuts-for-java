@@ -20,6 +20,6 @@
 package com.microsoft.azure.shortcuts.common;
 
 // Requires class to support reading entities
-public interface SupportsReading<T> {
+public interface SupportsGetting<T> {
 	T get(String name) throws Exception;
 }

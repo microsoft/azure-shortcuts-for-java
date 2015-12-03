@@ -22,11 +22,11 @@ package com.microsoft.azure.shortcuts.services;
 import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.SupportsListingNames;
-import com.microsoft.azure.shortcuts.common.SupportsReading;
+import com.microsoft.azure.shortcuts.common.SupportsGetting;
 
 public interface VirtualMachines extends
 	SupportsCreating<VirtualMachine.DefinitionBlank>,
-	SupportsReading<VirtualMachine>,
+	SupportsGetting<VirtualMachine>,
 	SupportsListingNames,
 	SupportsDeleting {
 }

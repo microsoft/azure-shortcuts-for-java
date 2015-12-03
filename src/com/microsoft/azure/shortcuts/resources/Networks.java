@@ -20,11 +20,11 @@
 package com.microsoft.azure.shortcuts.resources;
 
 import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.SupportsReading;
+import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.resources.common.SupportsListingEntitiesByGroup;
 
 public interface Networks extends 
 	SupportsListingEntities<Network>,
 	SupportsListingEntitiesByGroup<Network>,
-	SupportsReading<Network> {
+	SupportsGetting<Network> {
 }

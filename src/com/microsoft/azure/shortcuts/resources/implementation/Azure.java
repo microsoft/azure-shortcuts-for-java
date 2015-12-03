@@ -29,6 +29,7 @@ import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.implementation.Utils;
 import com.microsoft.azure.shortcuts.resources.Groups;
+import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Providers;
 import com.microsoft.azure.shortcuts.resources.Resources;
@@ -132,6 +133,10 @@ public class Azure {
 
     public Networks networks() {
     	return this.networks;
+    }
+    
+    public Network networks(String id) throws Exception {
+    	return this.networks.get(id);
     }
     
     public VirtualMachines virtualMachines() {

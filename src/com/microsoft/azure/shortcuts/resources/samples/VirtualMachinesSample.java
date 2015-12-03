@@ -48,9 +48,21 @@ public class VirtualMachinesSample {
     	System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vmsInGroup.keySet())));
     	
     	// Listing virtual machines as objects
+    	String vmID = null;
     	for(VirtualMachine vm : vms.values()) {
+    		if(vmID == null) {
+    			vmID = vm.id();
+    		}
     		printVM(vm);
     	}
+    	
+    	// Getting a specific virtual machine using its id
+    	VirtualMachine vm = azure.virtualMachines().get(vmID);
+    	printVM(vm);
+    	
+    	// Getting a specific virtual machine using its group and name
+    	vm = azure.virtualMachines().get(groupName, vm.computerName());
+    	printVM(vm);
 	}
     
     

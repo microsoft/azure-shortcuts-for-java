@@ -80,6 +80,9 @@ Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 </azureShortcutsAuth>
 ```
 
+### Getting access to the inner objects
+
+Many shortcut objects are wrappers of more complex Azure SDK objects. Since they might not expose all of the settings available on the Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the '.inner()' call.
 
 ### Virtual Machines
 
@@ -190,7 +193,18 @@ System.out.println(String.format("Reading information about vm: %s\n"
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+
+Using the resource id:
+
+```java
+VirtualMachine vm = azure.virtualMachines().get("<resource-id>");
+```
+
+Using the group name and virtual machine name:
+
+```java
+VirtualMachine vm = azure.virtualMachines().get("<group-name>", "<vm-name>");
+```
 
 
 #### Listing available VM sizes

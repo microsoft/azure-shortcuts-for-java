@@ -73,6 +73,22 @@ public class VirtualMachinesImpl
 		return Collections.unmodifiableMap(wrappers);
 	}
 
+
+	@Override
+	public VirtualMachine get(String resourceId) throws Exception {
+		return this.get(
+				ResourcesImpl.groupFromResourceId(resourceId), 
+				ResourcesImpl.nameFromResourceId(resourceId));
+	}
+	
+	@Override
+	public VirtualMachine get(String resourceGroup, String name) throws Exception {
+		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = 
+			azure.computeManagementClient().getVirtualMachinesOperations().get(
+				resourceGroup, name).getVirtualMachine();
+		return new VirtualMachineImpl(azureVM);
+	}
+
 	
 	/***************************************************
 	 * Implements logic for individual Virtual Machine

@@ -92,7 +92,6 @@ public class NetworksImpl
 	private class NetworkImpl 
 		extends 
 			ResourceBaseExtendedImpl<Network, VirtualNetwork>
-			/* TODO NamedRefreshableWrapperImpl<Network, VirtualNetwork> */
 		implements
 			Network {
 		

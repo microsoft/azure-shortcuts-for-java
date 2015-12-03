@@ -22,12 +22,12 @@ package com.microsoft.azure.shortcuts.resources;
 import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
-import com.microsoft.azure.shortcuts.common.SupportsReading;
+import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.common.SupportsUpdating;
 
 public interface Groups extends 
 	SupportsListingEntities<Group>,
-	SupportsReading<Group>,
+	SupportsGetting<Group>,
 	SupportsCreating<Group.DefinitionBlank>,
 	SupportsDeleting,
 	SupportsUpdating<Group.UpdateBlank> {
