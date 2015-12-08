@@ -72,9 +72,7 @@ public class NetworksImpl
 
 	@Override
 	public Network get(String groupName, String name) throws Exception {
-		VirtualNetwork azureVirtualNetwork = 
-			azure.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
-		return new NetworkImpl(azureVirtualNetwork);
+		return new NetworkImpl(this.getAzureVirtualNetwork(groupName, name));
 	}
 
 	
@@ -89,6 +87,12 @@ public class NetworksImpl
 		} else {
 			return this.azure.networkManagementClient().getVirtualNetworksOperations().list(resourceGroupName).getVirtualNetworks();
 		}
+	}
+	
+	
+	// Helper to get a network from Azure
+	private com.microsoft.azure.management.network.models.VirtualNetwork getAzureVirtualNetwork(String groupName, String name) throws Exception {
+		return azure.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
 	}
 	
 	
@@ -129,7 +133,7 @@ public class NetworksImpl
 			TreeMap<String, Subnet> wrappers = new TreeMap<>();
 			for(com.microsoft.azure.management.network.models.Subnet nativeObject : this.inner().getSubnets()) {
 				SubnetImpl wrapper = new SubnetImpl(nativeObject.getName(), nativeObject);
-				wrappers.put(wrapper.id(), wrapper);
+				wrappers.put(wrapper.id(), new SubnetImpl(nativeObject.getName(), nativeObject));
 			}
 			return Collections.unmodifiableMap(wrappers);
 		}
@@ -146,9 +150,9 @@ public class NetworksImpl
 		
 		@Override
 		public NetworkImpl refresh() throws Exception {
-			this.setInner(azure.networkManagementClient().getVirtualNetworksOperations().get(
+			this.setInner(getAzureVirtualNetwork(
 					ResourcesImpl.groupFromResourceId(this.id()), 
-					ResourcesImpl.nameFromResourceId(this.id())).getVirtualNetwork());
+					ResourcesImpl.nameFromResourceId(this.id())));
 			return this;
 		}
 		

@@ -461,6 +461,7 @@ azure.storageAccounts().define("mystorage")
 #### Listing storage accounts in a subscription
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 As a map, indexed by name:
 
@@ -474,16 +475,20 @@ Names only:
 List<String> storageAccountNames = azure.storageAccounts().list().keySet();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+*ARM only*:
 
+Storage accounts in a selected resource group:
+
+```java
+Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list("<resource-group-name>");
+```
 
 #### Updating a storage account
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.storageAccounts().update("mystorage")
+azure.storageAccounts().update("<storage-account-name>")
 	.withDescription("Updated")
 	.withLabel("Updated")
 	.apply();
@@ -530,7 +535,24 @@ System.out.println(String.format("Found storage account: %s\n"
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+
+Getting a storage account using its unique resource id:
+
+```java
+StorageAccount storageAccount = azure.storageAccounts().get("<storage-account-id>");
+```
+
+or, shorter:
+
+```java
+StorageAccount storageAccount = azure.storageAccounts("<storage-account-id>");
+```
+
+Getting a storage account using its group and name:
+
+```java
+StorageAccount storageAccount = azure.storageAccounts("<group-name>", "<storage-account-name>");
+```
 
 
 #### Deleting a storage account

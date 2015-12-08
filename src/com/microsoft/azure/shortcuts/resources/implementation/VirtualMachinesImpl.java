@@ -41,7 +41,6 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.management.resources.models.ResourceGroup;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
@@ -154,7 +153,7 @@ public class VirtualMachinesImpl
 			VirtualMachine.DefinitionProvisionable {
 
 		private boolean isExistingStorageAccount, isExistingGroup;
-		private String storageAccountName, group;
+		private String storageAccountName, groupName;
 
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -402,7 +401,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public VirtualMachineImpl withGroupExisting(String name) {
-			this.group = name;
+			this.groupName = name;
 			this.isExistingGroup = true;
 			return this;
 		}
@@ -419,7 +418,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withGroupNew(String name) {
-			this.group = name;
+			this.groupName = name;
 			this.isExistingGroup = false;
 			return this;
 		}
@@ -430,8 +429,16 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public UpdateBlank provision() throws Exception {
-			// TODO 
+			// Ensure storage account
+			if(!this.isExistingStorageAccount) {
+				; // TODO: azure.storageAccounts().define(this.storageAccount).provision()
+			}
+			
+			//TODO: StorageAccount storageAccount = azure.storageAccounts(this.storageAccount);
+			
+			
 			throw new UnsupportedOperationException("Not yet implemented.");
+			// TODO 
 			//return null;
 		}
 		

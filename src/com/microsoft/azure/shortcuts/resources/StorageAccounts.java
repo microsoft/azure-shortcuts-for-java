@@ -19,28 +19,16 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-
-import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.shortcuts.common.Indexable;
-import com.microsoft.azure.shortcuts.common.Refreshable;
-import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
+import com.microsoft.azure.shortcuts.common.SupportsGetting;
+import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
 
-public interface Network extends 
-	ResourceBaseExtended,
-	Refreshable<Network>,
-	Wrapper<VirtualNetwork> {
-	
-	String provisioningState();
-	List<String> addressPrefixes();
-	List<String> dnsServers();
-	Map<String, Subnet> subnets();
-	
-	public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
-		String addressPrefix();
-		String networkSecurityGroup();
-	}
+public interface StorageAccounts extends 
+	SupportsListingEntities<StorageAccount>, 
+	SupportsGetting<StorageAccount>,
+	SupportsGettingByGroup<StorageAccount> {
+
+	Map<String, StorageAccount> list(String groupName) throws Exception;
 }

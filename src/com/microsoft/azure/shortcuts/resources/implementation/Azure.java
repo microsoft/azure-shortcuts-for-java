@@ -37,6 +37,8 @@ import com.microsoft.azure.shortcuts.resources.Providers;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.azure.shortcuts.resources.Sizes;
+import com.microsoft.azure.shortcuts.resources.StorageAccount;
+import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 import com.microsoft.azure.utility.AuthHelper;
@@ -72,6 +74,7 @@ public class Azure {
     private final SizesImpl sizes;
     private final NetworksImpl networks;
     private final VirtualMachinesImpl virtualMachines;
+    private final StorageAccountsImpl storageAccounts;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -100,6 +103,7 @@ public class Azure {
         this.sizes = new SizesImpl(this);
         this.networks = new NetworksImpl(this);
         this.virtualMachines = new VirtualMachinesImpl(this);
+        this.storageAccounts = new StorageAccountsImpl(this);
     }
     
     
@@ -169,6 +173,18 @@ public class Azure {
     
     public VirtualMachine virtualMachines(String group, String name) throws Exception {
     	return this.virtualMachines().get(group, name);
+    }
+    
+    public StorageAccounts storageAccounts() {
+    	return this.storageAccounts;
+    }
+    
+    public StorageAccount storageAccounts(String id) throws Exception {
+    	return this.storageAccounts().get(id);
+    }
+    
+    public StorageAccount storageAccounts(String group, String name) throws Exception {
+    	return this.storageAccounts().get(group, name);
     }
     
     // Returns an ARM authenticated configuration based on the provided Azure shortcuts authentication file

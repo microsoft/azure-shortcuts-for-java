@@ -60,7 +60,9 @@ public class ResourcesImpl
 	    // Returns the requested part of the resource id
 	    public String from(String resourceId) {
 	    	String[] parts = resourceId.split("/");
-	    	if(parts.length <= this.val) {
+	    	if(parts.length == 1 && this.val == NAME.val) {
+	    		return parts[0];
+	    	} else if(parts.length <= this.val) {
 	    		return null;
 	    	} else {
 	    		return parts[this.val];
