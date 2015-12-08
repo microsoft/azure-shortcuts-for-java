@@ -19,10 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.resources.common;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public interface Taggable<T> {
-	T withTags(HashMap<String, String> tags);
+	T withTags(Map<String, String> tags);
 	T withTag(String key, String value);
 	T withoutTag(String key);
 }

@@ -21,6 +21,7 @@ package com.microsoft.azure.shortcuts.resources;
 
 import java.util.Map;
 
+import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
@@ -28,7 +29,8 @@ import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
 public interface StorageAccounts extends 
 	SupportsListingEntities<StorageAccount>, 
 	SupportsGetting<StorageAccount>,
-	SupportsGettingByGroup<StorageAccount> {
+	SupportsGettingByGroup<StorageAccount>,
+	SupportsCreating<StorageAccount.DefinitionBlank> {
 
 	Map<String, StorageAccount> list(String groupName) throws Exception;
 }

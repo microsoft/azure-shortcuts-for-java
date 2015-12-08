@@ -19,10 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-
-import java.net.URI;
 import java.net.URL;
 
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.shortcuts.common.Deletable;
@@ -42,21 +41,60 @@ public interface StorageAccount extends
 	 * @return The URL of the primary blob endpoint
 	 */
 	URL primaryBlobEndpoint();
-
+	
+	/**
+	 * @return The type of the storage account
+	 */
+	AccountType accountType();
 	
 	/**
 	 * A new blank storage account definition
 	 */
 	public interface DefinitionBlank {
+		/**
+		 * @param region The name of the location for the storage account 
+		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
+		 */
 	    DefinitionProvisionable withRegion(String region);
+	}
+	
+	/**
+	 * A storage account definition allowing an existing group to be selected for the storage account
+	 */
+	public interface DefinitionWithGroup<T> {
+		/**
+		 * @param groupName The name of an existing resource group to put the storage account in
+		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
+		 */
+		T withGroupExisting(String groupName);
+		
+		/**
+		 * @param group An existing resource group to put the storage account in
+		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
+		 */
+		T withGroupExisting(Group group);
+		
+		/**
+		 * @param group An existing resource group object as returns by the Azure SDK for Java to put the storage account in
+		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
+		 */
+		T withGroupExisting(ResourceGroupExtended group);
+		
 	}
 	
 	
 	/**
 	 * A new storage account definition with sufficient input parameters specified already to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends Provisionable<UpdateBlank> {
-	    DefinitionProvisionable withType(AccountType type);
+	public interface DefinitionProvisionable extends 
+		DefinitionWithGroup<DefinitionProvisionable>,
+		Provisionable<StorageAccount> {
+		/**
+		 * @param type The type of the storage account
+		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
+		 */
+	    DefinitionProvisionable withAccountType(AccountType type);
+	    
 	}
 	
 	
@@ -77,7 +115,7 @@ public interface StorageAccount extends
 		Taggable<Update> {
 	
 		Update withRegion(String region);
-		Update withType(AccountType type);
+		Update withAccountType(AccountType type);
 		Update withCustomDomain(CustomDomain customDomain);
 	}
 }

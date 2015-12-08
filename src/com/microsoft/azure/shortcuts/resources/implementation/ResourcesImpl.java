@@ -68,6 +68,22 @@ public class ResourcesImpl
 	    		return parts[this.val];
 	    	}
 	    }
+	    
+	    // Returns a new ID based on the provided one, with the group set as specified
+	    public String setInID(String groupName, String id) {
+	    	String[] parts = id.split("/");
+	    	if(parts.length <= this.val) {
+	    		return null;
+	    	} else {
+	    		parts[this.val] = groupName;
+	    		StringBuilder newId = new StringBuilder();
+	    		for(int i = 0; i< parts.length; i++) {
+	    			if(i>0) newId.append("/");
+	    			newId.append(parts[i]);
+	    		}
+	    		return newId.toString();
+	    	}
+	    }
 	}
  	
 
@@ -78,6 +94,11 @@ public class ResourcesImpl
 	
 	public static String nameFromResourceId(String id) {
 		return RESOURCE_ID.NAME.from(id);
+	}
+	
+	
+	public static String resourceIdWithGroup(String group, String resourceId) {
+		return RESOURCE_ID.GROUP.setInID(group, resourceId);
 	}
 	
 	

@@ -148,8 +148,8 @@ public class GroupsImpl
 		 **************************************************************/
 		
 		@Override
-		public GroupImpl withTags(HashMap<String, String> tags) {
-			this.inner().setTags(tags);
+		public GroupImpl withTags(Map<String, String> tags) {
+			this.inner().setTags(new HashMap<>(tags));
 			return this;
 		}
 

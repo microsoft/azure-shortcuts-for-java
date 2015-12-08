@@ -28,12 +28,18 @@ import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
 
 public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
 	extends IndexableRefreshableWrapperImpl<T, I>
-	implements ResourceBaseExtended {
+	implements 
+		ResourceBaseExtended {
 
 	protected ResourceBaseExtendedImpl(String id, I innerObject) {
 		super(id, innerObject);
 	}
 
+	
+	/*******************************************
+	 * Getters
+	 *******************************************/
+	
 	@Override
 	public String region() {
 		return this.inner().getLocation();
@@ -63,4 +69,5 @@ public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.window
 	public String group() {
 		return ResourcesImpl.groupFromResourceId(this.id());
 	}
+	
 }

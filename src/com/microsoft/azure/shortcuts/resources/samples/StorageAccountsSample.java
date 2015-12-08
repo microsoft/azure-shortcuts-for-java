@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -55,7 +56,25 @@ public class StorageAccountsSample {
     	// Get info about a specific storage account using its group and name
     	storageAccount = azure.storageAccounts("lenatest", "lenatest1");
     	printStorageAccount(storageAccount);
+    	
+    	// Provision a new storage account with minimum parameters
+    	String storeName = "store" + String.valueOf(System.currentTimeMillis());
+    	storageAccount = azure.storageAccounts().define(storeName)
+    		.withRegion("westus")
+    		.provision();
 
+    	printStorageAccount(storageAccount);
+
+    	// Provision a new storage account in an existing resource group
+    	storeName = "store" + String.valueOf(System.currentTimeMillis());
+    	storageAccount = azure.storageAccounts().define(storeName)
+    		.withRegion("westus")
+    		.withAccountType(AccountType.StandardLRS)
+    		.withGroupExisting("lenatest")
+    		.provision();
+    	
+    	printStorageAccount(storageAccount);
+    	
     }
     
     
@@ -66,6 +85,7 @@ public class StorageAccountsSample {
     		.append(String.format("\tName: %s\n", storageAccount.name()))
     		.append(String.format("\tGroup: %s\n", storageAccount.group()))
     		.append(String.format("\tPrimary blob endpoint: %s\n", storageAccount.primaryBlobEndpoint().toString()))
+    		.append(String.format("\tAccount type: %s\n", storageAccount.accountType().toString()))
     		;
     	
     	System.out.println(output.toString());

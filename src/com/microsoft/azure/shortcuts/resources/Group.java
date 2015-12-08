@@ -19,7 +19,6 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
@@ -52,8 +51,8 @@ public interface Group extends
 	/**
 	 * A new resource group definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends Provisionable<UpdateBlank> {
-		DefinitionProvisionable withTags(HashMap<String, String> tags);
+	public interface DefinitionProvisionable extends Provisionable<Group> {
+		DefinitionProvisionable withTags(Map<String, String> tags);
 		DefinitionProvisionable withTag(String key, String value);
 	}
 	

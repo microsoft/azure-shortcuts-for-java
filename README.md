@@ -455,8 +455,24 @@ azure.storageAccounts().define("mystorage")
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
 
+With the required minimum set of input parameters:
+
+```java
+azure.storageAccounts().define("<storage-account-name>")
+    .withRegion("westus")
+    .provision();
+```
+
+In an existing resource group:
+
+```java
+azure.storageAccounts().define(storeName)
+    .withRegion("westus")
+    .withAccountType(AccountType.StandardLRS)
+    .withGroupExisting("lenatest")
+    .provision();
+```
 
 #### Listing storage accounts in a subscription
 

@@ -27,7 +27,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
+import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 
@@ -61,7 +65,7 @@ public class StorageAccountsImpl
 
 	
 	@Override
-	public StorageAccount get(String resourceId) throws Exception {
+	public StorageAccountImpl get(String resourceId) throws Exception {
 		return this.get(
 			ResourcesImpl.groupFromResourceId(resourceId), 
 			ResourcesImpl.nameFromResourceId(resourceId));
@@ -69,8 +73,16 @@ public class StorageAccountsImpl
 	
 
 	@Override
-	public StorageAccount get(String groupName, String name) throws Exception {
+	public StorageAccountImpl get(String groupName, String name) throws Exception {
 		return new StorageAccountImpl(this.getAzureStorageAccount(groupName, name));
+	}
+
+
+	@Override
+	public StorageAccountImpl define(String name) throws Exception {
+		com.microsoft.azure.management.storage.models.StorageAccount nativeItem = new com.microsoft.azure.management.storage.models.StorageAccount();
+		nativeItem.setName(name);
+		return new StorageAccountImpl(nativeItem);
 	}
 
 	
@@ -100,8 +112,13 @@ public class StorageAccountsImpl
 		extends 
 			ResourceBaseExtendedImpl<StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
 		implements
-			StorageAccount {
+			StorageAccount,
+			StorageAccount.DefinitionBlank,
+			StorageAccount.DefinitionProvisionable {
 		
+		private String groupName;
+		private boolean isExistingGroup;
+
 		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount) {
 			super(azureStorageAccount.getId(), azureStorageAccount);
 		}
@@ -120,22 +137,91 @@ public class StorageAccountsImpl
 			}
 		}
 		
+		@Override
+		public AccountType accountType() {
+			return this.inner().getAccountType();
+		}
+		
 		
 		/**************************************************************
 		 * Setters (fluent interface)
 		 **************************************************************/
 		
+		@Override
+		public StorageAccountImpl withGroupExisting(String groupName) {
+			this.groupName = groupName;
+			this.isExistingGroup = true;
+			return this;
+		}
+
+
+		@Override
+		public StorageAccountImpl withGroupExisting(Group group) {
+			return this.withGroupExisting(group.name());
+		}
+
+
+		@Override
+		public StorageAccountImpl withGroupExisting(ResourceGroupExtended group) {
+			return this.withGroupExisting(group.getName());
+		}
+
+
+		@Override
+		public StorageAccountImpl withAccountType(AccountType type) {
+			this.inner().setAccountType(type);
+			return this;
+		}
+
+
+		@Override
+		public StorageAccountImpl withRegion(String region) {
+			this.inner().setLocation(region);
+			return this;
+		}		
+
 
 		/************************************************************
 		 * Verbs
 		 ************************************************************/
-		
+
+		@Override
+		public StorageAccountImpl provision() throws Exception {
+			// Assume default account type if needed
+			if(this.accountType() == null) {
+				this.withAccountType(AccountType.StandardLRS);
+			}
+			
+			// Create group if needed
+			if(!this.isExistingGroup) {
+				if(this.groupName == null) {
+					// Assume default group name
+					this.groupName = "group_" + this.name();
+				}
+				
+				azure.groups().define(this.groupName)
+					.withRegion(this.region())
+					.provision();
+				this.isExistingGroup = false;
+			} 
+
+			
+			StorageAccountCreateParameters params = new StorageAccountCreateParameters();
+			params.setLocation(this.region());
+			params.setAccountType(this.accountType());
+			params.setTags(this.inner().getTags());
+
+			azure.storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
+			return get(this.groupName, this.name());
+		}
+
+
 		@Override
 		public StorageAccountImpl refresh() throws Exception {
 			this.setInner(getAzureStorageAccount(
-					ResourcesImpl.groupFromResourceId(this.id()), 
-					ResourcesImpl.nameFromResourceId(this.id())));
+				ResourcesImpl.groupFromResourceId(this.id()), 
+				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;
-		}		
+		}
 	}
 }
