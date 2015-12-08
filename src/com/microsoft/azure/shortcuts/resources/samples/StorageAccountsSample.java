@@ -65,6 +65,7 @@ public class StorageAccountsSample {
     		.append(String.format("Storage account id: %s\n", storageAccount.id()))
     		.append(String.format("\tName: %s\n", storageAccount.name()))
     		.append(String.format("\tGroup: %s\n", storageAccount.group()))
+    		.append(String.format("\tPrimary blob endpoint: %s\n", storageAccount.primaryBlobEndpoint().toString()))
     		;
     	
     	System.out.println(output.toString());

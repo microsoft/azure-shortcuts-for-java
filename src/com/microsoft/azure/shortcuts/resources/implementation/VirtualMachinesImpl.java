@@ -21,6 +21,7 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -153,7 +154,7 @@ public class VirtualMachinesImpl
 			VirtualMachine.DefinitionProvisionable {
 
 		private boolean isExistingStorageAccount, isExistingGroup;
-		private String storageAccountName, groupName;
+		private String storageAccountId, groupName;
 
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -376,7 +377,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public VirtualMachineImpl withStorageAccountExisting(String name) {
-			this.storageAccountName = name.toLowerCase();
+			this.storageAccountId = name;
 			this.isExistingStorageAccount = true;
 			return this;
 		}
@@ -394,7 +395,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withStorageAccountNew(String name) {
-			this.storageAccountName = name;
+			this.storageAccountId = name;
 			this.isExistingStorageAccount = false;
 			return this;
 		}
@@ -434,12 +435,13 @@ public class VirtualMachinesImpl
 				; // TODO: azure.storageAccounts().define(this.storageAccount).provision()
 			}
 			
-			//TODO: StorageAccount storageAccount = azure.storageAccounts(this.storageAccount);
+			StorageAccount storageAccount = azure.storageAccounts(this.storageAccountId);
+			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
+			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 			
-			
-			throw new UnsupportedOperationException("Not yet implemented.");
+			//throw new UnsupportedOperationException("Not yet implemented.");
 			// TODO 
-			//return null;
+			return null;
 		}
 		
 		

@@ -19,6 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,6 +110,16 @@ public class StorageAccountsImpl
 		/***********************************************************
 		 * Getters
 		 ***********************************************************/
+		
+		@Override
+		public URL primaryBlobEndpoint() {
+			try {
+				return this.inner().getPrimaryEndpoints().getBlob().toURL();
+			} catch (MalformedURLException e) {
+				return null;
+			}
+		}
+		
 		
 		/**************************************************************
 		 * Setters (fluent interface)

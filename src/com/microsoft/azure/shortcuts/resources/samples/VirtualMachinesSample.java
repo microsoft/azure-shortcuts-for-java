@@ -49,9 +49,9 @@ public class VirtualMachinesSample {
     		.withImageSKU("2008-R2-SP1")
     		.withLatestImageVersion()
     		.withSize(Size.Type.BASIC_A1)
-    		.withStorageAccountNew("marcinsvmtest")
-    		.withGroupNew("marcinsvmtest");
-    		//.provision();
+    		.withStorageAccountExisting("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/lenatest/providers/Microsoft.Storage/storageAccounts/lenatest1")
+    		.withGroupNew("marcinsvmtest")
+    		.provision();
     	
     	// Listing all virtual machine ids in a subscription
     	Map<String, VirtualMachine> vms = azure.virtualMachines().list();

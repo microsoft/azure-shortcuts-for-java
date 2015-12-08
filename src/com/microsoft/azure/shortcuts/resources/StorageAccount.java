@@ -20,6 +20,9 @@
 package com.microsoft.azure.shortcuts.resources;
 
 
+import java.net.URI;
+import java.net.URL;
+
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.shortcuts.common.Deletable;
@@ -34,7 +37,12 @@ public interface StorageAccount extends
 	ResourceBaseExtended,
 	Refreshable<StorageAccount>,
 	Wrapper<com.microsoft.azure.management.storage.models.StorageAccount> {
-	
+
+	/**
+	 * @return The URL of the primary blob endpoint
+	 */
+	URL primaryBlobEndpoint();
+
 	
 	/**
 	 * A new blank storage account definition
