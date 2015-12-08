@@ -39,8 +39,10 @@ public class VirtualMachinesSample {
     
 
     public static void test(Azure azure) throws Exception {
-    	// Creating a Linux VM
-    	azure.virtualMachines().define("marcinstestvm")
+    	// Creating a Windows VM
+    	String deploymentId = String.valueOf(System.currentTimeMillis());
+
+    	azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion("westus")
     		.withAdminUsername("test")
     		.withAdminPassword("Abcd.1234")
@@ -49,8 +51,8 @@ public class VirtualMachinesSample {
     		.withImageSKU("2008-R2-SP1")
     		.withLatestImageVersion()
     		.withSize(Size.Type.BASIC_A1)
-    		.withStorageAccountExisting("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/lenatest/providers/Microsoft.Storage/storageAccounts/lenatest1")
-    		.withGroupNew("marcinsvmtest")
+    		.withStorageAccountNew("store" + deploymentId)
+    		.withGroupExisting("lenatest")
     		.provision();
     	
     	// Listing all virtual machine ids in a subscription

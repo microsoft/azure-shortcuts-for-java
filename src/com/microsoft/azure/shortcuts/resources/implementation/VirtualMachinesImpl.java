@@ -153,7 +153,7 @@ public class VirtualMachinesImpl
 			VirtualMachine.DefinitionWithImageVersion,
 			VirtualMachine.DefinitionProvisionable {
 
-		private boolean isExistingStorageAccount, isExistingGroup;
+		private boolean isExistingGroup, isExistingStorageAccount;
 		private String storageAccountId, groupName;
 
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
@@ -431,12 +431,14 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public UpdateBlank provision() throws Exception {
-			// Ensure storage account
-			if(!this.isExistingStorageAccount) {
-				; // TODO: azure.storageAccounts().define(this.storageAccount).provision()
-			}
+			// Ensure group
+			Group group = this.ensureGroup();
 			
-			StorageAccount storageAccount = azure.storageAccounts(this.storageAccountId);
+			// Ensure storage account
+			StorageAccount storageAccount = ensureStorageAccount(group.name());
+
+			// TODO VirtualNetwork
+			
 			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 			
@@ -452,6 +454,49 @@ public class VirtualMachinesImpl
 				ResourcesImpl.groupFromResourceId(this.id()),
 				ResourcesImpl.nameFromResourceId(this.id())).getVirtualMachine());
 			return this;
+		}
+		
+		
+		/**************************************************
+		 * Helpers
+		 **************************************************/
+		
+		// Gets or creates if needed the specified storage account
+		private Group ensureGroup() throws Exception {
+			Group group;
+			if(!this.isExistingGroup) {
+				if(this.groupName == null) {
+					this.groupName = "group" + this.name();
+				}
+				
+				group = azure.groups().define(this.groupName)
+						.withRegion(this.region())
+						.provision();
+				this.isExistingGroup = true;
+				return group;
+			} else {
+				return azure.groups(this.groupName);
+			}
+		}
+		
+		
+		// Gets or creates if needed the specified storage account
+		private StorageAccount ensureStorageAccount(String groupName) throws Exception {
+			if(!this.isExistingStorageAccount) {
+				if(this.storageAccountId == null) {
+					this.storageAccountId = "store" + this.name();
+				}
+				
+				StorageAccount storageAccount = azure.storageAccounts().define(this.storageAccountId)
+					.withRegion(this.region())
+					.withGroupExisting(groupName)
+					.provision();
+				this.isExistingStorageAccount = true;
+				return storageAccount;
+				
+			} else {
+				return azure.storageAccounts(this.storageAccountId);
+			}
 		}
 	}
 }
