@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
+import com.microsoft.azure.management.compute.models.VirtualMachineSizeTypes;
 import com.microsoft.azure.shortcuts.common.Indexable;
 
 public interface Size extends 
@@ -29,4 +30,48 @@ public interface Size extends
 	int numberOfCores();
 	int osDiskSizeInMB();
 	int resourceDiskSizeInMB();
+	Type toSizeType();
+
+	
+	public enum Type {
+		BASIC_A0(VirtualMachineSizeTypes.BASIC_A0),
+		BASIC_A1(VirtualMachineSizeTypes.BASIC_A1),
+		BASIC_A2(VirtualMachineSizeTypes.BASIC_A2),
+		BASIC_A3(VirtualMachineSizeTypes.BASIC_A3),
+		BASIC_A4(VirtualMachineSizeTypes.BASIC_A4),
+		STANDARD_A0(VirtualMachineSizeTypes.STANDARD_A0),
+		STANDARD_A1(VirtualMachineSizeTypes.STANDARD_A1),
+		STANDARD_A2(VirtualMachineSizeTypes.STANDARD_A2),
+		STANDARD_A3(VirtualMachineSizeTypes.STANDARD_A3),
+		STANDARD_A4(VirtualMachineSizeTypes.STANDARD_A4),
+		STANDARD_A5(VirtualMachineSizeTypes.STANDARD_A5),
+		STANDARD_A6(VirtualMachineSizeTypes.STANDARD_A6),
+		STANDARD_A7(VirtualMachineSizeTypes.STANDARD_A7),
+		STANDARD_A8(VirtualMachineSizeTypes.STANDARD_A8),
+		STANDARD_A9(VirtualMachineSizeTypes.STANDARD_A9),
+		STANDARD_G1(VirtualMachineSizeTypes.STANDARD_G1),
+		STANDARD_G2(VirtualMachineSizeTypes.STANDARD_G2),
+		STANDARD_G3(VirtualMachineSizeTypes.STANDARD_G3),
+		STANDARD_G4(VirtualMachineSizeTypes.STANDARD_G4),
+		STANDARD_G5(VirtualMachineSizeTypes.STANDARD_G5);
+
+		private final String type;
+
+		Type(String name) {
+			this.type = name;
+		}
+		
+		public String toString() {
+			return this.type;
+		}
+		
+		public static Type fromString(String sizeName) {
+			for(Type t : Type.values()) {
+				if(sizeName.equalsIgnoreCase(t.toString())) {
+					return t;
+				}
+			}
+			return null;
+		}
+	}
 }

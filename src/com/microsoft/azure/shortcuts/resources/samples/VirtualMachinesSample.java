@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.resources.samples;
 
 import java.util.Map;
 
+import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -38,6 +39,20 @@ public class VirtualMachinesSample {
     
 
     public static void test(Azure azure) throws Exception {
+    	// Creating a Linux VM
+    	azure.virtualMachines().define("marcinstestvm")
+    		.withRegion("westus")
+    		.withAdminUsername("test")
+    		.withAdminPassword("Abcd.1234")
+    		.withImagePublishedBy("MicrosoftWindowsServer")
+    		.withImageOffer("WindowsServer")
+    		.withImageSKU("2008-R2-SP1")
+    		.withLatestImageVersion()
+    		.withSize(Size.Type.BASIC_A1)
+    		.withStorageAccountNew("marcinsvmtest")
+    		.withGroupNew("marcinsvmtest");
+    		//.provision();
+    	
     	// Listing all virtual machine ids in a subscription
     	Map<String, VirtualMachine> vms = azure.virtualMachines().list();
     	System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
@@ -63,6 +78,7 @@ public class VirtualMachinesSample {
     	// Getting a specific virtual machine using its group and name
     	vm = azure.virtualMachines(groupName, vm.computerName());
     	printVM(vm);
+
 	}
     
     

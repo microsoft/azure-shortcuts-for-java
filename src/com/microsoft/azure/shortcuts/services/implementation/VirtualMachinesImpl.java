@@ -225,7 +225,10 @@ public class VirtualMachinesImpl
 	}
 	
 
-	// Implements virtual machine logic
+	/*******************************************************
+	 * Implements individual virtual machine logic
+	 *******************************************************/
+	
 	private class VirtualMachineImpl 
 		extends IndexableRefreshableImpl<VirtualMachine>
 		implements 
@@ -588,18 +591,18 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withExistingStorageAccount(String name) {
+		public VirtualMachineImpl withStorageAccountExisting(String name) {
 			this.storageAccountName = name.toLowerCase();
 			return this;
 		}
 
 		@Override
-		public VirtualMachineImpl withExistingStorageAccount(StorageAccount account) {
-			return this.withExistingStorageAccount(account.id());
+		public VirtualMachineImpl withStorageAccountExisting(StorageAccount account) {
+			return this.withStorageAccountExisting(account.id());
 		}
 
 		@Override
-		public DefinitionProvisionable withExistingStorageAccount(
+		public DefinitionProvisionable withStorageAccountExisting(
 				com.microsoft.windowsazure.management.storage.models.StorageAccount account) {
 			this.storageAccountName = account.getName();
 			return this;

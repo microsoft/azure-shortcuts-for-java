@@ -117,5 +117,11 @@ public class SizesImpl
 		public int resourceDiskSizeInMB() {
 			return this.azureSize.getResourceDiskSizeInMB();
 		}
+		
+		@Override
+		public Type toSizeType() {
+			return Size.Type.fromString(azureSize.getName());
+		}
+
 	}
 }

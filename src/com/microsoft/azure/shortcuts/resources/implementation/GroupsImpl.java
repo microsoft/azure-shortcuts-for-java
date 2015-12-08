@@ -73,13 +73,13 @@ public class GroupsImpl
 
 	@Override
 	public GroupImpl update(String name) {
-		return createStorageAccountWrapper(name);
+		return createGroupWrapper(name);
 	}
 
 
 	@Override
 	public GroupImpl define(String name) {
-		return createStorageAccountWrapper(name);
+		return createGroupWrapper(name);
 	}
 
 	
@@ -88,7 +88,7 @@ public class GroupsImpl
 	 ***************************************************/
 	
 	// Wraps native Azure group
-	private GroupImpl createStorageAccountWrapper(String name) {
+	private GroupImpl createGroupWrapper(String name) {
 		ResourceGroupExtended azureGroup = new ResourceGroupExtended();
 		azureGroup.setName(name);
 		return new GroupImpl(azureGroup);

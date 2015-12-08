@@ -1,5 +1,6 @@
 package com.microsoft.azure.shortcuts.resources;
 
+import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
 import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
@@ -9,5 +10,6 @@ public interface VirtualMachines extends
 	SupportsListingEntities<VirtualMachine>,
 	SupportsListingEntitiesByGroup<VirtualMachine>,
 	SupportsGetting<VirtualMachine>,
-	SupportsGettingByGroup<VirtualMachine>{
+	SupportsGettingByGroup<VirtualMachine>,
+	SupportsCreating<VirtualMachine.DefinitionBlank> {
 }

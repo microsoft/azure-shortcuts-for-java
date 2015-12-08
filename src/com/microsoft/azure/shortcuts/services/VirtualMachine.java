@@ -132,10 +132,10 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring an existing storage account to specified
 	 */
-	public interface DefinitionWithExistingStorageAccount<T> {
-		T withExistingStorageAccount(String name);
-		T withExistingStorageAccount(StorageAccount account);
-		T withExistingStorageAccount(com.microsoft.windowsazure.management.storage.models.StorageAccount account);
+	public interface DefinitionWithStorageAccountExisting<T> {
+		T withStorageAccountExisting(String name);
+		T withStorageAccountExisting(StorageAccount account);
+		T withStorageAccountExisting(com.microsoft.windowsazure.management.storage.models.StorageAccount account);
 	}
 
 	/**
@@ -161,7 +161,7 @@ public interface VirtualMachine extends
 		DefinitionWithGuestAgent<DefinitionProvisionable>,
 		DefinitionWithDeployment<DefinitionProvisionable>,
 		DefinitionWithDeploymentLabel<DefinitionProvisionable>,
-		DefinitionWithExistingStorageAccount<DefinitionProvisionable>,
+		DefinitionWithStorageAccountExisting<DefinitionProvisionable>,
 		DefinitionWithNewCloudService<DefinitionProvisionable>,
 		DefinitionWithSubnet<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {

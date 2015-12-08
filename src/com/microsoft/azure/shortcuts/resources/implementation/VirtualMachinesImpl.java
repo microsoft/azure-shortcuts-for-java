@@ -29,15 +29,26 @@ import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.AvailabilitySetReference;
 import com.microsoft.azure.management.compute.models.BootDiagnostics;
+import com.microsoft.azure.management.compute.models.CachingTypes;
 import com.microsoft.azure.management.compute.models.DataDisk;
 import com.microsoft.azure.management.compute.models.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.models.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.models.HardwareProfile;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.models.OSDisk;
 import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
+import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
+import com.microsoft.azure.management.resources.models.ResourceGroup;
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Size;
+import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
+import com.microsoft.azure.shortcuts.resources.VirtualMachine.DefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
@@ -91,6 +102,39 @@ public class VirtualMachinesImpl
 	}
 
 	
+	@Override
+	public DefinitionBlank define(String name) throws Exception {
+		return createVirtualMachineWrapper(name);
+	}
+
+	
+	/***************************************************
+	 * Helpers
+	 ***************************************************/
+	
+	VirtualMachineImpl createVirtualMachineWrapper(String name) {
+		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = new com.microsoft.azure.management.compute.models.VirtualMachine();
+		azureVM.setName(name);
+		azureVM.setType("Microsoft.Compute/virtualMachines");
+		azureVM.setId(name);
+		azureVM.setOSProfile(new OSProfile());
+		azureVM.setAvailabilitySetReference(new AvailabilitySetReference());
+		azureVM.setHardwareProfile(new HardwareProfile());
+		
+		StorageProfile storageProfile = new StorageProfile();
+		azureVM.setStorageProfile(storageProfile);
+		storageProfile.setImageReference(new ImageReference());
+		
+		OSDisk osDisk = new OSDisk("osdisk", new VirtualHardDisk(), DiskCreateOptionTypes.FROMIMAGE);
+		storageProfile.setOSDisk(osDisk);
+		osDisk.setCaching(CachingTypes.NONE);
+		
+		//TODO prepare the rest
+		
+		return new VirtualMachineImpl(azureVM);
+	}
+	
+	
 	/***************************************************
 	 * Implements logic for individual Virtual Machine
 	 ***************************************************/
@@ -98,20 +142,29 @@ public class VirtualMachinesImpl
 		extends 
 			ResourceBaseExtendedImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
 		implements 
-			VirtualMachine {
+			VirtualMachine,
+			VirtualMachine.DefinitionBlank,
+			VirtualMachine.DefinitionWithRegion,
+			VirtualMachine.DefinitionWithAdminUsername,
+			VirtualMachine.DefinitionWithAdminPassword,
+			VirtualMachine.DefinitionWithImagePublishedBy,
+			VirtualMachine.DefinitionWithImageOffer,
+			VirtualMachine.DefinitionWithImageSKU,
+			VirtualMachine.DefinitionWithImageVersion,
+			VirtualMachine.DefinitionProvisionable {
+
+		private boolean isExistingStorageAccount, isExistingGroup;
+		private String storageAccountName, group;
 
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
 		}
 
-		@Override
-		public VirtualMachineImpl refresh() throws Exception {
-			this.setInner(azure.computeManagementClient().getVirtualMachinesOperations().get(
-				ResourcesImpl.groupFromResourceId(this.id()),
-				ResourcesImpl.nameFromResourceId(this.id())).getVirtualMachine());
-			return this;
-		}
 
+		/***************************************************
+		 * Getters
+		 ***************************************************/
+		
 		@Override
 		public String size() {
 			return this.inner().getHardwareProfile().getVirtualMachineSize();
@@ -239,6 +292,156 @@ public class VirtualMachinesImpl
 			}
 			
 			return Collections.unmodifiableList(p.getDataDisks());
+		}
+		
+		
+		/*******************************************************
+		 * Setters (fluent interface)
+		 *******************************************************/
+		
+		@Override
+		public VirtualMachineImpl withRegion(String region) {
+			this.inner().setLocation(region);
+			return this;
+		}
+
+		@Override
+		public DefinitionWithImagePublishedBy withAdminPassword(String password) {
+			this.inner().getOSProfile().setAdminPassword(password);
+			return this;
+		}
+
+
+		@Override
+		public VirtualMachineImpl withAdminUsername(String username) {
+			this.inner().getOSProfile().setAdminUsername(username);
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withImagePublishedBy(String publisher) {
+			this.inner().getStorageProfile().getImageReference().setPublisher(publisher);
+			return this;
+		}
+
+		
+		@Override
+		public VirtualMachineImpl withImageOffer(String offer) {
+			this.inner().getStorageProfile().getImageReference().setOffer(offer);
+			return this;
+		}
+
+		
+		@Override
+		public VirtualMachineImpl withImageSKU(String sku) {
+			this.inner().getStorageProfile().getImageReference().setSku(sku);
+			return this;
+		}
+
+		
+		@Override
+		public VirtualMachineImpl withImageVersion(String version) {
+			this.inner().getStorageProfile().getImageReference().setVersion(version);
+			return this;
+		}
+
+
+		@Override
+		public VirtualMachineImpl withLatestImageVersion() {
+			this.inner().getStorageProfile().getImageReference().setVersion("latest");
+			return this;
+		}
+
+		
+		@Override
+		public VirtualMachineImpl withAvailabilitySet(URI availabilitySetURI) {
+			this.inner().getAvailabilitySetReference().setReferenceUri(availabilitySetURI.toString());
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withSize(String sizeName) {
+			this.inner().getHardwareProfile().setVirtualMachineSize(sizeName);
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withSize(Size.Type size) {
+			return this.withSize(size.toString());
+		}
+
+		@Override
+		public VirtualMachineImpl withSize(Size size) {
+			return this.withSize(size.id());
+		}
+		
+		@Override
+		public VirtualMachineImpl withStorageAccountExisting(String name) {
+			this.storageAccountName = name.toLowerCase();
+			this.isExistingStorageAccount = true;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withStorageAccountExisting(StorageAccount storageAccount) {
+			return this.withStorageAccountExisting(storageAccount.name());
+		}
+
+		@Override
+		public VirtualMachineImpl withStorageAccountExisting(
+				com.microsoft.azure.management.storage.models.StorageAccount storageAccount) {
+			return this.withStorageAccountExisting(storageAccount.getName());
+		}
+
+		@Override
+		public VirtualMachineImpl withStorageAccountNew(String name) {
+			this.storageAccountName = name;
+			this.isExistingStorageAccount = false;
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withGroupExisting(String name) {
+			this.group = name;
+			this.isExistingGroup = true;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withGroupExisting(Group group) {
+			return this.withGroupExisting(group.name());
+		}
+
+		@Override
+		public VirtualMachineImpl withGroupExisting(ResourceGroupExtended group) {
+			return this.withGroupExisting(group.getName());
+		}
+
+		@Override
+		public VirtualMachineImpl withGroupNew(String name) {
+			this.group = name;
+			this.isExistingGroup = false;
+			return this;
+		}
+
+		/*******************************************************
+		 * Verbs
+		 *******************************************************/
+		
+		@Override
+		public UpdateBlank provision() throws Exception {
+			// TODO 
+			throw new UnsupportedOperationException("Not yet implemented.");
+			//return null;
+		}
+		
+		
+		@Override
+		public VirtualMachineImpl refresh() throws Exception {
+			this.setInner(azure.computeManagementClient().getVirtualMachinesOperations().get(
+				ResourcesImpl.groupFromResourceId(this.id()),
+				ResourcesImpl.nameFromResourceId(this.id())).getVirtualMachine());
+			return this;
 		}
 	}
 }
