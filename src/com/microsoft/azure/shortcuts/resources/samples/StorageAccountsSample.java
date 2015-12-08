@@ -63,7 +63,8 @@ public class StorageAccountsSample {
     	StringBuilder output = new StringBuilder();
     	output
     		.append(String.format("Storage account id: %s\n", storageAccount.id()))
-    		.append(String.format("Storage account name: %s\n", storageAccount.name()))
+    		.append(String.format("\tName: %s\n", storageAccount.name()))
+    		.append(String.format("\tGroup: %s\n", storageAccount.group()))
     		;
     	
     	System.out.println(output.toString());

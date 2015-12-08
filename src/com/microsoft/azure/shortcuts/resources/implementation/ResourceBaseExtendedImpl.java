@@ -58,4 +58,9 @@ public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.window
 	public String name() {
 		return this.inner().getName();
 	}
+	
+	@Override 
+	public String group() {
+		return ResourcesImpl.groupFromResourceId(this.id());
+	}
 }

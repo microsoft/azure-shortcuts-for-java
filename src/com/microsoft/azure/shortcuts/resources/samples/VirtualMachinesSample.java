@@ -92,7 +92,9 @@ public class VirtualMachinesSample {
 			.append(String.format("\tComputer name: %s\n", vm.computerName()))
 			.append(String.format("\tCustom data: %s\n", vm.customData()))
 			.append(String.format("\tNumber of data disks: %d\n", vm.dataDisks().size()))
-			.append(String.format("\tNumber of extensions: %d\n", vm.extensions().size()));
+			.append(String.format("\tNumber of extensions: %d\n", vm.extensions().size()))
+			.append(String.format("\tGroup: %s\n", vm.group()))
+			;
 			
 		System.out.println(info.toString());
     }

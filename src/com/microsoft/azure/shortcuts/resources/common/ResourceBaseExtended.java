@@ -27,4 +27,5 @@ public interface ResourceBaseExtended extends
 	
 	public String type();
 	public String name();
+	public String group();
 }

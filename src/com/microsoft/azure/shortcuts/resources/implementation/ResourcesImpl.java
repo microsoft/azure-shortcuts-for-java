@@ -194,16 +194,6 @@ public class ResourcesImpl
 		 ***********************************************************/
 
 		@Override
-		public String group() throws Exception {
-			return RESOURCE_ID.GROUP.from(this.inner().getId());
-		}
-
-		@Override
-		public String shortName() throws Exception {
-			return RESOURCE_ID.NAME.from(this.inner().getId());
-		}
-
-		@Override
 		public String provider() throws Exception {
 			return RESOURCE_ID.PROVIDER.from(this.inner().getId());
 		}

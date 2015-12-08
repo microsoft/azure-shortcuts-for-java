@@ -58,7 +58,7 @@ public class ResourcesSample {
     		
     	// Getting information about a specific resource based on name, type, provider and group
         resource =  azure.resources().get(
-        	resource.shortName(),
+        	resource.name(),
         	resource.type(),
         	resource.provider(),
         	resource.group());
@@ -66,7 +66,7 @@ public class ResourcesSample {
     	    	
     	// Delete a resource 
         System.out.println(String.format("Deleting resource '%s' of type '%s' by provider '%s' in group '%s'",
-        	resource.shortName(),
+        	resource.name(),
         	resource.type(),
         	resource.provider(),
         	resource.group()));
@@ -96,7 +96,7 @@ public class ResourcesSample {
 			resource.group(),
 			resource.provider(),
 			resource.region(),
-			resource.shortName(),
+			resource.name(),
 			resource.tags(),
 			resource.type(),
 			resource.provisioningState()

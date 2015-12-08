@@ -560,10 +560,7 @@ StorageAccount storageAccount = azure.storageAccounts("<group-name>", "<storage-
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.storageAccounts().update("mystorage")
-	.withDescription("Updated")
-	.withLabel("Updated")
-	.apply();
+azure.storageAccounts().delete("mystorage");
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
@@ -714,7 +711,7 @@ System.out.println(String.format("Found resource ID: %s\n"
 	resource.group(),
 	resource.provider(),
 	resource.region(),
-	resource.shortName(),
+	resource.name(),
 	resource.tags(),
 	resource.type(),
 	resource.provisioningState()

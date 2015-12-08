@@ -31,8 +31,6 @@ public interface Resource extends
 	Wrapper<GenericResourceExtended>,
 	Deletable {
 	
-    String group() throws Exception;
-    String shortName() throws Exception;
     String provider() throws Exception;
     String properties() throws Exception;
     String provisioningState() throws Exception;
