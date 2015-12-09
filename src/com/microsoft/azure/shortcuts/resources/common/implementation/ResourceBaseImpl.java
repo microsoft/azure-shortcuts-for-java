@@ -17,13 +17,14 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.implementation;
+package com.microsoft.azure.shortcuts.resources.common.implementation;
 
 import java.util.Collections;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
 public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>

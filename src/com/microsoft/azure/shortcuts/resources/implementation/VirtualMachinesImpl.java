@@ -49,6 +49,7 @@ import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine.DefinitionBlank;
+import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl

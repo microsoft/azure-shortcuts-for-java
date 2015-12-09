@@ -31,6 +31,7 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
+import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
 
 
 public class NetworksImpl 

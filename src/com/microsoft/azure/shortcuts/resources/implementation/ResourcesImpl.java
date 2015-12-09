@@ -29,6 +29,7 @@ import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Provider.ResourceType;
+import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.windowsazure.core.ResourceIdentity;

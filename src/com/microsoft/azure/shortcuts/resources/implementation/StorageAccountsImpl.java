@@ -34,6 +34,7 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
+import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
 
 
 public class StorageAccountsImpl 
