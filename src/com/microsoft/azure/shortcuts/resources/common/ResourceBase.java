@@ -59,6 +59,14 @@ public interface ResourceBase extends
 	
 	
 	/**
+	 * A resource definition allowing to speficy the name of a new resource group to create for this resource
+	 */
+	interface DefinitionWithGroupNew<T> {
+		T withGroupNew(String name);
+	}
+	
+	
+	/**
 	 * A resource definition allowing a region be selected for the resource
 	 */	
 	interface DefinitionWithRegion<T> {

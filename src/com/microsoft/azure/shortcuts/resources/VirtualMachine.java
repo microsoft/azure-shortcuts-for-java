@@ -60,20 +60,13 @@ public interface VirtualMachine extends
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
 	 */
 	interface DefinitionBlank extends 
-		DefinitionWithRegion {
+		ResourceBase.DefinitionWithRegion<DefinitionWithAdminUsername> {
 		/*TODO 
 		 * Defaulted: groupName, endpoints, vnetname, storageAccountName
 		 * Optional:  tags
 		 */
 	}
 	
-	
-	/**
-	 * A virtual machine definition requiring the region to be specified
-	 */
-	interface DefinitionWithRegion extends 
-		ResourceBase.DefinitionWithRegion<DefinitionWithAdminUsername> { }
-
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
@@ -209,15 +202,7 @@ public interface VirtualMachine extends
 		T withSize(Size size);		
 	}
 	
-	/**
-	 * A virtual machine definition allowing to specify a new resource group to create for the virtual machine
-	 */
-	interface DefinitionWithGroupNew<T> {
-		T withGroupNew(String name);
-		// TODO T withGroupNew(Group.DefinitionProvisionable groupDefinition);
-	}
-	
-	
+
 	/**
 	 * A virtual machine definition with sufficient inputs to provision a new virtual machine in the cloud, 
 	 * but exposing additional optional inputs to specify
@@ -227,7 +212,7 @@ public interface VirtualMachine extends
 		DefinitionWithStorageAccountNew<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
 		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		DefinitionWithGroupNew<DefinitionProvisionable>,
+		ResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
 		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 		

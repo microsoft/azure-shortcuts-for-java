@@ -49,22 +49,17 @@ public interface StorageAccount extends
 	/**
 	 * A new blank storage account definition
 	 */
-	public interface DefinitionBlank extends ResourceBase.DefinitionWithRegion<DefinitionProvisionable> { }
-	
-	/**
-	 * A storage account definition allowing an existing group to be selected for the storage account
-	 */
-	public interface DefinitionWithGroup<T> extends ResourceBase.DefinitionWithGroupExisting<T> {
-	}
-	
+	public interface DefinitionBlank extends 
+		ResourceBase.DefinitionWithRegion<DefinitionProvisionable> { }
 	
 	/**
 	 * A new storage account definition with sufficient input parameters specified already to be provisioned in the cloud
 	 */
 	public interface DefinitionProvisionable extends 
-		DefinitionWithGroup<DefinitionProvisionable>,
+		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
 		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<StorageAccount> {
+		
 		/**
 		 * @param type The type of the storage account
 		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud

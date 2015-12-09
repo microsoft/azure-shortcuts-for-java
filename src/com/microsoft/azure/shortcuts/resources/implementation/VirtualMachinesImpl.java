@@ -145,7 +145,6 @@ public class VirtualMachinesImpl
 		implements 
 			VirtualMachine,
 			VirtualMachine.DefinitionBlank,
-			VirtualMachine.DefinitionWithRegion,
 			VirtualMachine.DefinitionWithAdminUsername,
 			VirtualMachine.DefinitionWithAdminPassword,
 			VirtualMachine.DefinitionWithImagePublishedBy,
