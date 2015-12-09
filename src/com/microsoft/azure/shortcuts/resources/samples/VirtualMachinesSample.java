@@ -22,6 +22,8 @@ package com.microsoft.azure.shortcuts.resources.samples;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
@@ -57,12 +59,12 @@ public class VirtualMachinesSample {
     	
     	// Listing all virtual machine ids in a subscription
     	Map<String, VirtualMachine> vms = azure.virtualMachines().list();
-    	System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
+    	System.out.println(String.format("Virtual machines: \n\t%s",  StringUtils.join(vms.keySet(), "\n\t")));
 
     	// Listing vms in a specific group
     	String groupName = "group1444089227523";
     	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().list(groupName);
-    	System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vmsInGroup.keySet())));
+    	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmsInGroup.keySet(), "\n\t")));
     	
     	// Listing virtual machines as objects
     	String vmID = null;
