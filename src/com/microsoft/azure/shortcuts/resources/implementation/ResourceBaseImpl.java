@@ -23,15 +23,16 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
 
-public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
-	extends IndexableRefreshableWrapperImpl<T, I>
+public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
+	extends 
+		IndexableRefreshableWrapperImpl<T, I>
 	implements 
-		ResourceBaseExtended {
+		ResourceBase {
 
-	protected ResourceBaseExtendedImpl(String id, I innerObject) {
+	protected ResourceBaseImpl(String id, I innerObject) {
 		super(id, innerObject);
 	}
 
@@ -69,5 +70,9 @@ public abstract class ResourceBaseExtendedImpl<T, I extends com.microsoft.window
 	public String group() {
 		return ResourcesImpl.groupFromResourceId(this.id());
 	}
+	
+	/*********************************************
+	 * Setters (fluent interface)
+	 *********************************************/
 	
 }

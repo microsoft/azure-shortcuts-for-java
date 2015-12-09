@@ -27,14 +27,13 @@ import com.microsoft.azure.management.compute.models.DataDisk;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
 public interface VirtualMachine extends 
-	ResourceBaseExtended,
+	ResourceBase,
 	Refreshable<VirtualMachine>,
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine> {
 	
@@ -72,13 +71,8 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring the region to be specified
 	 */
-	interface DefinitionWithRegion {
-		/**
-		 * @param region The name of the location (Azure region) where the VM is to be created
-		 * @return The next stage of the VM definition
-		 */
-		DefinitionWithAdminUsername withRegion(String region);
-	}
+	interface DefinitionWithRegion extends 
+		ResourceBase.DefinitionWithRegion<DefinitionWithAdminUsername> { }
 
 	
 	/**
@@ -215,31 +209,6 @@ public interface VirtualMachine extends
 		T withSize(Size size);		
 	}
 	
-	
-	/**
-	 * A virtual machine definition allowing to select an existing resource group to associate the virtual machine with
-	 */
-	interface DefinitionWithGroupExisting<T> {
-		/**
-		 * @param name The name of an existing resource group to associate the virtual machine with
-		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
-		 */
-		T withGroupExisting(String name);
-
-		/**
-		 * @param group The Group object representing an existing group to associate the virtual machine with
-		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
-		 */
-		T withGroupExisting(Group group);
-
-		/**
-		 * @param group The ResourceGroup object (from the Azure SDK for Java) representing an existing resource group to associate the virtual machine with
-		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
-		 */
-		T withGroupExisting(ResourceGroupExtended group);
-	}
-	
-	
 	/**
 	 * A virtual machine definition allowing to specify a new resource group to create for the virtual machine
 	 */
@@ -257,8 +226,9 @@ public interface VirtualMachine extends
 		DefinitionWithStorageAccountExisting<DefinitionProvisionable>,
 		DefinitionWithStorageAccountNew<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
-		DefinitionWithGroupExisting<DefinitionProvisionable>,
+		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
 		DefinitionWithGroupNew<DefinitionProvisionable>,
+		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 		
 		/**

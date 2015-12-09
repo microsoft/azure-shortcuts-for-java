@@ -21,7 +21,6 @@ package com.microsoft.azure.shortcuts.resources;
 
 import java.net.URL;
 
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.shortcuts.common.Deletable;
@@ -29,11 +28,11 @@ import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 import com.microsoft.azure.shortcuts.resources.common.Taggable;
 
 public interface StorageAccount extends 
-	ResourceBaseExtended,
+	ResourceBase,
 	Refreshable<StorageAccount>,
 	Wrapper<com.microsoft.azure.management.storage.models.StorageAccount> {
 
@@ -50,36 +49,12 @@ public interface StorageAccount extends
 	/**
 	 * A new blank storage account definition
 	 */
-	public interface DefinitionBlank {
-		/**
-		 * @param region The name of the location for the storage account 
-		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
-		 */
-	    DefinitionProvisionable withRegion(String region);
-	}
+	public interface DefinitionBlank extends ResourceBase.DefinitionWithRegion<DefinitionProvisionable> { }
 	
 	/**
 	 * A storage account definition allowing an existing group to be selected for the storage account
 	 */
-	public interface DefinitionWithGroup<T> {
-		/**
-		 * @param groupName The name of an existing resource group to put the storage account in
-		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
-		 */
-		T withGroupExisting(String groupName);
-		
-		/**
-		 * @param group An existing resource group to put the storage account in
-		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
-		 */
-		T withGroupExisting(Group group);
-		
-		/**
-		 * @param group An existing resource group object as returns by the Azure SDK for Java to put the storage account in
-		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
-		 */
-		T withGroupExisting(ResourceGroupExtended group);
-		
+	public interface DefinitionWithGroup<T> extends ResourceBase.DefinitionWithGroupExisting<T> {
 	}
 	
 	
@@ -88,6 +63,7 @@ public interface StorageAccount extends
 	 */
 	public interface DefinitionProvisionable extends 
 		DefinitionWithGroup<DefinitionProvisionable>,
+		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<StorageAccount> {
 		/**
 		 * @param type The type of the storage account

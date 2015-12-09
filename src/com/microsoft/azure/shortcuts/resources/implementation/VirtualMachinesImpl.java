@@ -140,7 +140,7 @@ public class VirtualMachinesImpl
 	 ***************************************************/
 	private class VirtualMachineImpl
 		extends 
-			ResourceBaseExtendedImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
+			ResourceBaseImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
 		implements 
 			VirtualMachine,
 			VirtualMachine.DefinitionBlank,
@@ -424,6 +424,18 @@ public class VirtualMachinesImpl
 			return this;
 		}
 
+		@Override
+		public DefinitionProvisionable withTags(Map<String, String> tags) {
+			this.inner().setTags(new HashMap<>(tags));
+			return this;
+		}
+
+		@Override
+		public DefinitionProvisionable withTag(String key, String value) {
+			this.inner().getTags().put(key, value);
+			return this;
+		}
+		
 		
 		/*******************************************************
 		 * Verbs

@@ -23,10 +23,10 @@ import com.microsoft.azure.management.resources.models.GenericResourceExtended;
 import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
 public interface Resource extends 
-	ResourceBaseExtended,
+	ResourceBase,
 	Refreshable<Resource>,
 	Wrapper<GenericResourceExtended>,
 	Deletable {

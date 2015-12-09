@@ -110,7 +110,7 @@ public class StorageAccountsImpl
 	 ***************************************************************/
 	private class StorageAccountImpl 
 		extends 
-			ResourceBaseExtendedImpl<StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
+			ResourceBaseImpl<StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
 		implements
 			StorageAccount,
 			StorageAccount.DefinitionBlank,
@@ -181,6 +181,20 @@ public class StorageAccountsImpl
 		}		
 
 
+		@Override
+		public StorageAccountImpl withTags(Map<String, String> tags) {
+			this.inner().setTags(new HashMap<>(tags));
+			return this;
+		}
+
+
+		@Override
+		public DefinitionProvisionable withTag(String key, String value) {
+			this.inner().getTags().put(key, value);
+			return null;
+		}
+
+		
 		/************************************************************
 		 * Verbs
 		 ************************************************************/

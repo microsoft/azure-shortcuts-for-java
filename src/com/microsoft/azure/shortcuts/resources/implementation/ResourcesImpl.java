@@ -201,7 +201,7 @@ public class ResourcesImpl
 	// Implements the individual resource logic
 	private class ResourceImpl 
 		extends
-			ResourceBaseExtendedImpl<Resource, GenericResourceExtended>
+			ResourceBaseImpl<Resource, GenericResourceExtended>
 		implements 
 			Resource {
 		

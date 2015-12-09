@@ -27,10 +27,10 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBaseExtended;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
 public interface Network extends 
-	ResourceBaseExtended,
+	ResourceBase,
 	Refreshable<Network>,
 	Wrapper<VirtualNetwork> {
 	

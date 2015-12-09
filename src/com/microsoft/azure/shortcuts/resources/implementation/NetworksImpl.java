@@ -101,7 +101,7 @@ public class NetworksImpl
 	 ***************************************************************/
 	private class NetworkImpl 
 		extends 
-			ResourceBaseExtendedImpl<Network, VirtualNetwork>
+			ResourceBaseImpl<Network, VirtualNetwork>
 		implements
 			Network {
 		
