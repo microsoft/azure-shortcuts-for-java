@@ -21,10 +21,10 @@ package com.microsoft.azure.shortcuts.resources;
 
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.SupportsListing;
 
 public interface Sizes extends 
-	SupportsListingEntities<Size> {
+	SupportsListing<Size> {
 
 	/**
 	 * @param region

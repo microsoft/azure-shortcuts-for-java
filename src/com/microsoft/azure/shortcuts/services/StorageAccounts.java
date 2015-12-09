@@ -21,14 +21,14 @@ package com.microsoft.azure.shortcuts.services;
 
 import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.SupportsListing;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.common.SupportsUpdating;
 
 public interface StorageAccounts extends
 	SupportsCreating<StorageAccount.DefinitionBlank>, 
 	SupportsUpdating<StorageAccount.UpdateBlank>,
-	SupportsListingEntities<StorageAccount>,
+	SupportsListing<StorageAccount>,
 	SupportsGetting<StorageAccount>,
 	SupportsDeleting {
 }

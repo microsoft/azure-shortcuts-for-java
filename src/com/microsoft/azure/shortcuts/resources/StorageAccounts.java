@@ -23,11 +23,11 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
-import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.SupportsListing;
 import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
 
 public interface StorageAccounts extends 
-	SupportsListingEntities<StorageAccount>, 
+	SupportsListing<StorageAccount>, 
 	SupportsGetting<StorageAccount>,
 	SupportsGettingByGroup<StorageAccount>,
 	SupportsCreating<StorageAccount.DefinitionBlank> {

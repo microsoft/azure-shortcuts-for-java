@@ -21,12 +21,12 @@ package com.microsoft.azure.shortcuts.services;
 
 import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.SupportsListing;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.common.SupportsUpdating;
 
 public interface CloudServices extends 
-	SupportsListingEntities<CloudService>,
+	SupportsListing<CloudService>,
 	SupportsGetting<CloudService>,
 	SupportsCreating<CloudService.DefinitionBlank>,
 	SupportsDeleting,

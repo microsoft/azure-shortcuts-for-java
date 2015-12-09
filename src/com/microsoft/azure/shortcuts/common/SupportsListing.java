@@ -22,6 +22,6 @@ package com.microsoft.azure.shortcuts.common;
 import java.util.Map;
 
 // Requires class to support listing entities
-public interface SupportsListingEntities<T> {
+public interface SupportsListing<T> {
 	Map<String, T> list() throws Exception;
 }

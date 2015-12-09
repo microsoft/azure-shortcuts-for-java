@@ -19,10 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.SupportsListingEntities;
+import com.microsoft.azure.shortcuts.common.SupportsListing;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 
 public interface Providers extends 
 	SupportsGetting<Provider>,
-	SupportsListingEntities<Provider> {
+	SupportsListing<Provider> {
 }
