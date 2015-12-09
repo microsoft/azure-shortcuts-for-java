@@ -3,11 +3,11 @@ package com.microsoft.azure.shortcuts.resources;
 import com.microsoft.azure.shortcuts.common.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.SupportsListing;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
-import com.microsoft.azure.shortcuts.resources.common.SupportsListingEntitiesByGroup;
+import com.microsoft.azure.shortcuts.resources.common.SupportsListingByGroup;
 
 public interface Resources extends
 	SupportsListing<Resource>,
-	SupportsListingEntitiesByGroup<Resource>,
+	SupportsListingByGroup<Resource>,
 	SupportsGetting<Resource>,
 	SupportsDeleting {
 

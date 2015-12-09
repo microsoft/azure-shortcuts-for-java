@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.resources.common;
 
 import java.util.Map;
 
-public interface SupportsListingEntitiesByGroup<T> {
+public interface SupportsListingByGroup<T> {
 	/**
 	 * Lists the entities in a specific group
  	 * @param groupName
