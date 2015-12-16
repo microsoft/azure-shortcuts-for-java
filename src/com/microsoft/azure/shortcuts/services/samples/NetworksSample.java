@@ -52,7 +52,7 @@ public class NetworksSample {
 		System.out.println(String.format("Creating virtual network named '%s'...", networkName));
 		azure.networks().define(networkName)
 			.withRegion("West US")
-			.withCidr("10.0.0.0/28")
+			.withAddressSpace("10.0.0.0/28")
 			.withSubnet("Foo", "10.0.0.0/29")
 			.withSubnet("Bar", "10.0.0.8/29")
 			.provision();
@@ -74,7 +74,7 @@ public class NetworksSample {
 		System.out.println(String.format("Creating virtual network named '%s'...", networkName));
 		azure.networks().define(networkName)
 			.withRegion("West US")
-			.withCidr("10.0.0.0/29")
+			.withAddressSpace("10.0.0.0/29")
 			.provision();
 
 		// List the virtual networks

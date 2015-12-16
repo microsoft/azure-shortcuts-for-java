@@ -254,20 +254,26 @@ Set<String> osImageNames = azure.osImages().list().keySet();
 
 ### Virtual Networks
 
-#### Creating a virtual network with a default subnet
+#### Creating a virtual network with an explicitly defined address space and a default subnet
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.networks().define("mynetwork")
 	.withRegion("West US")
-	.withCidr("10.0.0.0/29")
+	.withAddressSpace("10.0.0.0/29")
 	.provision();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
 
+```java
+azure.networks().define(newNetworkName)
+    .withGroupExisting(existingGroupName)
+    .withRegion("westus")
+    .withAddressSpace("10.0.0.0/29")
+    .provision();
+```
 
 #### Creating a virtual network with multiple, explicitly defined subnets
 
@@ -276,14 +282,24 @@ azure.networks().define("mynetwork")
 ```java
 azure.networks().define("mynetwork")
 	.withRegion("West US")
-	.withCidr("10.0.0.0/28")
+	.withAddressSpace("10.0.0.0/28")
 	.withSubnet("Foo", "10.0.0.0/29")
 	.withSubnet("Bar", "10.0.0.8/29")
 	.provision();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+
+```java
+azure.networks().define(newNetworkName + "2")
+    .withGroupExisting(existingGroupName)
+    .withRegion("westus")
+    .withAddressSpace("10.0.0.0/28")
+    .withSubnet("Foo", "10.0.0.0/29")
+    .withSubnet("Bar", "10.0.0.8/29")
+    .provision();
+```
+
 
 #### Listing virtual networks 
 
@@ -340,7 +356,9 @@ or by providing the group name and the virtual network name:
 Network network = azure.networks("<group-name>", "<network-name>");
 ```
 
-The subnets of a virtual network are available from `network.subnets()`.
+The subnets of the virtual network are available from `network.subnets()`.
+The IP addresses of DNS servers associated with the virtual network are available from `network.dnsServerIPs()`.
+The address spaces (in CIDR format) of the virtual network are available from `network.addressSpaces()`.
 
 
 #### Deleting a virtual network

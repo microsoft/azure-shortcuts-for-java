@@ -51,7 +51,7 @@ public interface Network extends
 	 * A new blank network definition
 	 */
 	public interface DefinitionBlank extends 
-		DefinitionWithRegion<DefinitionWithCidr> {
+		DefinitionWithRegion<DefinitionWithAddressSpace> {
 	}
 	
 	/**
@@ -80,8 +80,8 @@ public interface Network extends
 	/**
 	 * A new network definition requiring the CIDR input parameter to be specified
 	 */
-	public interface DefinitionWithCidr {
-		DefinitionProvisionable withCidr(String cidr);
+	public interface DefinitionWithAddressSpace {
+		DefinitionProvisionable withAddressSpace(String cidr);
 	}
 	
 	

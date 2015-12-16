@@ -79,7 +79,7 @@ public class VirtualMachinesSample {
 		System.out.println(String.format("Creating virtual network named '%s'...", network));
 		azure.networks().define(network)		
 			.withRegion("West US")
-			.withCidr("10.0.0.0/28")
+			.withAddressSpace("10.0.0.0/28")
 			.withSubnet("Foo", "10.0.0.0/29")
 			.withSubnet("Bar", "10.0.0.8/29")
 			.provision();

@@ -45,10 +45,11 @@ public class NetworksSample {
     	String existingGroupName = "group1444089227523";
     	String newNetworkName = "marcinsvnetx";
     	
-    	// Create a new network
+    	// Create a new network with a default subnet
     	network = azure.networks().define(newNetworkName)
     			.withGroupExisting(existingGroupName)
     			.withRegion("westus")
+    			.withAddressSpace("10.0.0.0/28")
     			.provision();
     	
     	// Get info about a specific network using its group and name
@@ -66,7 +67,18 @@ public class NetworksSample {
     	// Get info about a specific network using its resource ID
     	network = azure.networks(network.id());
     	printNetwork(network);
-
+    	
+    	// Create a new network with two subnets
+    	network = azure.networks().define(newNetworkName + "2")
+    		.withGroupExisting(existingGroupName)
+    		.withRegion("westus")
+    		.withAddressSpace("10.0.0.0/28")
+    		.withSubnet("Foo", "10.0.0.0/29")
+    		.withSubnet("Bar", "10.0.0.8/29")
+    		.provision();
+    	
+    	printNetwork(network);
+    	
     }
     
     
@@ -77,7 +89,7 @@ public class NetworksSample {
     		.append(String.format("\tName: %s\n", network.name()))
     		.append(String.format("\tGroup: %s\n", network.group()))
     		.append(String.format("\tProvisioning state: %s\n", network.provisioningState()))
-    		.append(String.format("\tAddress prefixes: %s\n", StringUtils.join(network.addressSpaces(), ", ")))
+    		.append(String.format("\tAddress spaces: %s\n", StringUtils.join(network.addressSpaces(), ", ")))
     		.append(String.format("\tDNS servers: %s\n", StringUtils.join(network.dnsServerIPs(), ", ")));
     	
     	for(Subnet subnet : network.subnets().values()) {

@@ -134,7 +134,7 @@ public class NetworksImpl
 		extends IndexableRefreshableWrapperImpl<Network, VirtualNetworkSite>
 		implements 
 			Network.DefinitionBlank, 
-			Network.DefinitionWithCidr, 
+			Network.DefinitionWithAddressSpace, 
 			Network.DefinitionProvisionable,
 			Network.UpdateBlank,
 			Network {
@@ -223,7 +223,7 @@ public class NetworksImpl
 		}
 		
 		@Override
-		public NetworkImpl withCidr(String cidr) {
+		public NetworkImpl withAddressSpace(String cidr) {
 			this.inner().getAddressSpace().getAddressPrefixes().add(cidr);
 			return this;
 		}
