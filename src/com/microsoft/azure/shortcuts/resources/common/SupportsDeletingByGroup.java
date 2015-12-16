@@ -17,22 +17,14 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources;
+package com.microsoft.azure.shortcuts.resources.common;
 
-import com.microsoft.azure.shortcuts.common.SupportsListing;
-import com.microsoft.azure.shortcuts.common.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.SupportsGetting;
-import com.microsoft.azure.shortcuts.resources.common.SupportsDeletingByGroup;
-import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
-import com.microsoft.azure.shortcuts.resources.common.SupportsListingByGroup;
-
-public interface Networks extends 
-	SupportsListing<Network>,
-	SupportsListingByGroup<Network>,
-	SupportsGetting<Network>,
-	SupportsGettingByGroup<Network>,
-	SupportsCreating<Network.DefinitionBlank>,
-	SupportsDeleting,
-	SupportsDeletingByGroup {
+public interface SupportsDeletingByGroup {
+	/**
+	 * Deletes a resource from a specific group
+	 * @param groupName The group the resource is part of
+	 * @param name The name of the resource within that group
+	 * @throws Exception
+	 */
+	void delete(String groupName, String name) throws Exception;
 }

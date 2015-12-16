@@ -68,6 +68,9 @@ public class NetworksSample {
     	network = azure.networks(network.id());
     	printNetwork(network);
     	
+    	// Delete the network
+    	azure.networks().delete(network.id());
+    	
     	// Create a new network with two subnets
     	network = azure.networks().define(newNetworkName + "2")
     		.withGroupExisting(existingGroupName)
@@ -78,7 +81,9 @@ public class NetworksSample {
     		.provision();
     	
     	printNetwork(network);
-    	
+
+    	// Delete the network
+    	network.delete();
     }
     
     

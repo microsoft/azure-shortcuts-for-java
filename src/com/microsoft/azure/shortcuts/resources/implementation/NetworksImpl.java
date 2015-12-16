@@ -87,6 +87,20 @@ public class NetworksImpl
 	}
 
 	
+	@Override
+	public void delete(String id) throws Exception {
+		this.delete(
+				ResourcesImpl.groupFromResourceId(id), 
+				ResourcesImpl.nameFromResourceId(id));
+	}
+	
+	
+	@Override
+	public void delete(String groupName, String name) throws Exception {
+		azure.networkManagementClient().getVirtualNetworksOperations().delete(groupName, name);
+	}
+
+
 	/***************************************************
 	 * Helpers
 	 ***************************************************/
@@ -254,6 +268,11 @@ public class NetworksImpl
 		/************************************************************
 		 * Verbs
 		 ************************************************************/
+
+		@Override
+		public void delete() throws Exception {
+			azure.networks().delete(this.id());
+		}
 
 		@Override
 		public NetworkImpl provision() throws Exception {

@@ -370,7 +370,29 @@ azure.networks().delete("mynetwork");
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+
+```java
+azure.networks().delete("<network-resource-id>);
+```
+
+or
+
+```java
+azure.networks().delete("<resource-group-name>", "<network-name>");
+```
+
+or 
+
+```java
+azure.networks("<network-resource-id>").delete();
+```
+
+or
+
+```java
+azure.networks("<resource-group-name>", "<network-name>").delete();
+```
+
 
 ### Cloud Services
 

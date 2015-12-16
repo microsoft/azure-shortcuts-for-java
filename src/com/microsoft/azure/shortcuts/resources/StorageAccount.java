@@ -64,8 +64,7 @@ public interface StorageAccount extends
 		 * @param type The type of the storage account
 		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
 		 */
-	    DefinitionProvisionable withAccountType(AccountType type);
-	    
+	    DefinitionProvisionable withAccountType(AccountType type);   
 	}
 	
 	

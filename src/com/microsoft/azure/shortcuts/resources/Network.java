@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
@@ -33,7 +34,8 @@ public interface Network extends
 	Indexable,
 	ResourceBase,
 	Refreshable<Network>,
-	Wrapper<VirtualNetwork> {
+	Wrapper<VirtualNetwork>,
+	Deletable {
 	
 	String provisioningState();
 	List<String> addressSpaces();
