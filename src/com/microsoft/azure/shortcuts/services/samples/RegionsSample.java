@@ -19,7 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.services.samples;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -46,8 +47,14 @@ public class RegionsSample {
 	
 	public static void test(Azure azure) throws Exception {
 		// List regions supporting VM
-		List<String> regionNames = azure.regions().names(LocationAvailableServiceNames.PERSISTENTVMROLE);
+		Set<String> regionNames = azure.regions().list(LocationAvailableServiceNames.PERSISTENTVMROLE).keySet();
 		System.out.println("Available regions supporting VMs: " + StringUtils.join(regionNames, ", "));
+		
+		// List all regions info
+		Map<String, Region> regions = azure.regions().list();
+		for(Region r : regions.values()) {
+			printRegion(r);
+		}
 		
 		// Get info about a specific region
 		Region region = azure.regions("West US");

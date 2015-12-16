@@ -21,7 +21,9 @@ package com.microsoft.azure.shortcuts.services.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
@@ -40,26 +42,27 @@ public class RegionsImpl
 	}
 	
 	@Override
-	public List<String> names(String serviceType) {
+	public Map<String, Region> list() throws Exception {
+		return this.list(null);
+	}
+	
+	@Override
+	public Map<String, Region> list(String serviceType) {
+		HashMap<String, Region> wrappers = new HashMap<>();
 		try {
-			ArrayList<Location> items = azure.managementClient().getLocationsOperations().list().getLocations();
-			ArrayList<String> names = new ArrayList<>();
-			for(Location item : items) {
-				names.add(item.getName());
+			for(Location nativeItem : getAzureLocations()) {
+				if(serviceType == null || nativeItem.getAvailableServices().contains(serviceType)) {
+					wrappers.put(nativeItem.getName(), new RegionImpl(nativeItem));
+				}
 			}
-			return names;
+			
+			return Collections.unmodifiableMap(wrappers);
 		} catch (Exception e) {
-			// Not very actionable, so just return an empty array
-			return new ArrayList<>();
+			return Collections.unmodifiableMap(new HashMap<String, Region>());
 		}
+		
 	}
 
-	@Override
-	public List<String> names() {
-		return names(null);
-	}
-	
-	
 	@Override
 	public Region get(String name) throws Exception {
 		return createRegion(name).refresh();
@@ -69,6 +72,10 @@ public class RegionsImpl
 	/***************************************************
 	 * Helpers
 	 ***************************************************/
+	
+	private List<Location> getAzureLocations() throws Exception {
+		return azure.managementClient().getLocationsOperations().list().getLocations();
+	}
 	
 	private RegionImpl createRegion(String name) {
 		Location azureLocation = new Location();

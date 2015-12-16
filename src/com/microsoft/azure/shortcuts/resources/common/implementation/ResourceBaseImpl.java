@@ -71,9 +71,4 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 	public String group() {
 		return ResourcesImpl.groupFromResourceId(this.id());
 	}
-	
-	/*********************************************
-	 * Setters (fluent interface)
-	 *********************************************/
-	
 }

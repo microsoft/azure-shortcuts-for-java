@@ -590,16 +590,31 @@ azure.storageAccounts().delete("mystorage");
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
-Listing all regions:
+Listing all regions names:
 
 ```java
-List<String> regionNames = azure.regions().names();
+Set<String> regionNames = azure.regions().keySet();
 ```
 
-Listing regions supporting a specific capability from the `LocationsAvailableServiceNames` options:
+Listing region names supporting a specific capability from the `LocationsAvailableServiceNames` options:
 
+```java
+Set<String> regionNames = azure.regions().list(LocationAvailableServiceNames.HIGHMEMORY).keySet();    	
 ```
-List<String> regionNames = azure.regions().list(LocationAvailableServiceNames.HIGHMEMORY);    	
+
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages {TODO}
+
+
+#### Getting information about a specific region
+
+*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+Getting information, such as the list of available services or virtual machine sizes, from a specific region:
+
+```java
+Region region = azure.regions("West US"); 
+List<String> availableServices = region.availableServices();
+List<String> availableVMSizes = region.availableVirtualMachineSizes();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages {TODO}

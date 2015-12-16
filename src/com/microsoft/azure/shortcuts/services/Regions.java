@@ -19,19 +19,20 @@
 */
 package com.microsoft.azure.shortcuts.services;
 
-import java.util.List;
+import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.SupportsListingNames;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
+import com.microsoft.azure.shortcuts.common.SupportsListing;
 
 public interface Regions extends
-	SupportsListingNames,
+	SupportsListing<Region>,
 	SupportsGetting<Region> {
 
 	/**
 	 * 
 	 * @param serviceType
 	 * @return Regions supporting a specific service type from the LocationAvailableServiceNames class
+	 * @throws Exception
 	 */
-	List<String> names(String serviceType);
+	Map<String, Region> list(String serviceType) throws Exception;
 }
