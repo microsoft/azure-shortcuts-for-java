@@ -32,7 +32,6 @@ import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableW
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Groups;
 
-
 public class GroupsImpl 
 	extends EntitiesImpl<Azure>
 	implements Groups {

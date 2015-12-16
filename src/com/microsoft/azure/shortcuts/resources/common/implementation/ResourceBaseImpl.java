@@ -23,7 +23,9 @@ import java.util.Collections;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
@@ -37,6 +39,8 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 		super(id, innerObject);
 	}
 
+	protected String groupName;
+	protected boolean isExistingGroup;
 	
 	/*******************************************
 	 * Getters
@@ -71,4 +75,26 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 	public String group() {
 		return ResourcesImpl.groupFromResourceId(this.id());
 	}
+	
+	/**************************************************
+	 * Helpers
+	 * @throws Exception 
+	 **************************************************/
+	protected Group ensureGroup(Azure azure) throws Exception {
+		Group group;
+		if(!this.isExistingGroup) {
+			if(this.groupName == null) {
+				this.groupName = "group" + this.name();
+			}
+				
+			group = azure.groups().define(this.groupName)
+					.withRegion(this.region())
+					.provision();
+			this.isExistingGroup = true;
+			return group;
+		} else {
+			return azure.groups(this.groupName);
+		}
+	}
+	
 }

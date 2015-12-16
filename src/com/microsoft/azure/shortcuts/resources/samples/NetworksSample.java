@@ -41,21 +41,30 @@ public class NetworksSample {
     
 
     public static void test(Azure azure) throws Exception {
+    	Network network;
+    	String existingGroupName = "group1444089227523";
+    	String newNetworkName = "marcinsvnetx";
+    	
+    	// Create a new network
+    	network = azure.networks().define(newNetworkName)
+    			.withGroupExisting(existingGroupName)
+    			.withRegion("westus")
+    			.provision();
+    	
+    	// Get info about a specific network using its group and name
+    	network = azure.networks(existingGroupName, newNetworkName);
+    	printNetwork(network);
+
     	// Listing all networks
     	Map<String, Network> networks = azure.networks().list();
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Listing networks in a specific resource group
-    	String groupName = "group1444089227523";
-    	networks = azure.networks().list(groupName);
-    	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
+    	networks = azure.networks().list(existingGroupName);
+    	System.out.println(String.format("Network ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
-    	Network network = azure.networks("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup1/providers/Microsoft.Network/virtualNetworks/javasampleresourcegroup1vnetqwsks");
-    	printNetwork(network);
-
-    	// Get info about a specific network using its group and name
-    	network = azure.networks("javasampleresourcegroup1", "javasampleresourcegroup1vnetqwsks");
+    	network = azure.networks(network.id());
     	printNetwork(network);
 
     }
@@ -68,8 +77,8 @@ public class NetworksSample {
     		.append(String.format("\tName: %s\n", network.name()))
     		.append(String.format("\tGroup: %s\n", network.group()))
     		.append(String.format("\tProvisioning state: %s\n", network.provisioningState()))
-    		.append(String.format("\tAddress prefixes: %s\n", StringUtils.join(network.addressPrefixes(), ", ")))
-    		.append(String.format("\tDNS servers: %s\n", StringUtils.join(network.dnsServers(), ", ")));
+    		.append(String.format("\tAddress prefixes: %s\n", StringUtils.join(network.addressSpaces(), ", ")))
+    		.append(String.format("\tDNS servers: %s\n", StringUtils.join(network.dnsServerIPs(), ", ")));
     	
     	for(Subnet subnet : network.subnets().values()) {
     		output

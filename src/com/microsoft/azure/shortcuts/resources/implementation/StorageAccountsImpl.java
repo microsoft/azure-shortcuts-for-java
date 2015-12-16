@@ -117,9 +117,6 @@ public class StorageAccountsImpl
 			StorageAccount.DefinitionBlank,
 			StorageAccount.DefinitionProvisionable {
 		
-		private String groupName;
-		private boolean isExistingGroup;
-
 		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount) {
 			super(azureStorageAccount.getId(), azureStorageAccount);
 		}
@@ -192,7 +189,7 @@ public class StorageAccountsImpl
 		@Override
 		public DefinitionProvisionable withTag(String key, String value) {
 			this.inner().getTags().put(key, value);
-			return null;
+			return this;
 		}
 
 		
@@ -202,24 +199,13 @@ public class StorageAccountsImpl
 
 		@Override
 		public StorageAccountImpl provision() throws Exception {
+			// Create group if needed
+			ensureGroup(azure);
+
 			// Assume default account type if needed
 			if(this.accountType() == null) {
 				this.withAccountType(AccountType.StandardLRS);
 			}
-			
-			// Create group if needed
-			if(!this.isExistingGroup) {
-				if(this.groupName == null) {
-					// Assume default group name
-					this.groupName = "group_" + this.name();
-				}
-				
-				azure.groups().define(this.groupName)
-					.withRegion(this.region())
-					.provision();
-				this.isExistingGroup = false;
-			} 
-
 			
 			StorageAccountCreateParameters params = new StorageAccountCreateParameters();
 			params.setLocation(this.region());

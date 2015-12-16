@@ -19,25 +19,80 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-
 import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.Indexable;
+import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
 public interface Network extends 
+	Indexable,
 	ResourceBase,
 	Refreshable<Network>,
 	Wrapper<VirtualNetwork> {
 	
 	String provisioningState();
-	List<String> addressPrefixes();
-	List<String> dnsServers();
+	List<String> addressSpaces();
+	List<String> dnsServerIPs();
 	Map<String, Subnet> subnets();
+	
+	/**
+	 * A new blank virtual network definition
+	 */
+	public interface DefinitionBlank extends
+		ResourceBase.DefinitionWithGroupExisting<DefinitionWithRegion> {
+	}
+	
+	/**
+	 * A virtual network definition expecting the region (location) to be specified
+	 */
+	public interface DefinitionWithRegion {
+		DefinitionProvisionable withRegion(String region);
+	}
+	
+	/**
+	 * A virtual network definition expecting at least one subnet to be specified
+	 */
+	public interface DefinitionWithSubnet {
+		DefinitionProvisionableWithSubnet withSubnet(String name, String cidr);
+		DefinitionProvisionableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
+	}
+
+	/**
+	 * A virtual network definition expecting the network's address space to be specified
+	 */
+	public interface DefinitionWithAddressSpace {
+		DefinitionProvisionableWithSubnet withAddressSpace(String cidr);
+	}
+	
+	/**
+	 * A virtual network definition expecting the IP address of an existing DNS server to be associated with the network 
+	 */
+	public interface DefinitionWithDNSServer {
+		DefinitionProvisionable withDnsServer(String ipAddress);
+	}
+	
+	/**
+	 * A new virtual network definition with sufficient input parameters specified to be provisioned in the cloud
+	 */
+	public interface DefinitionProvisionable extends 
+		Provisionable<Network>,
+		DefinitionWithAddressSpace,
+		DefinitionWithDNSServer {
+		
+		DefinitionProvisionable withTags(Map<String, String> tags);
+		DefinitionProvisionable withTag(String key, String value);
+	}
+	
+	public interface DefinitionProvisionableWithSubnet extends 
+		DefinitionProvisionable,
+		DefinitionWithSubnet { 
+	}
+	
 	
 	public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
 		String addressPrefix();

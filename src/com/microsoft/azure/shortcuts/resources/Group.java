@@ -51,7 +51,9 @@ public interface Group extends
 	/**
 	 * A new resource group definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends Provisionable<Group> {
+	public interface DefinitionProvisionable extends 
+		Provisionable<Group> {
+		
 		DefinitionProvisionable withTags(Map<String, String> tags);
 		DefinitionProvisionable withTag(String key, String value);
 	}

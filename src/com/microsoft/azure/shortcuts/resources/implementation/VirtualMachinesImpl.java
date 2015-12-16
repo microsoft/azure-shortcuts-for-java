@@ -153,8 +153,8 @@ public class VirtualMachinesImpl
 			VirtualMachine.DefinitionWithImageVersion,
 			VirtualMachine.DefinitionProvisionable {
 
-		private boolean isExistingGroup, isExistingStorageAccount;
-		private String storageAccountId, groupName;
+		private boolean isExistingStorageAccount;
+		private String storageAccountId;
 
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -444,7 +444,7 @@ public class VirtualMachinesImpl
 		@Override
 		public UpdateBlank provision() throws Exception {
 			// Ensure group
-			Group group = this.ensureGroup();
+			Group group = this.ensureGroup(azure);
 			
 			// Ensure storage account
 			StorageAccount storageAccount = ensureStorageAccount(group.name());
@@ -472,26 +472,7 @@ public class VirtualMachinesImpl
 		/**************************************************
 		 * Helpers
 		 **************************************************/
-		
-		// Gets or creates if needed the specified storage account
-		private Group ensureGroup() throws Exception {
-			Group group;
-			if(!this.isExistingGroup) {
-				if(this.groupName == null) {
-					this.groupName = "group" + this.name();
-				}
 				
-				group = azure.groups().define(this.groupName)
-						.withRegion(this.region())
-						.provision();
-				this.isExistingGroup = true;
-				return group;
-			} else {
-				return azure.groups(this.groupName);
-			}
-		}
-		
-		
 		// Gets or creates if needed the specified storage account
 		private StorageAccount ensureStorageAccount(String groupName) throws Exception {
 			if(!this.isExistingStorageAccount) {

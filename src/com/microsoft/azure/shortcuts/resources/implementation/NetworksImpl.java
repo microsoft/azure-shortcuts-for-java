@@ -24,11 +24,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import com.microsoft.azure.management.network.models.AddressSpace;
+import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
+import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
@@ -64,7 +69,7 @@ public class NetworksImpl
 
 	
 	@Override
-	public Network get(String resourceId) throws Exception {
+	public NetworkImpl get(String resourceId) throws Exception {
 		return this.get(
 			ResourcesImpl.groupFromResourceId(resourceId), 
 			ResourcesImpl.nameFromResourceId(resourceId));
@@ -72,8 +77,13 @@ public class NetworksImpl
 	
 
 	@Override
-	public Network get(String groupName, String name) throws Exception {
+	public NetworkImpl get(String groupName, String name) throws Exception {
 		return new NetworkImpl(this.getAzureVirtualNetwork(groupName, name));
+	}
+	
+	@Override
+	public NetworkImpl define(String name) throws Exception {
+		return createNetworkWrapper(name);
 	}
 
 	
@@ -82,7 +92,7 @@ public class NetworksImpl
 	 ***************************************************/
 	
 	// Helper to get the networks from Azure
-	private ArrayList<com.microsoft.azure.management.network.models.VirtualNetwork> getAzureVirtualNetworks(String resourceGroupName) throws Exception {
+	private ArrayList<VirtualNetwork> getAzureVirtualNetworks(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
 			return this.azure.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
 		} else {
@@ -92,8 +102,29 @@ public class NetworksImpl
 	
 	
 	// Helper to get a network from Azure
-	private com.microsoft.azure.management.network.models.VirtualNetwork getAzureVirtualNetwork(String groupName, String name) throws Exception {
+	private VirtualNetwork getAzureVirtualNetwork(String groupName, String name) throws Exception {
 		return azure.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
+	}
+	
+	
+	private NetworkImpl createNetworkWrapper(String name) {
+		VirtualNetwork azureNetwork = new VirtualNetwork();
+		azureNetwork.setName(name);
+		azureNetwork.setSubnets(new ArrayList<com.microsoft.azure.management.network.models.Subnet>());
+		
+		// Ensure address space
+		ArrayList<String> cidrs = new ArrayList<>();
+		AddressSpace addressSpace = new AddressSpace();
+		addressSpace.setAddressPrefixes(cidrs);
+		azureNetwork.setAddressSpace(addressSpace);
+
+		// Ensure DHCP options
+		ArrayList<String> dnsServers = new ArrayList<String>(); 
+		DhcpOptions dhcpOptions = new DhcpOptions(); 
+		dhcpOptions.setDnsServers(dnsServers);
+		azureNetwork.setDhcpOptions(dhcpOptions);
+
+		return new NetworkImpl(azureNetwork);
 	}
 	
 	
@@ -104,7 +135,13 @@ public class NetworksImpl
 		extends 
 			ResourceBaseImpl<Network, VirtualNetwork>
 		implements
-			Network {
+			Network,
+			Network.DefinitionBlank,
+			Network.DefinitionWithRegion,
+			Network.DefinitionProvisionable,
+			Network.DefinitionWithAddressSpace,
+			Network.DefinitionProvisionableWithSubnet, 
+			Network.DefinitionWithSubnet {
 		
 		private NetworkImpl(VirtualNetwork azureVirtualNetwork) {
 			super(azureVirtualNetwork.getName(), azureVirtualNetwork);
@@ -120,12 +157,12 @@ public class NetworksImpl
 		}
 		
 		@Override
-		public List<String> addressPrefixes() {
+		public List<String> addressSpaces() {
 			return Collections.unmodifiableList(this.inner().getAddressSpace().getAddressPrefixes());
 		}
 		
 		@Override
-		public List<String> dnsServers() {
+		public List<String> dnsServerIPs() {
 			return Collections.unmodifiableList(this.inner().getDhcpOptions().getDnsServers());
 		}
 
@@ -143,11 +180,99 @@ public class NetworksImpl
 		/**************************************************************
 		 * Setters (fluent interface)
 		 **************************************************************/
+
+		@Override
+		public DefinitionProvisionable withDnsServer(String ipAddress) {
+			this.inner().getDhcpOptions().getDnsServers().add(ipAddress);
+			return this;
+		}
+
+		@Override
+		public NetworkImpl withSubnet(String name, String cidr) {
+			com.microsoft.azure.management.network.models.Subnet azureSubnet = new com.microsoft.azure.management.network.models.Subnet(cidr);
+			azureSubnet.setName(name);
+			this.inner().getSubnets().add(azureSubnet);
+			return this;
+		}
+
+
+		@Override
+		public NetworkImpl withSubnets(Map<String, String> nameCidrPairs) {
+			ArrayList<com.microsoft.azure.management.network.models.Subnet> azureSubnets = 
+				new ArrayList<com.microsoft.azure.management.network.models.Subnet>();
+			this.inner().setSubnets(azureSubnets);
+			for(Entry<String, String> pair : nameCidrPairs.entrySet()) {
+				this.withSubnet(pair.getKey(), pair.getValue());
+			}
+			return this;
+		}
+
 		
+		@Override
+		public NetworkImpl withRegion(String region) {
+			this.inner().setLocation(region);
+			return this;
+		}
+
+		@Override
+		public NetworkImpl withGroupExisting(String groupName) {
+			this.groupName = groupName;
+			this.isExistingGroup = true;
+			return this;
+		}
+
+		@Override
+		public NetworkImpl withGroupExisting(Group group) {
+			return this.withGroupExisting(group.name());
+		}
+
+		@Override
+		public NetworkImpl withGroupExisting(ResourceGroupExtended group) {
+			return this.withGroupExisting(group.getName());
+		}
+		
+		@Override
+		public NetworkImpl withTags(Map<String, String> tags) {
+			this.inner().setTags(new HashMap<>(tags));
+			return this;
+		}
+
+
+		@Override
+		public NetworkImpl withTag(String key, String value) {
+			this.inner().getTags().put(key, value);
+			return this;
+		}
+		
+		@Override
+		public DefinitionProvisionableWithSubnet withAddressSpace(String cidr) {
+			this.inner().getAddressSpace().getAddressPrefixes().add(cidr);
+			return this;
+		}
+
 
 		/************************************************************
 		 * Verbs
 		 ************************************************************/
+
+		@Override
+		public NetworkImpl provision() throws Exception {
+			// Create a group as needed
+			ensureGroup(azure);
+		
+			// Ensure address spaces
+			if(this.addressSpaces().size() == 0) {
+				this.withAddressSpace("10.0.0.0/16");
+			}
+			
+			// Create a subnet as needed, covering the entire first address space
+			if(this.subnets().size() == 0) {
+				this.withSubnet("subnet1", this.addressSpaces().get(0));
+			}
+			
+			azure.networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			return get(this.groupName, this.name());
+		}
 		
 		@Override
 		public NetworkImpl refresh() throws Exception {
