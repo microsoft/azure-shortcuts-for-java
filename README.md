@@ -3,6 +3,18 @@ The goal of this project is to provide a radically simplified API for Azure in J
 
 *Note: this is currently an experimental labs project/work in progress*.
 
+Here's an example for creating a virtual network:
+
+```java
+azure.networks().define("mynetwork")
+    .withRegion("US West")
+    .withGroupExisting("<resource-group-name>")
+    .withAddressSpace("10.0.0.0/28")
+    .withSubnet("Foo", "10.0.0.0/29")
+    .withSubnet("Bar", "10.0.0.8/29")
+    .provision();
+```
+
 The shortcuts library supports APIs for both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable.
 
 *Note: the ASM portion might not be developed much further and might not be released to the public.*
