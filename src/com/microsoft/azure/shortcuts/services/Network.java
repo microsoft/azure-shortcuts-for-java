@@ -33,7 +33,7 @@ import com.microsoft.windowsazure.management.network.models.NetworkListResponse.
 public interface Network extends 
 	Indexable,
 	Refreshable<Network>,
-	Wrapper<VirtualNetworkSite>{
+	Wrapper<VirtualNetworkSite> {
 	
 	List<String> addressPrefixes() throws Exception;
 	String region() throws Exception;

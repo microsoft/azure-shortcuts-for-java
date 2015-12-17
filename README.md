@@ -753,10 +753,14 @@ System.out.println(String.format("Found group: %s\n"
 #### Deleting a resource group
 
 ```java
-String group = "<resource-group-name>";
-System.out.println("Deleting group " + group);
-	azure.groups().delete(group);
+azure.groups().delete("<resource-group-name>");
 ```
+
+or
+
+```java
+azure.groups("<resource-group-name>").delete();
+````
 
 ### Resources
 

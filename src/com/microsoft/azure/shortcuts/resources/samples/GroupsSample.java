@@ -84,6 +84,6 @@ public class GroupsSample {
 		
 		// Delete a specific resource group
 		System.out.println("Deleting group " + groupName);
-		azure.groups().delete(groupName);
+		azure.groups(groupName).delete();
     }
 }

@@ -33,7 +33,8 @@ import com.microsoft.azure.shortcuts.resources.common.Taggable;
 public interface Group extends 
 	Indexable,
 	Refreshable<Group>,
-	Wrapper<ResourceGroupExtended> {
+	Wrapper<ResourceGroupExtended>,
+	Deletable {
 	
 	String region() throws Exception;
 	Map<String, String> tags() throws Exception;
