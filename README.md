@@ -45,20 +45,18 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability... But the general principles this project aspires to follow rigorously are **"Documentation is code"**.
 
-The actual implemented APIs provide a bit more coverage than what is documented here (and they should be self explanatory), but in some rare cases, the exposed APIs might not have been completely implemented yet. Incompletely implemented APIs are not covered by this documentation.
-
 There is no JavaDocs (yet). Someday there will be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense". So expect the JavaDocs to be rather minimalistic.
 
-## Common programming patterns 
+## Programming patterns 
 
 The key design principles behind the shortcuts API are: to be intuitive, succint and consistent. 
 
-There are a small handful of general patterns to be aware of though - once you remember these, everything else should be quite intuitive:
+There are a small handful of general patterns to be aware of though - once you remember these, everything else should be self-explanatory:
 
 * Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`):
   * start with the collection of those objects hanging off the Azure client object (e.g. `azure.networks()`), 
   * then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
-  * from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters -- they all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoCommplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
+  * from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
   * when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
   
 * **Updates** to existing entities are also done in a "builder pattern/fluent interface" kind of way, it's just that: 
@@ -66,15 +64,15 @@ There are a small handful of general patterns to be aware of though - once you r
   * Command-chain the needed `.with*()` settings (usually all optional)
   * And finish off with a call to `.apply()`
 
-The above is basically the shortcuts API's take on the "builder pattern + fluent interface + factory pattern + extra smarts" combo in action, it's just that instead of the more tgraditional `.create()` or `new`, the shortcuts use **`define()`** or **`.update()`** for creating/updating objects respectively, and instead of the more traditional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
+The above is basically the shortcuts API take on the "builder pattern+ fluent interface + factory pattern + extra smarts" combo in action, it's just that instead of the more traditional `.create()` or `new`, the shortcuts use **`define()`** or **`.update()`** for creating/updating objects, and instead of the more traditional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
 
 * **Naming patterns**: 
-  * In general, the shortcut naming tends to be consistent with Azure SDK's. However, it does not follow teh SDK naming religiously. Sometimes, simplicity/succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.)
-  * In the cases when the same class name is used, make sure you reference the right package!  
+  * In general, the shortcut naming tends to be consistent with Azure SDK's. However, it does not follow the SDK naming religiously. Sometimes, simplicity/succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.)
+  * In the cases when the same class name is used, make sure you reference the right package!
   * As for class member naming, it is hard to avoid the impression that the Azure SDK heavily abuses the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
-  * Since the shortcuts are all about fluent interface, you will not see `.set*(...)` anywhere, only `.with*(...)`. The "with" naming convention in the context of fluent interface setters has been adopted because "set" functions traditionally are expected to return `void`, whereas "with" returns an object.
+  * Since the shortcuts are all about fluent interface, you will not see `.set*(...)` anywhere, only `.with*(...)`. The "with" naming convention in the context of fluent interface setters has been adopted because "set" functions are conventionally expected to return `void`, whereas "with" returns an object.
 
-In any case, a quick look at any of the below code samples should make the above points blatantly obvious.
+In any case, a quick look at any of the below code samples should make the above points rather obvious.
 
 * **Access to the underlying "inner" objects**:
   * Many shortcut objects are wrappers of Azure SDK objects. Since the shortcuts might not expose all of the settings available on the underlying Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the `.inner()` call.
