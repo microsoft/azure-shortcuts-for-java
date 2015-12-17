@@ -162,8 +162,7 @@ public class StorageAccountsImpl
 		
 		@Override
 		public StorageAccountImpl withGroupExisting(String groupName) {
-			this.groupName = groupName;
-			this.isExistingGroup = true;
+			super.withGroupExisting(groupName);
 			return this;
 		}
 
@@ -182,8 +181,7 @@ public class StorageAccountsImpl
 
 		@Override
 		public StorageAccountImpl withGroupNew(String name) {
-			this.groupName = name;
-			this.isExistingGroup = false;
+			super.withGroupNew(name);
 			return this;
 		}
 		

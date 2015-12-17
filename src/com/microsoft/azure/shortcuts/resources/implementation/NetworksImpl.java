@@ -236,18 +236,15 @@ public class NetworksImpl
 
 		@Override
 		public NetworkImpl withGroupExisting(String groupName) {
-			this.groupName = groupName;
-			this.isExistingGroup = true;
+			super.withGroupExisting(groupName);
 			return this;
 		}
 
 		@Override
 		public NetworkImpl withGroupNew(String name) {
-			this.groupName = name;
-			this.isExistingGroup = false;
+			super.withGroupNew(name);
 			return this;
 		}
-
 
 		@Override
 		public NetworkImpl withGroupExisting(Group group) {

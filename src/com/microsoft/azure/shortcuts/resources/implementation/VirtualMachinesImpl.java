@@ -408,8 +408,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public VirtualMachineImpl withGroupExisting(String name) {
-			this.groupName = name;
-			this.isExistingGroup = true;
+			super.withGroupExisting(name);
 			return this;
 		}
 
@@ -425,8 +424,7 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl withGroupNew(String name) {
-			this.groupName = name;
-			this.isExistingGroup = false;
+			super.withGroupNew(name);
 			return this;
 		}
 

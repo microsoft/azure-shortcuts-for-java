@@ -96,4 +96,17 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 			return azure.groups(this.groupName);
 		}
 	}
+	
+	
+	protected ResourceBaseImpl<T, I> withGroupExisting(String groupName) {
+		this.groupName = groupName;
+		this.isExistingGroup = true;
+		return this;
+	}
+	
+	protected ResourceBaseImpl<T, I> withGroupNew(String groupName) {
+		this.groupName = groupName;
+		this.isExistingGroup = false;
+		return this;
+	}
 }

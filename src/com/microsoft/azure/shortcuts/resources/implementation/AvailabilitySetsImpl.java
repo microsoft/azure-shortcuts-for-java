@@ -143,8 +143,7 @@ public class AvailabilitySetsImpl
 		
 		@Override
 		public AvailabilitySetImpl withGroupExisting(String groupName) {
-			this.groupName = groupName;
-			this.isExistingGroup = true;
+			super.withGroupExisting(groupName);
 			return this;
 		}
 
@@ -163,11 +162,9 @@ public class AvailabilitySetsImpl
 
 		@Override
 		public AvailabilitySetImpl withGroupNew(String name) {
-			this.groupName = name;
-			this.isExistingGroup = false;
+			super.withGroupNew(name);
 			return this;
 		}
-
 
 		@Override
 		public AvailabilitySetImpl withTags(Map<String, String> tags) {
