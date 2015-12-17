@@ -30,10 +30,10 @@ import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface VirtualMachine extends 
-	ResourceBase,
+	GroupResourceBase,
 	Refreshable<VirtualMachine>,
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine> {
 	
@@ -60,7 +60,7 @@ public interface VirtualMachine extends
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
 	 */
 	interface DefinitionBlank extends 
-		ResourceBase.DefinitionWithRegion<DefinitionWithAdminUsername> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithAdminUsername> {
 		/*TODO 
 		 * Defaulted: groupName, endpoints, vnetname, storageAccountName
 		 * Optional:  tags
@@ -211,9 +211,9 @@ public interface VirtualMachine extends
 		DefinitionWithStorageAccountExisting<DefinitionProvisionable>,
 		DefinitionWithStorageAccountNew<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 		
 		/**

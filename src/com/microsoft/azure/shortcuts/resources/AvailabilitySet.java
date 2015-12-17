@@ -23,22 +23,22 @@ import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface AvailabilitySet extends 
-	ResourceBase,
+	GroupResourceBase,
 	Refreshable<AvailabilitySet>,
 	Wrapper<com.microsoft.azure.management.compute.models.AvailabilitySet>,
 	Deletable {
 	
 	public interface DefinitionBlank extends 
-		ResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
 	}
 	
 	public interface DefinitionProvisionable extends 
-		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<AvailabilitySet> {	
 	}
 }

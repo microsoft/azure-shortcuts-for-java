@@ -31,7 +31,7 @@ import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
 
 
 public class AvailabilitySetsImpl 
@@ -107,7 +107,7 @@ public class AvailabilitySetsImpl
 	 ***************************************************************/
 	private class AvailabilitySetImpl 
 		extends 
-			ResourceBaseImpl<AvailabilitySet, com.microsoft.azure.management.compute.models.AvailabilitySet>
+			GroupResourceBaseImpl<AvailabilitySet, com.microsoft.azure.management.compute.models.AvailabilitySet>
 		implements
 			AvailabilitySet,
 			AvailabilitySet.DefinitionBlank,

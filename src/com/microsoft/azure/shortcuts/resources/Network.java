@@ -28,11 +28,11 @@ import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface Network extends 
 	Indexable,
-	ResourceBase,
+	GroupResourceBase,
 	Refreshable<Network>,
 	Wrapper<VirtualNetwork>,
 	Deletable {
@@ -46,7 +46,7 @@ public interface Network extends
 	 * A new blank virtual network definition
 	 */
 	public interface DefinitionBlank extends 
-		ResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
 	}
 	
 	/**
@@ -78,8 +78,8 @@ public interface Network extends
 		Provisionable<Network>,
 		DefinitionWithAddressSpace,
 		DefinitionWithDNSServer,
-		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithGroupNew<DefinitionProvisionable> {
+		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable> {
 		
 		DefinitionProvisionable withTags(Map<String, String> tags);
 		DefinitionProvisionable withTag(String key, String value);

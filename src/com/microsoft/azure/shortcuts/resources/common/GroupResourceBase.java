@@ -26,7 +26,7 @@ import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
 
-public interface ResourceBase extends 
+public interface GroupResourceBase extends 
 	Indexable {
 	
 	public String type();

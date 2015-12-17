@@ -28,11 +28,11 @@ import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 import com.microsoft.azure.shortcuts.resources.common.Taggable;
 
 public interface StorageAccount extends 
-	ResourceBase,
+	GroupResourceBase,
 	Refreshable<StorageAccount>,
 	Wrapper<com.microsoft.azure.management.storage.models.StorageAccount>,
 	Deletable {
@@ -51,15 +51,15 @@ public interface StorageAccount extends
 	 * A new blank storage account definition
 	 */
 	public interface DefinitionBlank extends 
-		ResourceBase.DefinitionWithRegion<DefinitionProvisionable> { }
+		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> { }
 	
 	/**
 	 * A new storage account definition with sufficient input parameters specified already to be provisioned in the cloud
 	 */
 	public interface DefinitionProvisionable extends 
-		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
-		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<StorageAccount> {
 		
 		/**

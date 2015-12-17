@@ -25,18 +25,18 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
-import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
-public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
+public abstract class GroupResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
 	extends 
 		IndexableRefreshableWrapperImpl<T, I>
 	implements 
-		ResourceBase {
+		GroupResourceBase {
 
-	protected ResourceBaseImpl(String id, I innerObject) {
+	protected GroupResourceBaseImpl(String id, I innerObject) {
 		super(id, innerObject);
 	}
 
@@ -99,29 +99,29 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 	}
 	
 	
-	protected ResourceBaseImpl<T, I> withGroupExisting(String groupName) {
+	protected GroupResourceBaseImpl<T, I> withGroupExisting(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = true;
 		return this;
 	}
 	
-	protected ResourceBaseImpl<T, I> withGroupNew(String groupName) {
+	protected GroupResourceBaseImpl<T, I> withGroupNew(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = false;
 		return this;
 	}
 	
-	protected ResourceBaseImpl<T, I> withTags(Map<String, String> tags) {
+	protected GroupResourceBaseImpl<T, I> withTags(Map<String, String> tags) {
 		this.inner().setTags(new HashMap<>(tags));
 		return this;
 	}
 	
-	protected ResourceBaseImpl<T, I> withTag(String name, String value) {
+	protected GroupResourceBaseImpl<T, I> withTag(String name, String value) {
 		this.inner().getTags().put(name, value);
 		return this;
 	}
 	
-	protected ResourceBaseImpl<T, I> withRegion(String regionName) {
+	protected GroupResourceBaseImpl<T, I> withRegion(String regionName) {
 		this.inner().setLocation(regionName);
 		return this;
 	}
