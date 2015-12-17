@@ -40,41 +40,46 @@ public class StorageAccountsSample {
     
 
     public static void test(Azure azure) throws Exception {
+    	String newStorageAccountName = "store" + String.valueOf(System.currentTimeMillis());
+    	String existingGroupName = "group1444089227523";
+    	
+    	// Provision a new storage account with minimum parameters
+    	StorageAccount storageAccount = azure.storageAccounts().define(newStorageAccountName)
+    		.withRegion("westus")
+    		.provision();
+
+    	printStorageAccount(storageAccount);
+
     	// Listing all storage accounts
     	Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
     	System.out.println(String.format("Storage accounts ids: \n\t%s", StringUtils.join(storageAccounts.keySet(), ",\n\t")));
+
+    	// Delete this storage account
+    	storageAccount.delete();
     	
     	// Listing storage accounts in a specific resource group
-    	String groupName = "lenatest";
-    	storageAccounts = azure.storageAccounts().list(groupName);
-    	System.out.println(String.format("Storage account ids in group '%s': \n\t%s", groupName, StringUtils.join(storageAccounts.keySet(), ",\n\t")));
+    	storageAccounts = azure.storageAccounts().list(existingGroupName);
+    	System.out.println(String.format("Storage account ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(storageAccounts.keySet(), ",\n\t")));
     	
     	// Get info about a specific storage account using its resource ID
-    	StorageAccount storageAccount = azure.storageAccounts("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/lenatest/providers/Microsoft.Storage/storageAccounts/lenatest1");
+    	storageAccount = azure.storageAccounts("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/lenatest/providers/Microsoft.Storage/storageAccounts/lenatest1");
     	printStorageAccount(storageAccount);
 
     	// Get info about a specific storage account using its group and name
     	storageAccount = azure.storageAccounts("lenatest", "lenatest1");
     	printStorageAccount(storageAccount);
     	
-    	// Provision a new storage account with minimum parameters
-    	String storeName = "store" + String.valueOf(System.currentTimeMillis());
-    	storageAccount = azure.storageAccounts().define(storeName)
-    		.withRegion("westus")
-    		.provision();
-
-    	printStorageAccount(storageAccount);
-
     	// Provision a new storage account in an existing resource group
-    	storeName = "store" + String.valueOf(System.currentTimeMillis());
-    	storageAccount = azure.storageAccounts().define(storeName)
+    	storageAccount = azure.storageAccounts().define(newStorageAccountName)
     		.withRegion("westus")
     		.withAccountType(AccountType.StandardLRS)
-    		.withGroupExisting("lenatest")
+    		.withGroupExisting(existingGroupName)
     		.provision();
     	
     	printStorageAccount(storageAccount);
     	
+    	// Delete the storage account
+    	azure.storageAccounts().delete(storageAccount.group(), storageAccount.name());
     }
     
     

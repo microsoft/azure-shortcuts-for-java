@@ -22,15 +22,19 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.common.SupportsListing;
+import com.microsoft.azure.shortcuts.resources.common.SupportsDeletingByGroup;
 import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
 
 public interface StorageAccounts extends 
 	SupportsListing<StorageAccount>, 
 	SupportsGetting<StorageAccount>,
 	SupportsGettingByGroup<StorageAccount>,
-	SupportsCreating<StorageAccount.DefinitionBlank> {
+	SupportsCreating<StorageAccount.DefinitionBlank>,
+	SupportsDeleting, 
+	SupportsDeletingByGroup {
 
 	Map<String, StorageAccount> list(String groupName) throws Exception;
 }

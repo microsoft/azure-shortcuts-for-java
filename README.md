@@ -372,7 +372,7 @@ azure.networks().delete("mynetwork");
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
-azure.networks().delete("<network-resource-id>);
+azure.networks().delete("<network-resource-id>");
 ```
 
 or
@@ -620,7 +620,28 @@ azure.storageAccounts().delete("mystorage");
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+
+```java
+azure.storageAccounts().delete("<storage-account-resource-id>");
+```
+
+or
+
+```java
+azure.storageAccounts().delete("<resource-group-name>", "<storage-account-name>");
+```
+
+or 
+
+```java
+azure.storageAccounts("<storage-account-resource-id>").delete();
+```
+
+or
+
+```java
+azure.storageAccounts("<resource-group-name>", "<storage-account-name>").delete();
+```
 
 
 ### Regions

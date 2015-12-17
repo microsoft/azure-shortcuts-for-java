@@ -85,6 +85,20 @@ public class StorageAccountsImpl
 		nativeItem.setName(name);
 		return new StorageAccountImpl(nativeItem);
 	}
+	
+	@Override
+	public void delete(String id) throws Exception {
+		this.delete(
+			ResourcesImpl.groupFromResourceId(id),
+			ResourcesImpl.nameFromResourceId(id));
+	}
+
+
+	@Override
+	public void delete(String groupName, String name) throws Exception {
+		azure.storageManagementClient().getStorageAccountsOperations().delete(groupName, name);
+	}
+
 
 	
 	/***************************************************
@@ -223,6 +237,12 @@ public class StorageAccountsImpl
 				ResourcesImpl.groupFromResourceId(this.id()), 
 				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;
+		}
+
+
+		@Override
+		public void delete() throws Exception {
+			azure.storageAccounts().delete(this.id());
 		}
 	}
 }

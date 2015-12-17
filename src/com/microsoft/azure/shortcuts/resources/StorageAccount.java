@@ -34,7 +34,8 @@ import com.microsoft.azure.shortcuts.resources.common.Taggable;
 public interface StorageAccount extends 
 	ResourceBase,
 	Refreshable<StorageAccount>,
-	Wrapper<com.microsoft.azure.management.storage.models.StorageAccount> {
+	Wrapper<com.microsoft.azure.management.storage.models.StorageAccount>,
+	Deletable {
 
 	/**
 	 * @return The URL of the primary blob endpoint
