@@ -31,6 +31,7 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Groups;
+import com.microsoft.azure.shortcuts.resources.Region;
 
 public class GroupsImpl 
 	extends EntitiesImpl<Azure>
@@ -168,8 +169,14 @@ public class GroupsImpl
 		}
 
 		@Override
-		public GroupImpl withRegion(String region) {
-			this.inner().setLocation(region);
+		public GroupImpl withRegion(String regionName) {
+			this.inner().setLocation(regionName);
+			return this;
+		}
+		
+		@Override
+		public GroupImpl withRegion(Region region) {
+			this.inner().setLocation(region.toString());
 			return this;
 		}
 

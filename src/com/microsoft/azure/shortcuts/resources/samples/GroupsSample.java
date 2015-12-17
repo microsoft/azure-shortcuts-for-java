@@ -26,6 +26,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 // Tests resources
@@ -67,7 +68,7 @@ public class GroupsSample {
     	String groupName = "group" + String.valueOf(System.currentTimeMillis());
     	System.out.println("Creating group " + groupName);
     	azure.groups().define(groupName)
-    		.withRegion("West US")
+    		.withRegion(Region.US_WEST)
     		.withTag("hello", "world")
     		.provision();
     	

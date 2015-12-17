@@ -663,7 +663,13 @@ Listing region names supporting a specific capability from the `LocationsAvailab
 Set<String> regionNames = azure.regions().list(LocationAvailableServiceNames.HIGHMEMORY).keySet();    	
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages {TODO}
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+The `Region` enum provides the list (as constants) of all the possible Azure locations.
+
+```java
+Region[] regions = Region.values();
+```
 
 
 #### Getting information about a specific region
@@ -688,7 +694,7 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 #### Creating a resource group
 ```java
 azure.groups().define("myResourceGroup")
-	.withRegion("West US")
+	.withRegion(Region.US_WEST)
 	.withTag("hello", "world")
     .provision();
 ```

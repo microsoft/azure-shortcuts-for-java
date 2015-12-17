@@ -44,7 +44,8 @@ public interface Group extends
 	 * A new blank resource group definition
 	 */
 	public interface DefinitionBlank {
-		DefinitionProvisionable withRegion(String region);
+		DefinitionProvisionable withRegion(String regionName);
+		DefinitionProvisionable withRegion(Region region);
 	}
 	
 	
