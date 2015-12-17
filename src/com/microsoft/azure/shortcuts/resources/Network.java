@@ -78,8 +78,8 @@ public interface Network extends
 		Provisionable<Network>,
 		DefinitionWithAddressSpace,
 		DefinitionWithDNSServer,
-		DefinitionWithGroupExisting<DefinitionProvisionable>,
-		DefinitionWithGroupNew<DefinitionProvisionable> {
+		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
+		ResourceBase.DefinitionWithGroupNew<DefinitionProvisionable> {
 		
 		DefinitionProvisionable withTags(Map<String, String> tags);
 		DefinitionProvisionable withTag(String key, String value);

@@ -181,6 +181,14 @@ public class StorageAccountsImpl
 
 
 		@Override
+		public StorageAccountImpl withGroupNew(String name) {
+			this.groupName = name;
+			this.isExistingGroup = false;
+			return this;
+		}
+		
+
+		@Override
 		public StorageAccountImpl withAccountType(AccountType type) {
 			this.inner().setAccountType(type);
 			return this;

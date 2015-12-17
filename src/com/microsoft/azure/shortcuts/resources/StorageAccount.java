@@ -58,6 +58,7 @@ public interface StorageAccount extends
 	 */
 	public interface DefinitionProvisionable extends 
 		ResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
+		ResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
 		ResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<StorageAccount> {
 		
