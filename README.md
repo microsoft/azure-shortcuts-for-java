@@ -948,3 +948,28 @@ Availability sets as a map, in a specific resource group, indexed by id:
 ```java
 Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("myresourcegroup");
 ```
+
+
+#### Deleting availability sets
+
+```java
+azure.availabilitySets().delete("<resource-id>");
+```
+
+or
+
+```java
+azure.availabilitySets().delete("<resource-group-name>", "<availability-set-name>");
+```
+
+or 
+
+```java
+azure.availabilitySets("<resource-id>").delete();
+```
+
+or
+
+```java
+azure.availabilitySets("<resource-group-name>", "<availability-set-name>").delete();
+```

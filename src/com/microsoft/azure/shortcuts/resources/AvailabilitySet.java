@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
+import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
@@ -26,5 +27,6 @@ import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 public interface AvailabilitySet extends 
 	ResourceBase,
 	Refreshable<AvailabilitySet>,
-	Wrapper<com.microsoft.azure.management.compute.models.AvailabilitySet> {
+	Wrapper<com.microsoft.azure.management.compute.models.AvailabilitySet>,
+	Deletable {
 }

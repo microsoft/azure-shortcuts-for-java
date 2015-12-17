@@ -125,12 +125,12 @@ public class Azure {
     //* Getters
     //**********************************************************
 
-    public AvailabilitySets availablitySets() {
+    public AvailabilitySets availabilitySets() {
     	return this.availabilitySets;
     }
     
     public AvailabilitySet availabilitySets(String id) throws Exception {
-    	return this.availablitySets().get(id);
+    	return this.availabilitySets().get(id);
     }
     
     public AvailabilitySet availabilitySets(String groupName, String name) throws Exception {

@@ -52,18 +52,28 @@ public class AvailabilitySetsImpl
 		return Collections.unmodifiableMap(wrappers);
 	}
 
-	
 	@Override
 	public AvailabilitySetImpl get(String resourceId) throws Exception {
 		return this.get(
 			ResourcesImpl.groupFromResourceId(resourceId), 
 			ResourcesImpl.nameFromResourceId(resourceId));
-	}
-	
+	}	
 
 	@Override
 	public AvailabilitySetImpl get(String groupName, String name) throws Exception {
 		return new AvailabilitySetImpl(this.getAzureAvailabilitySet(groupName, name));
+	}
+
+	@Override
+	public void delete(String groupName, String name) throws Exception {
+		azure.computeManagementClient().getAvailabilitySetsOperations().delete(groupName, name);
+	}
+	
+	@Override
+	public void delete(String id) throws Exception {
+		this.delete(
+				ResourcesImpl.groupFromResourceId(id), 
+				ResourcesImpl.nameFromResourceId(id));
 	}
 
 	
@@ -112,6 +122,10 @@ public class AvailabilitySetsImpl
 		 * Verbs
 		 ************************************************************/
 
+		@Override
+		public void delete() throws Exception {
+			azure.availabilitySets().delete(this.id());
+		}
 
 		@Override
 		public AvailabilitySetImpl refresh() throws Exception {

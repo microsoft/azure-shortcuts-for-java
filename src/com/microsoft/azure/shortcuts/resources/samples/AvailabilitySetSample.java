@@ -44,12 +44,15 @@ public class AvailabilitySetSample {
     	AvailabilitySet availabilitySet;
     	
     	// Listing availability sets in a specific resource group
-    	Map<String, AvailabilitySet> availabilitySets = azure.availablitySets().list(existingGroupName);
+    	Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list(existingGroupName);
     	System.out.println(String.format("Availability set ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(availabilitySets.keySet(), ",\n\t")));
     	
     	// Get info about a specific availability set using its group and name
     	availabilitySet = azure.availabilitySets(existingGroupName, existingAvailabilitySetName);
-    	printAvailabilitySet(availabilitySet);  
+    	printAvailabilitySet(availabilitySet);
+    	
+    	// Delete availability set
+    	availabilitySet.delete();
     }
     
     
