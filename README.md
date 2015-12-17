@@ -260,7 +260,7 @@ Set<String> osImageNames = azure.osImages().list().keySet();
 
 ```java
 azure.networks().define("mynetwork")
-	.withRegion("West US")
+	.withRegion("West US")	
 	.withAddressSpace("10.0.0.0/29")
 	.provision();
 ```
@@ -269,7 +269,7 @@ azure.networks().define("mynetwork")
 
 ```java
 azure.networks().define("mynetwork")
-    .withRegion("westus")
+	.withRegion(Region.US_WEST)
     .withAddressSpace("10.0.0.0/29")
     .provision();
 ```
@@ -280,7 +280,7 @@ azure.networks().define("mynetwork")
 
 ```java
 azure.networks().define("mynetwork")
-	.withRegion("West US")
+	.withRegion("US West")
 	.withGroupExisting("<resource-group-name>")
 	.withAddressSpace("10.0.0.0/28")
 	.withSubnet("Foo", "10.0.0.0/29")
@@ -293,7 +293,7 @@ azure.networks().define("mynetwork")
 ```java
 azure.networks().define(newNetworkName + "2")
     .withGroupExisting(existingGroupName)
-    .withRegion("westus")
+    .withRegion(Region.US_WEST)
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")

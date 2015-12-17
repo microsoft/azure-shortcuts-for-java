@@ -51,7 +51,8 @@ public interface Network extends
 	 * A virtual network definition expecting the region (location) to be specified
 	 */
 	public interface DefinitionWithRegion {
-		DefinitionProvisionable withRegion(String region);
+		DefinitionProvisionable withRegion(String regionName);
+		DefinitionProvisionable withRegion(Region region);
 	}
 	
 	/**

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
 import java.util.TreeMap;
 
 import com.microsoft.azure.management.network.models.AddressSpace;
@@ -36,6 +37,7 @@ import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
 
 
@@ -226,6 +228,11 @@ public class NetworksImpl
 		public NetworkImpl withRegion(String region) {
 			this.inner().setLocation(region);
 			return this;
+		}
+		
+		@Override
+		public NetworkImpl withRegion(Region region) {
+				return this.withRegion(region.toString());
 		}
 
 		@Override

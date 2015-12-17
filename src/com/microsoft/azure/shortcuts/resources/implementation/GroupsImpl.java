@@ -176,8 +176,7 @@ public class GroupsImpl
 		
 		@Override
 		public GroupImpl withRegion(Region region) {
-			this.inner().setLocation(region.toString());
-			return this;
+			return this.withRegion(region.toString());
 		}
 
 

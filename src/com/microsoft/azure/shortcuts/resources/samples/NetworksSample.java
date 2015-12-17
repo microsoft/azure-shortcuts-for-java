@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Network.Subnet;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 // Tests resources
@@ -47,7 +48,7 @@ public class NetworksSample {
     	
     	// Create a new network with a default subnet in a new default resource group
     	network = azure.networks().define(newNetworkName)
-    		.withRegion("westus")
+    		.withRegion(Region.US_WEST)
     		.withAddressSpace("10.0.0.0/28")
     		.provision();
     	
@@ -72,7 +73,7 @@ public class NetworksSample {
     	
     	// Create a new network with two subnets, in an existing resource group
     	network = azure.networks().define(newNetworkName + "2")
-    		.withRegion("westus")
+    		.withRegion(Region.US_WEST)
     		.withGroupExisting(existingGroupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("Foo", "10.0.0.0/29")
