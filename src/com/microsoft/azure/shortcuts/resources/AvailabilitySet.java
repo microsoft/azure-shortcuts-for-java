@@ -19,20 +19,12 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.SupportsCreating;
-import com.microsoft.azure.shortcuts.common.SupportsDeleting;
-import com.microsoft.azure.shortcuts.common.SupportsGetting;
-import com.microsoft.azure.shortcuts.common.SupportsListing;
-import com.microsoft.azure.shortcuts.resources.common.SupportsDeletingByGroup;
-import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
-import com.microsoft.azure.shortcuts.resources.common.SupportsListingByGroup;
+import com.microsoft.azure.shortcuts.common.Refreshable;
+import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
-public interface StorageAccounts extends 
-	SupportsListing<StorageAccount>,
-	SupportsListingByGroup<StorageAccount>,
-	SupportsGetting<StorageAccount>,
-	SupportsGettingByGroup<StorageAccount>,
-	SupportsCreating<StorageAccount.DefinitionBlank>,
-	SupportsDeleting, 
-	SupportsDeletingByGroup {
+public interface AvailabilitySet extends 
+	ResourceBase,
+	Refreshable<AvailabilitySet>,
+	Wrapper<com.microsoft.azure.management.compute.models.AvailabilitySet> {
 }

@@ -935,3 +935,16 @@ Or shortcut:
 ```java
 String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
 ```
+
+
+### Availability Sets
+
+This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+#### Listing availability sets
+
+Availability sets as a map, in a specific resource group, indexed by id:
+
+```java
+Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("myresourcegroup");
+```

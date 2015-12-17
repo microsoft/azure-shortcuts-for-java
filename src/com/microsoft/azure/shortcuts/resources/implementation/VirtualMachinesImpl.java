@@ -455,7 +455,7 @@ public class VirtualMachinesImpl
 			// Ensure storage account
 			StorageAccount storageAccount = ensureStorageAccount(group.name());
 
-			// TODO VirtualNetwork
+			// TODO networking, availability set
 			
 			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());

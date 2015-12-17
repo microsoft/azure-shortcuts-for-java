@@ -28,6 +28,8 @@ import com.microsoft.azure.management.resources.ResourceManagementService;
 import com.microsoft.azure.management.storage.StorageManagementClient;
 import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.implementation.Utils;
+import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
+import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Groups;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -67,7 +69,6 @@ public class Azure {
     private ComputeManagementClient computeManagementClient;
     private NetworkResourceProviderClient networkResourceProviderClient;
 
-    // public final StorageAccounts storageAccounts; TODO
     private final ResourcesImpl resources;
     private final GroupsImpl groups;
     private final ProvidersImpl providers;
@@ -75,6 +76,7 @@ public class Azure {
     private final NetworksImpl networks;
     private final VirtualMachinesImpl virtualMachines;
     private final StorageAccountsImpl storageAccounts;
+    private final AvailabilitySets availabilitySets;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -96,7 +98,6 @@ public class Azure {
     
     private Azure(Configuration configuration) {
     	this.configuration = configuration;
-        // this.storageAccounts = new StorageAccounts(this); TODO
         this.resources = new ResourcesImpl(this);
         this.groups = new GroupsImpl(this);
         this.providers = new ProvidersImpl(this);
@@ -104,6 +105,7 @@ public class Azure {
         this.networks = new NetworksImpl(this);
         this.virtualMachines = new VirtualMachinesImpl(this);
         this.storageAccounts = new StorageAccountsImpl(this);
+        this.availabilitySets = new AvailabilitySetsImpl(this);
     }
     
     
@@ -123,6 +125,18 @@ public class Azure {
     //* Getters
     //**********************************************************
 
+    public AvailabilitySets availablitySets() {
+    	return this.availabilitySets;
+    }
+    
+    public AvailabilitySet availabilitySets(String id) throws Exception {
+    	return this.availablitySets().get(id);
+    }
+    
+    public AvailabilitySet availabilitySets(String groupName, String name) throws Exception {
+    	return this.availabilitySets.get(groupName, name);
+    }
+    
     public Groups groups() {
     	return this.groups;
     }

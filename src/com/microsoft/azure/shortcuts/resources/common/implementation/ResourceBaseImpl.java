@@ -96,5 +96,4 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 			return azure.groups(this.groupName);
 		}
 	}
-	
 }
