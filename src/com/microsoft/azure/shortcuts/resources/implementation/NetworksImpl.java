@@ -92,8 +92,8 @@ public class NetworksImpl
 	@Override
 	public void delete(String id) throws Exception {
 		this.delete(
-				ResourcesImpl.groupFromResourceId(id), 
-				ResourcesImpl.nameFromResourceId(id));
+			ResourcesImpl.groupFromResourceId(id), 
+			ResourcesImpl.nameFromResourceId(id));
 	}
 	
 	

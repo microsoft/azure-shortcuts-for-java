@@ -1,13 +1,18 @@
 # azure-shortcuts-for-java
-The goal of this project is to provide a radically simplified API for Azure in Java, following a flavor of modern API design patterns (builder, fluent) optimized for readability, writeability and succinctness. 
+The goal of this project is to provide a radically simplified API for Azure in Java. It follows a flavor of modern API design patterns (builder, fluent) optimized for readability, writeability and succinctness.
 
 *Note: this is currently an experimental labs project/work in progress*.
 
-The shortcuts library supports both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable.
+The shortcuts library supports APIs for both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable.
+
+*Note: the ASM portion might not be developed much further and might not be released to the public.*
 
 A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` (for ARM) and `com.microsoft.azure.shortcuts.services.samples` (for ASM).
 
 It is *not* currently a goal of this library to cover all of the Azure API surface, but rather to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back, which this project is also built on.
+
+It is currently based on Java 7, but switching to Java 8 as the min pre-req is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support).
+
 
 ## Setting up the dev machine
 
@@ -21,18 +26,58 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 ## Usage pre-requisites
 
 * Java 7+
-* Azure SDK for Java v0.9.0 or higher
+* Azure SDK for Java v0.9.0 (installed by the pom.xml file, so no need to install separately)
 * An Azure subscription
+
+## Scope
+
+Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability... But the general principles this project aspires to follow rigorously are **"Documentation is code"**.
+
+The actual implemented APIs provide a bit more coverage than what is documented here (and they should be self explanatory), but in some rare cases, the exposed APIs might not have been completely implemented yet. Incompletely implemented APIs are not covered by this documentation.
+
+There is no JavaDocs (yet). Someday there will be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense". So expect the JavaDocs to be rather minimalistic.
+
+## Common programming patterns 
+
+The key design principles behind the shortcuts API are: to be intuitive, succint and consistent. 
+
+There are a small handful of general patterns to be aware of though - once you remember these, everything else should be quite intuitive:
+
+* Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`):
+  * start with the collection of those objects hanging off the Azure client object (e.g. `azure.networks()`), 
+  * then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
+  * from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters -- they all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoCommplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
+  * when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
+  
+* **Updates** to existing entities are also done in a "builder pattern/fluent interface" kind of way, it's just that: 
+  * You start with `.update()` on the collection, 
+  * Command-chain the needed `.with*()` settings (usually all optional)
+  * And finish off with a call to `.apply()`
+
+The above is basically the shortcuts API's take on the "builder pattern + fluent interface + factory pattern + extra smarts" combo in action, it's just that instead of the more tgraditional `.create()` or `new`, the shortcuts use **`define()`** or **`.update()`** for creating/updating objects respectively, and instead of the more traditional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
+
+* **Naming patterns**: 
+  * In general, the shortcut naming tends to be consistent with Azure SDK's. However, it does not follow teh SDK naming religiously. Sometimes, simplicity/succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.)
+  * In the cases when the same class name is used, make sure you reference the right package!  
+  * As for class member naming, it is hard to avoid the impression that the Azure SDK heavily abuses the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
+  * Since the shortcuts are all about fluent interface, you will not see `.set*(...)` anywhere, only `.with*(...)`. The "with" naming convention in the context of fluent interface setters has been adopted because "set" functions traditionally are expected to return `void`, whereas "with" returns an object.
+
+In any case, a quick look at any of the below code samples should make the above points blatantly obvious.
+
+* **Access to the underlying "inner" objects**:
+  * Many shortcut objects are wrappers of Azure SDK objects. Since the shortcuts might not expose all of the settings available on the underlying Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the `.inner()` call.
+  * Some Azure SDK objects can also be used as input parameters in APIs where they make sense. For example, when a storage account is expected in some shortcut API, generally it can be provided as either the shortcut `StorageAccount` object, the Azure SDK `StorageAccount` object, the resource id string (ARM), or the name (ASM).
+
 
 ## Examples
 
-Inside the `\*.samples` packages, you will find a number of runnable sample code (classes with `main()`). For each of the sample classes, you can just **Debug As** > **Java Application**.
+Inside the `\*.samples` packages, you will find a number of runnable code samples (classes with `main()`). For each of the sample classes, you can just **Debug As** > **Java Application**.
 
-Many of the samples rely on credentials files in the root of the project:
+Many of the samples rely on credentials files in the **root of the project**:
 
-* for the **"Classic" ASM-based APIs**, use a *"my.publishsettings"* file. This is the classical Publish-Settings file from Azure.
+* for the **"Classic" ASM-based APIs**, use a *"my.publishsettings"* file. This is the classic Publish-Settings file from Azure.
 
-* for the **"Resource" ARM-based APIs**, you can use the experimental *"my.authfile"* containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a service principal for your app. Further simplification of the authentication process is an area of active investigation, but for now you can create the file manually, as per the [Authentication](#creating-an-authenticated-client) section.    
+* for the **"Resource" ARM-based APIs**, you can use the very experimental *"my.authfile"* format containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a service principal for your app. Further simplification of the authentication process is an area of active investigation, but for now you can create the file manually, as per the [Authentication](#creating-an-authenticated-client) section.
 
 * [Authentication](#creating-an-authenticated-client)
 * [Virtual Machines](#virtual-machines)
@@ -79,10 +124,6 @@ Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 		/>
 </azureShortcutsAuth>
 ```
-
-### Getting access to the inner objects
-
-Many shortcut objects are wrappers of more complex Azure SDK objects. Since they might not expose all of the settings available on the Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the `.inner()` call.
 
 ### Virtual Machines
 
