@@ -19,43 +19,42 @@
 */
 package com.microsoft.azure.shortcuts.resources.common;
 
+import java.util.Map;
 
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.common.Indexable;
+import com.microsoft.azure.shortcuts.resources.Region;
 
-public interface GroupResourceBase extends 
-	ResourceBase {
+public interface ResourceBase extends 
+	Indexable {
 	
-	public String group();
-
+	public String type();
+	public String name();
+	public String region();
+	public Map<String, String> tags();
+	
 	/**
-	 * A resource definition allowing an existing resource group to be selected
-	 */
-	interface DefinitionWithGroupExisting<T> {
+	 * A resource definition allowing a region be selected for the resource
+	 */	
+	interface DefinitionWithRegion<T> {
 		/**
-		 * @param groupName The name of an existing resource group to put this resource in
-		 * @return A resource definition with sufficient required inputs to be provisioned in the cloud
+		 * @param region The name of the location for the resource
+		 * @return The next stage of the resource definition
 		 */
-		T withGroupExisting(String groupName);
-		
-		/**
-		 * @param group An existing resource group to put the resource in
-		 * @return A resource definition with sufficient required inputs to be provisioned in the cloud
-		 */
-		T withGroupExisting(Group group);
-		
-		/**
-		 * @param group An existing resource group object as returns by the Azure SDK for Java to put the resource in
-		 * @return A resource definition with sufficient required inputs to be provisioned in the cloud
-		 */
-		T withGroupExisting(ResourceGroupExtended group);
+	    T withRegion(String regionName);
+	    
+	    /**
+	     * @param region The region for the resource
+	     * @return The next stage of the resource definition
+	     */
+	    T withRegion(Region region);
 	}
 	
 	
 	/**
-	 * A resource definition allowing to speficy the name of a new resource group to create for this resource
+	 * A resource definition allowing tags to be specified
 	 */
-	interface DefinitionWithGroupNew<T> {
-		T withGroupNew(String name);
+	interface DefinitionWithTags<T> {
+		T withTags(Map<String, String> tags);
+		T withTag(String key, String value);
 	}
 }

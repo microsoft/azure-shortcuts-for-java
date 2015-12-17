@@ -19,65 +19,69 @@
 */
 package com.microsoft.azure.shortcuts.resources.common.implementation;
 
-import com.microsoft.azure.shortcuts.resources.Group;
-import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
-import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
 
-public abstract class GroupResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
-	extends
-		ResourceBaseImpl<T, I>
+public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
+	extends 
+		IndexableRefreshableWrapperImpl<T, I>
 	implements 
-		GroupResourceBase {
+		ResourceBase {
 
-	protected GroupResourceBaseImpl(String id, I innerObject) {
+	protected ResourceBaseImpl(String id, I innerObject) {
 		super(id, innerObject);
 	}
 
-	protected String groupName;
-	protected boolean isExistingGroup;
-	
 	/*******************************************
 	 * Getters
 	 *******************************************/
 	
-	@Override 
-	public String group() {
-		return ResourcesImpl.groupFromResourceId(this.id());
+	@Override
+	public String region() {
+		return this.inner().getLocation();
+	}
+
+	@Override
+	public Map<String, String> tags() {
+		return Collections.unmodifiableMap(this.inner().getTags());
+	}
+
+	@Override
+	public String id() {
+		return this.inner().getId();
+	}
+
+	@Override
+	public String type() {
+		return this.inner().getType();
+	}
+	
+	@Override
+	public String name() {
+		return this.inner().getName();
 	}
 	
 	/**************************************************
 	 * Helpers
-	 * @throws Exception 
 	 **************************************************/
-	protected Group ensureGroup(Azure azure) throws Exception {
-		Group group;
-		if(!this.isExistingGroup) {
-			if(this.groupName == null) {
-				this.groupName = "group" + this.name();
-			}
-				
-			group = azure.groups().define(this.groupName)
-					.withRegion(this.region())
-					.provision();
-			this.isExistingGroup = true;
-			return group;
-		} else {
-			return azure.groups(this.groupName);
-		}
-	}
-	
-	
-	protected GroupResourceBaseImpl<T, I> withGroupExisting(String groupName) {
-		this.groupName = groupName;
-		this.isExistingGroup = true;
+
+	protected ResourceBaseImpl<T, I> withTags(Map<String, String> tags) {
+		this.inner().setTags(new HashMap<>(tags));
 		return this;
 	}
 	
-	protected GroupResourceBaseImpl<T, I> withGroupNew(String groupName) {
-		this.groupName = groupName;
-		this.isExistingGroup = false;
+	protected ResourceBaseImpl<T, I> withTag(String name, String value) {
+		this.inner().getTags().put(name, value);
+		return this;
+	}
+	
+	protected ResourceBaseImpl<T, I> withRegion(String regionName) {
+		this.inner().setLocation(regionName);
 		return this;
 	}
 }
