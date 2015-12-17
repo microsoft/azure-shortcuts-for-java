@@ -196,7 +196,7 @@ public class NetworksImpl
 		 **************************************************************/
 
 		@Override
-		public DefinitionProvisionable withDnsServer(String ipAddress) {
+		public NetworkImpl withDnsServer(String ipAddress) {
 			this.inner().getDhcpOptions().getDnsServers().add(ipAddress);
 			return this;
 		}
@@ -234,6 +234,14 @@ public class NetworksImpl
 			this.isExistingGroup = true;
 			return this;
 		}
+
+		@Override
+		public NetworkImpl withGroupNew(String name) {
+			this.groupName = name;
+			this.isExistingGroup = false;
+			return this;
+		}
+
 
 		@Override
 		public NetworkImpl withGroupExisting(Group group) {

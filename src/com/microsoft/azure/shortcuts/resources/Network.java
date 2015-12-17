@@ -45,9 +45,7 @@ public interface Network extends
 	/**
 	 * A new blank virtual network definition
 	 */
-	public interface DefinitionBlank extends
-		ResourceBase.DefinitionWithGroupExisting<DefinitionWithRegion> {
-	}
+	public interface DefinitionBlank extends DefinitionWithRegion {}
 	
 	/**
 	 * A virtual network definition expecting the region (location) to be specified
@@ -84,7 +82,9 @@ public interface Network extends
 	public interface DefinitionProvisionable extends 
 		Provisionable<Network>,
 		DefinitionWithAddressSpace,
-		DefinitionWithDNSServer {
+		DefinitionWithDNSServer,
+		DefinitionWithGroupExisting<DefinitionProvisionable>,
+		DefinitionWithGroupNew<DefinitionProvisionable> {
 		
 		DefinitionProvisionable withTags(Map<String, String> tags);
 		DefinitionProvisionable withTag(String key, String value);

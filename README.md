@@ -268,20 +268,20 @@ azure.networks().define("mynetwork")
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
-azure.networks().define(newNetworkName)
-    .withGroupExisting(existingGroupName)
+azure.networks().define("mynetwork")
     .withRegion("westus")
     .withAddressSpace("10.0.0.0/29")
     .provision();
 ```
 
-#### Creating a virtual network with multiple, explicitly defined subnets
+#### Creating a virtual network with multiple, explicitly defined subnets, in an existing resource group
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.networks().define("mynetwork")
 	.withRegion("West US")
+	.withGroupExisting("<resource-group-name>")
 	.withAddressSpace("10.0.0.0/28")
 	.withSubnet("Foo", "10.0.0.0/29")
 	.withSubnet("Bar", "10.0.0.8/29")

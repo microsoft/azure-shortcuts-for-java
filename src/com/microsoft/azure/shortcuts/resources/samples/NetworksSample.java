@@ -45,15 +45,14 @@ public class NetworksSample {
     	String existingGroupName = "group1444089227523";
     	String newNetworkName = "marcinsvnetx";
     	
-    	// Create a new network with a default subnet
+    	// Create a new network with a default subnet in a new default resource group
     	network = azure.networks().define(newNetworkName)
-    			.withGroupExisting(existingGroupName)
-    			.withRegion("westus")
-    			.withAddressSpace("10.0.0.0/28")
-    			.provision();
+    		.withRegion("westus")
+    		.withAddressSpace("10.0.0.0/28")
+    		.provision();
     	
     	// Get info about a specific network using its group and name
-    	network = azure.networks(existingGroupName, newNetworkName);
+    	network = azure.networks(network.id());
     	printNetwork(network);
 
     	// Listing all networks
@@ -65,16 +64,16 @@ public class NetworksSample {
     	System.out.println(String.format("Network ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
-    	network = azure.networks(network.id());
+    	network = azure.networks(network.group(), network.name());
     	printNetwork(network);
     	
     	// Delete the network
     	azure.networks().delete(network.id());
     	
-    	// Create a new network with two subnets
+    	// Create a new network with two subnets, in an existing resource group
     	network = azure.networks().define(newNetworkName + "2")
-    		.withGroupExisting(existingGroupName)
     		.withRegion("westus")
+    		.withGroupExisting(existingGroupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("Foo", "10.0.0.0/29")
     		.withSubnet("Bar", "10.0.0.8/29")
