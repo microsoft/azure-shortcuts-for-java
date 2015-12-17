@@ -89,6 +89,7 @@ public class AvailabilitySetSample {
     		.append(String.format("Availability set id: %s\n", availabilitySet.id()))
     		.append(String.format("\tName: %s\n", availabilitySet.name()))
     		.append(String.format("\tGroup: %s\n", availabilitySet.group()))
+    		.append(String.format("\tVirtual machine ids: \n\t%s", StringUtils.join(availabilitySet.virtualMachineIds(), "\n\t")))
     		;
     	
     	System.out.println(output.toString());

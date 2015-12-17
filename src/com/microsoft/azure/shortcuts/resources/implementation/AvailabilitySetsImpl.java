@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.compute.models.VirtualMachineReference;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
@@ -43,7 +44,6 @@ public class AvailabilitySetsImpl
 	AvailabilitySetsImpl(Azure azure) {
 		super(azure);
 	}
-	
 		
 	@Override
 	public Map<String, AvailabilitySet> list(String groupName) throws Exception {
@@ -122,6 +122,15 @@ public class AvailabilitySetsImpl
 		 * Getters
 		 ***********************************************************/
 		
+		@Override
+		public List<String> virtualMachineIds() {
+			ArrayList<String> ids = new ArrayList<>();
+			for(VirtualMachineReference vm : this.inner().getVirtualMachinesReferences()) {
+				ids.add(vm.getReferenceUri());
+			}
+			
+			return Collections.unmodifiableList(ids);
+		}
 		
 		
 		/**************************************************************

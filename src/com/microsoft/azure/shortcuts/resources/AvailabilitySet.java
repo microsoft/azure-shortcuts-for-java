@@ -19,6 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
+import java.util.List;
+
 import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
@@ -30,6 +32,11 @@ public interface AvailabilitySet extends
 	Refreshable<AvailabilitySet>,
 	Wrapper<com.microsoft.azure.management.compute.models.AvailabilitySet>,
 	Deletable {
+	
+	/**
+	 * @return IDs of virtual machines in this availability set
+	 */
+	List<String> virtualMachineIds();
 	
 	public interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
