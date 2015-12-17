@@ -25,6 +25,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
+import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 public class AvailabilitySetSample {
@@ -40,19 +42,44 @@ public class AvailabilitySetSample {
 
     public static void test(Azure azure) throws Exception {
     	String existingGroupName = "javasampleresourcegroup1";
-    	String existingAvailabilitySetName = "javasampleresourcegroup1availabilitysetfjdrf";
+    	String newAvailabilitySetName = "marcinsas";
     	AvailabilitySet availabilitySet;
     	
+    	// Create a new availability set in a new default group
+    	availabilitySet = azure.availabilitySets().define(newAvailabilitySetName)
+    		.withRegion(Region.US_WEST)
+    		.provision();
+    	
+    	// Get info about a specific availability set using its group and name
+    	availabilitySet = azure.availabilitySets(availabilitySet.id());
+    	printAvailabilitySet(availabilitySet);
+
     	// Listing availability sets in a specific resource group
     	Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list(existingGroupName);
     	System.out.println(String.format("Availability set ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(availabilitySets.keySet(), ",\n\t")));
     	
-    	// Get info about a specific availability set using its group and name
-    	availabilitySet = azure.availabilitySets(existingGroupName, existingAvailabilitySetName);
-    	printAvailabilitySet(availabilitySet);
-    	
     	// Delete availability set
     	availabilitySet.delete();
+    	
+    	// Delete its group
+    	azure.groups().delete(availabilitySet.group());
+    	
+    	// Create a new group
+    	Group group = azure.groups().define("marcinstestgroup").withRegion(Region.US_WEST).provision();
+    	
+    	// Create an availability set in an existing group
+    	availabilitySet = azure.availabilitySets().define(newAvailabilitySetName + "2")
+    		.withRegion(Region.US_WEST)
+    		.withGroupExisting(group)
+    		.withTag("hello", "world")
+    		.provision();
+    	
+    	// Get an existing availability set based onb group and name
+    	availabilitySet = azure.availabilitySets(availabilitySet.group(), availabilitySet.name());
+    	printAvailabilitySet(availabilitySet);
+    	
+    	// Delete the entire group
+    	azure.groups().delete(group.id());
     }
     
     

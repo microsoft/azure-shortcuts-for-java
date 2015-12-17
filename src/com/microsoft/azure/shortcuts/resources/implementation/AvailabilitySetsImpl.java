@@ -25,9 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
+import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
 
 
@@ -76,6 +79,13 @@ public class AvailabilitySetsImpl
 				ResourcesImpl.nameFromResourceId(id));
 	}
 
+	@Override
+	public AvailabilitySetImpl define(String name) throws Exception {
+		com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem = new com.microsoft.azure.management.compute.models.AvailabilitySet();
+		nativeItem.setName(name);
+		return new AvailabilitySetImpl(nativeItem);
+	}
+
 	
 	/***************************************************
 	 * Helpers
@@ -99,7 +109,9 @@ public class AvailabilitySetsImpl
 		extends 
 			ResourceBaseImpl<AvailabilitySet, com.microsoft.azure.management.compute.models.AvailabilitySet>
 		implements
-			AvailabilitySet {
+			AvailabilitySet,
+			AvailabilitySet.DefinitionBlank,
+			AvailabilitySet.DefinitionProvisionable {
 		
 		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet) {
 			super(azureAvailabilitySet.getId(), azureAvailabilitySet);
@@ -116,8 +128,61 @@ public class AvailabilitySetsImpl
 		 * Setters (fluent interface)
 		 **************************************************************/
 
+		@Override
+		public AvailabilitySetImpl withRegion(String regionName) {
+			this.inner().setLocation(regionName);
+			return this;
+		}
+
+
+		@Override
+		public AvailabilitySetImpl withRegion(Region region) {
+			return this.withRegion(region.toString());
+		}
+
 		
-		
+		@Override
+		public AvailabilitySetImpl withGroupExisting(String groupName) {
+			this.groupName = groupName;
+			this.isExistingGroup = true;
+			return this;
+		}
+
+
+		@Override
+		public AvailabilitySetImpl withGroupExisting(Group group) {
+			return this.withGroupExisting(group.name());
+		}
+
+
+		@Override
+		public AvailabilitySetImpl withGroupExisting(ResourceGroupExtended group) {
+			return this.withGroupExisting(group.getName());
+		}
+
+
+		@Override
+		public AvailabilitySetImpl withGroupNew(String name) {
+			this.groupName = name;
+			this.isExistingGroup = false;
+			return this;
+		}
+
+
+		@Override
+		public AvailabilitySetImpl withTags(Map<String, String> tags) {
+			this.inner().setTags(new HashMap<>(tags));
+			return this;
+		}
+
+
+		@Override
+		public AvailabilitySetImpl withTag(String key, String value) {
+			this.inner().getTags().put(key, value);
+			return this;
+		}
+
+
 		/************************************************************
 		 * Verbs
 		 ************************************************************/
@@ -133,6 +198,14 @@ public class AvailabilitySetsImpl
 				ResourcesImpl.groupFromResourceId(this.id()), 
 				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;
+		}
+
+
+		@Override
+		public AvailabilitySet provision() throws Exception {
+			ensureGroup(azure); // Create group if needed
+			azure.computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
+			return get(this.groupName, this.name());
 		}
 	}
 }

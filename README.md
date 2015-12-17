@@ -941,6 +941,27 @@ String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes(
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
+#### Creating an availability set
+
+With minimum inputs, in its own separate default resource group:
+
+```java
+azure.availabilitySets().define("myavailabilityset")
+    .withRegion(Region.US_WEST)
+    .provision();
+```
+
+Within an existing resource group, and setting a tag:
+
+```java
+azure.availabilitySets().define("myavailabilityset")
+    .withRegion(Region.US_WEST)
+    .withGroupExisting("myexistinggroup")
+    .withTag("hello", "world")
+    .provision();
+```
+
+
 #### Listing availability sets
 
 Availability sets as a map, in a specific resource group, indexed by id:

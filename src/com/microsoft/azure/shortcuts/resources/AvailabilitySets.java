@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
+import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.resources.common.SupportsDeletingByGroup;
@@ -29,6 +30,7 @@ public interface AvailabilitySets extends
 	SupportsListingByGroup<AvailabilitySet>,
 	SupportsGetting<AvailabilitySet>,
 	SupportsGettingByGroup<AvailabilitySet>,
+	SupportsCreating<AvailabilitySet.DefinitionBlank>,
 	SupportsDeletingByGroup,
 	SupportsDeleting {
 }
