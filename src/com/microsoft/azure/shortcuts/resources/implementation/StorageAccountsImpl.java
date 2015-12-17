@@ -207,14 +207,14 @@ public class StorageAccountsImpl
 
 		@Override
 		public StorageAccountImpl withTags(Map<String, String> tags) {
-			this.inner().setTags(new HashMap<>(tags));
+			super.withTags(tags);
 			return this;
 		}
 
 
 		@Override
-		public DefinitionProvisionable withTag(String key, String value) {
-			this.inner().getTags().put(key, value);
+		public StorageAccountImpl withTag(String name, String value) {
+			super.withTag(name, value);
 			return this;
 		}
 

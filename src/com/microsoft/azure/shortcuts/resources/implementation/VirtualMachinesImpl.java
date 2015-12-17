@@ -429,14 +429,14 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public DefinitionProvisionable withTags(Map<String, String> tags) {
-			this.inner().setTags(new HashMap<>(tags));
+		public VirtualMachineImpl withTags(Map<String, String> tags) {
+			super.withTags(tags);
 			return this;
 		}
 
 		@Override
-		public DefinitionProvisionable withTag(String key, String value) {
-			this.inner().getTags().put(key, value);
+		public VirtualMachineImpl withTag(String name, String value) {
+			super.withTag(name, value);
 			return this;
 		}
 		

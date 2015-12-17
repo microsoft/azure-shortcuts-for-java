@@ -258,19 +258,19 @@ public class NetworksImpl
 		
 		@Override
 		public NetworkImpl withTags(Map<String, String> tags) {
-			this.inner().setTags(new HashMap<>(tags));
+			super.withTags(tags);
 			return this;
 		}
 
 
 		@Override
-		public NetworkImpl withTag(String key, String value) {
-			this.inner().getTags().put(key, value);
+		public NetworkImpl withTag(String name, String value) {
+			super.withTag(name, value);
 			return this;
 		}
 		
 		@Override
-		public DefinitionProvisionableWithSubnet withAddressSpace(String cidr) {
+		public NetworkImpl withAddressSpace(String cidr) {
 			this.inner().getAddressSpace().getAddressPrefixes().add(cidr);
 			return this;
 		}

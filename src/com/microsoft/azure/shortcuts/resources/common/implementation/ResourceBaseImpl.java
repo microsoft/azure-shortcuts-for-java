@@ -20,6 +20,7 @@
 package com.microsoft.azure.shortcuts.resources.common.implementation;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
@@ -107,6 +108,16 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 	protected ResourceBaseImpl<T, I> withGroupNew(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = false;
+		return this;
+	}
+	
+	protected ResourceBaseImpl<T, I> withTags(Map<String, String> tags) {
+		this.inner().setTags(new HashMap<>(tags));
+		return this;
+	}
+	
+	protected ResourceBaseImpl<T, I> withTag(String name, String value) {
+		this.inner().getTags().put(name, value);
 		return this;
 	}
 }

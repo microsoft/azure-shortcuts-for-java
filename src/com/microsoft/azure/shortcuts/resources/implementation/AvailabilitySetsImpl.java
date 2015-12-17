@@ -168,14 +168,14 @@ public class AvailabilitySetsImpl
 
 		@Override
 		public AvailabilitySetImpl withTags(Map<String, String> tags) {
-			this.inner().setTags(new HashMap<>(tags));
+			super.withTags(tags);
 			return this;
 		}
 
 
 		@Override
-		public AvailabilitySetImpl withTag(String key, String value) {
-			this.inner().getTags().put(key, value);
+		public AvailabilitySetImpl withTag(String name, String value) {
+			super.withTag(name, value);
 			return this;
 		}
 
