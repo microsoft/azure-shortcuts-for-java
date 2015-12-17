@@ -45,6 +45,7 @@ import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
@@ -303,6 +304,11 @@ public class VirtualMachinesImpl
 		public VirtualMachineImpl withRegion(String region) {
 			this.inner().setLocation(region);
 			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl withRegion(Region region) {
+			return this.withRegion(region.toString());
 		}
 
 		@Override

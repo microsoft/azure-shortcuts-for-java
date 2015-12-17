@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -45,7 +46,7 @@ public class StorageAccountsSample {
     	
     	// Provision a new storage account with minimum parameters
     	StorageAccount storageAccount = azure.storageAccounts().define(newStorageAccountName)
-    		.withRegion("westus")
+    		.withRegion(Region.US_WEST)
     		.provision();
 
     	printStorageAccount(storageAccount);
@@ -71,7 +72,7 @@ public class StorageAccountsSample {
     	
     	// Provision a new storage account in an existing resource group
     	storageAccount = azure.storageAccounts().define(newStorageAccountName)
-    		.withRegion("westus")
+    		.withRegion(Region.US_WEST)
     		.withAccountType(AccountType.StandardLRS)
     		.withGroupExisting(existingGroupName)
     		.provision();

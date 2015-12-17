@@ -45,14 +45,8 @@ public interface Network extends
 	/**
 	 * A new blank virtual network definition
 	 */
-	public interface DefinitionBlank extends DefinitionWithRegion {}
-	
-	/**
-	 * A virtual network definition expecting the region (location) to be specified
-	 */
-	public interface DefinitionWithRegion {
-		DefinitionProvisionable withRegion(String regionName);
-		DefinitionProvisionable withRegion(Region region);
+	public interface DefinitionBlank extends 
+		ResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
 	}
 	
 	/**

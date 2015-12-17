@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
@@ -45,7 +46,7 @@ public class VirtualMachinesSample {
     	String deploymentId = String.valueOf(System.currentTimeMillis());
 
     	azure.virtualMachines().define("vm" + deploymentId)
-    		.withRegion("westus")
+    		.withRegion(Region.US_WEST)
     		.withAdminUsername("test")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")

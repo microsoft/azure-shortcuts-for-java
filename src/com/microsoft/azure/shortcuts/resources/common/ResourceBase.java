@@ -24,6 +24,7 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Region;
 
 public interface ResourceBase extends 
 	Indexable {
@@ -74,7 +75,13 @@ public interface ResourceBase extends
 		 * @param region The name of the location for the resource
 		 * @return The next stage of the resource definition
 		 */
-	    T withRegion(String region);
+	    T withRegion(String regionName);
+	    
+	    /**
+	     * @param region The region for the resource
+	     * @return The next stage of the resource definition
+	     */
+	    T withRegion(Region region);
 	}
 	
 	

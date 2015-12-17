@@ -32,6 +32,7 @@ import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 import com.microsoft.azure.shortcuts.resources.common.implementation.ResourceBaseImpl;
@@ -190,7 +191,12 @@ public class StorageAccountsImpl
 		public StorageAccountImpl withRegion(String region) {
 			this.inner().setLocation(region);
 			return this;
-		}		
+		}
+		
+		@Override
+		public StorageAccountImpl withRegion(Region region) {
+			return this.withRegion(region.toString());
+		}
 
 
 		@Override
