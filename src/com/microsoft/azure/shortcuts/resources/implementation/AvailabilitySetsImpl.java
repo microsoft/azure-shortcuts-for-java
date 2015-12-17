@@ -130,7 +130,7 @@ public class AvailabilitySetsImpl
 
 		@Override
 		public AvailabilitySetImpl withRegion(String regionName) {
-			this.inner().setLocation(regionName);
+			super.withRegion(regionName);
 			return this;
 		}
 

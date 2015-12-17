@@ -224,14 +224,14 @@ public class NetworksImpl
 
 		
 		@Override
-		public NetworkImpl withRegion(String region) {
-			this.inner().setLocation(region);
+		public NetworkImpl withRegion(String regionName) {
+			super.withRegion(regionName);
 			return this;
 		}
 		
 		@Override
 		public NetworkImpl withRegion(Region region) {
-				return this.withRegion(region.toString());
+			return this.withRegion(region.toString());
 		}
 
 		@Override

@@ -301,8 +301,8 @@ public class VirtualMachinesImpl
 		 *******************************************************/
 		
 		@Override
-		public VirtualMachineImpl withRegion(String region) {
-			this.inner().setLocation(region);
+		public VirtualMachineImpl withRegion(String regionName) {
+			super.withRegion(regionName);
 			return this;
 		}
 		

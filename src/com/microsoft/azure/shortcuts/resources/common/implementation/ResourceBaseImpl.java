@@ -120,4 +120,9 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 		this.inner().getTags().put(name, value);
 		return this;
 	}
+	
+	protected ResourceBaseImpl<T, I> withRegion(String regionName) {
+		this.inner().setLocation(regionName);
+		return this;
+	}
 }

@@ -194,8 +194,8 @@ public class StorageAccountsImpl
 
 
 		@Override
-		public StorageAccountImpl withRegion(String region) {
-			this.inner().setLocation(region);
+		public StorageAccountImpl withRegion(String regionName) {
+			super.withRegion(regionName);
 			return this;
 		}
 		
