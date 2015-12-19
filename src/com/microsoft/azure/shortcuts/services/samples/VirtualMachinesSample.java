@@ -66,7 +66,7 @@ public class VirtualMachinesSample {
 		// Add a Windows VM to the same service deployment
 		final String vmNameWin = "wm" + timeStamp;
 		azure.virtualMachines().define(vmNameWin)
-			.withExistingCloudService(vmName)
+			.withCloudServiceExisting(vmName)
 			.withSize("Small")
 			.withAdminUsername("marcins")
 			.withAdminPassword("Abcd.1234")
@@ -89,7 +89,7 @@ public class VirtualMachinesSample {
 		System.out.println(String.format("Creating virtual machine named '%s'...", vmName2));
 		final String cloudService2 = "cs" + timeStamp;
 		azure.virtualMachines().define(vmName2)
-			.withExistingNetwork(network)
+			.withNetworkExisting(network)
 			.withSize("Small")
 			.withAdminUsername("marcins")
 			.withAdminPassword("Abcd.1234")

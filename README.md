@@ -162,13 +162,13 @@ azure.virtualMachines().define("mylinuxvm")
 
 ```java
 azure.virtualMachines().define("mylinuxvm")
-	.withExistingNetwork(network)
+	.withNetworkExisting(network)
 	.withSize("Small")
 	.withAdminUsername("test")
 	.withAdminPassword("Xyz.098")
 	.withLinuxImage("b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB")
 	.withTcpEndpoint(22)
-	.withNewCloudService("mycloudservice")
+	.withCloudServiceNew("mycloudservice")
 	.withSubnet("mysubnet")
 	.provision();
 ```
@@ -182,7 +182,7 @@ azure.virtualMachines().define("mylinuxvm")
 
 ```java
 azure.virtualMachines().define("mywinvm")
-	.withExistingCloudService("mycloudservice")
+	.withCloudServiceExisting("mycloudservice")
 	.withSize("Small")
 	.withAdminUsername("test")
 	.withAdminPassword("Xyz.098")

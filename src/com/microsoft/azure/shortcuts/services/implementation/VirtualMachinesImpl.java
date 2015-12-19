@@ -434,14 +434,14 @@ public class VirtualMachinesImpl
 		 **************************************************************/
 		
 		@Override
-		public VirtualMachineImpl withExistingNetwork(String network) {
+		public VirtualMachineImpl withNetworkExisting(String network) {
 			this.azureDeployment.setVirtualNetworkName(network);
 			return this;
 		}
 
 		@Override
-		public VirtualMachineImpl withExistingNetwork(Network network) {
-			return this.withExistingNetwork(network.id());
+		public VirtualMachineImpl withNetworkExisting(Network network) {
+			return this.withNetworkExisting(network.id());
 		}
 
 		@Override
@@ -554,31 +554,31 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
-		public VirtualMachineImpl withExistingCloudService(String name) {
+		public VirtualMachineImpl withCloudServiceExisting(String name) {
 			this.setId(VirtualMachineId.withServiceName(name.toLowerCase(), this.id()));			
 			this.isExistingCloudService = true;
 			return this;
 		}
 		
 		@Override
-		public DefinitionWithSize withExistingCloudService(CloudService cloudService) {
-			return this.withExistingCloudService(cloudService.id());
+		public DefinitionWithSize withCloudServiceExisting(CloudService cloudService) {
+			return this.withCloudServiceExisting(cloudService.id());
 		}
 
 		@Override
-		public DefinitionWithSize withExistingCloudService(HostedService hostedService) {
-			return this.withExistingCloudService(hostedService.getServiceName());
+		public DefinitionWithSize withCloudServiceExisting(HostedService hostedService) {
+			return this.withCloudServiceExisting(hostedService.getServiceName());
 		}
 
 		@Override
-		public VirtualMachineImpl withNewCloudService(String name) {
+		public VirtualMachineImpl withCloudServiceNew(String name) {
 			this.setId(VirtualMachineId.withServiceName(name.toLowerCase(), this.id()));			
 			this.isExistingCloudService = false;
 			return this;
 		}
 
 		@Override
-		public DefinitionProvisionable withNewCloudService(CloudService.DefinitionProvisionable cloudServiceDefinition) {
+		public DefinitionProvisionable withCloudServiceNew(CloudService.DefinitionProvisionable cloudServiceDefinition) {
 			this.cloudServiceDefinition = cloudServiceDefinition;
 			this.isExistingCloudService = false;
 			return this;

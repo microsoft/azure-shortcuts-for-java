@@ -74,19 +74,19 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring an existing virtual network to be specified
 	 */
-	public interface DefinitionWithExistingNetwork<T> {
-		T withExistingNetwork(String network);
-		T withExistingNetwork(Network network);		
+	public interface DefinitionWithNetworkExisting<T> {
+		T withNetworkExisting(String network);
+		T withNetworkExisting(Network network);		
 	}
 	
 	
 	/**
 	 * A virtual machine definition requiring an existing cloud service to be specified
 	 */
-	public interface DefinitionWithExistingCloudService<T> {
-		T withExistingCloudService(String serviceName);
-		T withExistingCloudService(CloudService cloudService);
-		T withExistingCloudService(HostedService hostedService);
+	public interface DefinitionWithCloudServiceExisting<T> {
+		T withCloudServiceExisting(String serviceName);
+		T withCloudServiceExisting(CloudService cloudService);
+		T withCloudServiceExisting(HostedService hostedService);
 	}
 	
 	/**
@@ -94,8 +94,8 @@ public interface VirtualMachine extends
 	 */
 	public interface DefinitionBlank extends 
 		DefinitionWithRegion<DefinitionWithSize>,
-		DefinitionWithExistingNetwork<DefinitionWithSize>,
-		DefinitionWithExistingCloudService<DefinitionWithSize> {
+		DefinitionWithNetworkExisting<DefinitionWithSize>,
+		DefinitionWithCloudServiceExisting<DefinitionWithSize> {
 	}
 
 	
@@ -141,9 +141,9 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring an new cloud service to be specified
 	 */
-	public interface DefinitionWithNewCloudService<T> {
-		T withNewCloudService(String name);
-		T withNewCloudService(CloudService.DefinitionProvisionable cloudServiceDefinition);
+	public interface DefinitionWithCloudServiceNew<T> {
+		T withCloudServiceNew(String name);
+		T withCloudServiceNew(CloudService.DefinitionProvisionable cloudServiceDefinition);
 	}
 
 	/**
@@ -162,7 +162,7 @@ public interface VirtualMachine extends
 		DefinitionWithDeployment<DefinitionProvisionable>,
 		DefinitionWithDeploymentLabel<DefinitionProvisionable>,
 		DefinitionWithStorageAccountExisting<DefinitionProvisionable>,
-		DefinitionWithNewCloudService<DefinitionProvisionable>,
+		DefinitionWithCloudServiceNew<DefinitionProvisionable>,
 		DefinitionWithSubnet<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 	}
