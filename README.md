@@ -116,7 +116,7 @@ Further simplification of the authentication process is a subject of active inve
 * [Authentication](#creating-an-authenticated-client)
 * [Virtual Machines](#virtual-machines)
 * [Virtual Networks](#virtual-networks)
-* [Cloud Services](#cloud-services-asm-only)
+* [Cloud Services](#cloud-services)
 * [Storage Accounts](#storage-accounts)
 * [Regions](#regions)
 * [Resource Groups](#resource-groups-arm-only)
@@ -178,8 +178,7 @@ azure.virtualMachines().define("mylinuxvm")
 	.provision();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-> :triangular_flag_on_post: **TODO** 
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 
 #### Creating a Linux VM in a new cloud service in an existing virtual network
@@ -199,8 +198,8 @@ azure.virtualMachines().define("mylinuxvm")
 	.provision();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-> :triangular_flag_on_post: **TODO** 
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages 
+
 
 #### Creating a Windows VM in an existing cloud service
 
@@ -217,8 +216,7 @@ azure.virtualMachines().define("mywinvm")
 	.provision();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-> :triangular_flag_on_post: **TODO** 
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 
 #### Listing VMs
@@ -325,8 +323,7 @@ Cloud service names only:
 Set<String> osImageNames = azure.osImages().list().keySet();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-> :triangular_flag_on_post: **TODO** 
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 
 ### Virtual Networks
@@ -471,7 +468,7 @@ azure.networks("<resource-group-name>", "<network-name>").delete();
 ```
 
 
-### Cloud Services (ASM Only)
+### Cloud Services
 
 Cloud services are only supported in the ASM model in Azure today. So this section is only applicable to working with in the "classic" mode. The packages to import from are under `com.microsoft.azure.shortcuts.services.*`.
 
@@ -603,8 +600,7 @@ azure.storageAccounts().update("<storage-account-name>")
 	.apply();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-> :triangular_flag_on_post: **TODO** 
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 #### Reading information about a storage account
 
@@ -735,8 +731,8 @@ List<String> availableServices = region.availableServices();
 List<String> availableVMSizes = region.availableVirtualMachineSizes();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-> :triangular_flag_on_post: **TODO** 
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
 
 ### Resource Groups (ARM Only)
 
