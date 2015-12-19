@@ -1,9 +1,10 @@
 # azure-shortcuts-for-java
-The goal of this project is to provide a radically simplified API for Azure in Java. It follows a flavor of modern API design patterns (builder, fluent) optimized for readability, writeability and succinctness.
+
+The goal of this project is to provide a radically simplified Java API for Azure. It follows a flavor of modern API design patterns (builder, fluent) optimized for readability, writeability and succinctness.
 
 > :warning: **NOTE**: this is currently an experimental labs project/work in progress.
 
-Here's an example for creating a virtual network:
+Here's an example for creating a virtual network, which is very representative of the approach followed by the shortcuts:
 
 ```java
 azure.networks().define("mynetwork")
