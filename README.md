@@ -47,7 +47,7 @@ There are no JavaDocs (yet). Someday there will be. Note though that the point o
 
 ## Programming patterns 
 
-If you skip over this section and jump directly to the [examples](#Examples), chances it will just make sense. But if you'd like to learn more about the design approach in the abstract, read on:
+If you skip over this section and jump directly to the [examples](#examples), chances it will just make sense. But if you'd like to learn more about the design approach in the abstract, read on:
 
 The key design principles behind the shortcuts API are: to be **intuitive, succint, consistent, and preventing you from winding up in an invalid state**.
 
