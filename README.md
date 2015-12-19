@@ -23,9 +23,6 @@ A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.r
 
 It is *not* currently a goal of this library to cover all of the Azure API surface, but rather to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back, which this project is also built on.
 
-It is currently based on Java 7, but switching to Java 8 as the min pre-req is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support).
-
-
 ## Setting up the dev machine
 
 To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao for [the pointers](http://ted-gao.blogspot.com/2011/09/using-maven-to-manage-library.html)):
@@ -38,6 +35,7 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 ## Usage pre-requisites
 
 * Java 7+
+  * Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support).  
 * Azure SDK for Java v0.9.0 (installed by the pom.xml file, so no need to install separately)
 * An Azure subscription
 
@@ -45,21 +43,21 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability... But the general principles this project aspires to follow rigorously are *"Documentation is code"*.
 
-There is no JavaDocs (yet). Someday there will be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense". So expect the JavaDocs to be rather minimalistic.
+There are no JavaDocs (yet). Someday there will be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense". So expect the JavaDocs to be rather minimalistic.
 
 ## Programming patterns 
 
-If you skip over this section jump directly to the [examples](#Examples), chances are you'll just get it. But if you'd like to read more about the design approach, read on.
+If you skip over this section and jump directly to the [examples](#Examples), chances it will just make sense. But if you'd like to learn more about the design approach in the abstract, read on:
 
-The key design principles behind the shortcuts API are: to be **intuitive, succint and consistent**. 
+The key design principles behind the shortcuts API are: to be **intuitive, succint, consistent, and preventing you from winding up in an invalid state**.
 
 There are a small handful of general patterns to be aware of though - once you remember these, everything else should be self-explanatory:
 
 ### Creating new entities
 
-Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`):
+Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`), you use the top level "collection" of those objects (hanging off of the client object) as the factory. Specifically: 
 
-1. start with the collection of those objects hanging off the Azure client object (e.g. `azure.networks()`), 
+1. start with the "collection" member of those objects hanging off the Azure client object (e.g. `azure.networks()`), 
 2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
 3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
 3. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
@@ -67,15 +65,15 @@ Other than `new Azure()`, there are **no constructors anywhere**. To create a ne
 ### Updating existing entities
 
 Updates to existing entities are also done in a "builder pattern/fluent interface" kind of way, it's just that: 
-1. You start with `.update()` on the collection, 
+1. You start with `.update()` on the collection as the "factory" of an update description
 2. Command-chain the needed `.with*()` settings (usually all optional)
 3. And finish off with a call to `.apply()`
 
-In essence, the above is basically the shortcuts API take on the "builder pattern+ fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
+In essence, the above is basically the shortcuts API's take on the "builder pattern+ fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`.define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
 
 ### Naming patterns 
 
-In general, the shortcut naming tends to be consistent with the Azure SDK. However, it does not follow the SDK naming religiously. Sometimes, simplicity or succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.)
+In general, the shortcut naming tends to be consistent with the Azure SDK. However, it does not follow the SDK naming religiously. Sometimes, simplicity or succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.). Some helpful pointers: 
 
 * In the cases when the same class name is used, make sure you reference the right package!
 * As for class member naming, it is hard to avoid the impression that the Azure SDK heavily abuses the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
@@ -92,7 +90,6 @@ And again, a quick look at any of the below code samples should make the above p
   * the Azure SDK's `StorageAccount` object, 
   * the resource id string (ARM), 
   * or the name (ASM).
-
 
 ## Examples
 
