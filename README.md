@@ -21,7 +21,7 @@ The shortcuts library supports APIs for both the "modern" ARM (Azure Resource Mo
 
 A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` [for ARM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/resources/samples) and `com.microsoft.azure.shortcuts.services.samples` [for ASM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/services/samples).
 
-It is *not* currently a goal of this library to cover all of the Azure API surface, but rather to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back, which this project is also built on.
+It is *not* currently a goal of this library to cover all of the Azure API surface. Rather, it is to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back, which this project is also built on.
 
 ## Setting up the dev machine
 
@@ -35,7 +35,7 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 ## Usage pre-requisites
 
 * Java 7+
-  * Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support).  
+  * *Note: Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support)*.  
 * Azure SDK for Java v0.9.0 (installed by the pom.xml file, so no need to install separately)
 * An Azure subscription
 
@@ -47,33 +47,38 @@ There are no JavaDocs (yet). Someday there will be. Note though that the point o
 
 ## Programming patterns 
 
-If you skip over this section and jump directly to the [examples](#examples), chances it will just make sense. But if you'd like to learn more about the design approach in the abstract, read on:
+If you skip over this section and jump directly to the [examples](#examples), chances are it will just make sense. But if you'd like to learn more about the design approach in the abstract, read on:
 
 The key design principles behind the shortcuts API are: to be **intuitive, succint, consistent, and preventing you from winding up in an invalid state**.
 
-There are a small handful of general patterns to be aware of though - once you remember these, everything else should be self-explanatory:
+There are a small handful of general patterns to be aware of; once you remember these, everything else should be self-explanatory:
 
 ### Creating new entities
 
-Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`), you use the top level "collection" of those objects (hanging off of the client object) as the factory. Specifically: 
+Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`), you use the top level "collection" of those objects (hanging off of the `Azure` client object) as the factory. And yes, there is only one single client object to instantiate and deal with. 
 
-1. start with the "collection" member of those objects hanging off the Azure client object (e.g. `azure.networks()`), 
+In more detail: 
+
+1. start with the "collection" of those objects hanging off as a member of the `Azure` client instance object (e.g. `azure.networks()`), 
 2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
 3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
 3. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
  
 ### Updating existing entities
 
-Updates to existing entities are also done in a "builder pattern/fluent interface" kind of way, it's just that: 
-1. You start with `.update()` on the collection as the "factory" of an update description
-2. Command-chain the needed `.with*()` settings (usually all optional)
-3. And finish off with a call to `.apply()`
+Updates to existing entities are also done in a "builder pattern/fluent interface" kind of way: 
 
-In essence, the above is basically the shortcuts API's take on the "builder pattern+ fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`.define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
+1. start with `.update()` on the collection as the "factory" of an update template
+2. command-chain the needed `.with*()` settings (usually all optional)
+3. and finish off with a call to `.apply()`
+
+In essence, the above is the shortcuts API's take on the "builder pattern + fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`.define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
 
 ### Naming patterns 
 
-In general, the shortcut naming tends to be consistent with the Azure SDK. However, it does not follow the SDK naming religiously. Sometimes, simplicity or succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.). Some helpful pointers: 
+In general, the shortcut naming tends to be consistent with the Azure SDK. However, it does not follow the SDK naming blindly. Sometimes, simplicity or succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.). 
+
+Some helpful pointers: 
 
 * In the cases when the same class name is used, make sure you reference the right package!
 * As for class member naming, it is hard to avoid the impression that the Azure SDK heavily abuses the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
@@ -99,7 +104,11 @@ Many of the samples rely on credentials files in the **root of the project**:
 
 * for the **"Classic" ASM-based APIs**, use a *"my.publishsettings"* file. This is the classic Publish-Settings file from Azure.
 
-* for the **"Resource" ARM-based APIs**, you can use the very experimental *"my.authfile"* format containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a service principal for your app. Further simplification of the authentication process is an area of active investigation, but for now you can create the file manually, as per the [Authentication](#creating-an-authenticated-client) section.
+* for the **"Resource" ARM-based APIs**, you can use the very experimental *"my.authfile"* format containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a **service principal** for your app. 
+
+Further simplification of the authentication process is a subject of active investigation, but for now you can create the file manually, as per the [Authentication](#creating-an-authenticated-client) section.
+
+**Table of contents:**
 
 * [Authentication](#creating-an-authenticated-client)
 * [Virtual Machines](#virtual-machines)
@@ -147,6 +156,8 @@ Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 </azureShortcutsAuth>
 ```
 
+You can just save a file with these contents and use it as your "auth-file" in the example above.
+
 ### Virtual Machines
 
 #### Creating a Linux VM in a new, default cloud service with SSH set up
@@ -165,7 +176,7 @@ azure.virtualMachines().define("mylinuxvm")
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+> :triangular_flag_on_post: **TODO** 
 
 
 #### Creating a Linux VM in a new cloud service in an existing virtual network
@@ -186,7 +197,7 @@ azure.virtualMachines().define("mylinuxvm")
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+> :triangular_flag_on_post: **TODO** 
 
 #### Creating a Windows VM in an existing cloud service
 
@@ -204,7 +215,7 @@ azure.virtualMachines().define("mywinvm")
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
+> :triangular_flag_on_post: **TODO** 
 
 
 #### Listing VMs
@@ -312,7 +323,7 @@ Set<String> osImageNames = azure.osImages().list().keySet();
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+> :triangular_flag_on_post: **TODO** 
 
 
 ### Virtual Networks
@@ -457,11 +468,11 @@ azure.networks("<resource-group-name>", "<network-name>").delete();
 ```
 
 
-### Cloud Services
+### Cloud Services (ASM Only)
+
+Cloud services are only supported in the ASM model in Azure today. So this section is only applicable to working with in the "classic" mode. The packages to import from are under `com.microsoft.azure.shortcuts.services.*`.
 
 #### Creating a cloud service
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.cloudServices().define("myservice")
@@ -469,12 +480,7 @@ azure.cloudServices().define("myservice")
 	.provision();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-*[TODO]*
-
 #### Listing cloud services in a subscription
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 Cloud services as a map, indexed by name:
 
@@ -488,13 +494,7 @@ Cloud service names only:
 Set<String> cloudServiceNames = azure.cloudServices().list().keySet();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
-
-
 #### Updating an existing cloud service
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.cloudServices().update("myservice")
@@ -503,12 +503,7 @@ azure.cloudServices().update("myservice")
 	.apply();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
-
 #### Reading information about a cloud service
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 CloudService cloudService = azure.cloudServices("myservice");
@@ -531,19 +526,11 @@ System.out.println(String.format("Found cloud service: %s\n"
 	cloudService.reverseDnsFqdn()));
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
-
 #### Deleting a cloud service
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.cloudServices().delete(serviceName);
 ```
-
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
 
 ### Storage Accounts
 
@@ -614,7 +601,7 @@ azure.storageAccounts().update("<storage-account-name>")
 ```
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-{TODO}
+> :triangular_flag_on_post: **TODO** 
 
 #### Reading information about a storage account
 
@@ -706,9 +693,7 @@ or
 azure.storageAccounts("<resource-group-name>", "<storage-account-name>").delete();
 ```
 
-
 ### Regions
-
 
 #### Listing regions
 
@@ -747,14 +732,15 @@ List<String> availableServices = region.availableServices();
 List<String> availableVMSizes = region.availableVirtualMachineSizes();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages {TODO}
+*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> :triangular_flag_on_post: **TODO** 
 
-
-### Resource Groups
+### Resource Groups (ARM Only)
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 #### Creating a resource group
+
 ```java
 azure.groups().define("myResourceGroup")
 	.withRegion(Region.US_WEST)
