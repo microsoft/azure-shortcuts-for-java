@@ -19,7 +19,7 @@ The shortcuts library supports APIs for both the "modern" ARM (Azure Resource Mo
 
 *Note: the ASM portion might not be developed much further and might not be released to the public.*
 
-A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` (for ARM) and `com.microsoft.azure.shortcuts.services.samples` (for ASM).
+A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` [for ARM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/resources/samples) and `com.microsoft.azure.shortcuts.services.samples` [for ASM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/services/samples).
 
 It is *not* currently a goal of this library to cover all of the Azure API surface, but rather to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back, which this project is also built on.
 
@@ -43,40 +43,55 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 ## Scope
 
-Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability... But the general principles this project aspires to follow rigorously are **"Documentation is code"**.
+Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability... But the general principles this project aspires to follow rigorously are *"Documentation is code"*.
 
 There is no JavaDocs (yet). Someday there will be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense". So expect the JavaDocs to be rather minimalistic.
 
 ## Programming patterns 
 
-The key design principles behind the shortcuts API are: to be intuitive, succint and consistent. 
+If you skip over this section jump directly to the [examples](#Examples), chances are you'll just get it. But if you'd like to read more about the design approach, read on.
+
+The key design principles behind the shortcuts API are: to be **intuitive, succint and consistent**. 
 
 There are a small handful of general patterns to be aware of though - once you remember these, everything else should be self-explanatory:
 
-* Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`):
-  * start with the collection of those objects hanging off the Azure client object (e.g. `azure.networks()`), 
-  * then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
-  * from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
-  * when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
-  
-* **Updates** to existing entities are also done in a "builder pattern/fluent interface" kind of way, it's just that: 
-  * You start with `.update()` on the collection, 
-  * Command-chain the needed `.with*()` settings (usually all optional)
-  * And finish off with a call to `.apply()`
+### Creating new entities
 
-The above is basically the shortcuts API take on the "builder pattern+ fluent interface + factory pattern + extra smarts" combo in action, it's just that instead of the more traditional `.create()` or `new`, the shortcuts use **`define()`** or **`.update()`** for creating/updating objects, and instead of the more traditional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
+Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`):
 
-* **Naming patterns**: 
-  * In general, the shortcut naming tends to be consistent with Azure SDK's. However, it does not follow the SDK naming religiously. Sometimes, simplicity/succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.)
-  * In the cases when the same class name is used, make sure you reference the right package!
-  * As for class member naming, it is hard to avoid the impression that the Azure SDK heavily abuses the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
-  * Since the shortcuts are all about fluent interface, you will not see `.set*(...)` anywhere, only `.with*(...)`. The "with" naming convention in the context of fluent interface setters has been adopted because "set" functions are conventionally expected to return `void`, whereas "with" returns an object.
+1. start with the collection of those objects hanging off the Azure client object (e.g. `azure.networks()`), 
+2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
+3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
+3. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
+ 
+### Updating existing entities
 
-In any case, a quick look at any of the below code samples should make the above points rather obvious.
+Updates to existing entities are also done in a "builder pattern/fluent interface" kind of way, it's just that: 
+1. You start with `.update()` on the collection, 
+2. Command-chain the needed `.with*()` settings (usually all optional)
+3. And finish off with a call to `.apply()`
 
-* **Access to the underlying "inner" objects**:
-  * Many shortcut objects are wrappers of Azure SDK objects. Since the shortcuts might not expose all of the settings available on the underlying Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the `.inner()` call.
-  * Some Azure SDK objects can also be used as input parameters in APIs where they make sense. For example, when a storage account is expected in some shortcut API, generally it can be provided as either the shortcut `StorageAccount` object, the Azure SDK `StorageAccount` object, the resource id string (ARM), or the name (ASM).
+In essence, the above is basically the shortcuts API take on the "builder pattern+ fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
+
+### Naming patterns 
+
+In general, the shortcut naming tends to be consistent with the Azure SDK. However, it does not follow the SDK naming religiously. Sometimes, simplicity or succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.)
+
+* In the cases when the same class name is used, make sure you reference the right package!
+* As for class member naming, it is hard to avoid the impression that the Azure SDK heavily abuses the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
+* Since the shortcuts are all about fluent interface, you will not see `.set*(...)` anywhere, only `.with*(...)`. The "with" naming convention in the context of fluent interface setters has been adopted because "set" functions are conventionally expected to return `void`, whereas "with" returns an object. Modern Java API implementations from other vendors are increasingly adopting the same "with" setter naming convention. (e.g. AWS)
+
+And again, a quick look at any of the below code samples should make the above points rather obvious.
+
+### Access to the underlying, wrapped Azure SDK objects
+
+* Many shortcut objects are wrappers of Azure SDK objects. Since the shortcuts might not expose all of the settings available on the underlying Azure SDK classes, for those shortcut objects, to get access to the underlying Azure SDK object, use the `.inner()` call.
+
+* Some Azure SDK objects can also be used as input parameters in APIs where they make sense. For example, when a storage account is expected in some shortcut API, generally it can be provided as either:
+  * the shortcut `StorageAccount` object, 
+  * the Azure SDK's `StorageAccount` object, 
+  * the resource id string (ARM), 
+  * or the name (ASM).
 
 
 ## Examples
