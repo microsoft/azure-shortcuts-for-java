@@ -17,7 +17,7 @@ azure.networks().define("mynetwork")
 
 The shortcuts library supports APIs for both the "modern" ARM (Azure Resource Model) model as well as the "classic" ASM (Azure Service Model), using similar API patterns whenever reasonable.
 
-*Note: the ASM portion might not be developed much further and might not be released to the public.*
+> :warning: **NOTE**: the ASM portion might not be developed much further and might not be released to the public.
 
 A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` [for ARM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/resources/samples) and `com.microsoft.azure.shortcuts.services.samples` [for ASM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/services/samples).
 
@@ -35,7 +35,7 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 ## Usage pre-requisites
 
 * Java 7+
-  * *Note: Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support)*.  
+  * > :warning: **NOTE**: Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support)*.  
 * Azure SDK for Java v0.9.0 (installed by the pom.xml file, so no need to install separately)
 * An Azure subscription
 
@@ -113,10 +113,10 @@ Further simplification of the authentication process is a subject of active inve
 * [Authentication](#creating-an-authenticated-client)
 * [Virtual Machines](#virtual-machines)
 * [Virtual Networks](#virtual-networks)
-* [Cloud Services](#cloud-services)
+* [Cloud Services](#cloud-services-asm-only)
 * [Storage Accounts](#storage-accounts)
 * [Regions](#regions)
-* [Resource Groups](#resource-groups)
+* [Resource Groups](#resource-groups-arm-only)
 * [Resources](#resources)
 * [Resource Providers](#resource-providers)
 
@@ -140,7 +140,7 @@ String subscriptionId = "<subscription-GUID>";
 Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 ```
 
-*Note: Active Directory auth for ARM currently requires a lot of inputs and token management logic. To simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:*
+> :warning: **NOTE**: Active Directory auth for ARM currently requires a lot of inputs and token management logic. To simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:
 
 ```xml
 <azureShortcutsAuth>
