@@ -1,7 +1,7 @@
 # azure-shortcuts-for-java
 The goal of this project is to provide a radically simplified API for Azure in Java. It follows a flavor of modern API design patterns (builder, fluent) optimized for readability, writeability and succinctness.
 
-*Note: this is currently an experimental labs project/work in progress*.
+> :warning: **NOTE**: this is currently an experimental labs project/work in progress.
 
 Here's an example for creating a virtual network:
 
@@ -36,7 +36,7 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 * Java 7+
 
-> :warning: **NOTE**: Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support)*.  
+> :warning: **NOTE**: Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support).  
 
 * Azure SDK for Java v0.9.0 (installed by the pom.xml file, so no need to install separately)
 * An Azure subscription
