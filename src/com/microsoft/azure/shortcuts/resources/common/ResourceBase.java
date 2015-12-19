@@ -53,8 +53,6 @@ public interface ResourceBase extends
 	/**
 	 * A resource definition allowing tags to be specified
 	 */
-	interface DefinitionWithTags<T> {
-		T withTags(Map<String, String> tags);
-		T withTag(String key, String value);
+	interface DefinitionWithTags<T> extends Taggable<T> {
 	}
 }

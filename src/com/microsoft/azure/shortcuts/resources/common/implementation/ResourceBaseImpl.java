@@ -80,6 +80,11 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 		return this;
 	}
 	
+	protected ResourceBaseImpl<T, I> withoutTag(String name) {
+		this.inner().getTags().remove(name);
+		return this;
+	}
+	
 	protected ResourceBaseImpl<T, I> withRegion(String regionName) {
 		this.inner().setLocation(regionName);
 		return this;

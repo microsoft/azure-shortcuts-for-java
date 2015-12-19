@@ -188,6 +188,12 @@ public class AvailabilitySetsImpl
 			return this;
 		}
 
+		@Override
+		public AvailabilitySetImpl withoutTag(String name) {
+			super.withoutTag(name);
+			return this;
+		}
+		
 
 		/************************************************************
 		 * Verbs

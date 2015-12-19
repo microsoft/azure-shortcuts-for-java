@@ -217,6 +217,13 @@ public class StorageAccountsImpl
 			super.withTag(name, value);
 			return this;
 		}
+		
+		
+		@Override
+		public StorageAccountImpl withoutTag(String name) {
+			super.withoutTag(name);
+			return this;
+		}
 
 		
 		/************************************************************

@@ -72,6 +72,7 @@ public class AvailabilitySetSample {
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(group)
     		.withTag("hello", "world")
+    		.withoutTag("hello")
     		.provision();
     	
     	// Get an existing availability set based onb group and name

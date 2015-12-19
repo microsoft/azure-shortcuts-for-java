@@ -42,6 +42,7 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
+import com.microsoft.azure.management.compute.models.VirtualMachineImage;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
@@ -440,6 +441,12 @@ public class VirtualMachinesImpl
 			return this;
 		}
 		
+		@Override
+		public VirtualMachineImpl withoutTag(String name) {
+			super.withoutTag(name);
+			return this;
+		}
+		
 		
 		/*******************************************************
 		 * Verbs
@@ -457,7 +464,7 @@ public class VirtualMachinesImpl
 			
 			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
-			
+
 			//throw new UnsupportedOperationException("Not yet implemented.");
 			// TODO 
 			return null;
