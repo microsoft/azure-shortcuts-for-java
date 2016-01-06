@@ -23,6 +23,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -37,15 +38,18 @@ import com.microsoft.azure.management.compute.models.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.models.HardwareProfile;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.models.NetworkProfile;
 import com.microsoft.azure.management.compute.models.OSDisk;
 import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.management.compute.models.VirtualMachineImage;
+import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
@@ -121,16 +125,24 @@ public class VirtualMachinesImpl
 		azureVM.setType("Microsoft.Compute/virtualMachines");
 		azureVM.setId(name);
 		azureVM.setOSProfile(new OSProfile());
-		azureVM.setAvailabilitySetReference(new AvailabilitySetReference());
+		//azureVM.setAvailabilitySetReference(new AvailabilitySetReference());
 		azureVM.setHardwareProfile(new HardwareProfile());
 		
+		// Default storage profile
 		StorageProfile storageProfile = new StorageProfile();
 		azureVM.setStorageProfile(storageProfile);
 		storageProfile.setImageReference(new ImageReference());
 		
+		// Default OS disk
 		OSDisk osDisk = new OSDisk("osdisk", new VirtualHardDisk(), DiskCreateOptionTypes.FROMIMAGE);
 		storageProfile.setOSDisk(osDisk);
 		osDisk.setCaching(CachingTypes.NONE);
+		
+		// Default network profile
+		NetworkProfile networkProfile = new NetworkProfile();
+		azureVM.setNetworkProfile(networkProfile);
+		networkProfile.setNetworkInterfaces(new ArrayList<>(
+				Arrays.asList(new NetworkInterfaceReference())));
 		
 		//TODO prepare the rest
 		
@@ -157,6 +169,12 @@ public class VirtualMachinesImpl
 
 		private boolean isExistingStorageAccount;
 		private String storageAccountId;
+		
+		private boolean isExistingAvailabilitySet;
+		private String availabilitySetId;
+		
+		private boolean isExistingNetwork;
+		private String networkID;
 
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -207,7 +225,7 @@ public class VirtualMachinesImpl
 			try {
 				AvailabilitySetReference s = this.inner().getAvailabilitySetReference();
 				if(s == null) {
-					return null;
+					return new URI(this.availabilitySetId);
 				} else {
 					return new URI(s.getReferenceUri());
 				}
@@ -254,31 +272,25 @@ public class VirtualMachinesImpl
 		@Override
 		public String computerName() {
 			OSProfile p = this.inner().getOSProfile();
-			if(p == null) {
-				return null;
-			} else {
-				return p.getComputerName();
-			}
+			return (p == null) ? null : p.getComputerName();
 		}
 		
 		@Override
 		public String customData() {
 			OSProfile p = this.inner().getOSProfile();
-			if(p == null) {
-				return null;
-			} else {
-				return p.getCustomData();
-			}
+			return (p == null) ? null : p.getCustomData();
 		}
 		
 		@Override
 		public boolean isLinux() {
-			return this.inner().getOSProfile().getLinuxConfiguration() != null;
+			OSProfile p = this.inner().getOSProfile();
+			return (p == null) ? false : (this.inner().getOSProfile().getLinuxConfiguration() != null);
 		}
 		
 		@Override
 		public boolean isWindows() {
-			return this.inner().getOSProfile().getWindowsConfiguration() != null;
+			OSProfile p = this.inner().getOSProfile();
+			return (p == null) ? false : (this.inner().getOSProfile().getWindowsConfiguration() != null);
 		}
 				
 		@Override
@@ -361,12 +373,6 @@ public class VirtualMachinesImpl
 
 		
 		@Override
-		public VirtualMachineImpl withAvailabilitySet(URI availabilitySetURI) {
-			this.inner().getAvailabilitySetReference().setReferenceUri(availabilitySetURI.toString());
-			return this;
-		}
-
-		@Override
 		public VirtualMachineImpl withSize(String sizeName) {
 			this.inner().getHardwareProfile().setVirtualMachineSize(sizeName);
 			return this;
@@ -447,27 +453,72 @@ public class VirtualMachinesImpl
 			return this;
 		}
 		
+		@Override
+		public VirtualMachineImpl withAvailabilitySetExisting(String id) {
+			this.availabilitySetId = id;
+			this.isExistingAvailabilitySet = true;
+			AvailabilitySetReference availabilitySetRef = this.inner().getAvailabilitySetReference();
+			if(id == null) {
+				this.inner().setAvailabilitySetReference(null);
+				return this;
+			} else  if(availabilitySetRef == null) {
+				this.inner().setAvailabilitySetReference(availabilitySetRef = new AvailabilitySetReference());
+			}
+			availabilitySetRef.setReferenceUri(id);
+			return this;
+		}
+
+
+		@Override
+		public VirtualMachineImpl withAvailabilitySetExisting(AvailabilitySet availabilitySet) {
+			return this.withAvailabilitySetExisting(availabilitySet.id());
+		}
+
+
+		@Override
+		public VirtualMachineImpl withAvailabiliytSetExisting(
+				com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet) {
+			return this.withAvailabilitySetExisting(availabilitySet.getId());
+		}
+
+		
+		@Override
+		public VirtualMachineImpl withAvailabilitySetExisting(URI uri) {
+			return this.withAvailabilitySetExisting(uri.toString());
+		}
+
+		
+		@Override
+		public VirtualMachineImpl withComputerName(String computerName) {
+			this.inner().getOSProfile().setComputerName(computerName);
+			return this;
+		}
+
 		
 		/*******************************************************
 		 * Verbs
 		 *******************************************************/
 		
 		@Override
-		public UpdateBlank provision() throws Exception {
+		public VirtualMachineImpl provision() throws Exception {
 			// Ensure group
 			Group group = this.ensureGroup(azure);
 			
 			// Ensure storage account
 			StorageAccount storageAccount = ensureStorageAccount(group.name());
 
-			// TODO networking, availability set
+			// Ensure default computer name
+			if(this.computerName() == null) {
+				this.withComputerName(this.name());
+			}
 			
 			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 
-			//throw new UnsupportedOperationException("Not yet implemented.");
 			// TODO 
-			return null;
+			
+			azure.computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.group(), this.inner());
+			return this;
 		}
 		
 		

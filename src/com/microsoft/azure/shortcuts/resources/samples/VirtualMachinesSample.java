@@ -47,7 +47,7 @@ public class VirtualMachinesSample {
 
     	azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
-    		.withAdminUsername("test")
+    		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")
     		.withImageOffer("WindowsServer")
@@ -55,7 +55,7 @@ public class VirtualMachinesSample {
     		.withLatestImageVersion()
     		.withSize(Size.Type.BASIC_A1)
     		.withStorageAccountNew("store" + deploymentId)
-    		.withGroupExisting("lenatest")
+    		.withGroupNew("vmtest"+deploymentId)
     		.provision();
     	
     	// Listing all virtual machine ids in a subscription

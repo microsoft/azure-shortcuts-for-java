@@ -44,8 +44,10 @@ public abstract class GroupResourceBaseImpl<T, I extends com.microsoft.windowsaz
 	
 	@Override 
 	public String group() {
-		return ResourcesImpl.groupFromResourceId(this.id());
+		String groupNameTemp = ResourcesImpl.groupFromResourceId(this.id());
+		return (groupNameTemp == null) ? this.groupName : groupNameTemp;
 	}
+	
 	
 	/**************************************************
 	 * Helpers

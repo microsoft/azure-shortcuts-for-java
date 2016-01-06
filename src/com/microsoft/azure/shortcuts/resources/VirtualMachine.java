@@ -27,6 +27,7 @@ import com.microsoft.azure.management.compute.models.DataDisk;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
+import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -204,6 +205,25 @@ public interface VirtualMachine extends
 	
 
 	/**
+	 * A virtual machine definition allowing to specify an existing availability set to add the virtual machine to
+	 */
+	public interface DefinitionWithAvailabilitySet<T> {
+		T withAvailabilitySetExisting(String id);
+		T withAvailabilitySetExisting(AvailabilitySet availabilitySet);
+		T withAvailabilitySetExisting(URI uri);
+		T withAvailabiliytSetExisting(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
+	}
+	
+	
+	public interface DefinitionWithVirtualNetwork<T> {
+		T withNetworkExisting(String id);
+		T withNetworkExisting(Network network);
+		T withNetworkExisting(VirtualNetwork network);
+		T withNetworkNew(String name);
+	}
+	
+	
+	/**
 	 * A virtual machine definition with sufficient inputs to provision a new virtual machine in the cloud, 
 	 * but exposing additional optional inputs to specify
 	 */
@@ -214,14 +234,14 @@ public interface VirtualMachine extends
 		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
-		Provisionable<UpdateBlank> {
+		DefinitionWithAvailabilitySet<DefinitionProvisionable>,
+		Provisionable<VirtualMachine> {
 		
 		/**
-		 * @param availabilitySetId The ID of the availability set to associate the virtual machine with
+		 * @param computerName The computer name for the virtual machine
 		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
 		 */
-		DefinitionProvisionable withAvailabilitySet(URI availabilitySetURI);
-		
+		DefinitionProvisionable withComputerName(String computerName);
 	}
 	
 	interface UpdateBlank {

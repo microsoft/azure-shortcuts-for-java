@@ -153,6 +153,7 @@ public interface VirtualMachine extends
 		T withSubnet(String subnet);
 	}
 
+	
 	/**
 	 * A new virtual machine definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
