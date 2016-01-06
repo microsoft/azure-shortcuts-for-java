@@ -269,6 +269,14 @@ public class NetworksImpl
 			return this;
 		}
 		
+		
+		@Override
+		public NetworkImpl withoutTag(String name) {
+			super.withoutTag(name);
+			return this;
+		}
+		
+		
 		@Override
 		public NetworkImpl withAddressSpace(String cidr) {
 			this.inner().getAddressSpace().getAddressPrefixes().add(cidr);

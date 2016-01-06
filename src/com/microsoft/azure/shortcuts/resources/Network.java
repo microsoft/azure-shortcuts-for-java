@@ -79,10 +79,8 @@ public interface Network extends
 		DefinitionWithAddressSpace,
 		DefinitionWithDNSServer,
 		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable> {
-		
-		DefinitionProvisionable withTags(Map<String, String> tags);
-		DefinitionProvisionable withTag(String key, String value);
+		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 	
 	public interface DefinitionProvisionableWithSubnet extends 
