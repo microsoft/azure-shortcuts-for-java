@@ -246,7 +246,7 @@ System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t",
 ```
 
 
-#### Reading information about a VM
+#### Getting information about a VM
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -408,7 +408,7 @@ Map<String, Network> networks = azure.networks().list("<resource-group-name">);
 ```
 
 
-#### Reading information about a virtual network
+#### Getting information about a virtual network
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -447,25 +447,15 @@ azure.networks().delete("mynetwork");
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
+Any of the following methods:
+
 ```java
 azure.networks().delete("<network-resource-id>");
-```
 
-or
-
-```java
 azure.networks().delete("<resource-group-name>", "<network-name>");
-```
 
-or 
-
-```java
 azure.networks("<network-resource-id>").delete();
-```
 
-or
-
-```java
 azure.networks("<resource-group-name>", "<network-name>").delete();
 ```
 
@@ -511,7 +501,7 @@ In a specific resource group:
 Map<String, NetworkInterface> nics = azure.networkInterfaces().list("<resource-group-name>");
 ```
 
-#### Accessing an existing network interface
+#### Getting information about an existing network interface
 
 Using its resource id:
 
@@ -587,7 +577,7 @@ azure.cloudServices().update("myservice")
 	.apply();
 ```
 
-#### Reading information about a cloud service
+#### Getting information about a cloud service
 
 ```java
 CloudService cloudService = azure.cloudServices("myservice");
@@ -686,7 +676,7 @@ azure.storageAccounts().update("<storage-account-name>")
 
 > :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-#### Reading information about a storage account
+#### Getting information about a storage account
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -754,25 +744,15 @@ azure.storageAccounts().delete("mystorage");
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
+Any of the following methods:
+
 ```java
 azure.storageAccounts().delete("<storage-account-resource-id>");
-```
 
-or
-
-```java
 azure.storageAccounts().delete("<resource-group-name>", "<storage-account-name>");
-```
 
-or 
-
-```java
 azure.storageAccounts("<storage-account-resource-id>").delete();
-```
 
-or
-
-```java
 azure.storageAccounts("<resource-group-name>", "<storage-account-name>").delete();
 ```
 
@@ -865,7 +845,7 @@ azure.groups().update("<resource-group-name>")
 ```
 
 
-#### Reading information about a resource group
+#### Getting information about a resource group
 
 ```java
 String resourceGroup="<resource-group-name>";		
@@ -912,7 +892,7 @@ Resources in a specific group:
 Map<String, Resource> resources = azure.resources().list("<resource-group-name>");
 ```
 
-#### Reading information about a resource
+#### Getting information about a resource
 
 If you know the full ID of the resource (e.g. you got it from the `resources().list().keySet()`), then:
 
@@ -991,7 +971,7 @@ Set<String> providerNamespaces = azure.providers().list().keySet();
 ```
 
 
-#### Reading information about a resource provider
+#### Getting information about a resource provider
 
 Using the namespace of the provider you can get from `providers().names()`:
 
@@ -1107,7 +1087,34 @@ Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("m
 ```
 
 
-#### Deleting availability sets
+#### Getting information about an availability set
+
+Using its resource id:
+
+```java
+AvailabilitySet availabilitySet = azure.availabilitySets("<resource-id>");
+```
+
+or:
+
+```java
+AvailabilitySet availabilitySet = azure.availabilitySets().get("<resource-id>");
+``` 
+ 
+Using its resource group and name:
+
+```java
+AvailabilitySet availabilitySet = azure.availabilitySets("<group-name>", "<availability-set-name>");
+```
+
+or:
+
+```java
+AvailabilitySet availabilitySet = azure.availabilitySets().get("<group-name>", "<availability-set-name>");
+```
+
+
+#### Deleting an availability set
 
 Any of the following approaches:
 
