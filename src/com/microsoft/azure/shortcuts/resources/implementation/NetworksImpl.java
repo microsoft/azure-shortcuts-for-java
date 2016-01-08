@@ -45,8 +45,6 @@ public class NetworksImpl
 	extends EntitiesImpl<Azure>
 	implements Networks {
 	
-	List<Network> groups = null;
-	
 	NetworksImpl(Azure azure) {
 		super(azure);
 	}
@@ -61,7 +59,7 @@ public class NetworksImpl
 	@Override
 	public Map<String, Network> list(String groupName) throws Exception {
 		HashMap<String, Network> wrappers = new HashMap<>();
-		for(VirtualNetwork nativeItem : getAzureVirtualNetworks(groupName)) {
+		for(VirtualNetwork nativeItem : getNativeEntities(groupName)) {
 			NetworkImpl wrapper = new NetworkImpl(nativeItem);
 			wrappers.put(nativeItem.getId(), wrapper);
 		}
@@ -80,12 +78,12 @@ public class NetworksImpl
 
 	@Override
 	public NetworkImpl get(String groupName, String name) throws Exception {
-		return new NetworkImpl(this.getAzureVirtualNetwork(groupName, name));
+		return new NetworkImpl(this.getNativeEntity(groupName, name));
 	}
 	
 	@Override
 	public NetworkImpl define(String name) throws Exception {
-		return createNetworkWrapper(name);
+		return createWrapper(name);
 	}
 
 	
@@ -108,7 +106,7 @@ public class NetworksImpl
 	 ***************************************************/
 	
 	// Helper to get the networks from Azure
-	private ArrayList<VirtualNetwork> getAzureVirtualNetworks(String resourceGroupName) throws Exception {
+	private ArrayList<VirtualNetwork> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
 			return this.azure.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
 		} else {
@@ -118,12 +116,12 @@ public class NetworksImpl
 	
 	
 	// Helper to get a network from Azure
-	private VirtualNetwork getAzureVirtualNetwork(String groupName, String name) throws Exception {
+	private VirtualNetwork getNativeEntity(String groupName, String name) throws Exception {
 		return azure.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
 	}
 	
 	
-	private NetworkImpl createNetworkWrapper(String name) {
+	private NetworkImpl createWrapper(String name) {
 		VirtualNetwork azureNetwork = new VirtualNetwork();
 		azureNetwork.setName(name);
 		azureNetwork.setSubnets(new ArrayList<com.microsoft.azure.management.network.models.Subnet>());
@@ -314,7 +312,7 @@ public class NetworksImpl
 		
 		@Override
 		public NetworkImpl refresh() throws Exception {
-			this.setInner(getAzureVirtualNetwork(
+			this.setInner(getNativeEntity(
 					ResourcesImpl.groupFromResourceId(this.id()), 
 					ResourcesImpl.nameFromResourceId(this.id())));
 			return this;

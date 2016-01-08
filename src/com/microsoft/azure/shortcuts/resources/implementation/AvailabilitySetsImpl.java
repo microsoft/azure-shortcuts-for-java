@@ -48,7 +48,7 @@ public class AvailabilitySetsImpl
 	@Override
 	public Map<String, AvailabilitySet> list(String groupName) throws Exception {
 		HashMap<String, AvailabilitySet> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem : getAzureAvailabilitySets(groupName)) {
+		for(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem : getNativeEntities(groupName)) {
 			wrappers.put(nativeItem.getId(), new AvailabilitySetImpl(nativeItem));
 		}
 		
@@ -64,7 +64,7 @@ public class AvailabilitySetsImpl
 
 	@Override
 	public AvailabilitySetImpl get(String groupName, String name) throws Exception {
-		return new AvailabilitySetImpl(this.getAzureAvailabilitySet(groupName, name));
+		return new AvailabilitySetImpl(this.getNativeEntities(groupName, name));
 	}
 
 	@Override
@@ -92,12 +92,12 @@ public class AvailabilitySetsImpl
 	 ***************************************************/
 	
 	// Helper to get the availability sets from Azure
-	private ArrayList<com.microsoft.azure.management.compute.models.AvailabilitySet> getAzureAvailabilitySets(String resourceGroupName) throws Exception {
+	private ArrayList<com.microsoft.azure.management.compute.models.AvailabilitySet> getNativeEntities(String resourceGroupName) throws Exception {
 		return this.azure.computeManagementClient().getAvailabilitySetsOperations().list(resourceGroupName).getAvailabilitySets();
 	}
 	
 	// Helper to get an availability set from Azure
-	private com.microsoft.azure.management.compute.models.AvailabilitySet getAzureAvailabilitySet(String groupName, String name) throws Exception {
+	private com.microsoft.azure.management.compute.models.AvailabilitySet getNativeEntities(String groupName, String name) throws Exception {
 		return azure.computeManagementClient().getAvailabilitySetsOperations().get(groupName, name).getAvailabilitySet();
 	}
 	
@@ -206,7 +206,7 @@ public class AvailabilitySetsImpl
 
 		@Override
 		public AvailabilitySetImpl refresh() throws Exception {
-			this.setInner(getAzureAvailabilitySet(
+			this.setInner(getNativeEntities(
 				ResourcesImpl.groupFromResourceId(this.id()), 
 				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;

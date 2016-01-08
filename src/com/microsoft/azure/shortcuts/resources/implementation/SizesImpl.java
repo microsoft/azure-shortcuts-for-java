@@ -51,7 +51,7 @@ public class SizesImpl
 	@Override
 	public Map<String, Size> list(String region) throws Exception {
 		HashMap<String, Size> wrappers = new HashMap<>();
-		for(VirtualMachineSize nativeItem : getSizes(region)) {
+		for(VirtualMachineSize nativeItem : getNativeEntities(region)) {
 			SizeImpl wrapper = new SizeImpl(nativeItem);
 			wrappers.put(nativeItem.getName(), wrapper);
 		}
@@ -67,7 +67,7 @@ public class SizesImpl
 	 * @throws IOException 
 	 *******************************************************/
 	
-	private ArrayList<VirtualMachineSize> getSizes(String region) throws Exception {
+	private ArrayList<VirtualMachineSize> getNativeEntities(String region) throws Exception {
 		return azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
 	}
 

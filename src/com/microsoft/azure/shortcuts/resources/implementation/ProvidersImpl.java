@@ -44,7 +44,7 @@ public class ProvidersImpl
 	@Override
 	public Map<String, Provider> list() throws Exception {
 		HashMap<String, Provider> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.resources.models.Provider nativeItem : getProviders(azure)) {
+		for(com.microsoft.azure.management.resources.models.Provider nativeItem : getNativeEntities(azure)) {
 			ProviderImpl wrapper = new ProviderImpl(nativeItem);
 			wrappers.put(nativeItem.getNamespace(), wrapper);
 		}
@@ -63,7 +63,7 @@ public class ProvidersImpl
 
 
 	// Get providers from Azure
-	private static ArrayList<com.microsoft.azure.management.resources.models.Provider> getProviders(Azure azure) throws Exception {
+	private static ArrayList<com.microsoft.azure.management.resources.models.Provider> getNativeEntities(Azure azure) throws Exception {
 		return azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();		
 	}
 		

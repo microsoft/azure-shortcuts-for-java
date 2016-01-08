@@ -58,7 +58,7 @@ public class StorageAccountsImpl
 	@Override
 	public Map<String, StorageAccount> list(String groupName) throws Exception {
 		HashMap<String, StorageAccount> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.storage.models.StorageAccount nativeItem : getAzureStorageAccounts(groupName)) {
+		for(com.microsoft.azure.management.storage.models.StorageAccount nativeItem : getNativeEntities(groupName)) {
 			wrappers.put(nativeItem.getId(), new StorageAccountImpl(nativeItem));
 		}
 		
@@ -76,7 +76,7 @@ public class StorageAccountsImpl
 
 	@Override
 	public StorageAccountImpl get(String groupName, String name) throws Exception {
-		return new StorageAccountImpl(this.getAzureStorageAccount(groupName, name));
+		return new StorageAccountImpl(this.getNativeEntity(groupName, name));
 	}
 
 
@@ -107,7 +107,7 @@ public class StorageAccountsImpl
 	 ***************************************************/
 	
 	// Helper to get the storage accounts from Azure
-	private ArrayList<com.microsoft.azure.management.storage.models.StorageAccount> getAzureStorageAccounts(String resourceGroupName) throws Exception {
+	private ArrayList<com.microsoft.azure.management.storage.models.StorageAccount> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
 			return this.azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
 		} else {
@@ -116,7 +116,7 @@ public class StorageAccountsImpl
 	}
 	
 	// Helper to get a storage account from Azure
-	private com.microsoft.azure.management.storage.models.StorageAccount getAzureStorageAccount(String groupName, String name) throws Exception {
+	private com.microsoft.azure.management.storage.models.StorageAccount getNativeEntity(String groupName, String name) throws Exception {
 		return azure.storageManagementClient().getStorageAccountsOperations().getProperties(groupName, name).getStorageAccount();		
 	}
 	
@@ -252,7 +252,7 @@ public class StorageAccountsImpl
 
 		@Override
 		public StorageAccountImpl refresh() throws Exception {
-			this.setInner(getAzureStorageAccount(
+			this.setInner(getNativeEntity(
 				ResourcesImpl.groupFromResourceId(this.id()), 
 				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;

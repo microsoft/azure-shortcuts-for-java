@@ -47,7 +47,7 @@ public class GroupsImpl
 	@Override
 	public Map<String, Group> list() throws Exception {
 		HashMap<String, Group> wrappers = new HashMap<>();
-		for(ResourceGroupExtended nativeItem : getAzureGroups()) {
+		for(ResourceGroupExtended nativeItem : getNativeEntities()) {
 			GroupImpl wrapper = new GroupImpl(nativeItem);
 			wrappers.put(nativeItem.getName(), wrapper);
 		}
@@ -73,13 +73,13 @@ public class GroupsImpl
 
 	@Override
 	public GroupImpl update(String name) {
-		return createGroupWrapper(name);
+		return createWrapper(name);
 	}
 
 
 	@Override
 	public GroupImpl define(String name) {
-		return createGroupWrapper(name);
+		return createWrapper(name);
 	}
 
 	
@@ -88,7 +88,7 @@ public class GroupsImpl
 	 ***************************************************/
 	
 	// Wraps native Azure group
-	private GroupImpl createGroupWrapper(String name) {
+	private GroupImpl createWrapper(String name) {
 		ResourceGroupExtended azureGroup = new ResourceGroupExtended();
 		azureGroup.setName(name);
 		return new GroupImpl(azureGroup);
@@ -96,7 +96,7 @@ public class GroupsImpl
 	}
 	
 	// Helper to get the resource groups from Azure
-	private ArrayList<ResourceGroupExtended> getAzureGroups() throws Exception {
+	private ArrayList<ResourceGroupExtended> getNativeEntities() throws Exception {
 		return this.azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();		
 	}
 	

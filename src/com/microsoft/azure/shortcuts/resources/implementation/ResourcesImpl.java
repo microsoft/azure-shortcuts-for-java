@@ -179,7 +179,7 @@ public class ResourcesImpl
 	@Override
 	public Map<String, Resource> list(String groupName) throws Exception {
 		HashMap<String, Resource> wrappers = new HashMap<>();
-		for(GenericResourceExtended nativeItem : getResources(groupName)) {
+		for(GenericResourceExtended nativeItem : getNativeEntities(groupName)) {
 			ResourceImpl wrapper = new ResourceImpl(nativeItem);
 			wrappers.put(nativeItem.getId(), wrapper);
 		}
@@ -192,7 +192,7 @@ public class ResourcesImpl
 	 * Helpers
 	 ***********************************************************/
 	
-	private ArrayList<GenericResourceExtended> getResources(String groupName) throws Exception {
+	private ArrayList<GenericResourceExtended> getNativeEntities(String groupName) throws Exception {
 		ResourceListParameters params = new ResourceListParameters(); 
 		params.setResourceGroupName(groupName);
 		return azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
