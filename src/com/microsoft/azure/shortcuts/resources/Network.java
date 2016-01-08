@@ -41,6 +41,7 @@ public interface Network extends
 	List<String> addressSpaces();
 	List<String> dnsServerIPs();
 	Map<String, Subnet> subnets();
+	Subnet subnets(String name);
 	
 	/**
 	 * A new blank virtual network definition

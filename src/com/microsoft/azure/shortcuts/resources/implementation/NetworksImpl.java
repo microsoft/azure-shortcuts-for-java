@@ -188,6 +188,11 @@ public class NetworksImpl
 			}
 			return Collections.unmodifiableMap(wrappers);
 		}
+		
+		@Override
+		public Subnet subnets(String name) {
+			return this.subnets().get(name);
+		}
 
 		
 		/**************************************************************
