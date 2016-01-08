@@ -208,16 +208,56 @@ public interface VirtualMachine extends
 	 * A virtual machine definition allowing to specify an existing availability set to add the virtual machine to
 	 */
 	public interface DefinitionWithAvailabilitySet<T> {
+		/**
+		 * Associates the virtual machine with an existing availability set
+		 * @param id The resource ID of the availability set
+		 * @return The next stage of the virtual machine definition
+		 */
 		T withAvailabilitySetExisting(String id);
+
+		/**
+		 * Associates the virtual machine with an existing availability set
+		 * @param availabilitySet The availability to associate the virtual machine with
+		 * @return The next stage of the virtual machine definition
+		 */
 		T withAvailabilitySetExisting(AvailabilitySet availabilitySet);
+		
+		/**
+		 * Associates the virtual machine with an existing availability set
+		 * @param uri The URI of the availability set
+		 * @return The next stage of the virtual machine definition
+		 */
 		T withAvailabilitySetExisting(URI uri);
+		
+		/**
+		 * Associates the virtual machine with an existing availability set
+		 * @param availabilitySet The AvailabilitySet from the Azure SDK API to associate the virtual machine with
+		 * @return The next stage of the virtual machine definition
+		 */
 		T withAvailabiliytSetExisting(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
 	}
 	
 	
 	public interface DefinitionWithVirtualNetwork<T> {
+		/**
+		 * Associates the virtual machine with an existing virtual network
+		 * @param id The resource ID of the virtual network
+		 * @return The next stage of the virtual machine definition
+		 */
 		T withNetworkExisting(String id);
+		
+		/**
+		 * Associates the virtual machine with an existing virtual network
+		 * @param network The virtual network to associate the virtual machine with
+		 * @return The next stage of the virtual machine definition
+		 */
 		T withNetworkExisting(Network network);
+		
+		/**
+		 * Associates the virtual machine with an existing virtual network
+		 * @param network
+		 * @return
+		 */
 		T withNetworkExisting(VirtualNetwork network);
 		T withNetworkNew(String name);
 	}
