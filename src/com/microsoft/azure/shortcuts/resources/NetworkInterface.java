@@ -37,7 +37,27 @@ public interface NetworkInterface extends
 	 * A new blank network interface definition
 	 */
 	public interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithSubnetPrimary> {
+	}
+	
+	/**
+	 * A network interface definition expecting an existing virtual network subnet to associate the NIC with
+	 */
+	public interface DefinitionWithSubnetPrimary {
+		/**
+		 * Associates an existing virtual network subnet as the primary subnet for this network interface and enables dynamic private IP address allocation
+		 * @param subnet The Subnet to associate with the network interface
+		 * @return The next stage of the network interface definition
+		 */
+		DefinitionProvisionable withSubnetPrimary(Network.Subnet subnet);
+
+		/**
+		 * Associates an existing virtual network subnet as the primary subnet for this network interface and specifies a static private IP address from that subnet
+		 * @param subnet The Subnet to associate with the network interface
+		 * @param staticPrivateIpAddress The static private IP address within the specified subnet to assign to this NIC
+		 * @return The next stage of the network interface definition
+		 */
+		DefinitionProvisionable withSubnetPrimary(Network.Subnet subnet, String staticPrivateIpAddress);
 	}
 	
 	/**

@@ -57,12 +57,12 @@ public abstract class GroupResourceBaseImpl<T, I extends com.microsoft.windowsaz
 		Group group;
 		if(!this.isExistingGroup) {
 			if(this.groupName == null) {
-				this.groupName = "group" + this.name();
+				this.groupName = this.name() + "group";
 			}
 				
 			group = azure.groups().define(this.groupName)
-					.withRegion(this.region())
-					.provision();
+				.withRegion(this.region())
+				.provision();
 			this.isExistingGroup = true;
 			return group;
 		} else {

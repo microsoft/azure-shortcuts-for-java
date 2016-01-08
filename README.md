@@ -22,7 +22,7 @@ The shortcuts library supports APIs for both the "modern" ARM (Azure Resource Mo
 
 A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` [for ARM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/resources/samples) and `com.microsoft.azure.shortcuts.services.samples` [for ASM](https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/services/samples).
 
-It is *not* currently a goal of this library to cover all of the Azure API surface. Rather, it is to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fall back, which this project is also built on.
+It is *not* currently a goal of this library to cover all of the Azure API surface. Rather, it is to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, the [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fallback, which this project is also built on.
 
 ## Setting up the dev machine
 
@@ -116,12 +116,14 @@ Further simplification of the authentication process is a subject of active inve
 * [Authentication](#creating-an-authenticated-client)
 * [Virtual Machines](#virtual-machines)
 * [Virtual Networks](#virtual-networks)
+* [Network Interfaces](#network-interfaces)
 * [Cloud Services](#cloud-services)
 * [Storage Accounts](#storage-accounts)
 * [Regions](#regions)
-* [Resource Groups](#resource-groups-arm-only)
+* [Resource Groups](#resource-groups)
 * [Resources](#resources)
 * [Resource Providers](#resource-providers)
+* [Availability Sets](#availability-sets)
 
 ### Creating an authenticated client
 
@@ -467,6 +469,88 @@ or
 azure.networks("<resource-group-name>", "<network-name>").delete();
 ```
 
+### Network Interfaces
+
+This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+#### Creating a network interface
+
+:warning: Note that the creation of a network interface requires an existing subnet of an existing virtual network. A `Subnet` instance can be obtained for example from a call to `Subnet subnet = azure.networks("my-network").subnets("subnet1");` using appropriate names for the network and the subnet.
+
+Using a minimum set of required inputs (a new resource group is created automatically):
+
+```java
+NetworkInterface nicMinimal = azure.networkInterfaces().define("<network-interface-name>")
+    .withRegion(Region.US_WEST)
+    .withSubnetPrimary(subnet)
+    .provision();
+```
+
+Creating a network interface within an existing resource group:
+
+```java
+NetworkInterface nic = azure.networkInterfaces().define("<network-interface-name>")
+    .withRegion(Region.US_WEST)
+    .withSubnetPrimary(network.subnets().get("subnet1"))
+    .withGroupExisting("<existing-group-name>")
+    .withTag("hello", "world")
+    .provision();
+```
+
+#### Listing network interfaces
+
+In the subscription (all resource groups):
+
+```java
+Map<String, NetworkInterface> nics = azure.networkInterfaces().list();
+```
+
+In a specific resource group: 
+
+```java
+Map<String, NetworkInterface> nics = azure.networkInterfaces().list("<resource-group-name>");
+```
+
+#### Accessing an existing network interface
+
+Using its resource id:
+
+```java
+NetworkInterface nic = azure.networkInterfaces().get("<resource-id>");
+```
+
+or:
+
+```java
+NetworkInterface nic = azure.networkInterfaces("<resource-id>");
+```
+
+Using its resource group and name:
+
+```java
+NetworkInterface nic = azure.networkInterfaces().get("<resource-group-name>", "<network-interface-name>");
+```
+
+or
+
+```java
+NetworkInterface nic = azure.networkInterfaces("<resource-group-name>", "<network-interface-name>");
+```
+
+#### Deleting a network interface
+
+Any of the following approaches:
+
+```java
+azure.networkInterfaces().delete("<resource-id>");
+
+azure.networkInterfaces().delete("<resource-group-name>", "<network-interface-name>");
+
+azure.networkInterfaces("<resource-id>").delete();
+
+azure.networkInterfaces("<resource-group-name>", "<network-interface-name>").delete();
+```
+
 
 ### Cloud Services
 
@@ -734,7 +818,7 @@ List<String> availableVMSizes = region.availableVirtualMachineSizes();
 > :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 
-### Resource Groups (ARM Only)
+### Resource Groups
 
 This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -1025,24 +1109,14 @@ Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("m
 
 #### Deleting availability sets
 
+Any of the following approaches:
+
 ```java
 azure.availabilitySets().delete("<resource-id>");
-```
 
-or
-
-```java
 azure.availabilitySets().delete("<resource-group-name>", "<availability-set-name>");
-```
 
-or 
-
-```java
 azure.availabilitySets("<resource-id>").delete();
-```
 
-or
-
-```java
 azure.availabilitySets("<resource-group-name>", "<availability-set-name>").delete();
 ```

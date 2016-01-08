@@ -33,6 +33,8 @@ import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Groups;
 import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
@@ -76,7 +78,8 @@ public class Azure {
     private final NetworksImpl networks;
     private final VirtualMachinesImpl virtualMachines;
     private final StorageAccountsImpl storageAccounts;
-    private final AvailabilitySets availabilitySets;
+    private final AvailabilitySetsImpl availabilitySets;
+    private final NetworkInterfacesImpl networkInterfaces;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -106,6 +109,7 @@ public class Azure {
         this.virtualMachines = new VirtualMachinesImpl(this);
         this.storageAccounts = new StorageAccountsImpl(this);
         this.availabilitySets = new AvailabilitySetsImpl(this);
+        this.networkInterfaces = new NetworkInterfacesImpl(this);
     }
     
     
@@ -135,6 +139,18 @@ public class Azure {
     
     public AvailabilitySet availabilitySets(String groupName, String name) throws Exception {
     	return this.availabilitySets.get(groupName, name);
+    }
+    
+    public NetworkInterfaces networkInterfaces() {
+    	return this.networkInterfaces;
+    }
+    
+    public NetworkInterface networkInterfaces(String id) throws Exception {
+    	return this.networkInterfaces.get(id);
+    }
+    
+    public NetworkInterface networkInterfaces(String groupName, String name) throws Exception {
+    	return this.networkInterfaces.get(groupName, name);
     }
     
     public Groups groups() {
