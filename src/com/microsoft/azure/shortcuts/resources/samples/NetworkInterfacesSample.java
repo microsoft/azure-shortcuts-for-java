@@ -64,7 +64,7 @@ public class NetworkInterfacesSample {
     	// Create a new network interface in a new default resource group
     	NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     		.withRegion(Region.US_WEST)
-    		.withSubnetPrimary(network.subnets().get("subnet1"))
+    		.withSubnetPrimary(network.subnets("subnet1"))
     		.provision();
     	
     	// Get info about a specific network interface using its group and name
@@ -106,7 +106,8 @@ public class NetworkInterfacesSample {
     	output
     		.append(String.format("Network interface ID: %s\n", nic.id()))
     		.append(String.format("\tName: %s\n", nic.name()))
-    		.append(String.format("\tGroup: %s\n", nic.group()));
+    		.append(String.format("\tGroup: %s\n", nic.group()))
+    		.append(String.format("\tRegion: %s\n", nic.region()));
     	
     	System.out.println(output.toString());
     }
