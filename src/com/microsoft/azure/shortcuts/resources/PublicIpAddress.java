@@ -34,6 +34,11 @@ public interface PublicIpAddress extends
 	Deletable {
 	
 	/**
+	 * @return The assigned public IP address
+	 */
+	String ipAddress();
+
+	/**
 	 * A new blank public IP address definition
 	 */
 	public interface DefinitionBlank extends 
@@ -49,4 +54,5 @@ public interface PublicIpAddress extends
 		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
+
 }

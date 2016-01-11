@@ -38,6 +38,8 @@ import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.azure.shortcuts.resources.Sizes;
@@ -80,6 +82,7 @@ public class Azure {
     private final StorageAccountsImpl storageAccounts;
     private final AvailabilitySetsImpl availabilitySets;
     private final NetworkInterfacesImpl networkInterfaces;
+    private final PublicIpAddresses publicIpAddresses;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -110,6 +113,7 @@ public class Azure {
         this.storageAccounts = new StorageAccountsImpl(this);
         this.availabilitySets = new AvailabilitySetsImpl(this);
         this.networkInterfaces = new NetworkInterfacesImpl(this);
+        this.publicIpAddresses = new PublicIpAddressesImpl(this);
     }
     
     
@@ -151,6 +155,18 @@ public class Azure {
     
     public NetworkInterface networkInterfaces(String groupName, String name) throws Exception {
     	return this.networkInterfaces.get(groupName, name);
+    }
+    
+    public PublicIpAddresses publicIpAddresses() {
+    	return this.publicIpAddresses;
+    }
+    
+    public PublicIpAddress publicIpAddresses(String id) throws Exception {
+    	return this.publicIpAddresses().get(id);
+    }
+    
+    public PublicIpAddress publicIpAddresses(String groupName, String name) throws Exception {
+    	return this.publicIpAddresses().get(groupName, name);
     }
     
     public Groups groups() {

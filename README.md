@@ -117,6 +117,7 @@ Further simplification of the authentication process is a subject of active inve
 * [Virtual Machines](#virtual-machines)
 * [Virtual Networks](#virtual-networks)
 * [Network Interfaces](#network-interfaces)
+* [Public IP Addresses](#public-ip-addresses)
 * [Cloud Services](#cloud-services)
 * [Storage Accounts](#storage-accounts)
 * [Regions](#regions)
@@ -541,6 +542,75 @@ azure.networkInterfaces("<resource-id>").delete();
 azure.networkInterfaces("<resource-group-name>", "<network-interface-name>").delete();
 ```
 
+## Public IP Addresses
+
+This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+### Creating a public IP address
+
+Providing minimal inputs (a resource group will be automatically generated):
+
+```java
+PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
+	.withRegion(Region.US_WEST)
+	.provision();
+```
+
+### Listing public IP addresses
+
+From the entire subscription, as a `Map` indexed by name:
+
+```java
+Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list();
+```
+
+From a specific resource group, as a `Map` indexed by name:
+
+```java
+Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list("my-resoruce-group-name");
+```
+
+### Getting information about an existing public IP address:
+
+#### Getting information about an existing network interface
+
+Using its resource id:
+
+```java
+PublicIpAddress pip = azure.publicIpAddresses().get("resource-id");
+```
+
+or:
+
+```java
+PublicIpAddress pip = azure.publicIpAddresses("resource-id");
+```
+
+Using its resource group and name:
+
+```java
+PublicIpAddress pip  = azure.publicIpAddresses().get("<resource-group-name>", "<pip-name>");
+```
+
+or
+
+```java
+PublicIpAddress pip  = azure.publicIpAddresses("<resource-group-name>", "<pip-name>");
+```
+
+#### Deleting a public IP address
+
+Any of the following methods:
+
+```java
+azure.publicIpAddresses().delete("<pip-resource-id>");
+
+azure.publicIpAddresses().delete("<resource-group-name>", "<pip-name>");
+
+azure.publicIpAddresses("<pip-resource-id>").delete();
+
+azure.publicIpAddresses("<resource-group-name>", "<pip-name>").delete();
+```
 
 ### Cloud Services
 
