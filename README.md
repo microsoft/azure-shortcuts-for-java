@@ -548,13 +548,24 @@ This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.reso
 
 ### Creating a public IP address
 
-Providing minimal inputs (a resource group will be automatically generated):
+Providing minimal inputs (a resource group will be automatically generated), with dynamic IP allocation:
 
 ```java
 PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
 	.withRegion(Region.US_WEST)
+	.withDynamicIp()
 	.provision();
 ```
+
+With a static IP:
+
+```java
+PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
+	.withRegion(Region.US_WEST)
+	.withStaticIp("<id-address>")
+	.provision();
+```
+
 
 ### Listing public IP addresses
 

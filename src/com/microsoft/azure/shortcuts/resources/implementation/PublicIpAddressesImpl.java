@@ -134,6 +134,7 @@ public class PublicIpAddressesImpl
 		implements
 			PublicIpAddress,
 			PublicIpAddress.DefinitionBlank,
+			PublicIpAddress.DefinitionWithIpAddress,
 			PublicIpAddress.DefinitionProvisionable {
 		
 		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress) {
@@ -155,6 +156,21 @@ public class PublicIpAddressesImpl
 		 * Setters (fluent interface)
 		 **************************************************************/
 
+		@Override
+		public DefinitionProvisionable withStaticIp(String ipAddress) {
+			this.inner().setIpAddress(ipAddress);
+			this.inner().setPublicIpAllocationMethod(IpAllocationMethod.STATIC);
+			return this;
+		}
+
+
+		@Override
+		public DefinitionProvisionable withDynamicIp() {
+			this.inner().setPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
+			return this;
+		}
+
+		
 		@Override
 		public PublicIpAddressImpl withRegion(String regionName) {
 			super.withRegion(regionName);

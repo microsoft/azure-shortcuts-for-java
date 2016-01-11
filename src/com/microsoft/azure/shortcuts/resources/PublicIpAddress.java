@@ -42,7 +42,12 @@ public interface PublicIpAddress extends
 	 * A new blank public IP address definition
 	 */
 	public interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithIpAddress> {
+	}
+	
+	public interface DefinitionWithIpAddress {
+		DefinitionProvisionable withStaticIp(String ipAddress);
+		DefinitionProvisionable withDynamicIp();
 	}
 	
 	/**

@@ -53,6 +53,7 @@ public class PublicIpAddressesSample {
     	// Create a public IP address in a defualt group
     	PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
     		.withRegion(Region.US_WEST)
+    		.withDynamicIp()
     		.provision();
     	
     	// Get info about a specific PIP using its group and name
@@ -68,6 +69,7 @@ public class PublicIpAddressesSample {
     	// More detailed PIP definition
     	PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
     		.withRegion(Region.US_WEST)
+    		.withDynamicIp()
     		.withGroupExisting(existingGroupName)
     		.withTag("hello", "world")
     		.provision();
