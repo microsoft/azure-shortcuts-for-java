@@ -23,7 +23,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -44,13 +43,12 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.management.network.models.NetworkInterface;
-import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
@@ -112,7 +110,7 @@ public class VirtualMachinesImpl
 	
 	@Override
 	public DefinitionBlank define(String name) throws Exception {
-		return createVirtualMachineWrapper(name);
+		return createWrapper(name);
 	}
 
 	
@@ -120,7 +118,7 @@ public class VirtualMachinesImpl
 	 * Helpers
 	 ***************************************************/
 	
-	VirtualMachineImpl createVirtualMachineWrapper(String name) {
+	VirtualMachineImpl createWrapper(String name) {
 		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = new com.microsoft.azure.management.compute.models.VirtualMachine();
 		azureVM.setName(name);
 		azureVM.setType("Microsoft.Compute/virtualMachines");
@@ -142,8 +140,7 @@ public class VirtualMachinesImpl
 		// Default network profile
 		NetworkProfile networkProfile = new NetworkProfile();
 		azureVM.setNetworkProfile(networkProfile);
-		networkProfile.setNetworkInterfaces(new ArrayList<>(
-				Arrays.asList(new NetworkInterfaceReference())));
+		networkProfile.setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
 		
 		//TODO prepare the rest
 		
@@ -175,8 +172,8 @@ public class VirtualMachinesImpl
 		private String availabilitySetId;
 		
 		private boolean isExistingNetwork;
-		private String networkID;
-
+		private String networkId;
+		
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
 		}
@@ -494,6 +491,27 @@ public class VirtualMachinesImpl
 			this.inner().getOSProfile().setComputerName(computerName);
 			return this;
 		}
+		
+		
+		@Override
+		public VirtualMachineImpl withNetworkInterfaceExisting(String resourceId, boolean isPrimary) {
+			NetworkInterfaceReference nicref = new NetworkInterfaceReference();
+			if(isPrimary) {
+				for(NetworkInterfaceReference n : this.inner().getNetworkProfile().getNetworkInterfaces()) {
+					n.setPrimary(false);
+				}
+			}
+			this.inner().getNetworkProfile().getNetworkInterfaces().add(nicref);
+			nicref.setReferenceUri(resourceId);
+			nicref.setPrimary(isPrimary);
+			return this;
+		}
+
+
+		@Override
+		public DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean isPrimary) {
+			return this.withNetworkInterfaceExisting(networkInterface.id(), isPrimary);
+		}
 
 		
 		/*******************************************************
@@ -506,8 +524,11 @@ public class VirtualMachinesImpl
 			Group group = this.ensureGroup(azure);
 			
 			// Ensure storage account
-			StorageAccount storageAccount = ensureStorageAccount(group.name());
+			StorageAccount storageAccount = this.ensureStorageAccount(group.name());
 
+			// Ensure virtual network
+			Network network = this.ensureNetwork(group.name());
+			
 			// Ensure default computer name
 			if(this.computerName() == null) {
 				this.withComputerName(this.name());
@@ -552,6 +573,11 @@ public class VirtualMachinesImpl
 			} else {
 				return azure.storageAccounts(this.storageAccountId);
 			}
+		}
+		
+		// Gets or creates if needed the specified virtual network
+		private Network ensureNetwork(String groupName) {
+			return null;
 		}
 	}
 }

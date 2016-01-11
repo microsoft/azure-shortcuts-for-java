@@ -24,6 +24,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
@@ -43,8 +45,22 @@ public class VirtualMachinesSample {
 
     public static void test(Azure azure) throws Exception {
     	// Creating a Windows VM
+    	String groupName = "mytestgroup";
     	String deploymentId = String.valueOf(System.currentTimeMillis());
 
+    	Network network = azure.networks().define("mytestnet")
+    		.withRegion(Region.US_WEST)
+    		.withAddressSpace("10.0.0.0/28")
+    		.withSubnet("subnet1", "10.0.0.0/29")
+    		.withGroupNew(groupName)
+    		.provision();
+    	
+    	NetworkInterface nic = azure.networkInterfaces().define("mynic")
+    		.withRegion(Region.US_WEST)
+    		.withSubnetPrimary(network.subnets("subnet1"))
+    		.withGroupExisting(groupName)
+    		.provision();
+    	
     	azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withAdminUsername("shortcuts")
@@ -55,7 +71,8 @@ public class VirtualMachinesSample {
     		.withLatestImageVersion()
     		.withSize(Size.Type.BASIC_A1)
     		.withStorageAccountNew("store" + deploymentId)
-    		.withGroupNew("vmtest"+deploymentId)
+    		.withGroupExisting(groupName)
+    		.withNetworkInterfaceExisting(nic, true)
     		.provision();
     	
     	// Listing all virtual machine ids in a subscription
@@ -63,7 +80,6 @@ public class VirtualMachinesSample {
     	System.out.println(String.format("Virtual machines: \n\t%s",  StringUtils.join(vms.keySet(), "\n\t")));
 
     	// Listing vms in a specific group
-    	String groupName = "group1444089227523";
     	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().list(groupName);
     	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmsInGroup.keySet(), "\n\t")));
     	
@@ -83,7 +99,9 @@ public class VirtualMachinesSample {
     	// Getting a specific virtual machine using its group and name
     	vm = azure.virtualMachines(groupName, vm.computerName());
     	printVM(vm);
-
+    	
+    	// Delete the group
+    	azure.groups().define(groupName);
 	}
     
     

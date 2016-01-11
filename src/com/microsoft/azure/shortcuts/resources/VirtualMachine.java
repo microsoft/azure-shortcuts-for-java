@@ -263,6 +263,11 @@ public interface VirtualMachine extends
 	}
 	
 	
+	interface DefinitionWithNetworkInterface {
+		DefinitionProvisionable withNetworkInterfaceExisting(String resourceId, boolean isPrimary);
+		DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean isPrimary);
+	}
+	
 	/**
 	 * A virtual machine definition with sufficient inputs to provision a new virtual machine in the cloud, 
 	 * but exposing additional optional inputs to specify
@@ -275,6 +280,7 @@ public interface VirtualMachine extends
 		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionWithAvailabilitySet<DefinitionProvisionable>,
+		DefinitionWithNetworkInterface,
 		Provisionable<VirtualMachine> {
 		
 		/**
