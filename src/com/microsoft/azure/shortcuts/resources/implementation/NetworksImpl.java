@@ -139,6 +139,7 @@ public class NetworksImpl
 		azureNetwork.setDhcpOptions(dhcpOptions);
 
 		return new NetworkImpl(azureNetwork);
+		
 	}
 	
 	

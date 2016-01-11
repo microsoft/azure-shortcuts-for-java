@@ -537,7 +537,6 @@ public class VirtualMachinesImpl
 			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 
-			
 			azure.computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.group(), this.inner());
 			return this;
 		}
