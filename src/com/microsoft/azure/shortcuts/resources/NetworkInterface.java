@@ -65,8 +65,7 @@ public interface NetworkInterface extends
 	 */
 	public interface DefinitionProvisionable extends 
 		Provisionable<NetworkInterface>,
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 }

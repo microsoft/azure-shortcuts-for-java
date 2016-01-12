@@ -55,8 +55,7 @@ public interface PublicIpAddress extends
 	 */
 	public interface DefinitionProvisionable extends 
 		Provisionable<PublicIpAddress>,
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 

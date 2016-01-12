@@ -31,7 +31,7 @@ public interface GroupResourceBase extends
 	/**
 	 * A resource definition allowing an existing resource group to be selected
 	 */
-	interface DefinitionWithGroupExisting<T> {
+	interface DefinitionWithGroup<T> {
 		/**
 		 * @param groupName The name of an existing resource group to put this resource in
 		 * @return The next stage of the resource definition
@@ -49,13 +49,7 @@ public interface GroupResourceBase extends
 		 * @return The next stage of the resource definition
 		 */
 		T withGroupExisting(ResourceGroupExtended group);
-	}
-	
-	
-	/**
-	 * A resource definition allowing to specify the name of a new resource group to create for this resource
-	 */
-	interface DefinitionWithGroupNew<T> {
+
 		/**
 		 * @param name The name of a new group to create for the resource
 		 * @return The next stage of the resource definition
@@ -73,6 +67,5 @@ public interface GroupResourceBase extends
 		 * @return
 		 */
 		T withGroupNew(Group.DefinitionProvisionable groupDefinition) throws Exception;
-		
 	}
 }

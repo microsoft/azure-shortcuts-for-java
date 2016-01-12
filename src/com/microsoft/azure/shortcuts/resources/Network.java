@@ -79,8 +79,7 @@ public interface Network extends
 		Provisionable<Network>,
 		DefinitionWithAddressSpace,
 		DefinitionWithDNSServer,
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 	

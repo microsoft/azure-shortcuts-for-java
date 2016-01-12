@@ -30,7 +30,7 @@ import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.Definition;
+import com.microsoft.azure.shortcuts.resources.common.DefinitionCombo;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface VirtualMachine extends 
@@ -63,7 +63,7 @@ public interface VirtualMachine extends
 	interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 		/*TODO 
-		 * Defaulted: endpoints, vnetname, storageAccountName
+		 * Defaulted: endpoints, vnetname
 		 * Optional:  tags
 		 */
 	}
@@ -72,14 +72,13 @@ public interface VirtualMachine extends
 	 * A virtual machine definition requiring the resource group to be specified
 	 */
 	interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionWithNetwork>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionWithNetwork> {}
+		GroupResourceBase.DefinitionWithGroup<DefinitionWithNetwork> {}
 	
 	/**
 	 * A virtual machine definition requiring the virtual network to be specified
 	 */
 	interface DefinitionWithNetwork extends 
-		Definition.DefinitionWithNetwork<DefinitionWithAdminUsername> {}
+		DefinitionCombo.WithNetwork<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
@@ -161,14 +160,6 @@ public interface VirtualMachine extends
 	
 
 	/**
-	 * A virtual machine definition allowing to specify the name of a new storage account to create for the new virtual machine
-	 */
-	interface DefinitionWithStorageAccountNew<T> {
-		T withStorageAccountNew(String name);
-	}
-	
-	
-	/**
 	 * A virtual machine definition allowing to specify the size of the new virtual machine
 	 */
 	interface DefinitionWithSize<T> {
@@ -227,8 +218,8 @@ public interface VirtualMachine extends
 	
 	
 	interface DefinitionWithNetworkInterface {
-		DefinitionProvisionable withNetworkInterfaceExisting(String resourceId, boolean isPrimary);
-		DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean isPrimary);
+		DefinitionProvisionable withNetworkInterfaceExisting(String resourceId, boolean asPrimary);
+		DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean asPrimary);
 	}
 	
 	/**
@@ -236,7 +227,7 @@ public interface VirtualMachine extends
 	 * but exposing additional optional inputs to specify
 	 */
 	interface DefinitionProvisionable extends
-		Definition.WithStorageAccount<DefinitionProvisionable>,
+		DefinitionCombo.WithStorageAccount<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionWithAvailabilitySet<DefinitionProvisionable>,

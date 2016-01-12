@@ -57,8 +57,7 @@ public interface StorageAccount extends
 	 * A new storage account definition with sufficient input parameters specified already to be provisioned in the cloud
 	 */
 	public interface DefinitionProvisionable extends 
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<StorageAccount> {
 		

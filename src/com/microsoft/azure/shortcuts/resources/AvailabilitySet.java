@@ -43,8 +43,7 @@ public interface AvailabilitySet extends
 	}
 	
 	public interface DefinitionProvisionable extends 
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
+		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<AvailabilitySet> {	
 	}
