@@ -28,40 +28,45 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
 
-public abstract class GroupableResourcesBaseImpl<T, W, I extends ResourceBaseExtended> extends EntitiesImpl<T> {
+public abstract class GroupableResourcesBaseImpl<
+		T, 
+		W, 
+		I extends ResourceBaseExtended,
+		WI extends W> extends EntitiesImpl<T> {
 	protected GroupableResourcesBaseImpl(T azure) {
 		super(azure);
 	}
 	
 	protected abstract List<I> getNativeEntities(String group) throws Exception;
 	protected abstract I getNativeEntity(String group, String name) throws Exception;
-	protected abstract W createWrapper(I nativeItem);
+	protected abstract WI wrap(I nativeItem);
+	protected abstract WI wrapNew(String name);
 	
 	public abstract void delete(String groupName, String name) throws Exception;
 	
-	public Map<String, W> list(String groupName) throws Exception {
+	public final Map<String, W> list(String groupName) throws Exception {
 		HashMap<String, W> wrappers = new HashMap<>();
 		for(I nativeItem : getNativeEntities(groupName)) {
-			wrappers.put(nativeItem.getId(), createWrapper(nativeItem));
+			wrappers.put(nativeItem.getId(), wrap(nativeItem));
 		}
 		return Collections.unmodifiableMap(wrappers);
 	}
 	
-	public Map<String, W> list() throws Exception {
+	public final Map<String, W> list() throws Exception {
 		return list(null);
 	}
 	
-	public W get(String groupName, String name) throws Exception {
-		return createWrapper(getNativeEntity(groupName, name));
+	public final W get(String groupName, String name) throws Exception {
+		return wrap(getNativeEntity(groupName, name));
 	}
 	
-	public W get(String id) throws Exception {
+	public final W get(String id) throws Exception {
 		return get(
 			ResourcesImpl.groupFromResourceId(id), 
 			ResourcesImpl.nameFromResourceId(id));
 	}
 	
-	public void delete(String id) throws Exception {
+	public final void delete(String id) throws Exception {
 		this.delete(
 			ResourcesImpl.groupFromResourceId(id), 
 			ResourcesImpl.nameFromResourceId(id));

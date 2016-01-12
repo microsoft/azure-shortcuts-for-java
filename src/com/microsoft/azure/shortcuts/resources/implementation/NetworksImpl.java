@@ -38,7 +38,11 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 
 public class NetworksImpl 
-	extends GroupableResourcesBaseImpl<Azure, Network, VirtualNetwork>
+	extends GroupableResourcesBaseImpl<
+		Azure, 
+		Network, 
+		VirtualNetwork,
+		NetworksImpl.NetworkImpl>
 	implements Networks {
 	
 	NetworksImpl(Azure azure) {
@@ -47,7 +51,7 @@ public class NetworksImpl
 	
 	@Override
 	public NetworkImpl define(String name) throws Exception {
-		return createWrapper(name);
+		return wrapNew(name);
 	}
 
 	@Override
@@ -75,12 +79,12 @@ public class NetworksImpl
 	}
 	
 	@Override 
-	protected NetworkImpl createWrapper(VirtualNetwork nativeItem) {
+	protected NetworkImpl wrap(VirtualNetwork nativeItem) {
 		return new NetworkImpl(nativeItem);
 	}
 	
-	
-	private NetworkImpl createWrapper(String name) {
+	@Override
+	protected NetworkImpl wrapNew(String name) {
 		VirtualNetwork azureNetwork = new VirtualNetwork();
 		azureNetwork.setName(name);
 		azureNetwork.setSubnets(new ArrayList<com.microsoft.azure.management.network.models.Subnet>());
@@ -97,15 +101,14 @@ public class NetworksImpl
 		dhcpOptions.setDnsServers(dnsServers);
 		azureNetwork.setDhcpOptions(dhcpOptions);
 
-		return new NetworkImpl(azureNetwork);
-		
+		return wrap(azureNetwork);
 	}
 	
 	
 	/***************************************************************
 	 * Implements logic for individual resource group
 	 ***************************************************************/
-	private class NetworkImpl 
+	class NetworkImpl 
 		extends 
 			GroupableResourceBaseImpl<
 				Network, 

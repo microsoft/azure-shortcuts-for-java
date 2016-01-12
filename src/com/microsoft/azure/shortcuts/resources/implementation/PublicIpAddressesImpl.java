@@ -29,7 +29,11 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 
 public class PublicIpAddressesImpl 
-	extends GroupableResourcesBaseImpl<Azure, PublicIpAddress, com.microsoft.azure.management.network.models.PublicIpAddress>
+	extends GroupableResourcesBaseImpl<
+		Azure, 
+		PublicIpAddress, 
+		com.microsoft.azure.management.network.models.PublicIpAddress,
+		PublicIpAddressesImpl.PublicIpAddressImpl>
 	implements PublicIpAddresses {
 		
 	PublicIpAddressesImpl(Azure azure) {
@@ -38,7 +42,7 @@ public class PublicIpAddressesImpl
 	
 	@Override
 	public PublicIpAddressImpl define(String name) throws Exception {
-		return createWrapper(name);
+		return wrapNew(name);
 	}
 
 	@Override
@@ -66,24 +70,24 @@ public class PublicIpAddressesImpl
 	}
 	
 	@Override
-	protected PublicIpAddressImpl createWrapper(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
+	protected PublicIpAddressImpl wrap(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
 		return new PublicIpAddressImpl(nativeItem);
 	}
 	
-	// Helper to create a wrapper
-	private PublicIpAddressImpl createWrapper(String name) {
+	@Override
+	protected PublicIpAddressImpl wrapNew(String name) {
 		com.microsoft.azure.management.network.models.PublicIpAddress nativeItem = new com.microsoft.azure.management.network.models.PublicIpAddress();
 		nativeItem.setName(name);
 		nativeItem.setPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
 		
-		return new PublicIpAddressImpl(nativeItem);
+		return wrap(nativeItem);
 	}
 	
 	
 	/***************************************************************
 	 * Implements logic for individual resource group
 	 ***************************************************************/
-	private class PublicIpAddressImpl 
+	class PublicIpAddressImpl 
 		extends 
 			GroupableResourceBaseImpl<
 				PublicIpAddress, 

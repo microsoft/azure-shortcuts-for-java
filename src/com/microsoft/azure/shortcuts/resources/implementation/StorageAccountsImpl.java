@@ -32,7 +32,11 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 
 public class StorageAccountsImpl 
-	extends GroupableResourcesBaseImpl<Azure, StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
+	extends GroupableResourcesBaseImpl<
+		Azure, 
+		StorageAccount, 
+		com.microsoft.azure.management.storage.models.StorageAccount,
+		StorageAccountsImpl.StorageAccountImpl>
 	implements StorageAccounts {
 	
 	StorageAccountsImpl(Azure azure) {
@@ -41,9 +45,7 @@ public class StorageAccountsImpl
 	
 	@Override
 	public StorageAccountImpl define(String name) throws Exception {
-		com.microsoft.azure.management.storage.models.StorageAccount nativeItem = new com.microsoft.azure.management.storage.models.StorageAccount();
-		nativeItem.setName(name);
-		return createWrapper(nativeItem);
+		return wrapNew(name);
 	}
 	
 	@Override
@@ -72,15 +74,22 @@ public class StorageAccountsImpl
 	}
 	
 	@Override
-	protected StorageAccountImpl createWrapper(com.microsoft.azure.management.storage.models.StorageAccount nativeItem) {
+	protected StorageAccountImpl wrap(com.microsoft.azure.management.storage.models.StorageAccount nativeItem) {
 		return new StorageAccountImpl(nativeItem);
+	}
+	
+	@Override
+	protected StorageAccountImpl wrapNew(String name) {
+		com.microsoft.azure.management.storage.models.StorageAccount nativeItem = new com.microsoft.azure.management.storage.models.StorageAccount();
+		nativeItem.setName(name);
+		return wrap(nativeItem);
 	}
 	
 	
 	/***************************************************************
 	 * Implements logic for individual resource group
 	 ***************************************************************/
-	private class StorageAccountImpl 
+	class StorageAccountImpl 
 		extends 
 			GroupableResourceBaseImpl<
 				StorageAccount, 

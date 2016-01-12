@@ -32,7 +32,11 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 
 public class NetworkInterfacesImpl 
-	extends GroupableResourcesBaseImpl<Azure, NetworkInterface, com.microsoft.azure.management.network.models.NetworkInterface>
+	extends GroupableResourcesBaseImpl<
+		Azure, 
+		NetworkInterface, 
+		com.microsoft.azure.management.network.models.NetworkInterface,
+		NetworkInterfacesImpl.NetworkInterfaceImpl>
 	implements NetworkInterfaces {
 		
 	NetworkInterfacesImpl(Azure azure) {
@@ -41,7 +45,7 @@ public class NetworkInterfacesImpl
 	
 	@Override
 	public NetworkInterfaceImpl define(String name) throws Exception {
-		return createWrapper(name);
+		return wrapNew(name);
 	}
 
 	@Override
@@ -69,12 +73,12 @@ public class NetworkInterfacesImpl
 	}
 	
 	@Override
-	protected NetworkInterfaceImpl createWrapper(com.microsoft.azure.management.network.models.NetworkInterface nativeItem) {
+	protected NetworkInterfaceImpl wrap(com.microsoft.azure.management.network.models.NetworkInterface nativeItem) {
 		return new NetworkInterfaceImpl(nativeItem);
 	}
 	
-	// Helper to create a wrapper
-	private NetworkInterfaceImpl createWrapper(String name) {
+	@Override
+	protected NetworkInterfaceImpl wrapNew(String name) {
 		com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface = new com.microsoft.azure.management.network.models.NetworkInterface();
 		azureNetworkInterface.setName(name);
 		
@@ -83,14 +87,14 @@ public class NetworkInterfacesImpl
 		
 		// TODO Min settings
 		
-		return new NetworkInterfaceImpl(azureNetworkInterface);
+		return wrap(azureNetworkInterface);
 	}
 	
 	
 	/***************************************************************
 	 * Implements logic for individual resource group
 	 ***************************************************************/
-	private class NetworkInterfaceImpl 
+	class NetworkInterfaceImpl 
 		extends 
 			GroupableResourceBaseImpl<
 				NetworkInterface, 

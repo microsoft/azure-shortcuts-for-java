@@ -31,9 +31,11 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 
 public class AvailabilitySetsImpl 
-	extends GroupableResourcesBaseImpl<Azure, 
+	extends GroupableResourcesBaseImpl<
+		Azure, 
 		AvailabilitySet, 
-		com.microsoft.azure.management.compute.models.AvailabilitySet>
+		com.microsoft.azure.management.compute.models.AvailabilitySet,
+		AvailabilitySetsImpl.AvailabilitySetImpl>
 	implements AvailabilitySets {
 	
 	AvailabilitySetsImpl(Azure azure) {
@@ -47,7 +49,7 @@ public class AvailabilitySetsImpl
 	
 	@Override
 	public AvailabilitySetImpl define(String name) throws Exception {
-		return createWrapper(name);
+		return wrapNew(name);
 	}
 
 	
@@ -67,14 +69,15 @@ public class AvailabilitySetsImpl
 	}
 	
 	@Override
-	protected AvailabilitySetImpl createWrapper(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
+	protected AvailabilitySetImpl wrap(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
 		return new AvailabilitySetImpl(nativeItem);
 	}
 	
-	private AvailabilitySetImpl createWrapper(String name) throws Exception {
+	@Override
+	protected AvailabilitySetImpl wrapNew(String name) {
 		com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem = new com.microsoft.azure.management.compute.models.AvailabilitySet();
 		nativeItem.setName(name);
-		return new AvailabilitySetImpl(nativeItem);
+		return wrap(nativeItem);
 	}
 	
 	

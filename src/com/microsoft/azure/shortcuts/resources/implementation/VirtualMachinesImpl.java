@@ -54,7 +54,11 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
-	extends GroupableResourcesBaseImpl<Azure, VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
+	extends GroupableResourcesBaseImpl<
+		Azure, 
+		VirtualMachine, 
+		com.microsoft.azure.management.compute.models.VirtualMachine,
+		VirtualMachinesImpl.VirtualMachineImpl>
 	implements VirtualMachines {
 	
 	VirtualMachinesImpl(Azure azure) {
@@ -67,7 +71,7 @@ public class VirtualMachinesImpl
 	
 	@Override
 	public DefinitionBlank define(String name) throws Exception {
-		return createWrapper(name);
+		return wrapNew(name);
 	}
 	
 	@Override
@@ -95,12 +99,13 @@ public class VirtualMachinesImpl
 	}
 	
 	@Override 
-	protected VirtualMachineImpl createWrapper(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
+	protected VirtualMachineImpl wrap(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
 		return new VirtualMachineImpl(nativeItem);
 	}
 	
 	
-	VirtualMachineImpl createWrapper(String name) {
+	@Override
+	protected VirtualMachineImpl wrapNew(String name) {
 		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = new com.microsoft.azure.management.compute.models.VirtualMachine();
 		azureVM.setName(name);
 		azureVM.setType("Microsoft.Compute/virtualMachines");
@@ -126,14 +131,14 @@ public class VirtualMachinesImpl
 		
 		//TODO prepare the rest
 		
-		return new VirtualMachineImpl(azureVM);
+		return wrap(azureVM);
 	}
 	
 	
 	/***************************************************
 	 * Implements logic for individual Virtual Machine
 	 ***************************************************/
-	private class VirtualMachineImpl
+	class VirtualMachineImpl
 		extends 
 			GroupableResourceBaseImpl<
 				VirtualMachine, 
