@@ -157,8 +157,27 @@ public interface DefinitionCombo {
 		 * @return The next stage of the resource definition
 		 */
 		T withAvailabilitySetExisting(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
+		
+		/**
+		 * Creates a new availability set to associate with this resource, in the same region and resource group
+		 * @param name The name of the new availability set
+		 * @return The next stage of the resource definition
+		 */
+		T withAvailabilitySetNew(String name);
+		
+		/**
+		 * Creates a new availability set to associate with this resource, in the same region and resource group, 
+		 * and with a name derived from the name of this resource
+		 * @return The next stage of the resource definition
+		 */
+		T withAvailabilitySetNew();
+		
+		/**
+		 * Creates a new availability set to associate with this resource, based on the provided definition
+		 * @param definition A provisionable definition for a new availability set
+		 * @return
+		 */
+		T withAvailabilitySetNew(AvailabilitySet.DefinitionProvisionable definition) throws Exception;
+		
 	}
-	
-	
-
 }

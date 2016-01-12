@@ -430,7 +430,23 @@ public class VirtualMachinesImpl
 			return this.withAvailabilitySetExisting(uri.toString());
 		}
 
-		
+		@Override
+		public VirtualMachineImpl withAvailabilitySetNew(String name) {
+			this.isExistingAvailabilitySet = false;
+			this.availabilitySetId = name;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withAvailabilitySetNew() {
+			return this.withAvailabilitySetNew((String)null);
+		}
+
+		@Override
+		public VirtualMachineImpl withAvailabilitySetNew(com.microsoft.azure.shortcuts.resources.AvailabilitySet.DefinitionProvisionable definition) throws Exception {
+			return this.withAvailabilitySetExisting(definition.provision());
+		}
+
 		@Override
 		public VirtualMachineImpl withComputerName(String computerName) {
 			this.inner().getOSProfile().setComputerName(computerName);
@@ -452,10 +468,45 @@ public class VirtualMachinesImpl
 			return this;
 		}
 
-
 		@Override
 		public DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean isPrimary) {
 			return this.withNetworkInterfaceExisting(networkInterface.id(), isPrimary);
+		}		
+
+		@Override
+		public VirtualMachineImpl withNetworkExisting(String id) {
+			this.isExistingNetwork = true;
+			this.networkId = id;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withNetworkExisting(Network network) {
+			return this.withNetworkExisting(network.id());
+		}
+
+		@Override
+		public VirtualMachineImpl withNetworkExisting(VirtualNetwork network) {
+			return this.withNetworkExisting(network.getId());
+		}
+
+		@Override
+		public VirtualMachineImpl withNetworkNew(String name) {
+			this.isExistingNetwork = false;
+			this.networkId = name;
+			return this;
+		}
+
+		@Override
+		public VirtualMachineImpl withNetworkNew(
+				com.microsoft.azure.shortcuts.resources.Network.DefinitionProvisionable networkDefinition) throws Exception {
+			return this.withNetworkExisting(networkDefinition.provision());
+		}
+
+
+		@Override
+		public VirtualMachineImpl withNetworkNew() {
+			return this.withNetworkNew((String)null);
 		}
 
 		
@@ -474,10 +525,18 @@ public class VirtualMachinesImpl
 			// Ensure virtual network
 			Network network = this.ensureNetwork(group.name());
 			
+			// Ensure availability set (optional)
+			AvailabilitySet set = this.ensureAvailabilitySet(group.name());
+			if(set != null) {
+				this.withAvailabilitySetExisting(set);
+			}
+			
 			// Ensure default computer name
 			if(this.computerName() == null) {
 				this.withComputerName(this.name());
 			}
+			
+			
 			
 			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
@@ -537,46 +596,24 @@ public class VirtualMachinesImpl
 				return azure.networks(this.networkId);
 			}
 		}
-
-
-		@Override
-		public VirtualMachineImpl withNetworkExisting(String id) {
-			this.isExistingNetwork = true;
-			this.networkId = id;
-			return this;
-		}
-
-
-		@Override
-		public VirtualMachineImpl withNetworkExisting(Network network) {
-			return this.withNetworkExisting(network.id());
-		}
-
-
-		@Override
-		public VirtualMachineImpl withNetworkExisting(VirtualNetwork network) {
-			return this.withNetworkExisting(network.getId());
-		}
-
-
-		@Override
-		public VirtualMachineImpl withNetworkNew(String name) {
-			this.isExistingNetwork = false;
-			this.networkId = name;
-			return this;
-		}
-
-
-		@Override
-		public VirtualMachineImpl withNetworkNew(
-				com.microsoft.azure.shortcuts.resources.Network.DefinitionProvisionable networkDefinition) throws Exception {
-			return this.withNetworkExisting(networkDefinition.provision());
-		}
-
-
-		@Override
-		public VirtualMachineImpl withNetworkNew() {
-			return this.withNetworkNew((String)null);
+		
+		private AvailabilitySet ensureAvailabilitySet(String groupName) throws Exception {
+			if(!this.isExistingAvailabilitySet) {
+				if(this.availabilitySetId == null) {
+					this.availabilitySetId = this.name() + "set";
+				}
+				
+				AvailabilitySet availabilitySet = azure.availabilitySets().define(this.availabilitySetId)
+					.withRegion(this.region())
+					.withGroupExisting(groupName)
+					.provision();
+				this.isExistingAvailabilitySet = true;
+				return availabilitySet;
+			} else if(this.availabilitySetId == null) {
+				return null;
+			} else {
+				return azure.availabilitySets(this.availabilitySetId);
+			}
 		}
 	}
 }
