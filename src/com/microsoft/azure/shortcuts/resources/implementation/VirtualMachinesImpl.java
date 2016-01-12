@@ -469,9 +469,14 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean isPrimary) {
-			return this.withNetworkInterfaceExisting(networkInterface.id(), isPrimary);
-		}		
+		public VirtualMachineImpl withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean asPrimary) {
+			return this.withNetworkInterfaceExisting(networkInterface.id(), asPrimary);
+		}
+		
+		@Override
+		public VirtualMachineImpl withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface, boolean asPrimary) {
+			return this.withNetworkInterfaceExisting(networkInterface.getId(), asPrimary);
+		}
 
 		@Override
 		public VirtualMachineImpl withNetworkExisting(String id) {

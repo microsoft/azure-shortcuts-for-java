@@ -176,7 +176,7 @@ public interface DefinitionCombo {
 		/**
 		 * Creates a new availability set to associate with this resource, based on the provided definition
 		 * @param definition A provisionable definition for a new availability set
-		 * @return
+		 * @return The next stage of the resource definition
 		 */
 		R withAvailabilitySetNew(AvailabilitySet.DefinitionProvisionable definition) throws Exception;
 	}
@@ -186,7 +186,27 @@ public interface DefinitionCombo {
 	 * A resource definition allowing to associate a network interface with tis resource
 	 */
 	interface WithNetworkInterface<R> {
+		/**
+		 * Associates an existing network interface with this resource
+		 * @param resourceId The resource ID of an existing network interface
+		 * @param asPrimary True if the network interface is to be set as the primary network interface in a set of network interfaces
+		 * @return The next stage of the resource definition
+		 */
 		R withNetworkInterfaceExisting(String resourceId, boolean asPrimary);
+		
+		/**
+		 * Associates an existing network interface with this resource
+		 * @param networkInterface An existing network interface
+		 * @param asPrimary True if the network interface is to be set as the primary network interface in a set of network interfaces
+		 * @return The next stage of the resource definition
+		 */
 		R withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean asPrimary);
+		
+		/**
+		 * Associates an existing network interface with this resource
+		 * @param networkInterface An existing Azure SDK network interface object
+		 * @return The next stage of the resource definition
+		 */
+		R withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface, boolean asPrimary);
 	}
 }
