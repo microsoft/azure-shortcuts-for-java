@@ -72,7 +72,7 @@ public class VirtualMachinesImpl
 
 	
 	@Override
-	public VirtualMachine get(String resourceId) throws Exception {
+	public VirtualMachineImpl get(String resourceId) throws Exception {
 		return this.get(
 				ResourcesImpl.groupFromResourceId(resourceId), 
 				ResourcesImpl.nameFromResourceId(resourceId));
@@ -80,7 +80,7 @@ public class VirtualMachinesImpl
 
 	
 	@Override
-	public VirtualMachine get(String resourceGroup, String name) throws Exception {
+	public VirtualMachineImpl get(String resourceGroup, String name) throws Exception {
 		return createWrapper(getNativeEntity(resourceGroup, name));
 	}
 
@@ -110,7 +110,7 @@ public class VirtualMachinesImpl
 	}
 	
 	@Override 
-	protected VirtualMachine createWrapper(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
+	protected VirtualMachineImpl createWrapper(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
 		return new VirtualMachineImpl(nativeItem);
 	}
 	

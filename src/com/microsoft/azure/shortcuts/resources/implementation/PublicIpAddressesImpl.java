@@ -57,7 +57,7 @@ public class PublicIpAddressesImpl
 
 	@Override
 	public PublicIpAddressImpl get(String groupName, String name) throws Exception {
-		return new PublicIpAddressImpl(this.getNativeEntity(groupName, name));
+		return createWrapper(this.getNativeEntity(groupName, name));
 	}
 	
 	
@@ -100,7 +100,7 @@ public class PublicIpAddressesImpl
 	}
 	
 	@Override
-	protected PublicIpAddress createWrapper(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
+	protected PublicIpAddressImpl createWrapper(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
 		return new PublicIpAddressImpl(nativeItem);
 	}
 	

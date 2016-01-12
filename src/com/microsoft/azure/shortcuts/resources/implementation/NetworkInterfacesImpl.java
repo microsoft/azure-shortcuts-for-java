@@ -60,7 +60,7 @@ public class NetworkInterfacesImpl
 
 	@Override
 	public NetworkInterfaceImpl get(String groupName, String name) throws Exception {
-		return new NetworkInterfaceImpl(this.getNativeEntity(groupName, name));
+		return createWrapper(this.getNativeEntity(groupName, name));
 	}
 	
 	
@@ -103,7 +103,7 @@ public class NetworkInterfacesImpl
 	}
 	
 	@Override
-	protected NetworkInterface createWrapper(com.microsoft.azure.management.network.models.NetworkInterface nativeItem) {
+	protected NetworkInterfaceImpl createWrapper(com.microsoft.azure.management.network.models.NetworkInterface nativeItem) {
 		return new NetworkInterfaceImpl(nativeItem);
 	}
 	
@@ -236,7 +236,7 @@ public class NetworkInterfacesImpl
 		}
 
 		@Override
-		public NetworkInterfaceImpl provision() throws Exception {
+		public NetworkInterface provision() throws Exception {
 			// Create a group as needed
 			ensureGroup(azure);
 		

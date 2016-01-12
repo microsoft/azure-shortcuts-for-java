@@ -65,7 +65,7 @@ public class NetworksImpl
 
 	@Override
 	public NetworkImpl get(String groupName, String name) throws Exception {
-		return new NetworkImpl(this.getNativeEntity(groupName, name));
+		return createWrapper(this.getNativeEntity(groupName, name));
 	}
 	
 	@Override
@@ -107,7 +107,7 @@ public class NetworksImpl
 	}
 	
 	@Override 
-	protected Network createWrapper(VirtualNetwork nativeItem) {
+	protected NetworkImpl createWrapper(VirtualNetwork nativeItem) {
 		return new NetworkImpl(nativeItem);
 	}
 	
