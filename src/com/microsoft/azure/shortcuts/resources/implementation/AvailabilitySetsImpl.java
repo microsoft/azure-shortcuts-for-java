@@ -43,24 +43,15 @@ public class AvailabilitySetsImpl
 	AvailabilitySetsImpl(Azure azure) {
 		super(azure);
 	}
-		
+	
 	@Override
 	public void delete(String groupName, String name) throws Exception {
 		azure.computeManagementClient().getAvailabilitySetsOperations().delete(groupName, name);
 	}
 	
 	@Override
-	public void delete(String id) throws Exception {
-		this.delete(
-				ResourcesImpl.groupFromResourceId(id), 
-				ResourcesImpl.nameFromResourceId(id));
-	}
-
-	@Override
 	public AvailabilitySetImpl define(String name) throws Exception {
-		com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem = new com.microsoft.azure.management.compute.models.AvailabilitySet();
-		nativeItem.setName(name);
-		return new AvailabilitySetImpl(nativeItem);
+		return createWrapper(name);
 	}
 
 	
@@ -81,6 +72,12 @@ public class AvailabilitySetsImpl
 	
 	@Override
 	protected AvailabilitySetImpl createWrapper(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
+		return new AvailabilitySetImpl(nativeItem);
+	}
+	
+	private AvailabilitySetImpl createWrapper(String name) throws Exception {
+		com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem = new com.microsoft.azure.management.compute.models.AvailabilitySet();
+		nativeItem.setName(name);
 		return new AvailabilitySetImpl(nativeItem);
 	}
 	

@@ -37,6 +37,8 @@ public abstract class GroupableResourcesBaseImpl<T, W, I extends ResourceBaseExt
 	protected abstract I getNativeEntity(String group, String name) throws Exception;
 	protected abstract W createWrapper(I nativeItem);
 	
+	public abstract void delete(String groupName, String name) throws Exception;
+	
 	public Map<String, W> list(String groupName) throws Exception {
 		HashMap<String, W> wrappers = new HashMap<>();
 		for(I nativeItem : getNativeEntities(groupName)) {
@@ -55,6 +57,12 @@ public abstract class GroupableResourcesBaseImpl<T, W, I extends ResourceBaseExt
 	
 	public W get(String id) throws Exception {
 		return get(
+			ResourcesImpl.groupFromResourceId(id), 
+			ResourcesImpl.nameFromResourceId(id));
+	}
+	
+	public void delete(String id) throws Exception {
+		this.delete(
 			ResourcesImpl.groupFromResourceId(id), 
 			ResourcesImpl.nameFromResourceId(id));
 	}

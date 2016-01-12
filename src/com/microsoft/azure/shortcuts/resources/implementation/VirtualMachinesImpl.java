@@ -63,10 +63,19 @@ public class VirtualMachinesImpl
 	VirtualMachinesImpl(Azure azure) {
 		super(azure);
 	}
+
+	/*****************************************************
+	 * Verbs
+	 *****************************************************/
 	
 	@Override
 	public DefinitionBlank define(String name) throws Exception {
 		return createWrapper(name);
+	}
+	
+	@Override
+	public void delete(String groupName, String name) throws Exception {
+		azure.computeManagementClient().getVirtualMachinesOperations().delete(groupName, name);
 	}
 
 	

@@ -46,13 +46,6 @@ public class PublicIpAddressesImpl
 	}
 
 	@Override
-	public void delete(String id) throws Exception {
-		this.delete(
-			ResourcesImpl.groupFromResourceId(id), 
-			ResourcesImpl.nameFromResourceId(id));
-	}
-		
-	@Override
 	public void delete(String groupName, String name) throws Exception {
 		azure.networkManagementClient().getPublicIpAddressesOperations().delete(groupName, name);
 	}
