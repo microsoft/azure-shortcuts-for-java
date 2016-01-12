@@ -78,7 +78,10 @@ public interface VirtualMachine extends
 	 * A virtual machine definition requiring the virtual network to be specified
 	 */
 	interface DefinitionWithNetwork extends 
-		DefinitionCombo.WithNetwork<DefinitionWithAdminUsername> {}
+		DefinitionCombo.WithNetwork<DefinitionWithPrimaryNetworkInterface> {}
+	
+	interface DefinitionWithPrimaryNetworkInterface extends 
+		DefinitionCombo.WithPrimaryNetworkInterface<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
@@ -192,7 +195,6 @@ public interface VirtualMachine extends
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionCombo.WithAvailabilitySet<DefinitionProvisionable>,
-		DefinitionCombo.WithNetworkInterface<DefinitionProvisionable>,
 		Provisionable<VirtualMachine> {
 		
 		/**

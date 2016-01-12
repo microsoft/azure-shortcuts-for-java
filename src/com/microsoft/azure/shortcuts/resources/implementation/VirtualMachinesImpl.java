@@ -143,6 +143,7 @@ public class VirtualMachinesImpl
 			VirtualMachine.DefinitionBlank,
 			VirtualMachine.DefinitionWithGroup,
 			VirtualMachine.DefinitionWithNetwork,
+			VirtualMachine.DefinitionWithPrimaryNetworkInterface,
 			VirtualMachine.DefinitionWithAdminUsername,
 			VirtualMachine.DefinitionWithAdminPassword,
 			VirtualMachine.DefinitionWithImagePublishedBy,
@@ -455,27 +456,25 @@ public class VirtualMachinesImpl
 		
 		
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceExisting(String resourceId, boolean isPrimary) {
+		public VirtualMachineImpl withPrimaryNetworkInterfaceExisting(String resourceId) {
 			NetworkInterfaceReference nicref = new NetworkInterfaceReference();
-			if(isPrimary) {
-				for(NetworkInterfaceReference n : this.inner().getNetworkProfile().getNetworkInterfaces()) {
-					n.setPrimary(false);
-				}
+			for(NetworkInterfaceReference n : this.inner().getNetworkProfile().getNetworkInterfaces()) {
+				n.setPrimary(false);
 			}
 			this.inner().getNetworkProfile().getNetworkInterfaces().add(nicref);
 			nicref.setReferenceUri(resourceId);
-			nicref.setPrimary(isPrimary);
+			nicref.setPrimary(true);
 			return this;
 		}
 
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean asPrimary) {
-			return this.withNetworkInterfaceExisting(networkInterface.id(), asPrimary);
+		public VirtualMachineImpl withPrimaryNetworkInterfaceExisting(NetworkInterface networkInterface) {
+			return this.withPrimaryNetworkInterfaceExisting(networkInterface.id());
 		}
 		
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface, boolean asPrimary) {
-			return this.withNetworkInterfaceExisting(networkInterface.getId(), asPrimary);
+		public VirtualMachineImpl withPrimaryNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface) {
+			return this.withPrimaryNetworkInterfaceExisting(networkInterface.getId());
 		}
 
 		@Override

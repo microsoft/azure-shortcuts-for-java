@@ -185,14 +185,14 @@ public interface DefinitionCombo {
 	/**
 	 * A resource definition allowing to associate a network interface with tis resource
 	 */
-	interface WithNetworkInterface<R> {
+	interface WithPrimaryNetworkInterface<R> {
 		/**
 		 * Associates an existing network interface with this resource
 		 * @param resourceId The resource ID of an existing network interface
 		 * @param asPrimary True if the network interface is to be set as the primary network interface in a set of network interfaces
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceExisting(String resourceId, boolean asPrimary);
+		R withPrimaryNetworkInterfaceExisting(String resourceId);
 		
 		/**
 		 * Associates an existing network interface with this resource
@@ -200,13 +200,21 @@ public interface DefinitionCombo {
 		 * @param asPrimary True if the network interface is to be set as the primary network interface in a set of network interfaces
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean asPrimary);
+		R withPrimaryNetworkInterfaceExisting(NetworkInterface networkInterface);
 		
 		/**
 		 * Associates an existing network interface with this resource
 		 * @param networkInterface An existing Azure SDK network interface object
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface, boolean asPrimary);
+		R withPrimaryNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface);
+		
+		/**
+		 * Creates a new network interface to associate with this resource, in the same region and group, 
+		 * using the provided name, within the provided existing subnet, with dynamic private IP allocation enabled
+		 * @param subnet An existing subnet
+		 * @return The next stage of the resource definition
+		 */
+		//R withPrimaryNetworkInterfaceNew(String name, Network.Subnet subnet);
 	}
 }

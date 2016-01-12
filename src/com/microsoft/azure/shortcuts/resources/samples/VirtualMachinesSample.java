@@ -65,6 +65,7 @@ public class VirtualMachinesSample {
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(groupName)
     		.withNetworkNew()
+    		.withPrimaryNetworkInterfaceExisting(nic)
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")
@@ -73,7 +74,6 @@ public class VirtualMachinesSample {
     		.withLatestImageVersion()
     		.withSize(Size.Type.BASIC_A1)
     		.withStorageAccountNew("store" + deploymentId)
-    		.withNetworkInterfaceExisting(nic, true)
     		.provision();
     	
     	// Listing all virtual machine ids in a subscription
