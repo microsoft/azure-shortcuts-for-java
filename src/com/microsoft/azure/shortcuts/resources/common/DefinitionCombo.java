@@ -23,12 +23,12 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 
-public interface Definition {
+public interface DefinitionCombo {
 	
 	/**
 	 * A resource definition allowing to associate a virtual network with this resource
 	 */
-	public interface DefinitionWithNetwork<T> {
+	public interface WithNetwork<T> {
 		/**
 		 * Associates an existing virtual network with this resource
 		 * @param id The resource ID of the virtual network to associate with the resource
@@ -121,4 +121,7 @@ public interface Definition {
 		 */
 		T withStorageAccountNew(StorageAccount.DefinitionProvisionable definition) throws Exception;
 	}
+
+
+	
 }
