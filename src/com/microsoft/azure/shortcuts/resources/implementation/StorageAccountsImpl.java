@@ -21,25 +21,22 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class StorageAccountsImpl 
-	extends EntitiesImpl<Azure>
+	extends GroupableResourcesBaseImpl<Azure, StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
 	implements StorageAccounts {
 	
 	List<StorageAccount> storageAccounts = null;
@@ -56,17 +53,6 @@ public class StorageAccountsImpl
 
 	
 	@Override
-	public Map<String, StorageAccount> list(String groupName) throws Exception {
-		HashMap<String, StorageAccount> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.storage.models.StorageAccount nativeItem : getNativeEntities(groupName)) {
-			wrappers.put(nativeItem.getId(), new StorageAccountImpl(nativeItem));
-		}
-		
-		return Collections.unmodifiableMap(wrappers);
-	}
-
-	
-	@Override
 	public StorageAccountImpl get(String resourceId) throws Exception {
 		return this.get(
 			ResourcesImpl.groupFromResourceId(resourceId), 
@@ -76,7 +62,7 @@ public class StorageAccountsImpl
 
 	@Override
 	public StorageAccountImpl get(String groupName, String name) throws Exception {
-		return new StorageAccountImpl(this.getNativeEntity(groupName, name));
+		return createWrapper(this.getNativeEntity(groupName, name));
 	}
 
 
@@ -84,7 +70,7 @@ public class StorageAccountsImpl
 	public StorageAccountImpl define(String name) throws Exception {
 		com.microsoft.azure.management.storage.models.StorageAccount nativeItem = new com.microsoft.azure.management.storage.models.StorageAccount();
 		nativeItem.setName(name);
-		return new StorageAccountImpl(nativeItem);
+		return createWrapper(nativeItem);
 	}
 	
 	@Override
@@ -106,8 +92,8 @@ public class StorageAccountsImpl
 	 * Helpers
 	 ***************************************************/
 	
-	// Helper to get the storage accounts from Azure
-	private ArrayList<com.microsoft.azure.management.storage.models.StorageAccount> getNativeEntities(String resourceGroupName) throws Exception {
+	@Override
+	protected List<com.microsoft.azure.management.storage.models.StorageAccount> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
 			return this.azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
 		} else {
@@ -115,9 +101,14 @@ public class StorageAccountsImpl
 		}
 	}
 	
-	// Helper to get a storage account from Azure
-	private com.microsoft.azure.management.storage.models.StorageAccount getNativeEntity(String groupName, String name) throws Exception {
+	@Override
+	protected com.microsoft.azure.management.storage.models.StorageAccount getNativeEntity(String groupName, String name) throws Exception {
 		return azure.storageManagementClient().getStorageAccountsOperations().getProperties(groupName, name).getStorageAccount();		
+	}
+	
+	@Override
+	protected StorageAccountImpl createWrapper(com.microsoft.azure.management.storage.models.StorageAccount nativeItem) {
+		return new StorageAccountImpl(nativeItem);
 	}
 	
 	

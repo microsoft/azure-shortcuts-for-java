@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.management.storage.models.AccountType;
+import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
@@ -42,7 +43,7 @@ public class StorageAccountsSample {
 
     public static void test(Azure azure) throws Exception {
     	String newStorageAccountName = "store" + String.valueOf(System.currentTimeMillis());
-    	String existingGroupName = "group1444089227523";
+    	String newGroupName = "testgroup";
     	
     	// Provision a new storage account with minimum parameters
     	StorageAccount storageAccount = azure.storageAccounts().define(newStorageAccountName)
@@ -50,37 +51,47 @@ public class StorageAccountsSample {
     		.provision();
 
     	printStorageAccount(storageAccount);
-
+    	
+    	String groupName = storageAccount.group();
+    	
     	// Listing all storage accounts
     	Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
     	System.out.println(String.format("Storage accounts ids: \n\t%s", StringUtils.join(storageAccounts.keySet(), ",\n\t")));
 
-    	// Delete this storage account
-    	storageAccount.delete();
-    	
     	// Listing storage accounts in a specific resource group
-    	storageAccounts = azure.storageAccounts().list(existingGroupName);
-    	System.out.println(String.format("Storage account ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(storageAccounts.keySet(), ",\n\t")));
+    	storageAccounts = azure.storageAccounts().list(groupName);
+    	System.out.println(String.format("Storage account ids in group '%s': \n\t%s", groupName, StringUtils.join(storageAccounts.keySet(), ",\n\t")));
     	
-    	// Get info about a specific storage account using its resource ID
-    	storageAccount = azure.storageAccounts("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/lenatest/providers/Microsoft.Storage/storageAccounts/lenatest1");
+    	// Get info about a specific storage account using its group and name
+    	storageAccount = azure.storageAccounts(groupName, newStorageAccountName);
     	printStorageAccount(storageAccount);
 
-    	// Get info about a specific storage account using its group and name
-    	storageAccount = azure.storageAccounts("lenatest", "lenatest1");
-    	printStorageAccount(storageAccount);
+    	// Delete this storage account
+    	storageAccount.delete();
+
+    	// Delete the group
+    	azure.groups().delete(groupName);
+    	
+    	// Provision a test group
+    	Group group = azure.groups().define(newGroupName)
+    		.withRegion(Region.US_WEST)
+    		.provision();
     	
     	// Provision a new storage account in an existing resource group
     	storageAccount = azure.storageAccounts().define(newStorageAccountName)
     		.withRegion(Region.US_WEST)
     		.withAccountType(AccountType.StandardLRS)
-    		.withGroupExisting(existingGroupName)
+    		.withGroupExisting(newGroupName)
     		.provision();
     	
     	printStorageAccount(storageAccount);
     	
     	// Delete the storage account
-    	azure.storageAccounts().delete(storageAccount.group(), storageAccount.name());
+    	storageAccount.delete();
+    	
+    	// Delete the groups
+    	group.delete();
+    	
     }
     
     
