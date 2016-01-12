@@ -40,12 +40,6 @@ public class PublicIpAddressesImpl
 		super(azure);
 	}
 	
-	
-	@Override
-	public Map<String, PublicIpAddress> list() throws Exception {
-		return this.list(null);
-	}
-
 	@Override
 	public PublicIpAddressImpl define(String name) throws Exception {
 		return createWrapper(name);

@@ -48,12 +48,6 @@ public class NetworksImpl
 		super(azure);
 	}
 	
-	
-	@Override
-	public Map<String, Network> list() throws Exception {
-		return this.list(null);
-	}
-
 	@Override
 	public NetworkImpl define(String name) throws Exception {
 		return createWrapper(name);

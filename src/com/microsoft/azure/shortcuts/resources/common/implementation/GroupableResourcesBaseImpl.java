@@ -45,6 +45,10 @@ public abstract class GroupableResourcesBaseImpl<T, W, I extends ResourceBaseExt
 		return Collections.unmodifiableMap(wrappers);
 	}
 	
+	public Map<String, W> list() throws Exception {
+		return list(null);
+	}
+	
 	public W get(String groupName, String name) throws Exception {
 		return createWrapper(getNativeEntity(groupName, name));
 	}

@@ -70,6 +70,7 @@ public class AvailabilitySetsImpl
 	
 	@Override
 	protected ArrayList<com.microsoft.azure.management.compute.models.AvailabilitySet> getNativeEntities(String resourceGroupName) throws Exception {
+		// TODO What if null?
 		return this.azure.computeManagementClient().getAvailabilitySetsOperations().list(resourceGroupName).getAvailabilitySets();
 	}
 	

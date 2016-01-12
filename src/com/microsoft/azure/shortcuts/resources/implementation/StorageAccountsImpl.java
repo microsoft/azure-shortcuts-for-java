@@ -44,11 +44,6 @@ public class StorageAccountsImpl
 	}
 	
 	@Override
-	public Map<String, StorageAccount> list() throws Exception {
-		return this.list(null);
-	}
-
-	@Override
 	public StorageAccountImpl define(String name) throws Exception {
 		com.microsoft.azure.management.storage.models.StorageAccount nativeItem = new com.microsoft.azure.management.storage.models.StorageAccount();
 		nativeItem.setName(name);

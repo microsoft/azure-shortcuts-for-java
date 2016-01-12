@@ -65,11 +65,6 @@ public class VirtualMachinesImpl
 	}
 	
 	@Override
-	public Map<String, VirtualMachine> list() throws Exception {
-		return this.list(null);
-	}
-
-	@Override
 	public DefinitionBlank define(String name) throws Exception {
 		return createWrapper(name);
 	}
