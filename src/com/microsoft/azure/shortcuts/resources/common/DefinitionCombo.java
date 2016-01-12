@@ -19,7 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.resources.common;
 
+import java.net.URI;
+
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 
@@ -77,7 +80,7 @@ public interface DefinitionCombo {
 	/**
 	 * A resource definition allowing to associate a storage account with this resource
 	 */
-	interface WithStorageAccount<T> {
+	public interface WithStorageAccount<T> {
 		/**
 		 * Associates an existing storage account with this resource
 		 * @param name The name of an existing storage account to associate with this resource
@@ -123,5 +126,39 @@ public interface DefinitionCombo {
 	}
 
 
+	/**
+	 * A resource definition allowing to associate an availability set with this resource
+	 */
+	public interface WithAvailabilitySet<T> {
+		/**
+		 * Associates an existing availability set with this resource
+		 * @param id The resource ID of an existing availability set
+		 * @return The next stage of the resource definition
+		 */
+		T withAvailabilitySetExisting(String id);
+
+		/**
+		 * Associates an existing availability set with this resource
+		 * @param availabilitySet An existing availability set
+		 * @return The next stage of the resource definition
+		 */
+		T withAvailabilitySetExisting(AvailabilitySet availabilitySet);
+		
+		/**
+		 * Associates an existing availability set with this resource
+		 * @param uri The URI of an existing availability set
+		 * @return The next stage of the resource definition
+		 */
+		T withAvailabilitySetExisting(URI uri);
+		
+		/**
+		 * Associates an existing availability set with this resource
+		 * @param availabilitySet An existing AvailabilitySet from the Azure SDK API 
+		 * @return The next stage of the resource definition
+		 */
+		T withAvailabiliytSetExisting(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
+	}
 	
+	
+
 }
