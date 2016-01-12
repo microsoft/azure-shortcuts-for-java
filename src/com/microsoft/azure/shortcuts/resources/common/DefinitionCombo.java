@@ -212,9 +212,18 @@ public interface DefinitionCombo {
 		/**
 		 * Creates a new network interface to associate with this resource, in the same region and group, 
 		 * using the provided name, within the provided existing subnet, with dynamic private IP allocation enabled
+		 * @param name The name for the network interface
 		 * @param subnet An existing subnet
 		 * @return The next stage of the resource definition
 		 */
-		//R withPrimaryNetworkInterfaceNew(String name, Network.Subnet subnet);
+		R withPrimaryNetworkInterfaceNew(String name, Network.Subnet subnet);
+		
+		/**
+		 * Creates a new network interface to associate with this resource, in the same region and group, 
+		 * using a name derived from the name of this resource, within the provided existing subnet, with dynamic private IP allocation enabled
+		 * @param subnet
+		 * @return The next stage of the resource definition
+		 */
+		R withPrimaryNetworkInterfaceNew(Network.Subnet subnet);
 	}
 }

@@ -25,7 +25,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Network;
-import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
@@ -55,17 +54,11 @@ public class VirtualMachinesSample {
     		.withGroupNew(groupName)
     		.provision();
     	
-    	NetworkInterface nic = azure.networkInterfaces().define("mynic")
-    		.withRegion(Region.US_WEST)
-    		.withSubnetPrimary(network.subnets("subnet1"))
-    		.withGroupExisting(groupName)
-    		.provision();
-    	
     	azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(groupName)
-    		.withNetworkNew()
-    		.withPrimaryNetworkInterfaceExisting(nic)
+    		.withNetworkExisting(network)
+    		.withPrimaryNetworkInterfaceNew("mytestnic", network.subnets("subnet1"))
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")

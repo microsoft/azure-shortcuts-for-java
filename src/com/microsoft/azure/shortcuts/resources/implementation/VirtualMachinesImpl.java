@@ -45,6 +45,7 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.Network.Subnet;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
@@ -160,6 +161,10 @@ public class VirtualMachinesImpl
 		
 		private boolean isExistingNetwork;
 		private String networkId;
+		
+		private boolean isExistingPrimaryNIC;
+		private String nicId;
+		private String nicSubnetName;
 		
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -478,6 +483,19 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
+		public VirtualMachineImpl withPrimaryNetworkInterfaceNew(String name, Network.Subnet subnet) {
+			this.isExistingPrimaryNIC = false;
+			this.nicId = name;
+			this.nicSubnetName = subnet.id();
+			return this;
+		}
+		
+		@Override
+		public VirtualMachineImpl  withPrimaryNetworkInterfaceNew(Subnet subnet) {
+			return this.withPrimaryNetworkInterfaceNew(null, subnet);
+		}
+
+		@Override
 		public VirtualMachineImpl withNetworkExisting(String id) {
 			this.isExistingNetwork = true;
 			this.networkId = id;
@@ -507,7 +525,6 @@ public class VirtualMachinesImpl
 			return this.withNetworkExisting(networkDefinition.provision());
 		}
 
-
 		@Override
 		public VirtualMachineImpl withNetworkNew() {
 			return this.withNetworkNew((String)null);
@@ -528,6 +545,19 @@ public class VirtualMachinesImpl
 
 			// Ensure virtual network
 			Network network = this.ensureNetwork(group.name());
+			
+			// Ensure primary network interface
+			Network.Subnet subnet;
+			if(this.nicSubnetName == null) {
+				// Pick the first subnect in the network
+				subnet = network.subnets().values().iterator().next();
+			} else {
+				subnet = network.subnets(this.nicSubnetName);
+			}
+			NetworkInterface nic = this.ensureNetworkInterface(group.name(), subnet);
+			if(nic != null) {
+				this.withPrimaryNetworkInterfaceExisting(nic);
+			}
 			
 			// Ensure availability set (optional)
 			AvailabilitySet set = this.ensureAvailabilitySet(group.name());
@@ -566,7 +596,9 @@ public class VirtualMachinesImpl
 		// Gets or creates if needed the specified storage account
 		private StorageAccount ensureStorageAccount(String groupName) throws Exception {
 			if(!this.isExistingStorageAccount) {
+				// Create a new storage account
 				if(this.storageAccountId == null) {
+					// Generate a name if needed
 					this.storageAccountId = this.name() + "store";
 				}
 				
@@ -586,7 +618,9 @@ public class VirtualMachinesImpl
 		// Gets or creates if needed the specified virtual network
 		private Network ensureNetwork(String groupName) throws Exception {
 			if(!this.isExistingNetwork) {
+				// Create a new virtual network
 				if(this.networkId == null) {
+					// Generate a name if needed
 					this.networkId = this.name() + "net";
 				}
 		
@@ -601,9 +635,12 @@ public class VirtualMachinesImpl
 			}
 		}
 		
+		// Gets or creates if needed the specified availability set
 		private AvailabilitySet ensureAvailabilitySet(String groupName) throws Exception {
 			if(!this.isExistingAvailabilitySet) {
+				// Create a new availability set
 				if(this.availabilitySetId == null) {
+					// Generate a name if needed
 					this.availabilitySetId = this.name() + "set";
 				}
 				
@@ -617,6 +654,28 @@ public class VirtualMachinesImpl
 				return null;
 			} else {
 				return azure.availabilitySets(this.availabilitySetId);
+			}
+		}
+		
+		
+		// Gets or creates if needed the specified network interface
+		private NetworkInterface ensureNetworkInterface(String groupName, Network.Subnet subnet) throws Exception {
+			if(!this.isExistingPrimaryNIC) {
+				// Create a new NIC
+				if(this.nicId == null) {
+					// Generate a name if needed
+					this.nicId = this.name() + "nic";
+				}
+				
+				NetworkInterface nic = azure.networkInterfaces().define(this.nicId)
+					.withRegion(this.region())
+					.withSubnetPrimary(subnet)
+					.withGroupExisting(groupName)
+					.provision();
+				this.isExistingPrimaryNIC = true;
+				return nic;
+			} else {
+				return azure.networkInterfaces(this.nicId);
 			}
 		}
 	}
