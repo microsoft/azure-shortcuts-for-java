@@ -70,18 +70,6 @@ public class VirtualMachinesImpl
 	}
 
 	@Override
-	public VirtualMachineImpl get(String resourceId) throws Exception {
-		return this.get(
-				ResourcesImpl.groupFromResourceId(resourceId), 
-				ResourcesImpl.nameFromResourceId(resourceId));
-	}
-	
-	@Override
-	public VirtualMachineImpl get(String resourceGroup, String name) throws Exception {
-		return createWrapper(getNativeEntity(resourceGroup, name));
-	}
-
-	@Override
 	public DefinitionBlank define(String name) throws Exception {
 		return createWrapper(name);
 	}

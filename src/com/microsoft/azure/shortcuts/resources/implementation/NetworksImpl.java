@@ -54,34 +54,18 @@ public class NetworksImpl
 		return this.list(null);
 	}
 
-	
-	@Override
-	public NetworkImpl get(String resourceId) throws Exception {
-		return this.get(
-			ResourcesImpl.groupFromResourceId(resourceId), 
-			ResourcesImpl.nameFromResourceId(resourceId));
-	}
-	
-
-	@Override
-	public NetworkImpl get(String groupName, String name) throws Exception {
-		return createWrapper(this.getNativeEntity(groupName, name));
-	}
-	
 	@Override
 	public NetworkImpl define(String name) throws Exception {
 		return createWrapper(name);
 	}
 
-	
 	@Override
 	public void delete(String id) throws Exception {
 		this.delete(
 			ResourcesImpl.groupFromResourceId(id), 
 			ResourcesImpl.nameFromResourceId(id));
 	}
-	
-	
+		
 	@Override
 	public void delete(String groupName, String name) throws Exception {
 		azure.networkManagementClient().getVirtualNetworksOperations().delete(groupName, name);
@@ -289,7 +273,7 @@ public class NetworksImpl
 		}
 
 		@Override
-		public NetworkImpl provision() throws Exception {
+		public Network provision() throws Exception {
 			// Create a group as needed
 			ensureGroup(azure);
 		

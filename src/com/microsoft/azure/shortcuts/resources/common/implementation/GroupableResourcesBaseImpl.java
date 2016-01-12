@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
 
 public abstract class GroupableResourcesBaseImpl<T, W, I extends ResourceBaseExtended> extends EntitiesImpl<T> {
@@ -42,5 +43,15 @@ public abstract class GroupableResourcesBaseImpl<T, W, I extends ResourceBaseExt
 			wrappers.put(nativeItem.getId(), createWrapper(nativeItem));
 		}
 		return Collections.unmodifiableMap(wrappers);
+	}
+	
+	public W get(String groupName, String name) throws Exception {
+		return createWrapper(getNativeEntity(groupName, name));
+	}
+	
+	public W get(String id) throws Exception {
+		return get(
+			ResourcesImpl.groupFromResourceId(id), 
+			ResourcesImpl.nameFromResourceId(id));
 	}
 }

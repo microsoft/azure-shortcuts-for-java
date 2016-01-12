@@ -43,26 +43,10 @@ public class StorageAccountsImpl
 		super(azure);
 	}
 	
-	
 	@Override
 	public Map<String, StorageAccount> list() throws Exception {
 		return this.list(null);
 	}
-
-	
-	@Override
-	public StorageAccountImpl get(String resourceId) throws Exception {
-		return this.get(
-			ResourcesImpl.groupFromResourceId(resourceId), 
-			ResourcesImpl.nameFromResourceId(resourceId));
-	}
-	
-
-	@Override
-	public StorageAccountImpl get(String groupName, String name) throws Exception {
-		return createWrapper(this.getNativeEntity(groupName, name));
-	}
-
 
 	@Override
 	public StorageAccountImpl define(String name) throws Exception {
@@ -77,7 +61,6 @@ public class StorageAccountsImpl
 			ResourcesImpl.groupFromResourceId(id),
 			ResourcesImpl.nameFromResourceId(id));
 	}
-
 
 	@Override
 	public void delete(String groupName, String name) throws Exception {
@@ -220,7 +203,7 @@ public class StorageAccountsImpl
 		 ************************************************************/
 
 		@Override
-		public StorageAccountImpl provision() throws Exception {
+		public StorageAccount provision() throws Exception {
 			// Create group if needed
 			ensureGroup(azure);
 

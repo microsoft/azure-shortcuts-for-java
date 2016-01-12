@@ -45,18 +45,6 @@ public class AvailabilitySetsImpl
 	}
 		
 	@Override
-	public AvailabilitySetImpl get(String resourceId) throws Exception {
-		return this.get(
-			ResourcesImpl.groupFromResourceId(resourceId), 
-			ResourcesImpl.nameFromResourceId(resourceId));
-	}	
-
-	@Override
-	public AvailabilitySetImpl get(String groupName, String name) throws Exception {
-		return new AvailabilitySetImpl(this.getNativeEntity(groupName, name));
-	}
-
-	@Override
 	public void delete(String groupName, String name) throws Exception {
 		azure.computeManagementClient().getAvailabilitySetsOperations().delete(groupName, name);
 	}
@@ -91,7 +79,7 @@ public class AvailabilitySetsImpl
 	}
 	
 	@Override
-	protected AvailabilitySet createWrapper(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
+	protected AvailabilitySetImpl createWrapper(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
 		return new AvailabilitySetImpl(nativeItem);
 	}
 	

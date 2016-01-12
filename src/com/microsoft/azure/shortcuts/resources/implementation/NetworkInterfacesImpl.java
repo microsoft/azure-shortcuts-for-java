@@ -49,21 +49,6 @@ public class NetworkInterfacesImpl
 		return this.list(null);
 	}
 
-	
-	@Override
-	public NetworkInterfaceImpl get(String resourceId) throws Exception {
-		return this.get(
-			ResourcesImpl.groupFromResourceId(resourceId), 
-			ResourcesImpl.nameFromResourceId(resourceId));
-	}
-	
-
-	@Override
-	public NetworkInterfaceImpl get(String groupName, String name) throws Exception {
-		return createWrapper(this.getNativeEntity(groupName, name));
-	}
-	
-	
 	@Override
 	public NetworkInterfaceImpl define(String name) throws Exception {
 		return createWrapper(name);
