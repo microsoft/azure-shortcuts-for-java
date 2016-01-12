@@ -45,7 +45,9 @@ public class StorageAccountsImpl
 	
 	@Override
 	public StorageAccountImpl define(String name) throws Exception {
-		return wrapNew(name);
+		com.microsoft.azure.management.storage.models.StorageAccount nativeItem = new com.microsoft.azure.management.storage.models.StorageAccount();
+		nativeItem.setName(name);
+		return wrap(nativeItem);
 	}
 	
 	@Override
@@ -76,13 +78,6 @@ public class StorageAccountsImpl
 	@Override
 	protected StorageAccountImpl wrap(com.microsoft.azure.management.storage.models.StorageAccount nativeItem) {
 		return new StorageAccountImpl(nativeItem);
-	}
-	
-	@Override
-	protected StorageAccountImpl wrapNew(String name) {
-		com.microsoft.azure.management.storage.models.StorageAccount nativeItem = new com.microsoft.azure.management.storage.models.StorageAccount();
-		nativeItem.setName(name);
-		return wrap(nativeItem);
 	}
 	
 	

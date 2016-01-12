@@ -51,7 +51,23 @@ public class NetworksImpl
 	
 	@Override
 	public NetworkImpl define(String name) throws Exception {
-		return wrapNew(name);
+		VirtualNetwork azureNetwork = new VirtualNetwork();
+		azureNetwork.setName(name);
+		azureNetwork.setSubnets(new ArrayList<com.microsoft.azure.management.network.models.Subnet>());
+		
+		// Ensure address space
+		ArrayList<String> cidrs = new ArrayList<>();
+		AddressSpace addressSpace = new AddressSpace();
+		addressSpace.setAddressPrefixes(cidrs);
+		azureNetwork.setAddressSpace(addressSpace);
+
+		// Ensure DHCP options
+		ArrayList<String> dnsServers = new ArrayList<String>(); 
+		DhcpOptions dhcpOptions = new DhcpOptions(); 
+		dhcpOptions.setDnsServers(dnsServers);
+		azureNetwork.setDhcpOptions(dhcpOptions);
+
+		return wrap(azureNetwork);
 	}
 
 	@Override
@@ -81,27 +97,6 @@ public class NetworksImpl
 	@Override 
 	protected NetworkImpl wrap(VirtualNetwork nativeItem) {
 		return new NetworkImpl(nativeItem);
-	}
-	
-	@Override
-	protected NetworkImpl wrapNew(String name) {
-		VirtualNetwork azureNetwork = new VirtualNetwork();
-		azureNetwork.setName(name);
-		azureNetwork.setSubnets(new ArrayList<com.microsoft.azure.management.network.models.Subnet>());
-		
-		// Ensure address space
-		ArrayList<String> cidrs = new ArrayList<>();
-		AddressSpace addressSpace = new AddressSpace();
-		addressSpace.setAddressPrefixes(cidrs);
-		azureNetwork.setAddressSpace(addressSpace);
-
-		// Ensure DHCP options
-		ArrayList<String> dnsServers = new ArrayList<String>(); 
-		DhcpOptions dhcpOptions = new DhcpOptions(); 
-		dhcpOptions.setDnsServers(dnsServers);
-		azureNetwork.setDhcpOptions(dhcpOptions);
-
-		return wrap(azureNetwork);
 	}
 	
 	

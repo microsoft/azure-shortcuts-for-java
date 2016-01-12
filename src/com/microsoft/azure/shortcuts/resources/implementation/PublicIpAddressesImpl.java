@@ -42,7 +42,11 @@ public class PublicIpAddressesImpl
 	
 	@Override
 	public PublicIpAddressImpl define(String name) throws Exception {
-		return wrapNew(name);
+		com.microsoft.azure.management.network.models.PublicIpAddress nativeItem = new com.microsoft.azure.management.network.models.PublicIpAddress();
+		nativeItem.setName(name);
+		nativeItem.setPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
+		
+		return wrap(nativeItem);
 	}
 
 	@Override
@@ -72,15 +76,6 @@ public class PublicIpAddressesImpl
 	@Override
 	protected PublicIpAddressImpl wrap(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
 		return new PublicIpAddressImpl(nativeItem);
-	}
-	
-	@Override
-	protected PublicIpAddressImpl wrapNew(String name) {
-		com.microsoft.azure.management.network.models.PublicIpAddress nativeItem = new com.microsoft.azure.management.network.models.PublicIpAddress();
-		nativeItem.setName(name);
-		nativeItem.setPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
-		
-		return wrap(nativeItem);
 	}
 	
 	

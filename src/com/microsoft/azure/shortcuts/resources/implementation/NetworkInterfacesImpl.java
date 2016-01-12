@@ -45,7 +45,15 @@ public class NetworkInterfacesImpl
 	
 	@Override
 	public NetworkInterfaceImpl define(String name) throws Exception {
-		return wrapNew(name);
+		com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface = new com.microsoft.azure.management.network.models.NetworkInterface();
+		azureNetworkInterface.setName(name);
+		
+		// Default IP configs
+		azureNetworkInterface.setIpConfigurations(new ArrayList<NetworkInterfaceIpConfiguration>());
+		
+		// TODO Min settings
+		
+		return wrap(azureNetworkInterface);
 	}
 
 	@Override
@@ -77,20 +85,7 @@ public class NetworkInterfacesImpl
 		return new NetworkInterfaceImpl(nativeItem);
 	}
 	
-	@Override
-	protected NetworkInterfaceImpl wrapNew(String name) {
-		com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface = new com.microsoft.azure.management.network.models.NetworkInterface();
-		azureNetworkInterface.setName(name);
-		
-		// Default IP configs
-		azureNetworkInterface.setIpConfigurations(new ArrayList<NetworkInterfaceIpConfiguration>());
-		
-		// TODO Min settings
-		
-		return wrap(azureNetworkInterface);
-	}
-	
-	
+
 	/***************************************************************
 	 * Implements logic for individual resource group
 	 ***************************************************************/

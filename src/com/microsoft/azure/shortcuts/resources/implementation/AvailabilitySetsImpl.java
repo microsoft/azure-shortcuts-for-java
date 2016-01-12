@@ -48,8 +48,10 @@ public class AvailabilitySetsImpl
 	}
 	
 	@Override
-	public AvailabilitySetImpl define(String name) throws Exception {
-		return wrapNew(name);
+	public AvailabilitySetImpl define(String name) {
+		com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem = new com.microsoft.azure.management.compute.models.AvailabilitySet();
+		nativeItem.setName(name);
+		return wrap(nativeItem);
 	}
 
 	
@@ -71,13 +73,6 @@ public class AvailabilitySetsImpl
 	@Override
 	protected AvailabilitySetImpl wrap(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
 		return new AvailabilitySetImpl(nativeItem);
-	}
-	
-	@Override
-	protected AvailabilitySetImpl wrapNew(String name) {
-		com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem = new com.microsoft.azure.management.compute.models.AvailabilitySet();
-		nativeItem.setName(name);
-		return wrap(nativeItem);
 	}
 	
 	

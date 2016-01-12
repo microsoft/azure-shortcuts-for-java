@@ -48,7 +48,6 @@ import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
-import com.microsoft.azure.shortcuts.resources.VirtualMachine.DefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
@@ -70,8 +69,33 @@ public class VirtualMachinesImpl
 	 *****************************************************/
 	
 	@Override
-	public DefinitionBlank define(String name) throws Exception {
-		return wrapNew(name);
+	public VirtualMachineImpl define(String name) throws Exception {
+		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = new com.microsoft.azure.management.compute.models.VirtualMachine();
+		azureVM.setName(name);
+		azureVM.setType("Microsoft.Compute/virtualMachines");
+		azureVM.setId(name);
+		azureVM.setOSProfile(new OSProfile());
+		//azureVM.setAvailabilitySetReference(new AvailabilitySetReference());
+		azureVM.setHardwareProfile(new HardwareProfile());
+		
+		// Default storage profile
+		StorageProfile storageProfile = new StorageProfile();
+		azureVM.setStorageProfile(storageProfile);
+		storageProfile.setImageReference(new ImageReference());
+		
+		// Default OS disk
+		OSDisk osDisk = new OSDisk("osdisk", new VirtualHardDisk(), DiskCreateOptionTypes.FROMIMAGE);
+		storageProfile.setOSDisk(osDisk);
+		osDisk.setCaching(CachingTypes.NONE);
+		
+		// Default network profile
+		NetworkProfile networkProfile = new NetworkProfile();
+		azureVM.setNetworkProfile(networkProfile);
+		networkProfile.setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
+		
+		//TODO prepare the rest
+		
+		return wrap(azureVM);
 	}
 	
 	@Override
@@ -102,38 +126,7 @@ public class VirtualMachinesImpl
 	protected VirtualMachineImpl wrap(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
 		return new VirtualMachineImpl(nativeItem);
 	}
-	
-	
-	@Override
-	protected VirtualMachineImpl wrapNew(String name) {
-		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = new com.microsoft.azure.management.compute.models.VirtualMachine();
-		azureVM.setName(name);
-		azureVM.setType("Microsoft.Compute/virtualMachines");
-		azureVM.setId(name);
-		azureVM.setOSProfile(new OSProfile());
-		//azureVM.setAvailabilitySetReference(new AvailabilitySetReference());
-		azureVM.setHardwareProfile(new HardwareProfile());
 		
-		// Default storage profile
-		StorageProfile storageProfile = new StorageProfile();
-		azureVM.setStorageProfile(storageProfile);
-		storageProfile.setImageReference(new ImageReference());
-		
-		// Default OS disk
-		OSDisk osDisk = new OSDisk("osdisk", new VirtualHardDisk(), DiskCreateOptionTypes.FROMIMAGE);
-		storageProfile.setOSDisk(osDisk);
-		osDisk.setCaching(CachingTypes.NONE);
-		
-		// Default network profile
-		NetworkProfile networkProfile = new NetworkProfile();
-		azureVM.setNetworkProfile(networkProfile);
-		networkProfile.setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
-		
-		//TODO prepare the rest
-		
-		return wrap(azureVM);
-	}
-	
 	
 	/***************************************************
 	 * Implements logic for individual Virtual Machine

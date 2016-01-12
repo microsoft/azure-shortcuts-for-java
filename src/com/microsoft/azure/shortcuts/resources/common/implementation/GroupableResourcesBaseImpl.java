@@ -40,7 +40,6 @@ public abstract class GroupableResourcesBaseImpl<
 	protected abstract List<I> getNativeEntities(String group) throws Exception;
 	protected abstract I getNativeEntity(String group, String name) throws Exception;
 	protected abstract WI wrap(I nativeItem);
-	protected abstract WI wrapNew(String name);
 	
 	public abstract void delete(String groupName, String name) throws Exception;
 	
