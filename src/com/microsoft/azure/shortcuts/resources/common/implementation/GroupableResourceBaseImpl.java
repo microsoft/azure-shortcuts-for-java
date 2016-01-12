@@ -94,6 +94,18 @@ public abstract class GroupableResourceBaseImpl<
 		return (TI) this;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public final TI withGroupNew() {
+		this.groupName = null;
+		this.isExistingGroup = false;
+		return (TI) this;
+	}
+	
+	public final TI withGroupNew(Group.DefinitionProvisionable groupDefinition) throws Exception {
+		Group group = groupDefinition.provision();
+		return withGroupExisting(group);
+	}
+	
 	public final TI withGroupExisting(Group group) {
 		return this.withGroupExisting(group.name());
 	}

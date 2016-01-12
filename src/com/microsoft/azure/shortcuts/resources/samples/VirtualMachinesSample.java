@@ -63,6 +63,7 @@ public class VirtualMachinesSample {
     	
     	azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
+    		.withGroupExisting(groupName)
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")
@@ -71,7 +72,6 @@ public class VirtualMachinesSample {
     		.withLatestImageVersion()
     		.withSize(Size.Type.BASIC_A1)
     		.withStorageAccountNew("store" + deploymentId)
-    		.withGroupExisting(groupName)
     		.withNetworkInterfaceExisting(nic, true)
     		.provision();
     	

@@ -34,28 +34,45 @@ public interface GroupResourceBase extends
 	interface DefinitionWithGroupExisting<T> {
 		/**
 		 * @param groupName The name of an existing resource group to put this resource in
-		 * @return A resource definition with sufficient required inputs to be provisioned in the cloud
+		 * @return The next stage of the resource definition
 		 */
 		T withGroupExisting(String groupName);
 		
 		/**
 		 * @param group An existing resource group to put the resource in
-		 * @return A resource definition with sufficient required inputs to be provisioned in the cloud
+		 * @return The next stage of the resource definition
 		 */
 		T withGroupExisting(Group group);
 		
 		/**
 		 * @param group An existing resource group object as returns by the Azure SDK for Java to put the resource in
-		 * @return A resource definition with sufficient required inputs to be provisioned in the cloud
+		 * @return The next stage of the resource definition
 		 */
 		T withGroupExisting(ResourceGroupExtended group);
 	}
 	
 	
 	/**
-	 * A resource definition allowing to speficy the name of a new resource group to create for this resource
+	 * A resource definition allowing to specify the name of a new resource group to create for this resource
 	 */
 	interface DefinitionWithGroupNew<T> {
+		/**
+		 * @param name The name of a new group to create for the resource
+		 * @return The next stage of the resource definition
+		 */
 		T withGroupNew(String name);
+		
+		/**
+		 * Creates a new group for the resource to be associated with, in the same region and with a name automatically derived from the resource
+		 * @return The next stage of the resource definition
+		 */
+		T withGroupNew();
+		
+		/**
+		 * @param groupDefinition A provisionable definition of a group to create for the resource to be associated with
+		 * @return
+		 */
+		T withGroupNew(Group.DefinitionProvisionable groupDefinition) throws Exception;
+		
 	}
 }

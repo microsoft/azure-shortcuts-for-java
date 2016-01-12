@@ -61,13 +61,19 @@ public interface VirtualMachine extends
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
 	 */
 	interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionWithAdminUsername> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 		/*TODO 
-		 * Defaulted: groupName, endpoints, vnetname, storageAccountName
+		 * Defaulted: endpoints, vnetname, storageAccountName
 		 * Optional:  tags
 		 */
 	}
 	
+	/**
+	 * A virtual machine definition requiring the resource group to be specified
+	 */
+	interface DefinitionWithGroup extends
+		GroupResourceBase.DefinitionWithGroupExisting<DefinitionWithAdminUsername>,
+		GroupResourceBase.DefinitionWithGroupNew<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
@@ -238,7 +244,7 @@ public interface VirtualMachine extends
 	}
 	
 	
-	public interface DefinitionWithVirtualNetwork<T> {
+	public interface DefinitionWithNetwork<T> {
 		/**
 		 * Associates the virtual machine with an existing virtual network
 		 * @param id The resource ID of the virtual network
@@ -276,8 +282,6 @@ public interface VirtualMachine extends
 		DefinitionWithStorageAccountExisting<DefinitionProvisionable>,
 		DefinitionWithStorageAccountNew<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionWithAvailabilitySet<DefinitionProvisionable>,
 		DefinitionWithNetworkInterface,

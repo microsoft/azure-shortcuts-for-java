@@ -47,7 +47,6 @@ public class SizesImpl
 		return null;
 	}
 
-	
 	@Override
 	public Map<String, Size> list(String region) throws Exception {
 		HashMap<String, Size> wrappers = new HashMap<>();
