@@ -63,7 +63,7 @@ public interface VirtualMachine extends
 	interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 		/*TODO 
-		 * Defaulted: endpoints, vnetname
+		 * Defaulted: endpoints
 		 * Optional:  tags
 		 */
 	}
@@ -181,12 +181,6 @@ public interface VirtualMachine extends
 		 */
 		T withSize(Size size);		
 	}
-	
-
-	interface DefinitionWithNetworkInterface {
-		DefinitionProvisionable withNetworkInterfaceExisting(String resourceId, boolean asPrimary);
-		DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean asPrimary);
-	}
 
 	
 	/**
@@ -198,7 +192,7 @@ public interface VirtualMachine extends
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionCombo.WithAvailabilitySet<DefinitionProvisionable>,
-		DefinitionWithNetworkInterface,
+		DefinitionCombo.WithNetworkInterface<DefinitionProvisionable>,
 		Provisionable<VirtualMachine> {
 		
 		/**
