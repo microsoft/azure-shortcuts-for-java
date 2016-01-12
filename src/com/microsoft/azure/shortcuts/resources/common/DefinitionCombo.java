@@ -156,7 +156,7 @@ public interface DefinitionCombo {
 		 * @param availabilitySet An existing AvailabilitySet from the Azure SDK API 
 		 * @return The next stage of the resource definition
 		 */
-		T withAvailabiliytSetExisting(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
+		T withAvailabilitySetExisting(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
 	}
 	
 	

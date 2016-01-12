@@ -419,7 +419,7 @@ public class VirtualMachinesImpl
 
 
 		@Override
-		public VirtualMachineImpl withAvailabiliytSetExisting(
+		public VirtualMachineImpl withAvailabilitySetExisting(
 				com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet) {
 			return this.withAvailabilitySetExisting(availabilitySet.getId());
 		}
