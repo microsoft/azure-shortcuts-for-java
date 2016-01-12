@@ -40,8 +40,6 @@ public class AvailabilitySetsImpl
 		com.microsoft.azure.management.compute.models.AvailabilitySet>
 	implements AvailabilitySets {
 	
-	List<AvailabilitySets> availabilitySets = null;
-	
 	AvailabilitySetsImpl(Azure azure) {
 		super(azure);
 	}

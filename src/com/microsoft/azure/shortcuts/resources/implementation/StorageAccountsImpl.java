@@ -39,8 +39,6 @@ public class StorageAccountsImpl
 	extends GroupableResourcesBaseImpl<Azure, StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
 	implements StorageAccounts {
 	
-	List<StorageAccount> storageAccounts = null;
-	
 	StorageAccountsImpl(Azure azure) {
 		super(azure);
 	}

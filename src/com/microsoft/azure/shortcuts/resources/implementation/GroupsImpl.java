@@ -22,7 +22,6 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ResourceGroup;
@@ -36,8 +35,6 @@ import com.microsoft.azure.shortcuts.resources.Region;
 public class GroupsImpl 
 	extends EntitiesImpl<Azure>
 	implements Groups {
-	
-	List<Group> groups = null;
 	
 	GroupsImpl(Azure azure) {
 		super(azure);
