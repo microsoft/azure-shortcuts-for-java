@@ -27,10 +27,10 @@ import com.microsoft.azure.management.compute.models.DataDisk;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.Definition;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface VirtualMachine extends 
@@ -72,8 +72,14 @@ public interface VirtualMachine extends
 	 * A virtual machine definition requiring the resource group to be specified
 	 */
 	interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroupExisting<DefinitionWithAdminUsername>,
-		GroupResourceBase.DefinitionWithGroupNew<DefinitionWithAdminUsername> {}
+		GroupResourceBase.DefinitionWithGroupExisting<DefinitionWithNetwork>,
+		GroupResourceBase.DefinitionWithGroupNew<DefinitionWithNetwork> {}
+	
+	/**
+	 * A virtual machine definition requiring the virtual network to be specified
+	 */
+	interface DefinitionWithNetwork extends 
+		Definition.DefinitionWithNetwork<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
@@ -152,32 +158,8 @@ public interface VirtualMachine extends
 		 */
 		DefinitionProvisionable withLatestImageVersion();
 	}
+	
 
-	
-	/**
-	 * A virtual machine definition allowing to select an existing storage account
-	 */
-	interface DefinitionWithStorageAccountExisting<T> {
-		/**
-		 * @param name The name of an existing storage account to use for the OS disk of the virtual machine
-		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
-		 */
-		T withStorageAccountExisting(String name);
-		
-		/**
-		 * @param The existing storage account to use for the OS disk of the virtual machine
-		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
-		 */
-		T withStorageAccountExisting(StorageAccount storageAccount);
-
-		/**
-		 * @param storageAccount The existing storage account to use for the OS disk of the virtual machine
-		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
-		 */
-		T withStorageAccountExisting(com.microsoft.azure.management.storage.models.StorageAccount storageAccount);		
-	}
-	
-	
 	/**
 	 * A virtual machine definition allowing to specify the name of a new storage account to create for the new virtual machine
 	 */
@@ -244,31 +226,6 @@ public interface VirtualMachine extends
 	}
 	
 	
-	public interface DefinitionWithNetwork<T> {
-		/**
-		 * Associates the virtual machine with an existing virtual network
-		 * @param id The resource ID of the virtual network
-		 * @return The next stage of the virtual machine definition
-		 */
-		T withNetworkExisting(String id);
-		
-		/**
-		 * Associates the virtual machine with an existing virtual network
-		 * @param network The virtual network to associate the virtual machine with
-		 * @return The next stage of the virtual machine definition
-		 */
-		T withNetworkExisting(Network network);
-		
-		/**
-		 * Associates the virtual machine with an existing virtual network
-		 * @param network
-		 * @return
-		 */
-		T withNetworkExisting(VirtualNetwork network);
-		T withNetworkNew(String name);
-	}
-	
-	
 	interface DefinitionWithNetworkInterface {
 		DefinitionProvisionable withNetworkInterfaceExisting(String resourceId, boolean isPrimary);
 		DefinitionProvisionable withNetworkInterfaceExisting(NetworkInterface networkInterface, boolean isPrimary);
@@ -279,8 +236,7 @@ public interface VirtualMachine extends
 	 * but exposing additional optional inputs to specify
 	 */
 	interface DefinitionProvisionable extends
-		DefinitionWithStorageAccountExisting<DefinitionProvisionable>,
-		DefinitionWithStorageAccountNew<DefinitionProvisionable>,
+		Definition.WithStorageAccount<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionWithAvailabilitySet<DefinitionProvisionable>,

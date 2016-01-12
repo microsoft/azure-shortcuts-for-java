@@ -64,6 +64,7 @@ public class VirtualMachinesSample {
     	azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(groupName)
+    		.withNetworkNew()
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")

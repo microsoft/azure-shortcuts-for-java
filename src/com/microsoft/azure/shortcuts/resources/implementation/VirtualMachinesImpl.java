@@ -41,6 +41,7 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
+import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -141,6 +142,7 @@ public class VirtualMachinesImpl
 			VirtualMachine,
 			VirtualMachine.DefinitionBlank,
 			VirtualMachine.DefinitionWithGroup,
+			VirtualMachine.DefinitionWithNetwork,
 			VirtualMachine.DefinitionWithAdminUsername,
 			VirtualMachine.DefinitionWithAdminPassword,
 			VirtualMachine.DefinitionWithImagePublishedBy,
@@ -385,6 +387,16 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
+		public VirtualMachineImpl withStorageAccountNew() {
+			return this.withStorageAccountNew((String)null);
+		}
+		
+		@Override
+		public VirtualMachineImpl withStorageAccountNew(StorageAccount.DefinitionProvisionable definition) throws Exception {
+			return this.withStorageAccountExisting(definition.provision());
+		}
+		
+		@Override
 		public VirtualMachineImpl withAvailabilitySetExisting(String id) {
 			this.availabilitySetId = id;
 			this.isExistingAvailabilitySet = true;
@@ -492,7 +504,7 @@ public class VirtualMachinesImpl
 		private StorageAccount ensureStorageAccount(String groupName) throws Exception {
 			if(!this.isExistingStorageAccount) {
 				if(this.storageAccountId == null) {
-					this.storageAccountId = "store" + this.name();
+					this.storageAccountId = this.name() + "store";
 				}
 				
 				StorageAccount storageAccount = azure.storageAccounts().define(this.storageAccountId)
@@ -507,9 +519,64 @@ public class VirtualMachinesImpl
 			}
 		}
 		
+		
 		// Gets or creates if needed the specified virtual network
-		private Network ensureNetwork(String groupName) {
-			return null;
+		private Network ensureNetwork(String groupName) throws Exception {
+			if(!this.isExistingNetwork) {
+				if(this.networkId == null) {
+					this.networkId = this.name() + "net";
+				}
+		
+				Network network = azure.networks().define(this.networkId)
+					.withRegion(this.region())
+					.withGroupExisting(groupName)
+					.provision(); // TODO: With AddressSpace, Subnets
+				this.isExistingNetwork = true;
+				return network;
+			} else {
+				return azure.networks(this.networkId);
+			}
+		}
+
+
+		@Override
+		public VirtualMachineImpl withNetworkExisting(String id) {
+			this.isExistingNetwork = true;
+			this.networkId = id;
+			return this;
+		}
+
+
+		@Override
+		public VirtualMachineImpl withNetworkExisting(Network network) {
+			return this.withNetworkExisting(network.id());
+		}
+
+
+		@Override
+		public VirtualMachineImpl withNetworkExisting(VirtualNetwork network) {
+			return this.withNetworkExisting(network.getId());
+		}
+
+
+		@Override
+		public VirtualMachineImpl withNetworkNew(String name) {
+			this.isExistingNetwork = false;
+			this.networkId = name;
+			return this;
+		}
+
+
+		@Override
+		public VirtualMachineImpl withNetworkNew(
+				com.microsoft.azure.shortcuts.resources.Network.DefinitionProvisionable networkDefinition) throws Exception {
+			return this.withNetworkExisting(networkDefinition.provision());
+		}
+
+
+		@Override
+		public VirtualMachineImpl withNetworkNew() {
+			return this.withNetworkNew((String)null);
 		}
 	}
 }
