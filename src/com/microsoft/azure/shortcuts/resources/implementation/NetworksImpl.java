@@ -33,7 +33,6 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
-import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
@@ -189,38 +188,6 @@ public class NetworksImpl
 			return this;
 		}
 
-		
-		@Override
-		public NetworkImpl withRegion(String regionName) {
-			super.withRegion(regionName);
-			return this;
-		}
-		
-		@Override
-		public NetworkImpl withRegion(Region region) {
-			return this.withRegion(region.toString());
-		}
-
-		@Override
-		public NetworkImpl withTags(Map<String, String> tags) {
-			super.withTags(tags);
-			return this;
-		}
-
-
-		@Override
-		public NetworkImpl withTag(String name, String value) {
-			super.withTag(name, value);
-			return this;
-		}
-		
-		
-		@Override
-		public NetworkImpl withoutTag(String name) {
-			super.withoutTag(name);
-			return this;
-		}
-		
 		
 		@Override
 		public NetworkImpl withAddressSpace(String cidr) {

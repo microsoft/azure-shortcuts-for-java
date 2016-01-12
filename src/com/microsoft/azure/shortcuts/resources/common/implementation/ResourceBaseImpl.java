@@ -24,10 +24,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 
 
-public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
+public abstract class ResourceBaseImpl<
+		T, 
+		I extends com.microsoft.windowsazure.core.ResourceBaseExtended,
+		TI extends ResourceBaseImpl<T, I, TI>>
 	extends 
 		IndexableRefreshableWrapperImpl<T, I>
 	implements 
@@ -67,26 +71,38 @@ public abstract class ResourceBaseImpl<T, I extends com.microsoft.windowsazure.c
 	}
 	
 	/**************************************************
-	 * Helpers
+	 * Tag setters
 	 **************************************************/
 
-	protected ResourceBaseImpl<T, I> withTags(Map<String, String> tags) {
+	@SuppressWarnings("unchecked")
+	public final TI withTags(Map<String, String> tags) {
 		this.inner().setTags(new HashMap<>(tags));
-		return this;
+		return (TI) this;
 	}
 	
-	protected ResourceBaseImpl<T, I> withTag(String name, String value) {
+	@SuppressWarnings("unchecked")
+	public final TI withTag(String name, String value) {
 		this.inner().getTags().put(name, value);
-		return this;
+		return (TI) this;
 	}
 	
-	protected ResourceBaseImpl<T, I> withoutTag(String name) {
+	@SuppressWarnings("unchecked")
+	public final TI withoutTag(String name) {
 		this.inner().getTags().remove(name);
-		return this;
+		return (TI) this;
 	}
 	
-	protected ResourceBaseImpl<T, I> withRegion(String regionName) {
+	/**********************************************
+	 * Region setters
+	 **********************************************/
+	
+	@SuppressWarnings("unchecked")
+	public final TI withRegion(String regionName) {
 		this.inner().setLocation(regionName);
-		return this;
+		return (TI) this;
+	}
+	
+	public final TI withRegion(Region region) {
+		return this.withRegion(region.toString());
 	}
 }

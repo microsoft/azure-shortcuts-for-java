@@ -22,11 +22,9 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.Map;
 
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
@@ -124,39 +122,6 @@ public class StorageAccountsImpl
 		@Override
 		public StorageAccountImpl withAccountType(AccountType type) {
 			this.inner().setAccountType(type);
-			return this;
-		}
-
-
-		@Override
-		public StorageAccountImpl withRegion(String regionName) {
-			super.withRegion(regionName);
-			return this;
-		}
-		
-		@Override
-		public StorageAccountImpl withRegion(Region region) {
-			return this.withRegion(region.toString());
-		}
-
-
-		@Override
-		public StorageAccountImpl withTags(Map<String, String> tags) {
-			super.withTags(tags);
-			return this;
-		}
-
-
-		@Override
-		public StorageAccountImpl withTag(String name, String value) {
-			super.withTag(name, value);
-			return this;
-		}
-		
-		
-		@Override
-		public StorageAccountImpl withoutTag(String name) {
-			super.withoutTag(name);
 			return this;
 		}
 

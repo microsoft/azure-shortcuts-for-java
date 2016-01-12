@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.AvailabilitySetReference;
 import com.microsoft.azure.management.compute.models.BootDiagnostics;
@@ -46,7 +45,6 @@ import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
-import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
@@ -299,17 +297,6 @@ public class VirtualMachinesImpl
 		 *******************************************************/
 		
 		@Override
-		public VirtualMachineImpl withRegion(String regionName) {
-			super.withRegion(regionName);
-			return this;
-		}
-		
-		@Override
-		public VirtualMachineImpl withRegion(Region region) {
-			return this.withRegion(region.toString());
-		}
-
-		@Override
 		public DefinitionWithImagePublishedBy withAdminPassword(String password) {
 			this.inner().getOSProfile().setAdminPassword(password);
 			return this;
@@ -395,24 +382,6 @@ public class VirtualMachinesImpl
 		public VirtualMachineImpl withStorageAccountNew(String name) {
 			this.storageAccountId = name;
 			this.isExistingStorageAccount = false;
-			return this;
-		}
-		
-		@Override
-		public VirtualMachineImpl withTags(Map<String, String> tags) {
-			super.withTags(tags);
-			return this;
-		}
-
-		@Override
-		public VirtualMachineImpl withTag(String name, String value) {
-			super.withTag(name, value);
-			return this;
-		}
-		
-		@Override
-		public VirtualMachineImpl withoutTag(String name) {
-			super.withoutTag(name);
 			return this;
 		}
 		

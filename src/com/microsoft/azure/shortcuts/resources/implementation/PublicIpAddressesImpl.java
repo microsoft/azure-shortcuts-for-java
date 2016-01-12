@@ -20,12 +20,10 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.List;
-import java.util.Map;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
-import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
@@ -131,38 +129,6 @@ public class PublicIpAddressesImpl
 		}
 
 		
-		@Override
-		public PublicIpAddressImpl withRegion(String regionName) {
-			super.withRegion(regionName);
-			return this;
-		}
-		
-		@Override
-		public PublicIpAddressImpl withRegion(Region region) {
-			return this.withRegion(region.toString());
-		}
-
-		@Override
-		public PublicIpAddressImpl withTags(Map<String, String> tags) {
-			super.withTags(tags);
-			return this;
-		}
-
-
-		@Override
-		public PublicIpAddressImpl withTag(String name, String value) {
-			super.withTag(name, value);
-			return this;
-		}
-		
-		
-		@Override
-		public PublicIpAddressImpl withoutTag(String name) {
-			super.withoutTag(name);
-			return this;
-		}
-		
-
 		/************************************************************
 		 * Verbs
 		 ************************************************************/

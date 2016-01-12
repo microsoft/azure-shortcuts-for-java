@@ -21,14 +21,12 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
-import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
@@ -142,39 +140,6 @@ public class NetworkInterfacesImpl
 		}
 
 		
-		@Override
-		public NetworkInterfaceImpl withRegion(String regionName) {
-			super.withRegion(regionName);
-			return this;
-		}
-		
-		@Override
-		public NetworkInterfaceImpl withRegion(Region region) {
-			return this.withRegion(region.toString());
-		}
-
-		@Override
-		public NetworkInterfaceImpl withTags(Map<String, String> tags) {
-			super.withTags(tags);
-			return this;
-		}
-
-
-		@Override
-		public NetworkInterfaceImpl withTag(String name, String value) {
-			super.withTag(name, value);
-			return this;
-		}
-		
-		
-		@Override
-		public NetworkInterfaceImpl withoutTag(String name) {
-			super.withoutTag(name);
-			return this;
-		}
-		
-		
-
 		/************************************************************
 		 * Verbs
 		 ************************************************************/

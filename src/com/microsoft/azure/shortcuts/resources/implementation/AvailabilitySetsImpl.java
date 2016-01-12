@@ -22,12 +22,10 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineReference;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
-import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
@@ -118,39 +116,7 @@ public class AvailabilitySetsImpl
 		 * Setters (fluent interface)
 		 **************************************************************/
 
-		@Override
-		public AvailabilitySetImpl withRegion(String regionName) {
-			super.withRegion(regionName);
-			return this;
-		}
-
-
-		@Override
-		public AvailabilitySetImpl withRegion(Region region) {
-			return this.withRegion(region.toString());
-		}
-
 		
-		@Override
-		public AvailabilitySetImpl withTags(Map<String, String> tags) {
-			super.withTags(tags);
-			return this;
-		}
-
-
-		@Override
-		public AvailabilitySetImpl withTag(String name, String value) {
-			super.withTag(name, value);
-			return this;
-		}
-
-		@Override
-		public AvailabilitySetImpl withoutTag(String name) {
-			super.withoutTag(name);
-			return this;
-		}
-		
-
 		/************************************************************
 		 * Verbs
 		 ************************************************************/

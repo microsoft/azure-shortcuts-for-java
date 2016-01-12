@@ -26,9 +26,12 @@ import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
-public abstract class GroupableResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended, TI extends GroupableResourceBaseImpl<T, I, TI>>
+public abstract class GroupableResourceBaseImpl<
+		T, 
+		I extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
+		TI extends GroupableResourceBaseImpl<T, I, TI>>
 	extends
-		ResourceBaseImpl<T, I>
+		ResourceBaseImpl<T, I, TI>
 	implements 
 		GroupResourceBase {
 
@@ -44,7 +47,7 @@ public abstract class GroupableResourceBaseImpl<T, I extends com.microsoft.windo
 	 *******************************************/
 	
 	@Override 
-	public String group() {
+	final public String group() {
 		String groupNameTemp = ResourcesImpl.groupFromResourceId(this.id());
 		return (groupNameTemp == null) ? this.groupName : groupNameTemp;
 	}
@@ -54,7 +57,7 @@ public abstract class GroupableResourceBaseImpl<T, I extends com.microsoft.windo
 	 * Helpers
 	 * @throws Exception 
 	 **************************************************/
-	protected Group ensureGroup(Azure azure) throws Exception {
+	final protected Group ensureGroup(Azure azure) throws Exception {
 		Group group;
 		if(!this.isExistingGroup) {
 			if(this.groupName == null) {
