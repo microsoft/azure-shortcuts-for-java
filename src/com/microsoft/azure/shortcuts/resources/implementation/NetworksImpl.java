@@ -21,7 +21,6 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,17 +31,17 @@ import com.microsoft.azure.management.network.models.AddressSpace;
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class NetworksImpl 
-	extends EntitiesImpl<Azure>
+	extends GroupableResourcesBaseImpl<Azure, Network, VirtualNetwork>
 	implements Networks {
 	
 	NetworksImpl(Azure azure) {
@@ -53,18 +52,6 @@ public class NetworksImpl
 	@Override
 	public Map<String, Network> list() throws Exception {
 		return this.list(null);
-	}
-
-	
-	@Override
-	public Map<String, Network> list(String groupName) throws Exception {
-		HashMap<String, Network> wrappers = new HashMap<>();
-		for(VirtualNetwork nativeItem : getNativeEntities(groupName)) {
-			NetworkImpl wrapper = new NetworkImpl(nativeItem);
-			wrappers.put(nativeItem.getId(), wrapper);
-		}
-		
-		return Collections.unmodifiableMap(wrappers);
 	}
 
 	
@@ -105,8 +92,8 @@ public class NetworksImpl
 	 * Helpers
 	 ***************************************************/
 	
-	// Helper to get the networks from Azure
-	private ArrayList<VirtualNetwork> getNativeEntities(String resourceGroupName) throws Exception {
+	@Override
+	protected List<VirtualNetwork> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
 			return this.azure.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
 		} else {
@@ -114,10 +101,14 @@ public class NetworksImpl
 		}
 	}
 	
-	
-	// Helper to get a network from Azure
-	private VirtualNetwork getNativeEntity(String groupName, String name) throws Exception {
+	@Override
+	protected VirtualNetwork getNativeEntity(String groupName, String name) throws Exception {
 		return azure.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
+	}
+	
+	@Override 
+	protected Network createWrapper(VirtualNetwork nativeItem) {
+		return new NetworkImpl(nativeItem);
 	}
 	
 	

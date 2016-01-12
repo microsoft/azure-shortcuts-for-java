@@ -24,6 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Network.Subnet;
 import com.microsoft.azure.shortcuts.resources.Region;
@@ -43,8 +44,13 @@ public class NetworksSample {
 
     public static void test(Azure azure) throws Exception {
     	Network network;
-    	String existingGroupName = "group1444089227523";
+    	String groupName = "vnettestgroup";
     	String newNetworkName = "marcinsvnetx";
+    	
+    	// Create a test group
+    	Group group = azure.groups().define(groupName)
+    		.withRegion(Region.US_WEST)
+    		.provision();
     	
     	// Create a new network with a default subnet in a new default resource group
     	network = azure.networks().define(newNetworkName)
@@ -61,8 +67,8 @@ public class NetworksSample {
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Listing networks in a specific resource group
-    	networks = azure.networks().list(existingGroupName);
-    	System.out.println(String.format("Network ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(networks.keySet(), ",\n\t")));
+    	networks = azure.networks().list(groupName);
+    	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
     	network = azure.networks(network.group(), network.name());
@@ -74,7 +80,7 @@ public class NetworksSample {
     	// Create a new network with two subnets, in an existing resource group
     	network = azure.networks().define(newNetworkName + "2")
     		.withRegion(Region.US_WEST)
-    		.withGroupExisting(existingGroupName)
+    		.withGroupExisting(groupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("Foo", "10.0.0.0/29")
     		.withSubnet("Bar", "10.0.0.8/29")
@@ -84,6 +90,9 @@ public class NetworksSample {
 
     	// Delete the network
     	network.delete();
+    	
+    	// Delete the group
+    	group.delete();
     }
     
     
