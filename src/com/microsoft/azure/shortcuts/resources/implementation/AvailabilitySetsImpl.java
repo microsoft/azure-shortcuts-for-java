@@ -25,10 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineReference;
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
-import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
@@ -87,7 +85,10 @@ public class AvailabilitySetsImpl
 	 ***************************************************************/
 	class AvailabilitySetImpl 
 		extends 
-			GroupableResourceBaseImpl<AvailabilitySet, com.microsoft.azure.management.compute.models.AvailabilitySet>
+			GroupableResourceBaseImpl<
+				AvailabilitySet, 
+				com.microsoft.azure.management.compute.models.AvailabilitySet,
+				AvailabilitySetImpl>
 		implements
 			AvailabilitySet,
 			AvailabilitySet.DefinitionBlank,
@@ -130,31 +131,6 @@ public class AvailabilitySetsImpl
 		}
 
 		
-		@Override
-		public AvailabilitySetImpl withGroupExisting(String groupName) {
-			super.withGroupExisting(groupName);
-			return this;
-		}
-
-
-		@Override
-		public AvailabilitySetImpl withGroupExisting(Group group) {
-			return this.withGroupExisting(group.name());
-		}
-
-
-		@Override
-		public AvailabilitySetImpl withGroupExisting(ResourceGroupExtended group) {
-			return this.withGroupExisting(group.getName());
-		}
-
-
-		@Override
-		public AvailabilitySetImpl withGroupNew(String name) {
-			super.withGroupNew(name);
-			return this;
-		}
-
 		@Override
 		public AvailabilitySetImpl withTags(Map<String, String> tags) {
 			super.withTags(tags);

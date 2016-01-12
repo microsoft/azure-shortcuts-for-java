@@ -25,8 +25,6 @@ import java.util.Map;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
@@ -96,7 +94,10 @@ public class NetworkInterfacesImpl
 	 ***************************************************************/
 	private class NetworkInterfaceImpl 
 		extends 
-			GroupableResourceBaseImpl<NetworkInterface, com.microsoft.azure.management.network.models.NetworkInterface>
+			GroupableResourceBaseImpl<
+				NetworkInterface, 
+				com.microsoft.azure.management.network.models.NetworkInterface,
+				NetworkInterfaceImpl>
 		implements
 			NetworkInterface,
 			NetworkInterface.DefinitionWithSubnetPrimary,
@@ -152,28 +153,6 @@ public class NetworkInterfacesImpl
 			return this.withRegion(region.toString());
 		}
 
-		@Override
-		public NetworkInterfaceImpl withGroupExisting(String groupName) {
-			super.withGroupExisting(groupName);
-			return this;
-		}
-
-		@Override
-		public NetworkInterfaceImpl withGroupNew(String name) {
-			super.withGroupNew(name);
-			return this;
-		}
-
-		@Override
-		public NetworkInterfaceImpl withGroupExisting(Group group) {
-			return this.withGroupExisting(group.name());
-		}
-
-		@Override
-		public NetworkInterfaceImpl withGroupExisting(ResourceGroupExtended group) {
-			return this.withGroupExisting(group.getName());
-		}
-		
 		@Override
 		public NetworkInterfaceImpl withTags(Map<String, String> tags) {
 			super.withTags(tags);

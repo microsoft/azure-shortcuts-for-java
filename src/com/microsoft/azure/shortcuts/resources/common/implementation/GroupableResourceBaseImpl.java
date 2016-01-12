@@ -19,13 +19,14 @@
 */
 package com.microsoft.azure.shortcuts.resources.common.implementation;
 
+import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
-public abstract class GroupableResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
+public abstract class GroupableResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended, TI extends GroupableResourceBaseImpl<T, I, TI>>
 	extends
 		ResourceBaseImpl<T, I>
 	implements 
@@ -71,15 +72,30 @@ public abstract class GroupableResourceBaseImpl<T, I extends com.microsoft.windo
 	}
 	
 	
-	protected GroupableResourceBaseImpl<T, I> withGroupExisting(String groupName) {
+	/****************************************
+	 * withGroup implementations
+	 ****************************************/
+	
+	@SuppressWarnings("unchecked")
+	public final TI withGroupExisting(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = true;
-		return this;
+		return (TI)this;
 	}
 	
-	protected GroupableResourceBaseImpl<T, I> withGroupNew(String groupName) {
+	
+	@SuppressWarnings("unchecked")
+	public final TI withGroupNew(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = false;
-		return this;
+		return (TI) this;
+	}
+	
+	public final TI withGroupExisting(Group group) {
+		return this.withGroupExisting(group.name());
+	}
+	
+	public final TI withGroupExisting(ResourceGroupExtended group) {
+		return this.withGroupExisting(group.getName());
 	}
 }

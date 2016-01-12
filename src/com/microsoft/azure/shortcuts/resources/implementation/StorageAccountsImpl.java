@@ -24,10 +24,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
@@ -86,7 +84,10 @@ public class StorageAccountsImpl
 	 ***************************************************************/
 	private class StorageAccountImpl 
 		extends 
-			GroupableResourceBaseImpl<StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
+			GroupableResourceBaseImpl<
+				StorageAccount, 
+				com.microsoft.azure.management.storage.models.StorageAccount,
+				StorageAccountImpl>
 		implements
 			StorageAccount,
 			StorageAccount.DefinitionBlank,
@@ -120,32 +121,6 @@ public class StorageAccountsImpl
 		 * Setters (fluent interface)
 		 **************************************************************/
 		
-		@Override
-		public StorageAccountImpl withGroupExisting(String groupName) {
-			super.withGroupExisting(groupName);
-			return this;
-		}
-
-
-		@Override
-		public StorageAccountImpl withGroupExisting(Group group) {
-			return this.withGroupExisting(group.name());
-		}
-
-
-		@Override
-		public StorageAccountImpl withGroupExisting(ResourceGroupExtended group) {
-			return this.withGroupExisting(group.getName());
-		}
-
-
-		@Override
-		public StorageAccountImpl withGroupNew(String name) {
-			super.withGroupNew(name);
-			return this;
-		}
-		
-
 		@Override
 		public StorageAccountImpl withAccountType(AccountType type) {
 			this.inner().setAccountType(type);

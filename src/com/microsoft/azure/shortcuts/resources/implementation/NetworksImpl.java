@@ -30,9 +30,7 @@ import java.util.TreeMap;
 import com.microsoft.azure.management.network.models.AddressSpace;
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
-import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Region;
@@ -110,7 +108,10 @@ public class NetworksImpl
 	 ***************************************************************/
 	private class NetworkImpl 
 		extends 
-			GroupableResourceBaseImpl<Network, VirtualNetwork>
+			GroupableResourceBaseImpl<
+				Network, 
+				VirtualNetwork,
+				NetworkImpl>
 		implements
 			Network,
 			Network.DefinitionBlank,
@@ -200,28 +201,6 @@ public class NetworksImpl
 			return this.withRegion(region.toString());
 		}
 
-		@Override
-		public NetworkImpl withGroupExisting(String groupName) {
-			super.withGroupExisting(groupName);
-			return this;
-		}
-
-		@Override
-		public NetworkImpl withGroupNew(String name) {
-			super.withGroupNew(name);
-			return this;
-		}
-
-		@Override
-		public NetworkImpl withGroupExisting(Group group) {
-			return this.withGroupExisting(group.name());
-		}
-
-		@Override
-		public NetworkImpl withGroupExisting(ResourceGroupExtended group) {
-			return this.withGroupExisting(group.getName());
-		}
-		
 		@Override
 		public NetworkImpl withTags(Map<String, String> tags) {
 			super.withTags(tags);

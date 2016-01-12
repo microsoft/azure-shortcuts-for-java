@@ -42,7 +42,6 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -138,7 +137,10 @@ public class VirtualMachinesImpl
 	 ***************************************************/
 	private class VirtualMachineImpl
 		extends 
-			GroupableResourceBaseImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
+			GroupableResourceBaseImpl<
+				VirtualMachine, 
+				com.microsoft.azure.management.compute.models.VirtualMachine,
+				VirtualMachineImpl>
 		implements 
 			VirtualMachine,
 			VirtualMachine.DefinitionBlank,
@@ -396,28 +398,6 @@ public class VirtualMachinesImpl
 			return this;
 		}
 		
-		@Override
-		public VirtualMachineImpl withGroupExisting(String name) {
-			super.withGroupExisting(name);
-			return this;
-		}
-
-		@Override
-		public VirtualMachineImpl withGroupExisting(Group group) {
-			return this.withGroupExisting(group.name());
-		}
-
-		@Override
-		public VirtualMachineImpl withGroupExisting(ResourceGroupExtended group) {
-			return this.withGroupExisting(group.getName());
-		}
-
-		@Override
-		public VirtualMachineImpl withGroupNew(String name) {
-			super.withGroupNew(name);
-			return this;
-		}
-
 		@Override
 		public VirtualMachineImpl withTags(Map<String, String> tags) {
 			super.withTags(tags);

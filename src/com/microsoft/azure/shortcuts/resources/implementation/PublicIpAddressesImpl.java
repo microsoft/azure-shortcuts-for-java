@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
-import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
 import com.microsoft.azure.shortcuts.resources.Region;
@@ -89,7 +87,10 @@ public class PublicIpAddressesImpl
 	 ***************************************************************/
 	private class PublicIpAddressImpl 
 		extends 
-			GroupableResourceBaseImpl<PublicIpAddress, com.microsoft.azure.management.network.models.PublicIpAddress>
+			GroupableResourceBaseImpl<
+				PublicIpAddress, 
+				com.microsoft.azure.management.network.models.PublicIpAddress,
+				PublicIpAddressImpl>
 		implements
 			PublicIpAddress,
 			PublicIpAddress.DefinitionBlank,
@@ -141,28 +142,6 @@ public class PublicIpAddressesImpl
 			return this.withRegion(region.toString());
 		}
 
-		@Override
-		public PublicIpAddressImpl withGroupExisting(String groupName) {
-			super.withGroupExisting(groupName);
-			return this;
-		}
-
-		@Override
-		public PublicIpAddressImpl withGroupNew(String name) {
-			super.withGroupNew(name);
-			return this;
-		}
-
-		@Override
-		public PublicIpAddressImpl withGroupExisting(Group group) {
-			return this.withGroupExisting(group.name());
-		}
-
-		@Override
-		public PublicIpAddressImpl withGroupExisting(ResourceGroupExtended group) {
-			return this.withGroupExisting(group.getName());
-		}
-		
 		@Override
 		public PublicIpAddressImpl withTags(Map<String, String> tags) {
 			super.withTags(tags);

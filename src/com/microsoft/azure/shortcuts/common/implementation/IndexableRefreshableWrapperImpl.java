@@ -34,5 +34,4 @@ public abstract class IndexableRefreshableWrapperImpl<T, I> extends IndexableRef
 	protected void setInner(I inner) {
 		this.innerObject = inner;
 	}
-
 }
