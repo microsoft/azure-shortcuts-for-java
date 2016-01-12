@@ -24,7 +24,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +43,6 @@ import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -55,10 +53,11 @@ import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine.DefinitionBlank;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
-	extends EntitiesImpl<Azure>
+	extends GroupableResourcesBaseImpl<Azure, VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
 	implements VirtualMachines {
 	
 	VirtualMachinesImpl(Azure azure) {
@@ -73,25 +72,6 @@ public class VirtualMachinesImpl
 
 	
 	@Override
-	public Map<String, VirtualMachine> list(String groupName) throws Exception {
-		ArrayList<com.microsoft.azure.management.compute.models.VirtualMachine> nativeItems;
-		HashMap<String, VirtualMachine> wrappers = new HashMap<>();
-		if(groupName != null) {
-			nativeItems = azure.computeManagementClient().getVirtualMachinesOperations().list(groupName).getVirtualMachines();
-		} else {
-			nativeItems = azure.computeManagementClient().getVirtualMachinesOperations().listAll(null).getVirtualMachines();
-		}
-		
-		for(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem : nativeItems) {
-			VirtualMachineImpl wrapper = new VirtualMachineImpl(nativeItem);
-			wrappers.put(nativeItem.getId(), wrapper);
-		}
-		
-		return Collections.unmodifiableMap(wrappers);
-	}
-
-
-	@Override
 	public VirtualMachine get(String resourceId) throws Exception {
 		return this.get(
 				ResourcesImpl.groupFromResourceId(resourceId), 
@@ -101,10 +81,7 @@ public class VirtualMachinesImpl
 	
 	@Override
 	public VirtualMachine get(String resourceGroup, String name) throws Exception {
-		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = 
-			azure.computeManagementClient().getVirtualMachinesOperations().get(
-				resourceGroup, name).getVirtualMachine();
-		return new VirtualMachineImpl(azureVM);
+		return createWrapper(getNativeEntity(resourceGroup, name));
 	}
 
 	
@@ -117,6 +94,26 @@ public class VirtualMachinesImpl
 	/***************************************************
 	 * Helpers
 	 ***************************************************/
+	
+	@Override
+	protected List<com.microsoft.azure.management.compute.models.VirtualMachine> getNativeEntities(String groupName) throws Exception {
+		if(groupName != null) {
+			return azure.computeManagementClient().getVirtualMachinesOperations().list(groupName).getVirtualMachines();
+		} else {
+			return azure.computeManagementClient().getVirtualMachinesOperations().listAll(null).getVirtualMachines();
+		}
+	}
+	
+	@Override
+	protected com.microsoft.azure.management.compute.models.VirtualMachine getNativeEntity(String groupName, String name) throws Exception {
+		return azure.computeManagementClient().getVirtualMachinesOperations().get(groupName, name).getVirtualMachine();
+	}
+	
+	@Override 
+	protected VirtualMachine createWrapper(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
+		return new VirtualMachineImpl(nativeItem);
+	}
+	
 	
 	VirtualMachineImpl createWrapper(String name) {
 		com.microsoft.azure.management.compute.models.VirtualMachine azureVM = new com.microsoft.azure.management.compute.models.VirtualMachine();
