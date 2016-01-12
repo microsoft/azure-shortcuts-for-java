@@ -38,7 +38,7 @@ import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 
 
 public class NetworksImpl 
@@ -148,7 +148,7 @@ public class NetworksImpl
 	 ***************************************************************/
 	private class NetworkImpl 
 		extends 
-			GroupResourceBaseImpl<Network, VirtualNetwork>
+			GroupableResourceBaseImpl<Network, VirtualNetwork>
 		implements
 			Network,
 			Network.DefinitionBlank,

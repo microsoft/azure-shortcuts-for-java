@@ -54,7 +54,7 @@ import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine.DefinitionBlank;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
@@ -153,7 +153,7 @@ public class VirtualMachinesImpl
 	 ***************************************************/
 	private class VirtualMachineImpl
 		extends 
-			GroupResourceBaseImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
+			GroupableResourceBaseImpl<VirtualMachine, com.microsoft.azure.management.compute.models.VirtualMachine>
 		implements 
 			VirtualMachine,
 			VirtualMachine.DefinitionBlank,

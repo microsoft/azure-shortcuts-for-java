@@ -31,7 +31,7 @@ import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 
 
 public class PublicIpAddressesImpl 
@@ -130,7 +130,7 @@ public class PublicIpAddressesImpl
 	 ***************************************************************/
 	private class PublicIpAddressImpl 
 		extends 
-			GroupResourceBaseImpl<PublicIpAddress, com.microsoft.azure.management.network.models.PublicIpAddress>
+			GroupableResourceBaseImpl<PublicIpAddress, com.microsoft.azure.management.network.models.PublicIpAddress>
 		implements
 			PublicIpAddress,
 			PublicIpAddress.DefinitionBlank,

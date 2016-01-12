@@ -25,13 +25,13 @@ import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
-public abstract class GroupResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
+public abstract class GroupableResourceBaseImpl<T, I extends com.microsoft.windowsazure.core.ResourceBaseExtended>
 	extends
 		ResourceBaseImpl<T, I>
 	implements 
 		GroupResourceBase {
 
-	protected GroupResourceBaseImpl(String id, I innerObject) {
+	protected GroupableResourceBaseImpl(String id, I innerObject) {
 		super(id, innerObject);
 	}
 
@@ -71,13 +71,13 @@ public abstract class GroupResourceBaseImpl<T, I extends com.microsoft.windowsaz
 	}
 	
 	
-	protected GroupResourceBaseImpl<T, I> withGroupExisting(String groupName) {
+	protected GroupableResourceBaseImpl<T, I> withGroupExisting(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = true;
 		return this;
 	}
 	
-	protected GroupResourceBaseImpl<T, I> withGroupNew(String groupName) {
+	protected GroupableResourceBaseImpl<T, I> withGroupNew(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = false;
 		return this;

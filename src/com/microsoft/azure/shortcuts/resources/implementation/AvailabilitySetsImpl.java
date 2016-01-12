@@ -21,22 +21,23 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineReference;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class AvailabilitySetsImpl 
-	extends EntitiesImpl<Azure>
+	extends GroupableResourcesBaseImpl<Azure, 
+		AvailabilitySet, 
+		com.microsoft.azure.management.compute.models.AvailabilitySet>
 	implements AvailabilitySets {
 	
 	List<AvailabilitySets> availabilitySets = null;
@@ -46,16 +47,6 @@ public class AvailabilitySetsImpl
 	}
 		
 	@Override
-	public Map<String, AvailabilitySet> list(String groupName) throws Exception {
-		HashMap<String, AvailabilitySet> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem : getNativeEntities(groupName)) {
-			wrappers.put(nativeItem.getId(), new AvailabilitySetImpl(nativeItem));
-		}
-		
-		return Collections.unmodifiableMap(wrappers);
-	}
-
-	@Override
 	public AvailabilitySetImpl get(String resourceId) throws Exception {
 		return this.get(
 			ResourcesImpl.groupFromResourceId(resourceId), 
@@ -64,7 +55,7 @@ public class AvailabilitySetsImpl
 
 	@Override
 	public AvailabilitySetImpl get(String groupName, String name) throws Exception {
-		return new AvailabilitySetImpl(this.getNativeEntities(groupName, name));
+		return new AvailabilitySetImpl(this.getNativeEntity(groupName, name));
 	}
 
 	@Override
@@ -91,23 +82,28 @@ public class AvailabilitySetsImpl
 	 * Helpers
 	 ***************************************************/
 	
-	// Helper to get the availability sets from Azure
-	private ArrayList<com.microsoft.azure.management.compute.models.AvailabilitySet> getNativeEntities(String resourceGroupName) throws Exception {
+	@Override
+	protected ArrayList<com.microsoft.azure.management.compute.models.AvailabilitySet> getNativeEntities(String resourceGroupName) throws Exception {
 		return this.azure.computeManagementClient().getAvailabilitySetsOperations().list(resourceGroupName).getAvailabilitySets();
 	}
 	
-	// Helper to get an availability set from Azure
-	private com.microsoft.azure.management.compute.models.AvailabilitySet getNativeEntities(String groupName, String name) throws Exception {
+	@Override
+	protected com.microsoft.azure.management.compute.models.AvailabilitySet getNativeEntity(String groupName, String name) throws Exception {
 		return azure.computeManagementClient().getAvailabilitySetsOperations().get(groupName, name).getAvailabilitySet();
+	}
+	
+	@Override
+	protected AvailabilitySet createWrapper(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
+		return new AvailabilitySetImpl(nativeItem);
 	}
 	
 	
 	/***************************************************************
 	 * Implements logic for individual resource group
 	 ***************************************************************/
-	private class AvailabilitySetImpl 
+	class AvailabilitySetImpl 
 		extends 
-			GroupResourceBaseImpl<AvailabilitySet, com.microsoft.azure.management.compute.models.AvailabilitySet>
+			GroupableResourceBaseImpl<AvailabilitySet, com.microsoft.azure.management.compute.models.AvailabilitySet>
 		implements
 			AvailabilitySet,
 			AvailabilitySet.DefinitionBlank,
@@ -206,7 +202,7 @@ public class AvailabilitySetsImpl
 
 		@Override
 		public AvailabilitySetImpl refresh() throws Exception {
-			this.setInner(getNativeEntities(
+			this.setInner(getNativeEntity(
 				ResourcesImpl.groupFromResourceId(this.id()), 
 				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;

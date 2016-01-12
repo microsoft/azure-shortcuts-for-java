@@ -29,7 +29,7 @@ import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Provider.ResourceType;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.windowsazure.core.ResourceIdentity;
@@ -202,7 +202,7 @@ public class ResourcesImpl
 	// Implements the individual resource logic
 	private class ResourceImpl 
 		extends
-			GroupResourceBaseImpl<Resource, GenericResourceExtended>
+			GroupableResourceBaseImpl<Resource, GenericResourceExtended>
 		implements 
 			Resource {
 		

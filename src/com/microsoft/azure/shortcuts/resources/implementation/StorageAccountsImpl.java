@@ -35,7 +35,7 @@ import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 
 
 public class StorageAccountsImpl 
@@ -126,7 +126,7 @@ public class StorageAccountsImpl
 	 ***************************************************************/
 	private class StorageAccountImpl 
 		extends 
-			GroupResourceBaseImpl<StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
+			GroupableResourceBaseImpl<StorageAccount, com.microsoft.azure.management.storage.models.StorageAccount>
 		implements
 			StorageAccount,
 			StorageAccount.DefinitionBlank,

@@ -33,7 +33,7 @@ import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 
 
 public class NetworkInterfacesImpl 
@@ -136,7 +136,7 @@ public class NetworkInterfacesImpl
 	 ***************************************************************/
 	private class NetworkInterfaceImpl 
 		extends 
-			GroupResourceBaseImpl<NetworkInterface, com.microsoft.azure.management.network.models.NetworkInterface>
+			GroupableResourceBaseImpl<NetworkInterface, com.microsoft.azure.management.network.models.NetworkInterface>
 		implements
 			NetworkInterface,
 			NetworkInterface.DefinitionWithSubnetPrimary,
