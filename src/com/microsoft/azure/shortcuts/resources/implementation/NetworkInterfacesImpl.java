@@ -20,24 +20,23 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class NetworkInterfacesImpl 
-	extends EntitiesImpl<Azure>
+	extends GroupableResourcesBaseImpl<Azure, NetworkInterface, com.microsoft.azure.management.network.models.NetworkInterface>
 	implements NetworkInterfaces {
 		
 	NetworkInterfacesImpl(Azure azure) {
@@ -48,18 +47,6 @@ public class NetworkInterfacesImpl
 	@Override
 	public Map<String, NetworkInterface> list() throws Exception {
 		return this.list(null);
-	}
-
-	
-	@Override
-	public Map<String, NetworkInterface> list(String groupName) throws Exception {
-		HashMap<String, NetworkInterface> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.network.models.NetworkInterface nativeItem : getNativeEntities(groupName)) {
-			NetworkInterfaceImpl wrapper = new NetworkInterfaceImpl(nativeItem);
-			wrappers.put(nativeItem.getId(), wrapper);
-		}
-		
-		return Collections.unmodifiableMap(wrappers);
 	}
 
 	
@@ -101,21 +88,24 @@ public class NetworkInterfacesImpl
 	 * Helpers
 	 ***************************************************/
 	
-	// Helper to get the networks from Azure
-	private ArrayList<com.microsoft.azure.management.network.models.NetworkInterface> getNativeEntities(String resourceGroupName) throws Exception {
-		if(resourceGroupName == null) {
+	@Override
+	protected List<com.microsoft.azure.management.network.models.NetworkInterface> getNativeEntities(String groupName) throws Exception {
+		if(groupName == null) {
 			return this.azure.networkManagementClient().getNetworkInterfacesOperations().listAll().getNetworkInterfaces();
 		} else {
-			return this.azure.networkManagementClient().getNetworkInterfacesOperations().list(resourceGroupName).getNetworkInterfaces();
+			return this.azure.networkManagementClient().getNetworkInterfacesOperations().list(groupName).getNetworkInterfaces();
 		}
 	}
 	
-	
-	// Helper to get a network from Azure
-	private com.microsoft.azure.management.network.models.NetworkInterface getNativeEntity(String groupName, String name) throws Exception {
+	@Override
+	protected com.microsoft.azure.management.network.models.NetworkInterface getNativeEntity(String groupName, String name) throws Exception {
 		return azure.networkManagementClient().getNetworkInterfacesOperations().get(groupName, name).getNetworkInterface();
 	}
 	
+	@Override
+	protected NetworkInterface createWrapper(com.microsoft.azure.management.network.models.NetworkInterface nativeItem) {
+		return new NetworkInterfaceImpl(nativeItem);
+	}
 	
 	// Helper to create a wrapper
 	private NetworkInterfaceImpl createWrapper(String name) {
