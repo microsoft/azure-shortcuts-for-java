@@ -505,21 +505,22 @@ azure.networkInterfaces("<resource-group-name>", "<network-interface-name>").del
 
 ### Creating a public IP address
 
-Providing minimal inputs (a resource group will be automatically generated), with dynamic IP allocation:
+Providing minimal inputs will result in a public IP address for which a resource group will be automatically generated, dynamic IP allocation will be enabled and a leaf domain name will be specified, derived from the provided name:
 ```java
 PublicIpAddress pipMinimal = azure.publicIpAddresses().define("<new-public-address-name>")
 	.withRegion(Region.US_WEST)
    	.withGroupNew()
-    .withDynamicIp()
     .provision();
 ```
-With a static IP:
+With static IP allocation, an explicitly defined leaf domain label and a tag:
 ```java
-PublicIpAddress pipMinimal = azure.publicIpAddresses().define("<new-public-address-name>")
+PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
 	.withRegion(Region.US_WEST)
-   	.withGroupNew()
-	.withStaticIp("<id-address>")
-	.provision();
+    .withGroupExisting(existingGroupName)
+    .withLeafDomainLabel("hellomarcins")
+    .withStaticIp()
+    .withTag("hello", "world")
+    .provision();
 ```
 
 ### Listing public IP addresses

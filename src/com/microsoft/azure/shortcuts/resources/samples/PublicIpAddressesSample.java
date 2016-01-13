@@ -54,7 +54,6 @@ public class PublicIpAddressesSample {
     	PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
     		.withRegion(Region.US_WEST)
     		.withGroupNew()
-    		.withDynamicIp()
     		.provision();
     	
     	// Get info about a specific PIP using its group and name
@@ -67,7 +66,8 @@ public class PublicIpAddressesSample {
     	PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(existingGroupName)
-    		.withDynamicIp()
+    		.withLeafDomainLabel("hellomarcins")
+    		.withStaticIp()
     		.withTag("hello", "world")
     		.provision();
     		
@@ -95,7 +95,10 @@ public class PublicIpAddressesSample {
     		.append(String.format("\tName: %s\n", pip.name()))
     		.append(String.format("\tGroup: %s\n", pip.group()))
     		.append(String.format("\tRegion: %s\n", pip.region()))
-    		.append(String.format("\tIP Address: %s\n", pip.ipAddress()));
+    		.append(String.format("\tIP Address: %s\n", pip.ipAddress()))
+    		.append(String.format("\tLeaf domain label: %s\n", pip.leafDomainLabel()))
+    		.append(String.format("\tFQDN: %s\n", pip.inner().getDnsSettings().getFqdn()))
+    		;
     	
     	System.out.println(output.toString());
     }

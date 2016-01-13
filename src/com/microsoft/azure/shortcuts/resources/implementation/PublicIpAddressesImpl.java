@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import java.util.List;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
+import com.microsoft.azure.management.network.models.PublicIpAddressDnsSettings;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
@@ -46,6 +47,11 @@ public class PublicIpAddressesImpl
 		nativeItem.setName(name);
 		nativeItem.setPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
 		
+		// Assume a public domain name is the same as the resource name by default
+		PublicIpAddressDnsSettings dnsSettings = new PublicIpAddressDnsSettings();
+		nativeItem.setDnsSettings(dnsSettings);
+		dnsSettings.setDomainNameLabel(name.toLowerCase());
+
 		return wrap(nativeItem);
 	}
 
@@ -92,6 +98,7 @@ public class PublicIpAddressesImpl
 			PublicIpAddress,
 			PublicIpAddress.DefinitionBlank,
 			PublicIpAddress.DefinitionWithGroup,
+			PublicIpAddress.DefinitionWithLeafDomainLabel,
 			PublicIpAddress.DefinitionWithIpAddress,
 			PublicIpAddress.DefinitionProvisionable {
 		
@@ -109,25 +116,50 @@ public class PublicIpAddressesImpl
 			return this.inner().getIpAddress();
 		}
 		
+		@Override
+		public String leafDomainLabel() {
+			if(this.inner().getDnsSettings() == null) {
+				return null;
+			} else {
+				return this.inner().getDnsSettings().getDomainNameLabel();
+			}
+		}
+
 		
 		/**************************************************************
 		 * Setters (fluent interface)
 		 **************************************************************/
 
 		@Override
-		public DefinitionProvisionable withStaticIp(String ipAddress) {
-			this.inner().setIpAddress(ipAddress);
+		public PublicIpAddressImpl withStaticIp() {
 			this.inner().setPublicIpAllocationMethod(IpAllocationMethod.STATIC);
 			return this;
 		}
 
-
 		@Override
-		public DefinitionProvisionable withDynamicIp() {
+		public PublicIpAddressImpl withDynamicIp() {
 			this.inner().setPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
 			return this;
 		}
 
+		@Override
+		public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
+			PublicIpAddressDnsSettings dnsSettings;
+			if(dnsName == null) {
+				this.inner().setDnsSettings(null);
+				return this;
+			} else if(null == (dnsSettings = this.inner().getDnsSettings())) {
+				dnsSettings = new PublicIpAddressDnsSettings();
+			}
+			dnsSettings.setDomainNameLabel(dnsName);
+			return this;
+		}
+
+		@Override
+		public DefinitionProvisionable withoutLeafDomainLabel() {
+			return this.withLeafDomainLabel(null);
+		}
+		
 		
 		/************************************************************
 		 * Verbs
