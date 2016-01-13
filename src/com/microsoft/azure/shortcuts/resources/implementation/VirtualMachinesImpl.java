@@ -675,8 +675,8 @@ public class VirtualMachinesImpl
 				
 				NetworkInterface nic = azure.networkInterfaces().define(this.nicId)
 					.withRegion(this.region())
-					.withSubnetPrimary(subnet)
 					.withGroupExisting(groupName)
+					.withSubnetPrimary(subnet)
 					.provision();
 				this.isExistingPrimaryNIC = true;
 				return nic;

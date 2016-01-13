@@ -99,6 +99,7 @@ public class NetworkInterfacesImpl
 			NetworkInterface,
 			NetworkInterface.DefinitionWithSubnetPrimary,
 			NetworkInterface.DefinitionBlank,
+			NetworkInterface.DefinitionWithGroup,
 			NetworkInterface.DefinitionProvisionable {
 		
 		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface) {

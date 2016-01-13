@@ -64,6 +64,7 @@ public class NetworkInterfacesSample {
     	// Create a new network interface in a new default resource group
     	NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     		.withRegion(Region.US_WEST)
+    		.withGroupNew()
     		.withSubnetPrimary(network.subnets("subnet1"))
     		.provision();
     	
@@ -80,8 +81,8 @@ public class NetworkInterfacesSample {
     	// More detailed NIC definition
     	NetworkInterface nic = azure.networkInterfaces().define(newNetworkInterfaceName + "2")
     		.withRegion(Region.US_WEST)
-    		.withSubnetPrimary(network.subnets().get("subnet1"))
     		.withGroupExisting(existingGroupName)
+    		.withSubnetPrimary(network.subnets().get("subnet1"))
     		.withTag("hello", "world")
     		.provision();
     		

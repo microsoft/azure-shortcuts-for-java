@@ -37,8 +37,11 @@ public interface NetworkInterface extends
 	 * A new blank network interface definition
 	 */
 	public interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionWithSubnetPrimary> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 	}
+	
+	public interface DefinitionWithGroup extends
+		GroupResourceBase.DefinitionWithGroup<DefinitionWithSubnetPrimary> {}
 	
 	/**
 	 * A network interface definition expecting an existing virtual network subnet to associate the NIC with
@@ -65,7 +68,6 @@ public interface NetworkInterface extends
 	 */
 	public interface DefinitionProvisionable extends 
 		Provisionable<NetworkInterface>,
-		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 }

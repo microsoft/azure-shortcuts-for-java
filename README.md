@@ -438,19 +438,20 @@ azure.networks("<resource-group-name>", "<network-name>").delete();
 
 :warning: Note that the creation of a network interface requires an existing subnet of an existing virtual network. A `Subnet` instance can be obtained for example from a call to `Subnet subnet = azure.networks("my-network").subnets("subnet1");` using appropriate names for the network and the subnet.
 
-Using a minimum set of required inputs (a new resource group is created automatically):
+Using a minimum set of required inputs (a new resource group is created automatically, in the same region, with a name derived from the NIC's name):
 ```java
-NetworkInterface nicMinimal = azure.networkInterfaces().define("<network-interface-name>")
+NetworkInterface nicMinimal = azure.networkInterfaces().define("<new-nic-name>")
     .withRegion(Region.US_WEST)
-    .withSubnetPrimary(subnet)
+    .withGroupNew()
+    .withSubnetPrimary(network.subnets("subnet1"))
     .provision();
 ```
 Creating a network interface within an existing resource group:
 ```java
 NetworkInterface nic = azure.networkInterfaces().define("<network-interface-name>")
     .withRegion(Region.US_WEST)
-    .withSubnetPrimary(network.subnets().get("subnet1"))
     .withGroupExisting("<existing-group-name>")
+    .withSubnetPrimary(network.subnets().get("subnet1"))
     .withTag("hello", "world")
     .provision();
 ```
