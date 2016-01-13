@@ -44,8 +44,8 @@ public class VirtualMachinesSample {
 
     public static void test(Azure azure) throws Exception {
     	// Creating a Windows VM
-    	String groupName = "mytestgroup";
     	String deploymentId = String.valueOf(System.currentTimeMillis());
+    	String groupName = "group" + deploymentId;
 
     	Network network = azure.networks().define("mytestnet")
     		.withRegion(Region.US_WEST)
@@ -58,7 +58,7 @@ public class VirtualMachinesSample {
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(groupName)
     		.withNetworkExisting(network)
-    		.withPrimaryNetworkInterfaceNew("mytestnic", network.subnets("subnet1"))
+    		.withPrimaryNetworkInterfaceNew(network.subnets("subnet1"))
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")
@@ -66,7 +66,7 @@ public class VirtualMachinesSample {
     		.withImageSKU("2008-R2-SP1")
     		.withLatestImageVersion()
     		.withSize(Size.Type.BASIC_A1)
-    		.withStorageAccountNew("store" + deploymentId)
+    		.withStorageAccountNew()
     		.provision();
     	
     	// Listing all virtual machine ids in a subscription

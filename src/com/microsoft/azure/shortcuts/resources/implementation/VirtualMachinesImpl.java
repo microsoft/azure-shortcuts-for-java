@@ -165,6 +165,7 @@ public class VirtualMachinesImpl
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
 		private String nicSubnetName;
+		private String networkCidr;
 		
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -513,9 +514,10 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withNetworkNew(String name) {
+		public VirtualMachineImpl withNetworkNew(String name, String addressSpace) {
 			this.isExistingNetwork = false;
 			this.networkId = name;
+			this.networkCidr = addressSpace;
 			return this;
 		}
 
@@ -526,8 +528,8 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withNetworkNew() {
-			return this.withNetworkNew((String)null);
+		public VirtualMachineImpl withNetworkNew(String addressSpace) {
+			return this.withNetworkNew((String)null, addressSpace);
 		}
 
 		
@@ -627,7 +629,8 @@ public class VirtualMachinesImpl
 				Network network = azure.networks().define(this.networkId)
 					.withRegion(this.region())
 					.withGroupExisting(groupName)
-					.provision(); // TODO: With AddressSpace, Subnets
+					.withAddressSpace(this.networkCidr)
+					.provision(); // TODO: Subnets
 				this.isExistingNetwork = true;
 				return network;
 			} else {

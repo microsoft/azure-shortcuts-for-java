@@ -67,14 +67,15 @@ public interface DefinitionCombo {
 		 * @param name The name of the new virtual network
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkNew(String name);
+		R withNetworkNew(String name, String addressSpace);
 		
 		/**
 		 * Creates a new virtual network to associate with this resource, with a name derived from the name of this resource, 
-		 * in the same resource group and region, and with one default subnet covering the entirety of the network's IP address space
+		 * in the same resource group and region, with the specified IP address space, and with one default subnet covering the 
+		 * entirety of the address space
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkNew();
+		R withNetworkNew(String addressSpace);
 	}
 
 	
