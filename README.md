@@ -627,16 +627,16 @@ azure.storageAccounts().define("mystorage")
 
 With the required minimum set of input parameters:
 ```java
-azure.storageAccounts().define("<storage-account-name>")
+StorageAccount storageAccount = azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
-    .provision();
-```
+    .withGroupNew()
+    .provision();```
 In an existing resource group:
 ```java
-azure.storageAccounts().define(storeName)
+azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withAccountType(AccountType.StandardLRS)
-    .withGroupExisting("lenatest")
+    .withGroupExisting("<existing-group-name>")
     .provision();
 ```
 

@@ -93,6 +93,7 @@ public class StorageAccountsImpl
 		implements
 			StorageAccount,
 			StorageAccount.DefinitionBlank,
+			StorageAccount.DefinitionWithGroup,
 			StorageAccount.DefinitionProvisionable {
 		
 		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount) {
