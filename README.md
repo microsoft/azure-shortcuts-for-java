@@ -331,34 +331,22 @@ Set<String> osImageNames = azure.osImages().list().keySet();
 
 ### Virtual Networks
 
-#### Creating a virtual network with an explicitly defined address space and a default subnet
+#### Creating a virtual network
+
 
 *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
+With an explicitly defined address space and a default subnet containing the entirety of the IP address space:
 ```java
 azure.networks().define("mynetwork")
 	.withRegion("West US")	
 	.withAddressSpace("10.0.0.0/29")
 	.provision();
 ```
-
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-
-```java
-azure.networks().define("mynetwork")
-	.withRegion(Region.US_WEST)
-    .withAddressSpace("10.0.0.0/29")
-    .provision();
-```
-
-#### Creating a virtual network with multiple, explicitly defined subnets, in an existing resource group
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
+With multiple, explicitly defined subnets:
 ```java
 azure.networks().define("mynetwork")
 	.withRegion("US West")
-	.withGroupExisting("<resource-group-name>")
 	.withAddressSpace("10.0.0.0/28")
 	.withSubnet("Foo", "10.0.0.0/29")
 	.withSubnet("Bar", "10.0.0.8/29")
@@ -367,6 +355,15 @@ azure.networks().define("mynetwork")
 
 *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
+With an explicitly defined address space, a default subnet containing the entirety of the IP address space, in a new auto-generated resource group:
+```java
+Network network = azure.networks().define("<new-network-name>")
+	.withRegion(Region.US_WEST)
+	.withGroupNew()
+	.withAddressSpace("10.0.0.0/28")
+	.provision();
+```
+With multiple, explicitly defined subnets and an existing resource group:
 ```java
 azure.networks().define(newNetworkName + "2")
     .withGroupExisting(existingGroupName)
@@ -376,7 +373,6 @@ azure.networks().define(newNetworkName + "2")
     .withSubnet("Bar", "10.0.0.8/29")
     .provision();
 ```
-
 
 #### Listing virtual networks 
 

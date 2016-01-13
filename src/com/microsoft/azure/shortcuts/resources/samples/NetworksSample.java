@@ -55,6 +55,7 @@ public class NetworksSample {
     	// Create a new network with a default subnet in a new default resource group
     	network = azure.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
+    		.withGroupNew()
     		.withAddressSpace("10.0.0.0/28")
     		.provision();
     	

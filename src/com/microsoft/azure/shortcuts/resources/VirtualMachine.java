@@ -62,10 +62,9 @@ public interface VirtualMachine extends
 	 */
 	interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
-		/*TODO 
-		 * Defaulted: endpoints
-		 * Optional:  tags
-		 */
+		//TODO public IP
+		//TODO load balancers
+		//TODO network security groups
 	}
 	
 	/**

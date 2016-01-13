@@ -55,10 +55,10 @@ public class NetworkInterfacesSample {
     	// Create a virtual network to test the network interface with
     	Network network = azure.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
+    		.withGroupExisting(existingGroupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("subnet1", "10.0.0.0/29") 
     		.withSubnet("subnet2", "10.0.0.8/29")
-    		.withGroupExisting(existingGroupName)
     		.provision();
     	
     	// Create a new network interface in a new default resource group

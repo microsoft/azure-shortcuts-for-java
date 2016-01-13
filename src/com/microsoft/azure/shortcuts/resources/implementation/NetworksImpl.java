@@ -112,6 +112,7 @@ public class NetworksImpl
 		implements
 			Network,
 			Network.DefinitionBlank,
+			Network.DefinitionWithGroup,
 			Network.DefinitionProvisionable,
 			Network.DefinitionWithAddressSpace,
 			Network.DefinitionProvisionableWithSubnet, 

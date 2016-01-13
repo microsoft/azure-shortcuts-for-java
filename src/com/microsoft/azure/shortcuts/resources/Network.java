@@ -47,8 +47,11 @@ public interface Network extends
 	 * A new blank virtual network definition
 	 */
 	public interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
-	}
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
+	
+	public interface DefinitionWithGroup extends
+		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable> {}
+		
 	
 	/**
 	 * A virtual network definition expecting at least one subnet to be specified
@@ -79,7 +82,6 @@ public interface Network extends
 		Provisionable<Network>,
 		DefinitionWithAddressSpace,
 		DefinitionWithDNSServer,
-		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 	
