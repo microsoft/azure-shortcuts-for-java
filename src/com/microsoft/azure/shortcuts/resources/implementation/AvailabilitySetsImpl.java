@@ -88,6 +88,7 @@ public class AvailabilitySetsImpl
 		implements
 			AvailabilitySet,
 			AvailabilitySet.DefinitionBlank,
+			AvailabilitySet.DefinitionWithGroup,
 			AvailabilitySet.DefinitionProvisionable {
 		
 		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet) {

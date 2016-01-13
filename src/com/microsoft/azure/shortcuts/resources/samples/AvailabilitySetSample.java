@@ -48,6 +48,7 @@ public class AvailabilitySetSample {
     	// Create a new availability set in a new default group
     	availabilitySet = azure.availabilitySets().define(newAvailabilitySetName)
     		.withRegion(Region.US_WEST)
+    		.withGroupNew()
     		.provision();
     	
     	// Get info about a specific availability set using its group and name

@@ -898,10 +898,11 @@ String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes(
 
 #### Creating an availability set
 
-With minimum inputs, in its own separate default resource group:
+With minimum inputs, in its own new default resource group:
 ```java
 azure.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
+    .witgGroupNew()
     .provision();
 ```
 Within an existing resource group, and setting a tag:

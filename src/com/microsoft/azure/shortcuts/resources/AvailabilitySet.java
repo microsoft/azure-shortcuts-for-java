@@ -39,8 +39,11 @@ public interface AvailabilitySet extends
 	List<String> virtualMachineIds();
 	
 	public interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionProvisionable> {
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 	}
+	
+	public interface DefinitionWithGroup extends 
+		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable> {}
 	
 	public interface DefinitionProvisionable extends 
 		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
