@@ -42,8 +42,10 @@ public interface PublicIpAddress extends
 	 * A new blank public IP address definition
 	 */
 	public interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionWithIpAddress> {
-	}
+		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {}
+	
+	public interface DefinitionWithGroup extends
+		GroupResourceBase.DefinitionWithGroup<DefinitionWithIpAddress> {}
 	
 	public interface DefinitionWithIpAddress {
 		DefinitionProvisionable withStaticIp(String ipAddress);
@@ -55,7 +57,6 @@ public interface PublicIpAddress extends
 	 */
 	public interface DefinitionProvisionable extends 
 		Provisionable<PublicIpAddress>,
-		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 

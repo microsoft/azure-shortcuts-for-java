@@ -50,9 +50,10 @@ public class PublicIpAddressesSample {
     		printPIP(pip);
     	}
     	
-    	// Create a public IP address in a defualt group
+    	// Create a public IP address in a default new group
     	PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
     		.withRegion(Region.US_WEST)
+    		.withGroupNew()
     		.withDynamicIp()
     		.provision();
     	
@@ -62,18 +63,18 @@ public class PublicIpAddressesSample {
     	String groupNameCreated = pipMinimal.group(); 
     	printPIP(pipMinimal);
 
+    	// More detailed PIP definition
+    	PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
+    		.withRegion(Region.US_WEST)
+    		.withGroupExisting(existingGroupName)
+    		.withDynamicIp()
+    		.withTag("hello", "world")
+    		.provision();
+    		
     	// Listing PIPs in a specific resource group
     	pips = azure.publicIpAddresses().list(existingGroupName);
     	System.out.println(String.format("PIP ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(pips.keySet(), ",\n\t")));
     	
-    	// More detailed PIP definition
-    	PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
-    		.withRegion(Region.US_WEST)
-    		.withDynamicIp()
-    		.withGroupExisting(existingGroupName)
-    		.withTag("hello", "world")
-    		.provision();
-    		
     	// Get info about a specific PIP using its resource ID
     	pip = azure.publicIpAddresses(pip.group(), pip.name());
     	printPIP(pip);

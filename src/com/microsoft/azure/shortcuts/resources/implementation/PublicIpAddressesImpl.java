@@ -91,6 +91,7 @@ public class PublicIpAddressesImpl
 		implements
 			PublicIpAddress,
 			PublicIpAddress.DefinitionBlank,
+			PublicIpAddress.DefinitionWithGroup,
 			PublicIpAddress.DefinitionWithIpAddress,
 			PublicIpAddress.DefinitionProvisionable {
 		

@@ -507,15 +507,17 @@ azure.networkInterfaces("<resource-group-name>", "<network-interface-name>").del
 
 Providing minimal inputs (a resource group will be automatically generated), with dynamic IP allocation:
 ```java
-PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
+PublicIpAddress pipMinimal = azure.publicIpAddresses().define("<new-public-address-name>")
 	.withRegion(Region.US_WEST)
-	.withDynamicIp()
-	.provision();
+   	.withGroupNew()
+    .withDynamicIp()
+    .provision();
 ```
 With a static IP:
 ```java
-PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
+PublicIpAddress pipMinimal = azure.publicIpAddresses().define("<new-public-address-name>")
 	.withRegion(Region.US_WEST)
+   	.withGroupNew()
 	.withStaticIp("<id-address>")
 	.provision();
 ```
