@@ -130,7 +130,7 @@ Further simplification of the authentication process is a subject of active inve
 
 This is the first step for all the other examples.:
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 String publishSettingsPath = "<your file>.publishsettings";
@@ -138,7 +138,7 @@ String subscriptionId = "<subscription-GUID>";
 final Azure azure = new Azure(publishSettingsPath, subscriptionId);
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
 String authFilePath = "<my-auth-file>"; // See explanation below
@@ -168,7 +168,7 @@ You can just save a file with these contents and use it as your "auth-file" in t
 
 #### Creating a Linux VM in a new, default cloud service with SSH set up
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.virtualMachines().define("mylinuxvm")
@@ -186,7 +186,7 @@ azure.virtualMachines().define("mylinuxvm")
 
 #### Creating a Linux VM in a new cloud service in an existing virtual network
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.virtualMachines().define("mylinuxvm")
@@ -206,7 +206,7 @@ azure.virtualMachines().define("mylinuxvm")
 
 #### Creating a Windows VM in an existing cloud service
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.virtualMachines().define("mywinvm")
@@ -226,21 +226,19 @@ azure.virtualMachines().define("mywinvm")
 
 All virtual machine names (or ids) in a subscription: 
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 List<String> vmNames = azure.virtualMachines().names();
 ```
 
-*ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
 Map<String, VirtualMachine> vms = azure.virtualMachines().list();
 System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
 ```
-
 Virtual machines in a specific resource group (resource model "ARM" only)
-
 ```java
 Map<String, VirtualMachine> vms = azure.virtualMachines().list("<group-name>");
 System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
@@ -249,7 +247,7 @@ System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t",
 
 #### Getting information about a VM
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+>*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 VirtualMachine vm = azure.virtualMachines("mylinuxvm");
@@ -270,24 +268,20 @@ System.out.println(String.format("Reading information about vm: %s\n"
 ));
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 Using the resource id:
-
 ```java
 VirtualMachine vm = azure.virtualMachines("<resource-id>");
 ```
-
 Using the group name and virtual machine name:
-
 ```java
 VirtualMachine vm = azure.virtualMachines("<group-name>", "<vm-name>");
 ```
 
-
 #### Listing available VM sizes
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 boolean supportingVM = true;
@@ -296,32 +290,26 @@ boolean supportingCloudServices = false;
 List<String> sizeNames = azure.sizes().list(supportingVM, supportingCloudServices);
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 You need to specify the region to get the sizes. The returned sizes are indexed by their name:
-
 ```java
 Map<String, Size> sizes = azure.sizes().list("westus");
 ```
-
 Therefore, to get the names only:
-
 ```java
 Set<String> sizeNames = azure.sizes().list("westus").keySet();
 ```
 
 #### Listing available OS image names
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 OS images as a map, indexed by name:
-
 ```java
 Map<String, OSImage> osImages = azure.osImages().list();
 ```
-
-Cloud service names only:
-
+OS image names only:
 ```java
 Set<String> osImageNames = azure.osImages().list().keySet();
 ```
@@ -333,8 +321,7 @@ Set<String> osImageNames = azure.osImages().list().keySet();
 
 #### Creating a virtual network
 
-
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 With an explicitly defined address space and a default subnet containing the entirety of the IP address space:
 ```java
@@ -353,7 +340,7 @@ azure.networks().define("mynetwork")
 	.provision();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 With an explicitly defined address space, a default subnet containing the entirety of the IP address space, in a new auto-generated resource group:
 ```java
@@ -366,8 +353,8 @@ Network network = azure.networks().define("<new-network-name>")
 With multiple, explicitly defined subnets and an existing resource group:
 ```java
 azure.networks().define(newNetworkName + "2")
-    .withGroupExisting(existingGroupName)
     .withRegion(Region.US_WEST)
+    .withGroupExisting("<existing-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
@@ -376,59 +363,47 @@ azure.networks().define(newNetworkName + "2")
 
 #### Listing virtual networks 
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 All network names in a subscription:
-
 ```java
 List<String> virtualNetworkNames = azure.networks().names();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 All networks in a subscription, as a map indexed by resource id:
-
 ```java
 Map<String, Network> networks = azure.networks().list();
 ```
-
 Resource ids only:
-
 ```java
 Set<String> networkIds = azure.networks().list().keySet();
 ```
-
 Networks in a specific resource group:
-
 ```java
 Map<String, Network> networks = azure.networks().list("<resource-group-name">);
 ```
 
-
 #### Getting information about a virtual network
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 By providing the virtual network name:
-
 ```java
 Network network = azure.networks("<network-name>");
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 By providing a virtual network resource ID (returned as a key in `networks().list()`):
-
 ```java
 Network network = azure.networks("<network-resource-id>");
 ```
-
 or by providing the group name and the virtual network name:
-
 ```java
 Network network = azure.networks("<group-name>", "<network-name>");
 ```
-
 The subnets of the virtual network are available from `network.subnets()`.
 The IP addresses of DNS servers associated with the virtual network are available from `network.dnsServerIPs()`.
 The address spaces (in CIDR format) of the virtual network are available from `network.addressSpaces()`.
@@ -436,16 +411,15 @@ The address spaces (in CIDR format) of the virtual network are available from `n
 
 #### Deleting a virtual network
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.networks().delete("mynetwork");
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 Any of the following methods:
-
 ```java
 azure.networks().delete("<network-resource-id>");
 
@@ -458,23 +432,20 @@ azure.networks("<resource-group-name>", "<network-name>").delete();
 
 ### Network Interfaces
 
-This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 #### Creating a network interface
 
 :warning: Note that the creation of a network interface requires an existing subnet of an existing virtual network. A `Subnet` instance can be obtained for example from a call to `Subnet subnet = azure.networks("my-network").subnets("subnet1");` using appropriate names for the network and the subnet.
 
 Using a minimum set of required inputs (a new resource group is created automatically):
-
 ```java
 NetworkInterface nicMinimal = azure.networkInterfaces().define("<network-interface-name>")
     .withRegion(Region.US_WEST)
     .withSubnetPrimary(subnet)
     .provision();
 ```
-
 Creating a network interface within an existing resource group:
-
 ```java
 NetworkInterface nic = azure.networkInterfaces().define("<network-interface-name>")
     .withRegion(Region.US_WEST)
@@ -487,13 +458,10 @@ NetworkInterface nic = azure.networkInterfaces().define("<network-interface-name
 #### Listing network interfaces
 
 In the subscription (all resource groups):
-
 ```java
 Map<String, NetworkInterface> nics = azure.networkInterfaces().list();
 ```
-
 In a specific resource group: 
-
 ```java
 Map<String, NetworkInterface> nics = azure.networkInterfaces().list("<resource-group-name>");
 ```
@@ -501,25 +469,18 @@ Map<String, NetworkInterface> nics = azure.networkInterfaces().list("<resource-g
 #### Getting information about an existing network interface
 
 Using its resource id:
-
 ```java
 NetworkInterface nic = azure.networkInterfaces().get("<resource-id>");
 ```
-
 or:
-
 ```java
 NetworkInterface nic = azure.networkInterfaces("<resource-id>");
 ```
-
 Using its resource group and name:
-
 ```java
 NetworkInterface nic = azure.networkInterfaces().get("<resource-group-name>", "<network-interface-name>");
 ```
-
 or
-
 ```java
 NetworkInterface nic = azure.networkInterfaces("<resource-group-name>", "<network-interface-name>");
 ```
@@ -527,7 +488,6 @@ NetworkInterface nic = azure.networkInterfaces("<resource-group-name>", "<networ
 #### Deleting a network interface
 
 Any of the following approaches:
-
 ```java
 azure.networkInterfaces().delete("<resource-id>");
 
@@ -540,21 +500,18 @@ azure.networkInterfaces("<resource-group-name>", "<network-interface-name>").del
 
 ## Public IP Addresses
 
-This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ### Creating a public IP address
 
 Providing minimal inputs (a resource group will be automatically generated), with dynamic IP allocation:
-
 ```java
 PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
 	.withRegion(Region.US_WEST)
 	.withDynamicIp()
 	.provision();
 ```
-
 With a static IP:
-
 ```java
 PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
 	.withRegion(Region.US_WEST)
@@ -562,17 +519,13 @@ PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddress
 	.provision();
 ```
 
-
 ### Listing public IP addresses
 
 From the entire subscription, as a `Map` indexed by name:
-
 ```java
 Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list();
 ```
-
 From a specific resource group, as a `Map` indexed by name:
-
 ```java
 Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list("my-resoruce-group-name");
 ```
@@ -582,25 +535,18 @@ Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list("my-resoruce-
 #### Getting information about an existing network interface
 
 Using its resource id:
-
 ```java
 PublicIpAddress pip = azure.publicIpAddresses().get("resource-id");
 ```
-
 or:
-
 ```java
 PublicIpAddress pip = azure.publicIpAddresses("resource-id");
 ```
-
 Using its resource group and name:
-
 ```java
 PublicIpAddress pip  = azure.publicIpAddresses().get("<resource-group-name>", "<pip-name>");
 ```
-
 or
-
 ```java
 PublicIpAddress pip  = azure.publicIpAddresses("<resource-group-name>", "<pip-name>");
 ```
@@ -608,7 +554,6 @@ PublicIpAddress pip  = azure.publicIpAddresses("<resource-group-name>", "<pip-na
 #### Deleting a public IP address
 
 Any of the following methods:
-
 ```java
 azure.publicIpAddresses().delete("<pip-resource-id>");
 
@@ -621,7 +566,7 @@ azure.publicIpAddresses("<resource-group-name>", "<pip-name>").delete();
 
 ### Cloud Services
 
-Cloud services are only supported in the ASM model in Azure today. So this section is only applicable to working with in the "classic" mode. The packages to import from are under `com.microsoft.azure.shortcuts.services.*`.
+> Cloud services are only supported in the ASM model in Azure today. So this section is only applicable to working with in the "classic" mode. The packages to import from are under `com.microsoft.azure.shortcuts.services.*`.
 
 #### Creating a cloud service
 
@@ -634,13 +579,10 @@ azure.cloudServices().define("myservice")
 #### Listing cloud services in a subscription
 
 Cloud services as a map, indexed by name:
-
 ```java
 Map<String, CloudService> cloudServices = azure.cloudServices().list();
 ```
-
 Cloud service names only:
-
 ```java
 Set<String> cloudServiceNames = azure.cloudServices().list().keySet();
 ```
@@ -658,23 +600,6 @@ azure.cloudServices().update("myservice")
 
 ```java
 CloudService cloudService = azure.cloudServices("myservice");
-
-System.out.println(String.format("Found cloud service: %s\n"
-	+ "\tLabel: %s\n"
-	+ "\tDescription: %s\n"
-	+ "\tRegion: %s\n"
-	+ "\tCreated: %s\n"
-	+ "\tModified: %s\n"
-	+ "\tAffinity group: %s\n"
-	+ "\tReverse DNS FQDN: %s\n",
-	cloudService.id(),
-	cloudService.label(),
-	cloudService.description(),
-	cloudService.region(),
-	cloudService.created().getTime(),
-	cloudService.modified().getTime(),
-	cloudService.affinityGroup(),
-	cloudService.reverseDnsFqdn()));
 ```
 
 #### Deleting a cloud service
@@ -687,7 +612,7 @@ azure.cloudServices().delete(serviceName);
 
 #### Creating a storage account
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.storageAccounts().define("mystorage")
@@ -695,18 +620,15 @@ azure.storageAccounts().define("mystorage")
 	.provision();
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 With the required minimum set of input parameters:
-
 ```java
 azure.storageAccounts().define("<storage-account-name>")
     .withRegion(Region.US_WEST)
     .provision();
 ```
-
 In an existing resource group:
-
 ```java
 azure.storageAccounts().define(storeName)
     .withRegion(Region.US_WEST)
@@ -717,32 +639,28 @@ azure.storageAccounts().define(storeName)
 
 #### Listing storage accounts in a subscription
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 As a map, indexed by name:
-
 ```java
 Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
 ```
-
 Names only:
-
 ```java
 List<String> storageAccountNames = azure.storageAccounts().list().keySet();
 ```
 
-*ARM only*:
+> *ARM only*:
 
 Storage accounts in a selected resource group:
-
 ```java
 Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list("<resource-group-name>");
 ```
 
 #### Updating a storage account
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.storageAccounts().update("<storage-account-name>")
@@ -755,74 +673,34 @@ azure.storageAccounts().update("<storage-account-name>")
 
 #### Getting information about a storage account
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 StorageAccount storageAccount = azure.storageAccounts(accountName);
-
-System.out.println(String.format("Found storage account: %s\n"
-	+ "\tAffinity group: %s\n"
-	+ "\tLabel: %s\n"
-	+ "\tDescription: %s\n"
-	+ "\tGeo primary region: %s\n"
-	+ "\tGeo primary region status: %s\n"
-	+ "\tGeo secondary region: %s\n"
-	+ "\tGeo secondary region status: %s\n"
-	+ "\tLast geo failover time: %s\n"
-	+ "\tRegion: %s\n"
-	+ "\tStatus: %s\n"
-	+ "\tEndpoints: %s\n"
-	+ "\tType: %s\n",
-
-	storageAccount.id(),
-	storageAccount.affinityGroup(),
-	storageAccount.label(),
-	storageAccount.description(),
-	storageAccount.geoPrimaryRegion(),
-	storageAccount.geoPrimaryRegionStatus(),
-	storageAccount.geoSecondaryRegion(),
-	storageAccount.geoSecondaryRegionStatus(),
-	(storageAccount.lastGeoFailoverTime()!=null) ? storageAccount.lastGeoFailoverTime().getTime() : null,
-	storageAccount.region(),
-	storageAccount.status(),
-	StringUtils.join(storageAccount.endpoints(), ", "),
-	storageAccount.type()
-));
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-Getting a storage account using its unique resource id:
-
+Getting a storage account using its unique resource id using any of the following methods:
 ```java
 StorageAccount storageAccount = azure.storageAccounts().get("<storage-account-id>");
-```
 
-or, shorter:
-
-```java
 StorageAccount storageAccount = azure.storageAccounts("<storage-account-id>");
-```
 
-Getting a storage account using its group and name:
-
-```java
 StorageAccount storageAccount = azure.storageAccounts("<group-name>", "<storage-account-name>");
 ```
 
-
 #### Deleting a storage account
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
 azure.storageAccounts().delete("mystorage");
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 Any of the following methods:
-
 ```java
 azure.storageAccounts().delete("<storage-account-resource-id>");
 
@@ -837,21 +715,18 @@ azure.storageAccounts("<resource-group-name>", "<storage-account-name>").delete(
 
 #### Listing regions
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 Listing all regions names:
-
 ```java
 Set<String> regionNames = azure.regions().keySet();
 ```
-
 Listing region names supporting a specific capability from the `LocationsAvailableServiceNames` options:
-
 ```java
 Set<String> regionNames = azure.regions().list(LocationAvailableServiceNames.HIGHMEMORY).keySet();    	
 ```
 
-*ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 The `Region` enum provides the list (as constants) of all the possible Azure locations.
 
@@ -859,13 +734,11 @@ The `Region` enum provides the list (as constants) of all the possible Azure loc
 Region[] regions = Region.values();
 ```
 
-
 #### Getting information about a specific region
 
-*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 Getting information, such as the list of available services or virtual machine sizes, from a specific region:
-
 ```java
 Region region = azure.regions("West US"); 
 List<String> availableServices = region.availableServices();
@@ -877,7 +750,7 @@ List<String> availableVMSizes = region.availableVirtualMachineSizes();
 
 ### Resource Groups
 
-This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 #### Creating a resource group
 
@@ -891,11 +764,9 @@ azure.groups().define("myResourceGroup")
 #### Listing resource groups
 
 Indexed by name:
-
 ```java
 Map<String, Group> groups = azure.groups().list();
 ```
-
 Names only:
 ```java
 Set<String> groupNames = azure.groups().list().keySet();
@@ -904,67 +775,48 @@ Set<String> groupNames = azure.groups().list().keySet();
 #### Updating a resource group (changing its tags)
 
 Tags are key/value pairs.
-
 ```java
 azure.groups().update("<resource-group-name>")
 	.withTag("foo", "bar")
 	.withoutTag("hello")
 	.apply();
-
 ```
-
-You can also pass an instance of HashMap<String, String> with all the tags in it:
-
+You can also pass an instance of `Map<String, String>` with all the tags in it:
 ```java
 azure.groups().update("<resource-group-name>")
-	.withTags(myHashMap)
+	.withTags(myMap)
 	.apply();
 ```
 
-
 #### Getting information about a resource group
 
+Either of the following methods:
 ```java
-String resourceGroup="<resource-group-name>";		
-Group resourceGroup = azure.groups(resourceGroup);
-System.out.println(String.format("Found group: %s\n"
-		+ "\tRegion: %s\n"
-		+ "\tID: %s\n"
-		+ "\tTags: %s\n"
-		+ "\tProvisioning state: %s\n",
-		resourceGroup.name(),
-		resourceGroup.region(),
-		resourceGroup.id(),
-		resourceGroup.tags().toString(),
-		resourceGroup.getProvisioningState()));
+Group resourceGroup = azure.groups("<resource-group-name>");
+
+Group resourceGroup = azure.groups().get("<resource-group-name>");
 ```
 
 #### Deleting a resource group
 
+Either of the following methods:
 ```java
 azure.groups().delete("<resource-group-name>");
-```
 
-or
-
-```java
 azure.groups("<resource-group-name>").delete();
 ````
 
 ### Resources
 
-This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 #### Listing resources
 
 All resources in a subscription, indexed by id:
- 
 ```java
 Map<String, Resource> resources = azure.resources().list();
 ```
-
 Resources in a specific group:
-
 ```java
 Map<String, Resource> resources = azure.resources().list("<resource-group-name>");
 ```
@@ -972,12 +824,10 @@ Map<String, Resource> resources = azure.resources().list("<resource-group-name>"
 #### Getting information about a resource
 
 If you know the full ID of the resource (e.g. you got it from the `resources().list().keySet()`), then:
-
 ```java
 Resource resource = azure.resources("<resource-id>");
 ```
 Else, if you know the resource name, type, provider and group, then:
-
 ```java
 Resource resource = azure.resources().get(
 	"<resource-name>",
@@ -986,127 +836,42 @@ Resource resource = azure.resources().get(
 	"<resource-group>");
 ```
 
-And then getting at the properties, for example: 
-
-```java
-System.out.println(String.format("Found resource ID: %s\n"
-	+ "\tGroup: %s\n"
-	+ "\tProvider: %s\n"
-	+ "\tRegion: %s\n"
-	+ "\tShort name: %s\n"
-	+ "\tTags: %s\n"
-	+ "\tType: %s\n"
-	+ "\tProvisioning state %s\n",
-			
-	resource.id(),
-	resource.group(),
-	resource.provider(),
-	resource.region(),
-	resource.name(),
-	resource.tags(),
-	resource.type(),
-	resource.provisioningState()
-));
-```
-
 #### Deleting a resource
 
-Using its ID:
-
+Using its resource ID:
 ```java
 azure.resources().delete("<resource-id">);
 ```
-
 Or using its metadata:
-
 ```java
 azure.resources().delete("<short-name>", "<resource-type>", "<provider-namespace>", "<group-name>");
 ```
-
 Or, if you've already gotten a reference to a `Resource` object (represented by `resource` below) from `get()`, then:
-
 ```java
 resource.delete();
 ```
 
 ### Resource Providers
 
-This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 #### Listing resource providers
 
-Providers as a map, indexed by namespace:
-
+Providers as a `Map`, indexed by namespace:
 ```java
 Map<String, Provider> providers = azure.providers().list();
 ```
-
 Namespaces only:
-
 ```java
 Set<String> providerNamespaces = azure.providers().list().keySet();
 ```
 
-
 #### Getting information about a resource provider
 
 Using the namespace of the provider you can get from `providers().names()`:
-
 ```java
 Provider provider = azure.providers("microsoft.classicstorage");
-System.out.println(String.format("Found provider: %s\n" 
-    + "\tRegistration State: %s\n"
-    + "\tAPI versions for resource types:",
-    provider.id(),
-    provider.registrationState()));
 ```
-
-**Currently known providers:**
-
-* Microsoft.ApiManagement,
-* Microsoft.AppService,
-* Microsoft.Batch,
-* microsoft.cache,
-* microsoft.classiccompute,
-* microsoft.classicnetwork,
-* microsoft.classicstorage,
-* Microsoft.Compute,
-* Microsoft.Insights,
-* Microsoft.KeyVault,
-* Microsoft.Media,
-* Microsoft.MobileEngagement,
-* Microsoft.Network,
-* Microsoft.OperationalInsights,
-* microsoft.sql,
-* Microsoft.Storage,
-* Microsoft.StreamAnalytics,
-* Microsoft.Web,
-* Microsoft.ADHybridHealthService,
-* Microsoft.Authorization,
-* Microsoft.Automation,
-* Microsoft.BingMaps,
-* Microsoft.BizTalkServices,
-* Microsoft.DataFactory,
-* Microsoft.Devices,
-* Microsoft.DevTestLab,
-* Microsoft.DocumentDB,
-* Microsoft.DomainRegistration,
-* Microsoft.DynamicsLcs,
-* Microsoft.EventHub,
-* Microsoft.Features,
-* Microsoft.Logic,
-* Microsoft.MarketplaceOrdering,
-* Microsoft.NotificationHubs,
-* Microsoft.Resources,
-* Microsoft.Scheduler,
-* Microsoft.Search,
-* Microsoft.ServiceBus,
-* microsoft.support,
-* microsoft.visualstudio,
-* NewRelic.APM,
-* Sendgrid.Email,
-* SuccessBricks.ClearDB
-	
 
 #### Listing provider resource types and their versions
 
@@ -1119,33 +884,27 @@ for(ResourceType t : provider.resourceTypes().values()) {
 
 #### Finding the latest API version of a resource type
 
+Either of the following methods;
 ```java
 String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
-```
 
-Or shortcut:
-
-```java
 String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
 ```
 
 
 ### Availability Sets
 
-This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 #### Creating an availability set
 
 With minimum inputs, in its own separate default resource group:
-
 ```java
 azure.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
     .provision();
 ```
-
 Within an existing resource group, and setting a tag:
-
 ```java
 azure.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
@@ -1154,47 +913,35 @@ azure.availabilitySets().define("myavailabilityset")
     .provision();
 ```
 
-
 #### Listing availability sets
 
 Availability sets as a map, in a specific resource group, indexed by id:
-
 ```java
 Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("myresourcegroup");
 ```
 
-
 #### Getting information about an availability set
 
 Using its resource id:
-
 ```java
 AvailabilitySet availabilitySet = azure.availabilitySets("<resource-id>");
 ```
-
 or:
-
 ```java
 AvailabilitySet availabilitySet = azure.availabilitySets().get("<resource-id>");
 ``` 
- 
 Using its resource group and name:
-
 ```java
 AvailabilitySet availabilitySet = azure.availabilitySets("<group-name>", "<availability-set-name>");
 ```
-
 or:
-
 ```java
 AvailabilitySet availabilitySet = azure.availabilitySets().get("<group-name>", "<availability-set-name>");
 ```
 
-
 #### Deleting an availability set
 
 Any of the following approaches:
-
 ```java
 azure.availabilitySets().delete("<resource-id>");
 
