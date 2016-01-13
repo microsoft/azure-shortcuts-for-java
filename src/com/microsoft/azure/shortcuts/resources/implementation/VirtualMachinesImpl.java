@@ -487,13 +487,18 @@ public class VirtualMachinesImpl
 		public VirtualMachineImpl withPrimaryNetworkInterfaceNew(String name, Network.Subnet subnet) {
 			this.isExistingPrimaryNIC = false;
 			this.nicId = name;
-			this.nicSubnetName = subnet.id();
+			this.nicSubnetName = (subnet != null) ? subnet.id() : null;
 			return this;
 		}
 		
 		@Override
-		public VirtualMachineImpl  withPrimaryNetworkInterfaceNew(Subnet subnet) {
-			return this.withPrimaryNetworkInterfaceNew(null, subnet);
+		public VirtualMachineImpl withPrimaryNetworkInterfaceNew(Subnet subnet) {
+			return this.withPrimaryNetworkInterfaceNew((String)null, subnet);
+		}
+
+		@Override
+		public VirtualMachineImpl withPrimaryNetworkInterfaceNew() {
+			return this.withPrimaryNetworkInterfaceNew((Subnet)null);
 		}
 
 		@Override
@@ -551,7 +556,7 @@ public class VirtualMachinesImpl
 			// Ensure primary network interface
 			Network.Subnet subnet;
 			if(this.nicSubnetName == null) {
-				// Pick the first subnect in the network
+				// Pick the first subnet in the network
 				subnet = network.subnets().values().iterator().next();
 			} else {
 				subnet = network.subnets(this.nicSubnetName);
@@ -571,8 +576,6 @@ public class VirtualMachinesImpl
 			if(this.computerName() == null) {
 				this.withComputerName(this.name());
 			}
-			
-			
 			
 			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
