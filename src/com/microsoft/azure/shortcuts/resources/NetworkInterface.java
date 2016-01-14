@@ -47,23 +47,8 @@ public interface NetworkInterface extends
 	/**
 	 * A network interface definition allowing to assign a private IP address within an existing virtual network subnet
 	 */
-	public interface DefinitionWithPrivateIpAddress {
-		/**
-		 * Enables dynamic private IP address allocation within the specified existing virtual network subnet as the primary subnet
-		 * @param subnet The Subnet to associate with the network interface
-		 * @return The next stage of the network interface definition
-		 */
-		DefinitionWithPublicIpAddress withPrivateIpAddressDynamic(Network.Subnet subnet);
-
-		/**
-		 * Assigns the specified static IP address within the specified existing virtual network subnet as the primary subnet for this network interface
-		 * @param subnet The Subnet to associate with the network interface
-		 * @param staticPrivateIpAddress The static private IP address within the specified subnet to assign to this NIC
-		 * @return The next stage of the network interface definition
-		 */
-		DefinitionWithPublicIpAddress withPrivateIpAddressStatic(Network.Subnet subnet, String staticPrivateIpAddress);
-	}
-	
+	public interface DefinitionWithPrivateIpAddress extends 
+		DefinitionCombos.WithPrivateIpAddress<DefinitionWithPublicIpAddress> {}	
 	
 	/**
 	 * A network interface definition allowing to associate it with a public IP address

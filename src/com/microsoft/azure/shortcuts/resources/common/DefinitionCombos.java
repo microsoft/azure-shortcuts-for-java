@@ -268,5 +268,24 @@ public interface DefinitionCombos {
 	}
 	
 	
+	/**
+	 * A resource definition allowing to associate it with a private IP address within a virtual network subnet
+	 */
+	public interface WithPrivateIpAddress<R> {
+		/**
+		 * Enables dynamic private IP address allocation within the specified existing virtual network subnet as the primary subnet
+		 * @param subnet The Subnet to associate with the resource
+		 * @return The next stage of the definition
+		 */
+		R withPrivateIpAddressDynamic(Network.Subnet subnet);
+
+		/**
+		 * Assigns the specified static IP address within the specified existing virtual network subnet as the primary subnet
+		 * @param subnet The Subnet to associate with this resource
+		 * @param staticPrivateIpAddress The static private IP address within the specified subnet to assign to this resource
+		 * @return The next stage of the definition
+		 */
+		R withPrivateIpAddressStatic(Network.Subnet subnet, String staticPrivateIpAddress);
+	}
 
 }
