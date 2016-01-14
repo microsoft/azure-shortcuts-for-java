@@ -30,7 +30,7 @@ import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.DefinitionCombo;
+import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface VirtualMachine extends 
@@ -77,10 +77,10 @@ public interface VirtualMachine extends
 	 * A virtual machine definition requiring the virtual network to be specified
 	 */
 	interface DefinitionWithNetwork extends 
-		DefinitionCombo.WithNetwork<DefinitionWithPrimaryNetworkInterface> {}
+		DefinitionCombos.WithNetwork<DefinitionWithPrimaryNetworkInterface> {}
 	
 	interface DefinitionWithPrimaryNetworkInterface extends 
-		DefinitionCombo.WithPrimaryNetworkInterface<DefinitionWithAdminUsername> {}
+		DefinitionCombos.WithPrimaryNetworkInterface<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
@@ -190,10 +190,10 @@ public interface VirtualMachine extends
 	 * but exposing additional optional inputs to specify
 	 */
 	interface DefinitionProvisionable extends
-		DefinitionCombo.WithStorageAccount<DefinitionProvisionable>,
+		DefinitionCombos.WithStorageAccount<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
-		DefinitionCombo.WithAvailabilitySet<DefinitionProvisionable>,
+		DefinitionCombos.WithAvailabilitySet<DefinitionProvisionable>,
 		Provisionable<VirtualMachine> {
 		
 		/**

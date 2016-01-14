@@ -24,6 +24,7 @@ import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface NetworkInterface extends 
@@ -67,30 +68,8 @@ public interface NetworkInterface extends
 	/**
 	 * A network interface definition allowing to associate it with a public IP address
 	 */
-	public interface DefinitionWithPublicIpAddress {
-		/**
-		 * Associates a public IP address that exists in the subscription with this network inteface
-		 * @param publicIpAddress An existing public IP address
-		 * @return The next stage of the definition
-		 */
-		DefinitionProvisionable withPublicIpAddressExisting(PublicIpAddress publicIpAddress);
-		
-		/**
-		 * Associates a public IP address that exists in the subscription with this network inteface
-		 * @param publicIpAddress An existing public IP address represented by an Azure SDK object
-		 * @return The next stage of the definition
-		 */
-		DefinitionProvisionable withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress);
-		
-		
-		/**
-		 * Specifies that no public IP address should be associated with this network interface
-		 * @return The next stage of the definition
-		 */
-		DefinitionProvisionable withoutPublicIpAddress();
-		
-	}
-	
+	public interface DefinitionWithPublicIpAddress extends 
+		DefinitionCombos.WithPublicIpAddress<DefinitionProvisionable> { }	
 	
 	/**
 	 * A network interface definition with sufficient input parameters specified to be provisioned in the cloud

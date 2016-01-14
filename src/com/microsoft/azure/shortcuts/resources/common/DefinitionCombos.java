@@ -25,9 +25,10 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 
-public interface DefinitionCombo {
+public interface DefinitionCombos {
 	
 	/**
 	 * A resource definition allowing to associate a virtual network with this resource
@@ -186,7 +187,7 @@ public interface DefinitionCombo {
 	/**
 	 * A resource definition allowing to associate a network interface with tis resource
 	 */
-	interface WithPrimaryNetworkInterface<R> {
+	public interface WithPrimaryNetworkInterface<R> {
 		/**
 		 * Associates an existing network interface with this resource
 		 * @param resourceId The resource ID of an existing network interface
@@ -236,4 +237,36 @@ public interface DefinitionCombo {
 		R withPrimaryNetworkInterfaceNew();
 		
 	}
+
+	
+	/**
+	 * A resource definition allowing to associate it with a public IP address
+	 */
+	public interface WithPublicIpAddress<R> {
+		/**
+		 * Associates a public IP address that exists in the subscription with this resource
+		 * @param publicIpAddress An existing public IP address
+		 * @return The next stage of the definition
+		 */
+		R withPublicIpAddressExisting(PublicIpAddress publicIpAddress);
+		
+		/**
+		 * Associates a public IP address that exists in the subscription with this resource
+		 * @param publicIpAddress An existing public IP address represented by an Azure SDK object
+		 * @return The next stage of the definition
+		 */
+		R withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress);
+		
+		
+		/**
+		 * Specifies that no public IP address should be associated with this resource
+		 * @return The next stage of the definition
+		 */
+		R withoutPublicIpAddress();
+		
+		// TODO withPublicIpAddressNew()
+	}
+	
+	
+
 }
