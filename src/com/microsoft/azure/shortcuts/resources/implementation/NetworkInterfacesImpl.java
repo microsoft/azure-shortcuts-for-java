@@ -20,13 +20,16 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
+import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
@@ -48,8 +51,8 @@ public class NetworkInterfacesImpl
 		com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface = new com.microsoft.azure.management.network.models.NetworkInterface();
 		azureNetworkInterface.setName(name);
 		
-		// Default IP configs
-		azureNetworkInterface.setIpConfigurations(new ArrayList<NetworkInterfaceIpConfiguration>());
+		// Default IP configs, creating Primary by default
+		azureNetworkInterface.setIpConfigurations(new ArrayList<NetworkInterfaceIpConfiguration>(Arrays.asList(new NetworkInterfaceIpConfiguration())));
 		
 		// TODO Min settings
 		
@@ -97,8 +100,9 @@ public class NetworkInterfacesImpl
 				NetworkInterfaceImpl>
 		implements
 			NetworkInterface,
-			NetworkInterface.DefinitionWithSubnetPrimary,
 			NetworkInterface.DefinitionBlank,
+			NetworkInterface.DefinitionWithPrivateIpAddress,
+			NetworkInterface.DefinitionWithPublicIpAddress,
 			NetworkInterface.DefinitionWithGroup,
 			NetworkInterface.DefinitionProvisionable {
 		
@@ -106,7 +110,18 @@ public class NetworkInterfacesImpl
 			super(azureNetworkInterface.getName(), azureNetworkInterface);
 		}
 
+		boolean isPublicIpAddressExisting;
+		String publicIpAddressId;
 
+		/***********************************************************
+		 * Helpers
+		 ***********************************************************/
+		private NetworkInterfaceIpConfiguration getPrimaryIpConfiguration() {
+			// TODO: in the future, Azure will support multiple ipConfigs on a NIC, but currently it doesn't, so the forst one can be assumed to be the primary
+			return this.inner().getIpConfigurations().get(0); 
+		}
+		
+		
 		/***********************************************************
 		 * Getters
 		 ***********************************************************/
@@ -117,29 +132,54 @@ public class NetworkInterfacesImpl
 		 **************************************************************/
 
 		@Override
-		public NetworkInterfaceImpl withSubnetPrimary(Network.Subnet subnet) {
-			return this.withSubnetPrimary(subnet, null);
+		public NetworkInterfaceImpl withPrivateIpAddressDynamic(Network.Subnet subnet) {
+			return this.withPrivateIpAddressStatic(subnet, null);
 		}
 		
 		
 		@Override
-		public NetworkInterfaceImpl withSubnetPrimary(Network.Subnet subnet, String staticPrivateIpAddress) {
+		public NetworkInterfaceImpl withPrivateIpAddressStatic(Network.Subnet subnet, String staticPrivateIpAddress) {
 			if(subnet == null) {
 				return null;
 			}
 			
-			NetworkInterfaceIpConfiguration ipConfig = new NetworkInterfaceIpConfiguration();
-			this.inner().getIpConfigurations().add(ipConfig);
+			NetworkInterfaceIpConfiguration ipConfig = getPrimaryIpConfiguration(); 
 			ipConfig.setName(subnet.id()); // TODO Allow to customize?
 			ipConfig.setSubnet(subnet.inner());
 			ipConfig.setPrivateIpAllocationMethod((staticPrivateIpAddress != null) ? IpAllocationMethod.STATIC : IpAllocationMethod.DYNAMIC);
 			ipConfig.setPrivateIpAddress(staticPrivateIpAddress);
 			return this;
-			
-			//TODO: public IP address
 		}
 
+		@Override
+		public NetworkInterfaceImpl withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
+			return this.withPrimaryPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.getId() : null);
+		}
+
+		@Override
+		public NetworkInterfaceImpl withPublicIpAddressExisting(PublicIpAddress publicIpAddress) {
+			return this.withPrimaryPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.id() : null);
+		}
+
+		// Helper to associate with an existing public IP address using its resource ID
+		private NetworkInterfaceImpl withPrimaryPublicIpAddressExisting(String resourceId) {
+			NetworkInterfaceIpConfiguration ipConfig = getPrimaryIpConfiguration();
+			if(resourceId == null) {
+				ipConfig.setPublicIpAddress(null);
+			} else {
+				ResourceId r = new ResourceId();
+				r.setId(resourceId);
+				ipConfig.setPublicIpAddress(r);
+			}
+			return this;
+		}
 		
+		@Override
+		public DefinitionProvisionable withoutPublicIpAddress() {
+			return this.withPublicIpAddressExisting((PublicIpAddress)null);
+		}
+		
+
 		/************************************************************
 		 * Verbs
 		 ************************************************************/

@@ -32,7 +32,7 @@ public interface NetworkInterface extends
 	Refreshable<NetworkInterface>,
 	Wrapper<com.microsoft.azure.management.network.models.NetworkInterface>,
 	Deletable {
-	
+
 	/**
 	 * A new blank network interface definition
 	 */
@@ -41,27 +41,56 @@ public interface NetworkInterface extends
 	}
 	
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionWithSubnetPrimary> {}
+		GroupResourceBase.DefinitionWithGroup<DefinitionWithPrivateIpAddress> {}
 	
 	/**
-	 * A network interface definition expecting an existing virtual network subnet to associate the NIC with
+	 * A network interface definition allowing to assign a private IP address within an existing virtual network subnet
 	 */
-	public interface DefinitionWithSubnetPrimary {
+	public interface DefinitionWithPrivateIpAddress {
 		/**
-		 * Associates an existing virtual network subnet as the primary subnet for this network interface and enables dynamic private IP address allocation
+		 * Enables dynamic private IP address allocation within the specified existing virtual network subnet as the primary subnet
 		 * @param subnet The Subnet to associate with the network interface
 		 * @return The next stage of the network interface definition
 		 */
-		DefinitionProvisionable withSubnetPrimary(Network.Subnet subnet);
+		DefinitionWithPublicIpAddress withPrivateIpAddressDynamic(Network.Subnet subnet);
 
 		/**
-		 * Associates an existing virtual network subnet as the primary subnet for this network interface and specifies a static private IP address from that subnet
+		 * Assigns the specified static IP address within the specified existing virtual network subnet as the primary subnet for this network interface
 		 * @param subnet The Subnet to associate with the network interface
 		 * @param staticPrivateIpAddress The static private IP address within the specified subnet to assign to this NIC
 		 * @return The next stage of the network interface definition
 		 */
-		DefinitionProvisionable withSubnetPrimary(Network.Subnet subnet, String staticPrivateIpAddress);
+		DefinitionWithPublicIpAddress withPrivateIpAddressStatic(Network.Subnet subnet, String staticPrivateIpAddress);
 	}
+	
+	
+	/**
+	 * A network interface definition allowing to associate it with a public IP address
+	 */
+	public interface DefinitionWithPublicIpAddress {
+		/**
+		 * Associates a public IP address that exists in the subscription with this network inteface
+		 * @param publicIpAddress An existing public IP address
+		 * @return The next stage of the definition
+		 */
+		DefinitionProvisionable withPublicIpAddressExisting(PublicIpAddress publicIpAddress);
+		
+		/**
+		 * Associates a public IP address that exists in the subscription with this network inteface
+		 * @param publicIpAddress An existing public IP address represented by an Azure SDK object
+		 * @return The next stage of the definition
+		 */
+		DefinitionProvisionable withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress);
+		
+		
+		/**
+		 * Specifies that no public IP address should be associated with this network interface
+		 * @return The next stage of the definition
+		 */
+		DefinitionProvisionable withoutPublicIpAddress();
+		
+	}
+	
 	
 	/**
 	 * A network interface definition with sufficient input parameters specified to be provisioned in the cloud

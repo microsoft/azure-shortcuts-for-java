@@ -633,7 +633,7 @@ public class VirtualMachinesImpl
 					.withRegion(this.region())
 					.withGroupExisting(groupName)
 					.withAddressSpace(this.networkCidr)
-					.provision(); // TODO: Subnets
+					.provision();
 				this.isExistingNetwork = true;
 				return network;
 			} else {
@@ -676,7 +676,8 @@ public class VirtualMachinesImpl
 				NetworkInterface nic = azure.networkInterfaces().define(this.nicId)
 					.withRegion(this.region())
 					.withGroupExisting(groupName)
-					.withSubnetPrimary(subnet)
+					.withPrivateIpAddressDynamic(subnet)
+					.withoutPublicIpAddress()
 					.provision();
 				this.isExistingPrimaryNIC = true;
 				return nic;

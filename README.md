@@ -438,22 +438,24 @@ azure.networks("<resource-group-name>", "<network-name>").delete();
 
 :warning: Note that the creation of a network interface requires an existing subnet of an existing virtual network. A `Subnet` instance can be obtained for example from a call to `Subnet subnet = azure.networks("my-network").subnets("subnet1");` using appropriate names for the network and the subnet.
 
-Using a minimum set of required inputs (a new resource group is created automatically, in the same region, with a name derived from the NIC's name):
+When using the minimum set of required inputs, a new resource group is created automatically, in the same region, with a name derived from the NIC's name. A virtual network providing the subnet the NIC is to be associated with needs to already exist, represented by 'network' below:
 ```java
-NetworkInterface nicMinimal = azure.networkInterfaces().define("<new-nic-name>")
-    .withRegion(Region.US_WEST)
+NetworkInterface nicMinimal = azure.networkInterfaces().define("<new-NIC-name>")
+	.withRegion(Region.US_WEST)
     .withGroupNew()
-    .withSubnetPrimary(network.subnets("subnet1"))
+    .withPrivateIpAddressDynamic(network.subnets("<subnet-name>"))
+    .withoutPublicIpAddress()
     .provision();
 ```
-Creating a network interface within an existing resource group:
+Creating a network interface within an existing resource group, using a static private IP address, and an existing public IP address `publicIp`:
 ```java
-NetworkInterface nic = azure.networkInterfaces().define("<network-interface-name>")
-    .withRegion(Region.US_WEST)
-    .withGroupExisting("<existing-group-name>")
-    .withSubnetPrimary(network.subnets().get("subnet1"))
-    .withTag("hello", "world")
-    .provision();
+NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
+	.withRegion(Region.US_WEST)
+	.withGroupExisting(network.group())
+	.withPrivateIpAddressStatic(network.subnets().get("subnet1"), "10.0.0.5")
+	.withPublicIpAddressExisting(publicIp)
+	.withTag("hello", "world")
+	.provision();
 ```
 
 #### Listing network interfaces

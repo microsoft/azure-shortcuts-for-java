@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -41,9 +42,9 @@ public class NetworkInterfacesSample {
     
 
     public static void test(Azure azure) throws Exception {
-    	String existingGroupName = "javasampleresourcegroup1";
     	String newNetworkInterfaceName = "testnic";
     	String newNetworkName = "myvnet";
+    	String newGroupName = "testgroup";
     	
     	// Listing all network interfaces
     	Map<String, NetworkInterface> nics = azure.networkInterfaces().list();
@@ -55,7 +56,7 @@ public class NetworkInterfacesSample {
     	// Create a virtual network to test the network interface with
     	Network network = azure.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
-    		.withGroupExisting(existingGroupName)
+    		.withGroupNew(newGroupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("subnet1", "10.0.0.0/29") 
     		.withSubnet("subnet2", "10.0.0.8/29")
@@ -64,25 +65,31 @@ public class NetworkInterfacesSample {
     	// Create a new network interface in a new default resource group
     	NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     		.withRegion(Region.US_WEST)
-    		.withGroupNew()
-    		.withSubnetPrimary(network.subnets("subnet1"))
+    		.withGroupExisting(newGroupName)
+    		.withPrivateIpAddressDynamic(network.subnets("subnet1"))
+    		.withoutPublicIpAddress()
     		.provision();
     	
     	// Get info about a specific network interface using its group and name
     	nicMinimal = azure.networkInterfaces(nicMinimal.id());
     	nicMinimal = azure.networkInterfaces().get(nicMinimal.id());
-    	String groupNameCreated = nicMinimal.group(); 
     	printNetworkInterface(nicMinimal);
 
     	// Listing network interfaces in a specific resource group
-    	nics = azure.networkInterfaces().list(existingGroupName);
-    	System.out.println(String.format("Network interface ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(nics.keySet(), ",\n\t")));
+    	nics = azure.networkInterfaces().list(newGroupName);
+    	System.out.println(String.format("Network interface ids in group '%s': \n\t%s", newGroupName, StringUtils.join(nics.keySet(), ",\n\t")));
     	
+    	PublicIpAddress publicIp = azure.publicIpAddresses().define(newNetworkInterfaceName + "ip")
+        		.withRegion(Region.US_WEST)
+        		.withGroupExisting(newGroupName)
+        		.provision();
+        	
     	// More detailed NIC definition
     	NetworkInterface nic = azure.networkInterfaces().define(newNetworkInterfaceName + "2")
     		.withRegion(Region.US_WEST)
-    		.withGroupExisting(existingGroupName)
-    		.withSubnetPrimary(network.subnets().get("subnet1"))
+    		.withGroupExisting(newGroupName)
+    		.withPrivateIpAddressStatic(network.subnets().get("subnet1"), "10.0.0.5")
+    		.withPublicIpAddressExisting(publicIp)
     		.withTag("hello", "world")
     		.provision();
     		
@@ -97,8 +104,11 @@ public class NetworkInterfacesSample {
     	// Delete the virtual network
     	network.delete();
     	
+    	// Delete the public IP
+    	publicIp.delete();
+    	
     	// Delete the auto-created group
-    	azure.groups(groupNameCreated).delete();
+    	azure.groups(newGroupName).delete();
     }
     
     
@@ -108,7 +118,11 @@ public class NetworkInterfacesSample {
     		.append(String.format("Network interface ID: %s\n", nic.id()))
     		.append(String.format("\tName: %s\n", nic.name()))
     		.append(String.format("\tGroup: %s\n", nic.group()))
-    		.append(String.format("\tRegion: %s\n", nic.region()));
+    		.append(String.format("\tRegion: %s\n", nic.region()))
+    		.append(String.format("\tPrimary subnet ID: %s\n", nic.inner().getIpConfigurations().get(0).getSubnet().getId()))
+    		.append(String.format("\tPrimary private IP: %s\n", nic.inner().getIpConfigurations().get(0).getPrivateIpAddress()))
+    		.append(String.format("\tPrimary public IP ID: %s\n", nic.inner().getIpConfigurations().get(0).getPublicIpAddress()))    		
+    		;
     	
     	System.out.println(output.toString());
     }
