@@ -80,7 +80,7 @@ public interface VirtualMachine extends
 		DefinitionCombos.WithNetwork<DefinitionWithPrimaryNetworkInterface> {}
 	
 	interface DefinitionWithPrimaryNetworkInterface extends 
-		DefinitionCombos.WithPrimaryNetworkInterface<DefinitionWithAdminUsername> {}
+		DefinitionCombos.WithNetworkInterface<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified

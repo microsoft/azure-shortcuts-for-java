@@ -50,7 +50,7 @@ public class VirtualMachinesSample {
     		.withRegion(Region.US_WEST)
     		.withGroupNew(groupName)
     		.withNetworkNew("10.0.0.0/28")
-    		.withPrimaryNetworkInterfaceNew()
+    		.withNetworkInterfaceNew()
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withImagePublishedBy("MicrosoftWindowsServer")

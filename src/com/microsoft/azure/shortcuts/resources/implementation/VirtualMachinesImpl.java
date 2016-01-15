@@ -462,7 +462,7 @@ public class VirtualMachinesImpl
 		
 		
 		@Override
-		public VirtualMachineImpl withPrimaryNetworkInterfaceExisting(String resourceId) {
+		public VirtualMachineImpl withNetworkInterfaceExisting(String resourceId) {
 			NetworkInterfaceReference nicref = new NetworkInterfaceReference();
 			for(NetworkInterfaceReference n : this.inner().getNetworkProfile().getNetworkInterfaces()) {
 				n.setPrimary(false);
@@ -474,17 +474,17 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withPrimaryNetworkInterfaceExisting(NetworkInterface networkInterface) {
-			return this.withPrimaryNetworkInterfaceExisting(networkInterface.id());
+		public VirtualMachineImpl withNetworkInterfaceExisting(NetworkInterface networkInterface) {
+			return this.withNetworkInterfaceExisting(networkInterface.id());
 		}
 		
 		@Override
-		public VirtualMachineImpl withPrimaryNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface) {
-			return this.withPrimaryNetworkInterfaceExisting(networkInterface.getId());
+		public VirtualMachineImpl withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface) {
+			return this.withNetworkInterfaceExisting(networkInterface.getId());
 		}
 
 		@Override
-		public VirtualMachineImpl withPrimaryNetworkInterfaceNew(String name, Network.Subnet subnet) {
+		public VirtualMachineImpl withNetworkInterfaceNew(String name, Network.Subnet subnet) {
 			this.isExistingPrimaryNIC = false;
 			this.nicId = name;
 			this.nicSubnetName = (subnet != null) ? subnet.id() : null;
@@ -492,13 +492,13 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
-		public VirtualMachineImpl withPrimaryNetworkInterfaceNew(Subnet subnet) {
-			return this.withPrimaryNetworkInterfaceNew((String)null, subnet);
+		public VirtualMachineImpl withNetworkInterfaceNew(Subnet subnet) {
+			return this.withNetworkInterfaceNew((String)null, subnet);
 		}
 
 		@Override
-		public VirtualMachineImpl withPrimaryNetworkInterfaceNew() {
-			return this.withPrimaryNetworkInterfaceNew((Subnet)null);
+		public VirtualMachineImpl withNetworkInterfaceNew() {
+			return this.withNetworkInterfaceNew((Subnet)null);
 		}
 
 		@Override
@@ -563,7 +563,7 @@ public class VirtualMachinesImpl
 			}
 			NetworkInterface nic = this.ensureNetworkInterface(group.name(), subnet);
 			if(nic != null) {
-				this.withPrimaryNetworkInterfaceExisting(nic);
+				this.withNetworkInterfaceExisting(nic);
 			}
 			
 			// Ensure availability set (optional)
