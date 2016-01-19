@@ -21,8 +21,6 @@ package com.microsoft.azure.shortcuts.resources;
 
 /**
  * Enumeration of the Azure datacenter regions. See https://azure.microsoft.com/regions/
- * @author marcins
- *
  */
 public enum Region {
 	US_WEST("westus", "West US"),
@@ -57,13 +55,20 @@ public enum Region {
 	}
 	
 	
-	/**
-	 * @param label The region (location) label to look for
-	 * @return The Region constant representing the region whose label matches the one provided
-	 */
 	public static Region fromLabel(String label) {
 		for(Region region : Region.values()) {
 			if(region.label.equalsIgnoreCase(label)) {
+				return region;
+			}
+		}
+		
+		return null;
+	}
+
+	
+	public static Region fromName(String name) {
+		for(Region region : Region.values()) {
+			if(region.label.equalsIgnoreCase(name)) {
 				return region;
 			}
 		}
