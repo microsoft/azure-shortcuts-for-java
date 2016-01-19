@@ -53,10 +53,7 @@ public class VirtualMachinesSample {
     		.withNetworkInterfaceNew()
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
-    		.withImagePublishedBy("MicrosoftWindowsServer")
-    		.withImageOffer("WindowsServer")
-    		.withImageSKU("2008-R2-SP1")
-    		.withLatestImageVersion()
+    		.withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
     		.withSize(Size.Type.BASIC_A1)
     		.withStorageAccountNew()
     		.provision();
@@ -87,7 +84,7 @@ public class VirtualMachinesSample {
     	printVM(vm);
     	
     	// Delete the group
-    	azure.groups().define(groupName);
+    	azure.groups().delete(groupName);
 	}
     
     

@@ -147,10 +147,7 @@ public class VirtualMachinesImpl
 			VirtualMachine.DefinitionWithPrimaryNetworkInterface,
 			VirtualMachine.DefinitionWithAdminUsername,
 			VirtualMachine.DefinitionWithAdminPassword,
-			VirtualMachine.DefinitionWithImagePublishedBy,
-			VirtualMachine.DefinitionWithImageOffer,
-			VirtualMachine.DefinitionWithImageSKU,
-			VirtualMachine.DefinitionWithImageVersion,
+			VirtualMachine.DefinitionWithImage,
 			VirtualMachine.DefinitionProvisionable {
 
 		private boolean isExistingStorageAccount;
@@ -305,7 +302,7 @@ public class VirtualMachinesImpl
 		 *******************************************************/
 		
 		@Override
-		public DefinitionWithImagePublishedBy withAdminPassword(String password) {
+		public VirtualMachineImpl withAdminPassword(String password) {
 			this.inner().getOSProfile().setAdminPassword(password);
 			return this;
 		}
@@ -318,36 +315,17 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withImagePublishedBy(String publisher) {
-			this.inner().getStorageProfile().getImageReference().setPublisher(publisher);
-			return this;
+		public VirtualMachineImpl withLatestImage(String publisher, String offer, String sku) {
+			return this.withImage(publisher, offer, sku, "latest");
 		}
 
-		
 		@Override
-		public VirtualMachineImpl withImageOffer(String offer) {
-			this.inner().getStorageProfile().getImageReference().setOffer(offer);
-			return this;
-		}
-
-		
-		@Override
-		public VirtualMachineImpl withImageSKU(String sku) {
-			this.inner().getStorageProfile().getImageReference().setSku(sku);
-			return this;
-		}
-
-		
-		@Override
-		public VirtualMachineImpl withImageVersion(String version) {
-			this.inner().getStorageProfile().getImageReference().setVersion(version);
-			return this;
-		}
-
-
-		@Override
-		public VirtualMachineImpl withLatestImageVersion() {
-			this.inner().getStorageProfile().getImageReference().setVersion("latest");
+		public VirtualMachineImpl withImage(String publisher, String offer, String sku, String version) {
+			ImageReference imageReference = this.inner().getStorageProfile().getImageReference();
+			imageReference.setPublisher(publisher);
+			imageReference.setOffer(offer);
+			imageReference.setSku(sku);
+			imageReference.setVersion(version);
 			return this;
 		}
 

@@ -102,65 +102,19 @@ public interface VirtualMachine extends
 		 * @param password The desired admin password for the virtual machine
 		 * @return The next stage of the VM definition
 		 */
-		DefinitionWithImagePublishedBy withAdminPassword(String password);
+		DefinitionWithImage withAdminPassword(String password);
 	}
 
 	
 	/**
-	 * A virtual machine definition requiring the publisher of the base image to be specified
+	 * A virtual machine definition allowing the selection of a base image for the virtual machine
 	 */
-	interface DefinitionWithImagePublishedBy {
-		/** 
-		 * Specifies the publisher of the image to base the virtual machine on
-		 * @param publisher The identifier of the image publisher
-		 * @return The next stage of the VM definition
-		 */
-		DefinitionWithImageOffer withImagePublishedBy(String publisher);
+	interface DefinitionWithImage {
+		DefinitionProvisionable withLatestImage(String publisher, String offer, String sku);
+		DefinitionProvisionable withImage(String publisher, String offer, String sku, String version);
 	}
 	
 	
-	/**
-	 * A virtual machine definition requiring the offer name of the base image to be specified
-	 */
-	interface DefinitionWithImageOffer {
-		/**
-		 * @param offer The offer name from the specified publisher of the image to base the virtual machine on
-		 * @return The next stage of the VM definition
-		 */
-		DefinitionWithImageSKU withImageOffer(String offer);
-	}
-	
-	
-	/**
-	 * A virtual machine definition requiring the SKU of the base image offer to be specified
-	 */
-	interface DefinitionWithImageSKU {
-		/**
-		 * @param sku The SKU name of from the selected offer of the image to base the virtual machine on
-		 * @return The next stage of the VM definition
-		 */
-		DefinitionWithImageVersion withImageSKU(String sku);
-	}
-	
-	
-	/**
-	 * A virtual machine definition requiring the version of the base image offer SKU to be specified
-	 */
-	interface DefinitionWithImageVersion {
-		/**
-		 * @param version The version of the selected SKU of the image to base the virtual machine on
-		 * @return The next stage of the VM definition
-		 */
-		DefinitionProvisionable withImageVersion(String version);
-
-		/**
-		 * Automatically selects the latest version of the selected image SKU available
-		 * @return The next stage of the VM definition
-		 */
-		DefinitionProvisionable withLatestImageVersion();
-	}
-	
-
 	/**
 	 * A virtual machine definition allowing to specify the size of the new virtual machine
 	 */
