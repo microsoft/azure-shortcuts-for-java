@@ -71,17 +71,30 @@ public interface VirtualMachine extends
 	 * A virtual machine definition requiring the resource group to be specified
 	 */
 	interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionWithNetwork> {}
+		GroupResourceBase.DefinitionWithGroup<DefinitionWithNetworking> {}
 	
 	/**
-	 * A virtual machine definition requiring the virtual network to be specified
+	 * A virtual machine definition allowing the networking to be specified
 	 */
-	interface DefinitionWithNetwork extends 
-		DefinitionCombos.WithNetwork<DefinitionWithPrimaryNetworkInterface> {}
+	interface DefinitionWithNetworking extends 
+		DefinitionCombos.WithNetworkNew<DefinitionWithAdminUsername>,
+		DefinitionCombos.WithNetworkExisting<DefinitionWithSubnet>,
+		DefinitionCombos.WithNetworkInterfaceExisting<DefinitionWithAdminUsername> {}
 	
-	interface DefinitionWithPrimaryNetworkInterface extends 
-		DefinitionCombos.WithNetworkInterface<DefinitionWithAdminUsername> {}
+
+	/**
+	 * A virtual machine definition allowing a subnet with the selected virtual network to be associated with it
+	 */
+	interface DefinitionWithSubnet extends 
+		DefinitionCombos.WithSubnet<DefinitionWithPrivateIp> {
+	}
 	
+	/**
+	 * A virtual machine definition allowing the private IP address configuration to be specified
+	 */
+	interface DefinitionWithPrivateIp extends 
+		DefinitionCombos.WithPrivateIpAddress<DefinitionWithAdminUsername> {}
+		
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
 	 */

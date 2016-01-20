@@ -45,7 +45,6 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
-import com.microsoft.azure.shortcuts.resources.Network.Subnet;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
@@ -143,8 +142,9 @@ public class VirtualMachinesImpl
 			VirtualMachine,
 			VirtualMachine.DefinitionBlank,
 			VirtualMachine.DefinitionWithGroup,
-			VirtualMachine.DefinitionWithNetwork,
-			VirtualMachine.DefinitionWithPrimaryNetworkInterface,
+			VirtualMachine.DefinitionWithNetworking,
+			VirtualMachine.DefinitionWithSubnet,
+			VirtualMachine.DefinitionWithPrivateIp,
 			VirtualMachine.DefinitionWithAdminUsername,
 			VirtualMachine.DefinitionWithAdminPassword,
 			VirtualMachine.DefinitionWithImage,
@@ -161,8 +161,9 @@ public class VirtualMachinesImpl
 		
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
-		private String nicSubnetName;
+		private String nicSubnetId;
 		private String networkCidr;
+		private String privateIpAddress;
 		
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -462,21 +463,14 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceNew(String name, Network.Subnet subnet) {
-			this.isExistingPrimaryNIC = false;
-			this.nicId = name;
-			this.nicSubnetName = (subnet != null) ? subnet.id() : null;
-			return this;
-		}
-		
-		@Override
-		public VirtualMachineImpl withNetworkInterfaceNew(Subnet subnet) {
-			return this.withNetworkInterfaceNew((String)null, subnet);
+		public VirtualMachineImpl withPrivateIpAddressDynamic() {
+			return this.withPrivateIpAddressStatic(null);
 		}
 
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceNew() {
-			return this.withNetworkInterfaceNew((Subnet)null);
+		public VirtualMachineImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
+			this.privateIpAddress = staticPrivateIpAddress;
+			return this;
 		}
 
 		@Override
@@ -515,6 +509,11 @@ public class VirtualMachinesImpl
 			return this.withNetworkNew((String)null, addressSpace);
 		}
 
+		@Override
+		public VirtualMachineImpl withSubnet(String id) {
+			this.nicSubnetId = id; 
+			return this;
+		}
 		
 		/*******************************************************
 		 * Verbs
@@ -531,15 +530,11 @@ public class VirtualMachinesImpl
 			// Ensure virtual network
 			Network network = this.ensureNetwork(group.name());
 			
-			// Ensure primary network interface
-			Network.Subnet subnet;
-			if(this.nicSubnetName == null) {
-				// Pick the first subnet in the network
-				subnet = network.subnets().values().iterator().next();
-			} else {
-				subnet = network.subnets(this.nicSubnetName);
-			}
-			NetworkInterface nic = this.ensureNetworkInterface(group.name(), subnet);
+			// Ensure subnet
+			Network.Subnet subnet = ensureSubnet(network);
+			
+			// Ensure primary NIC
+			NetworkInterface nic = this.ensureNetworkInterface(group.name(), network, subnet);
 			if(nic != null) {
 				this.withNetworkInterfaceExisting(nic);
 			}
@@ -641,9 +636,20 @@ public class VirtualMachinesImpl
 			}
 		}
 		
+		private Network.Subnet ensureSubnet(Network network) throws Exception {
+			if(network == null) {
+				return null;
+			} else if(this.nicSubnetId != null) {
+				return network.subnets(this.nicSubnetId);
+			} else {
+				// If no subnet specified, return the first one
+				return network.subnets().values().iterator().next();
+			}
+		}
+		
 		
 		// Gets or creates if needed the specified network interface
-		private NetworkInterface ensureNetworkInterface(String groupName, Network.Subnet subnet) throws Exception {
+		private NetworkInterface ensureNetworkInterface(String groupName, Network network, Network.Subnet subnet) throws Exception {
 			if(!this.isExistingPrimaryNIC) {
 				// Create a new NIC
 				if(this.nicId == null) {
@@ -654,7 +660,9 @@ public class VirtualMachinesImpl
 				NetworkInterface nic = azure.networkInterfaces().define(this.nicId)
 					.withRegion(this.region())
 					.withGroupExisting(groupName)
-					.withPrivateIpAddressDynamic(subnet)
+					.withNetworkExisting(network)
+					.withSubnet(subnet.id())
+					.withPrivateIpAddressStatic(this.privateIpAddress)
 					.withoutPublicIpAddress()
 					.provision();
 				this.isExistingPrimaryNIC = true;

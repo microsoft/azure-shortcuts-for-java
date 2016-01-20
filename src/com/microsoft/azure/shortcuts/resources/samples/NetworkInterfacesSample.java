@@ -54,20 +54,12 @@ public class NetworkInterfacesSample {
     		printNetworkInterface(nic);
     	}
     	
-    	// Create a virtual network to test the network interface with
-    	Network network = azure.networks().define(newNetworkName)
-    		.withRegion(Region.US_WEST)
-    		.withGroupNew(newGroupName)
-    		.withAddressSpace("10.0.0.0/28")
-    		.withSubnet("subnet1", "10.0.0.0/29") 
-    		.withSubnet("subnet2", "10.0.0.8/29")
-    		.provision();
-    	
     	// Create a new network interface in a new default resource group
     	NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     		.withRegion(Region.US_WEST)
-    		.withGroupExisting(newGroupName)
-    		.withPrivateIpAddressDynamic(network.subnets("subnet1"))
+    		.withGroupNew(newGroupName)
+    		.withNetworkNew("10.0.0.0/28")
+    		.withPrivateIpAddressDynamic()
     		.withoutPublicIpAddress()
     		.provision();
     	
@@ -79,12 +71,23 @@ public class NetworkInterfacesSample {
     	// Listing network interfaces in a specific resource group
     	nics = azure.networkInterfaces().list(newGroupName);
     	System.out.println(String.format("Network interface ids in group '%s': \n\t%s", newGroupName, StringUtils.join(nics.keySet(), ",\n\t")));
-    	        	
+
+    	// Create a virtual network to test the network interface with
+    	Network network = azure.networks().define(newNetworkName)
+    		.withRegion(Region.US_WEST)
+    		.withGroupExisting(newGroupName)
+    		.withAddressSpace("10.0.0.0/28")
+    		.withSubnet("subnet1", "10.0.0.0/29") 
+    		.withSubnet("subnet2", "10.0.0.8/29")
+    		.provision();
+    	
     	// More detailed NIC definition
     	NetworkInterface nic = azure.networkInterfaces().define(newNetworkInterfaceName + "2")
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(newGroupName)
-    		.withPrivateIpAddressStatic(network.subnets().get("subnet1"), "10.0.0.5")
+    		.withNetworkExisting(network)
+    		.withSubnet("subnet1")
+    		.withPrivateIpAddressStatic("10.0.0.5")
     		.withPublicIpAddressNew()
     		.withTag("hello", "world")
     		.provision();

@@ -30,10 +30,7 @@ import com.microsoft.azure.shortcuts.resources.StorageAccount;
 
 public interface DefinitionCombos {
 	
-	/**
-	 * A resource definition allowing to associate a virtual network with this resource
-	 */
-	public interface WithNetwork<R> {
+	public interface WithNetworkExisting<R> {
 		/**
 		 * Associates an existing virtual network with this resource
 		 * @param id The resource ID of the virtual network to associate with the resource
@@ -53,8 +50,13 @@ public interface DefinitionCombos {
 		 * @param network The Azure SDK VirtualNetwork to associate with the resource
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkExisting(VirtualNetwork network);
-		
+		R withNetworkExisting(VirtualNetwork network);		
+	}
+	
+	/**
+	 * A resource definition allowing to associate a virtual network with it
+	 */
+	public interface WithNetworkNew<R> {
 		/**
 		 * Creates a new virtual network to associate with this resource, based on the provided definition
 		 * @param networkDefinition A provisionable definition of a virtual network
@@ -79,6 +81,12 @@ public interface DefinitionCombos {
 		R withNetworkNew(String addressSpace);
 	}
 
+	/**
+	 * A resource definition allowing to associate a subnet with it
+	 */
+	public interface WithSubnet<R> {
+		R withSubnet(String subnetId);
+	}
 	
 	/**
 	 * A resource definition allowing to associate a storage account with this resource
@@ -183,11 +191,10 @@ public interface DefinitionCombos {
 		R withAvailabilitySetNew(AvailabilitySet.DefinitionProvisionable definition) throws Exception;
 	}
 
-	
 	/**
-	 * A resource definition allowing to associate a primary network interface with this resource
+	 * A resource definition allowing to create a primary network interface associated with this resource
 	 */
-	public interface WithNetworkInterface<R> {
+	public interface WithNetworkInterfaceExisting<R> {
 		/**
 		 * Selects an existing network interface as the primary NIC for this resource
 		 * @param resourceId The resource ID of an existing network interface
@@ -207,8 +214,13 @@ public interface DefinitionCombos {
 		 * @param networkInterface An existing Azure SDK network interface object
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface);
-		
+		R withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface);		
+	}
+	
+	/**
+	 * A resource definition allowing to associate a primary network interface with this resource
+	 */
+	public interface WithNetworkInterfaceNew<R> {
 		/**
 		 * Creates a new network interface to associate with this resource as its primary NIC, in the same region and group, 
 		 * using the provided name, within the provided existing subnet, with dynamic private IP allocation enabled
@@ -233,7 +245,6 @@ public interface DefinitionCombos {
 		 * @return The next stage of the resource definition
 		 */
 		R withNetworkInterfaceNew();
-		
 	}
 
 	
@@ -286,7 +297,7 @@ public interface DefinitionCombos {
 		 * @param subnet The Subnet to associate with the resource
 		 * @return The next stage of the definition
 		 */
-		R withPrivateIpAddressDynamic(Network.Subnet subnet);
+		R withPrivateIpAddressDynamic();
 
 		/**
 		 * Assigns the specified static IP address within the specified existing virtual network subnet as the primary subnet
@@ -294,7 +305,7 @@ public interface DefinitionCombos {
 		 * @param staticPrivateIpAddress The static private IP address within the specified subnet to assign to this resource
 		 * @return The next stage of the definition
 		 */
-		R withPrivateIpAddressStatic(Network.Subnet subnet, String staticPrivateIpAddress);
+		R withPrivateIpAddressStatic(String staticPrivateIpAddress);
 	}
 
 }

@@ -45,13 +45,29 @@ public interface NetworkInterface extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 	}
 	
+	/**
+	 * A network interface definition allowing to specify a group to associate with it
+	 */
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionWithPrivateIpAddress> {}
+		GroupResourceBase.DefinitionWithGroup<DefinitionWithNetwork> {}
+	
+	/**
+	 * A network interface definition allowing to associate a virtual network with the network interface
+	 */
+	public interface DefinitionWithNetwork extends 
+		DefinitionCombos.WithNetworkExisting<DefinitionWithSubnet>,
+		DefinitionCombos.WithNetworkNew<DefinitionWithPrivateIp> {}
+	
+	/**
+	 * A network interface definition allowing to specify a subnet from the selected network to associate the network interface with
+	 */
+	public interface DefinitionWithSubnet extends 
+		DefinitionCombos.WithSubnet<DefinitionWithPrivateIp> {}
 	
 	/**
 	 * A network interface definition allowing to assign a private IP address within an existing virtual network subnet
 	 */
-	public interface DefinitionWithPrivateIpAddress extends 
+	public interface DefinitionWithPrivateIp extends 
 		DefinitionCombos.WithPrivateIpAddress<DefinitionWithPublicIpAddress> {}	
 	
 	/**

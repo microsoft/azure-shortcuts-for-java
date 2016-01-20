@@ -152,8 +152,8 @@ public class NetworksImpl
 		}
 		
 		@Override
-		public Subnet subnets(String name) {
-			return this.subnets().get(name);
+		public Subnet subnets(String id) {
+			return this.subnets().get(id);
 		}
 
 		
