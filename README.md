@@ -438,7 +438,7 @@ azure.networks("<resource-group-name>", "<network-name>").delete();
 
 :warning: Note that the creation of a network interface requires an existing subnet of an existing virtual network. A `Subnet` instance can be obtained for example from a call to `Subnet subnet = azure.networks("my-network").subnets("subnet1");` using appropriate names for the network and the subnet.
 
-When using the minimum set of required inputs, a new resource group is created automatically, in the same region, with a name derived from the NIC's name. A virtual network providing the subnet the NIC is to be associated with needs to already exist, represented by 'network' below:
+When using the minimum set of required inputs, a new resource group is created automatically, in the same region, with a name derived from the NIC's name. A virtual network providing the subnet the NIC is to be associated with needs to already exist, represented by 'network' below. 
 ```java
 NetworkInterface nicMinimal = azure.networkInterfaces().define("<new-NIC-name>")
 	.withRegion(Region.US_WEST)
@@ -456,6 +456,15 @@ NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
 	.withPublicIpAddressExisting(publicIp)
 	.withTag("hello", "world")
 	.provision();
+```
+Creating a network interface with a new resource group, dynamic private IP and a new, dynamically allocated public IP with a leaf domain label automatically generated based on the name of the NIC:
+```java
+    	NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
+    		.withRegion(Region.US_WEST)
+    		.withGroupNew()
+    		.withPrivateIpAddressStatic(network.subnets().get("subnet1"), "10.0.0.5")
+    		.withPublicIpAddressNew()
+    		.provision();
 ```
 
 #### Listing network interfaces

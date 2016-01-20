@@ -262,7 +262,18 @@ public interface DefinitionCombos {
 		 */
 		R withoutPublicIpAddress();
 		
-		// TODO withPublicIpAddressNew()
+		/**
+		 * Creates a new public IP address for this resource, in the same region and group as the resource, with an internal name and DNS label derived from the resource
+		 * @return The next stage of the definition
+		 */
+		R withPublicIpAddressNew();
+		
+		/**
+		 * Creates a new public IP address for this resource, in the same region and group as the resource, with the specified leaf domain label and an internal name derived from it
+		 * @param leafDnsLabel The leaf domain label
+		 * @return The next stage of the definition
+		 */
+		R withPublicIpAddressNew(String leafDnsLabel);
 	}
 	
 	

@@ -110,15 +110,34 @@ public class NetworkInterfacesImpl
 			super(azureNetworkInterface.getName(), azureNetworkInterface);
 		}
 
-		boolean isPublicIpAddressExisting;
-		String publicIpAddressId;
+		private boolean isPublicIpAddressExisting;
+		private String publicIpAddressDns;
 
 		/***********************************************************
 		 * Helpers
 		 ***********************************************************/
 		private NetworkInterfaceIpConfiguration getPrimaryIpConfiguration() {
-			// TODO: in the future, Azure will support multiple ipConfigs on a NIC, but currently it doesn't, so the forst one can be assumed to be the primary
+			// TODO: in the future, Azure will support multiple ipConfigs on a NIC, but currently it doesn't, so the first one can be assumed to be the primary
 			return this.inner().getIpConfigurations().get(0); 
+		}
+		
+		
+		private void ensurePublicIpAddress() throws Exception {
+			if(!this.isPublicIpAddressExisting) {
+				// Create a new public IP
+				if(this.publicIpAddressDns == null) {
+					// Generate a public leaf domain name if needed
+					this.publicIpAddressDns = this.name().toLowerCase();
+				}
+				
+				PublicIpAddress pip = azure.publicIpAddresses().define(this.publicIpAddressDns)
+					.withRegion(this.region())
+					.withGroupExisting(this.groupName)
+					.withLeafDomainLabel(this.publicIpAddressDns)
+					.provision();
+				this.isPublicIpAddressExisting = true;
+				this.withPublicIpAddressExisting(pip.id());
+			}
 		}
 		
 		
@@ -153,16 +172,17 @@ public class NetworkInterfacesImpl
 
 		@Override
 		public NetworkInterfaceImpl withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
-			return this.withPrimaryPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.getId() : null);
+			return this.withPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.getId() : null);
 		}
 
 		@Override
 		public NetworkInterfaceImpl withPublicIpAddressExisting(PublicIpAddress publicIpAddress) {
-			return this.withPrimaryPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.id() : null);
+			return this.withPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.id() : null);
 		}
 
 		// Helper to associate with an existing public IP address using its resource ID
-		private NetworkInterfaceImpl withPrimaryPublicIpAddressExisting(String resourceId) {
+		private NetworkInterfaceImpl withPublicIpAddressExisting(String resourceId) {
+			this.isPublicIpAddressExisting = true;
 			NetworkInterfaceIpConfiguration ipConfig = getPrimaryIpConfiguration();
 			if(resourceId == null) {
 				ipConfig.setPublicIpAddress(null);
@@ -174,6 +194,18 @@ public class NetworkInterfacesImpl
 			return this;
 		}
 		
+		@Override
+		public NetworkInterfaceImpl withPublicIpAddressNew() {
+			return this.withPublicIpAddressNew(null);
+		}
+
+		@Override
+		public NetworkInterfaceImpl withPublicIpAddressNew(String leafDnsLabel) {
+			this.isPublicIpAddressExisting = false;
+			this.publicIpAddressDns = leafDnsLabel.toLowerCase();
+			return this;
+		}
+
 		@Override
 		public DefinitionProvisionable withoutPublicIpAddress() {
 			return this.withPublicIpAddressExisting((PublicIpAddress)null);
@@ -194,7 +226,8 @@ public class NetworkInterfacesImpl
 			// Create a group as needed
 			ensureGroup(azure);
 		
-			// TODO
+			// Ensure public IP as needed
+			ensurePublicIpAddress();
 			
 			azure.networkManagementClient().getNetworkInterfacesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
