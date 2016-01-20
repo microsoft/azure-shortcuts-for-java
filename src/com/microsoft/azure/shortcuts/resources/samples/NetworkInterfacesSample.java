@@ -25,9 +25,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
-import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -85,7 +85,7 @@ public class NetworkInterfacesSample {
     		.withRegion(Region.US_WEST)
     		.withGroupExisting(newGroupName)
     		.withPrivateIpAddressStatic(network.subnets().get("subnet1"), "10.0.0.5")
-    		.withPublicIpAddressNew(newNetworkInterfaceName)
+    		.withPublicIpAddressNew()
     		.withTag("hello", "world")
     		.provision();
     		
@@ -108,8 +108,7 @@ public class NetworkInterfacesSample {
     private static void printNetworkInterface(NetworkInterface nic) throws Exception {
     	StringBuilder output = new StringBuilder();
     	NetworkInterfaceIpConfiguration ipConfig = nic.inner().getIpConfigurations().get(0);
-    	ResourceId pipId = ipConfig.getPublicIpAddress();
-    	String pip = (pipId == null) ? null : pipId.getId();
+    	Map<String, PublicIpAddress> pips = nic.publicIpAddresses();
     	output
     		.append(String.format("Network interface ID: %s\n", nic.id()))
     		.append(String.format("\tName: %s\n", nic.name()))
@@ -117,8 +116,14 @@ public class NetworkInterfacesSample {
     		.append(String.format("\tRegion: %s\n", nic.region()))
     		.append(String.format("\tPrimary subnet ID: %s\n", ipConfig.getSubnet().getId()))
     		.append(String.format("\tPrimary private IP: %s\n", ipConfig.getPrivateIpAddress()))
-    		.append(String.format("\tPrimary public IP ID: %s\n", pip))    		
-    		;
+    		.append(String.format("\tPublic IPs:\n"));
+    	for(PublicIpAddress pip : pips.values()) {
+    		output
+    			.append(String.format("\t\tName:%s\n", pip.name()))
+    			.append(String.format("\t\tLeaf domain label:%s\n", pip.leafDomainLabel()))
+    			.append(String.format("\t\tIP address:%s\n", pip.ipAddress()))
+    			;
+    	} 
     	
     	System.out.println(output.toString());
     }

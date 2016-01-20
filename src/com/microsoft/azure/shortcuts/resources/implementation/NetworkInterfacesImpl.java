@@ -22,6 +22,8 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
@@ -144,6 +146,24 @@ public class NetworkInterfacesImpl
 		/***********************************************************
 		 * Getters
 		 ***********************************************************/
+
+		@Override
+		public Map<String, PublicIpAddress> publicIpAddresses() {
+			TreeMap<String, PublicIpAddress> pips = new TreeMap<>();
+			try {
+				for(NetworkInterfaceIpConfiguration ipConfig : this.inner().getIpConfigurations()) {
+					ResourceId pipId = ipConfig.getPublicIpAddress();
+					if(pipId == null) {
+						continue;
+					} else {
+						PublicIpAddress pip = azure.publicIpAddresses(pipId.getId());
+						pips.put(pip.id(), pip);						
+					}
+				}
+			} catch (Exception e) {
+			}
+			return pips;
+		}
 
 		
 		/**************************************************************

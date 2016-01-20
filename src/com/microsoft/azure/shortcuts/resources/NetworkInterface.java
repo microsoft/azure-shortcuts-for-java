@@ -19,6 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
+import java.util.Map;
+
 import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
@@ -34,6 +36,8 @@ public interface NetworkInterface extends
 	Wrapper<com.microsoft.azure.management.network.models.NetworkInterface>,
 	Deletable {
 
+	Map<String, PublicIpAddress> publicIpAddresses();
+	
 	/**
 	 * A new blank network interface definition
 	 */
