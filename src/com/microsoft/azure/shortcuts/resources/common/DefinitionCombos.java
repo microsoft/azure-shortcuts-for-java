@@ -30,39 +30,39 @@ import com.microsoft.azure.shortcuts.resources.StorageAccount;
 
 public interface DefinitionCombos {
 	
-	public interface WithNetworkExisting<R> {
+	public interface WithExistingNetwork<R> {
 		/**
 		 * Associates an existing virtual network with this resource
 		 * @param id The resource ID of the virtual network to associate with the resource
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkExisting(String id);
+		R withExistingNetwork(String id);
 		
 		/**
 		 * Associates an existing virtual network with this resource
 		 * @param network The virtual network to associate with the resource
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkExisting(Network network);
+		R withExistingNetwork(Network network);
 		
 		/**
 		 * Associates an existing virtual network with this resource
 		 * @param network The Azure SDK VirtualNetwork to associate with the resource
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkExisting(VirtualNetwork network);		
+		R withExistingNetwork(VirtualNetwork network);		
 	}
 	
 	/**
 	 * A resource definition allowing to associate a virtual network with it
 	 */
-	public interface WithNetworkNew<R> {
+	public interface WithNewNetwork<R> {
 		/**
 		 * Creates a new virtual network to associate with this resource, based on the provided definition
 		 * @param networkDefinition A provisionable definition of a virtual network
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkNew(Network.DefinitionProvisionable networkDefinition) throws Exception;
+		R withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception;
 		
 		/**
 		 * Creates a new virtual network to associate with this resource, in the same resource group and region, 
@@ -70,7 +70,7 @@ public interface DefinitionCombos {
 		 * @param name The name of the new virtual network
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkNew(String name, String addressSpace);
+		R withNewNetwork(String name, String addressSpace);
 		
 		/**
 		 * Creates a new virtual network to associate with this resource, with a name derived from the name of this resource, 
@@ -78,7 +78,7 @@ public interface DefinitionCombos {
 		 * entirety of the address space
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkNew(String addressSpace);
+		R withNewNetwork(String addressSpace);
 	}
 
 	/**

@@ -49,7 +49,7 @@ public class VirtualMachinesSample {
     	VirtualMachine vmWin = azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withNewGroup(groupName)
-    		.withNetworkNew("10.0.0.0/28")
+    		.withNewNetwork("10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
     		.withPublicIpAddressNew("myTestDnsLabel")
     		.withAdminUsername("shortcuts")

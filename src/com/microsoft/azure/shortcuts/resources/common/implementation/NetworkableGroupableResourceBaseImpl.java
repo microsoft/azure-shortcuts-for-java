@@ -115,34 +115,34 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	 * WithNetwork* Implementation
 	 ***********************************************************/
 	@SuppressWarnings("unchecked")
-	final public TI withNetworkExisting(String id) {
+	final public TI withExistingNetwork(String id) {
 		this.isNetworkExisting = true;
 		this.networkId = id;
 		return (TI)this;
 	}
 
-	final public TI withNetworkExisting(Network network) {
-		return this.withNetworkExisting(network.id());
+	final public TI withExistingNetwork(Network network) {
+		return this.withExistingNetwork(network.id());
 	}
 
-	final public TI withNetworkExisting(VirtualNetwork network) {
-		return this.withNetworkExisting(network.getId());
+	final public TI withExistingNetwork(VirtualNetwork network) {
+		return this.withExistingNetwork(network.getId());
 	}
 
 	@SuppressWarnings("unchecked")
-	final public TI withNetworkNew(String name, String addressSpace) {
+	final public TI withNewNetwork(String name, String addressSpace) {
 		this.isNetworkExisting = false;
 		this.networkId = name;
 		this.networkCidr = addressSpace;
 		return (TI) this;
 	}
 
-	final public TI withNetworkNew(Network.DefinitionProvisionable networkDefinition) throws Exception {
-		return this.withNetworkExisting(networkDefinition.provision());
+	final public TI withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception {
+		return this.withExistingNetwork(networkDefinition.provision());
 	}
 
-	final public TI withNetworkNew(String addressSpace) {
-		return this.withNetworkNew((String)null, addressSpace);
+	final public TI withNewNetwork(String addressSpace) {
+		return this.withNewNetwork((String)null, addressSpace);
 	}
 	
 	

@@ -62,9 +62,11 @@ public interface VirtualMachine extends
 	 */
 	interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
-		//TODO public IP
 		//TODO load balancers
 		//TODO network security groups
+		//TODO data disks
+		//TODO custom images
+		//TODO image capture
 	}
 	
 	/**
@@ -77,8 +79,8 @@ public interface VirtualMachine extends
 	 * A virtual machine definition allowing the networking to be specified
 	 */
 	interface DefinitionWithNetworking extends 
-		DefinitionCombos.WithNetworkNew<DefinitionWithPrivateIp>,
-		DefinitionCombos.WithNetworkExisting<DefinitionWithSubnet>,
+		DefinitionCombos.WithNewNetwork<DefinitionWithPrivateIp>,
+		DefinitionCombos.WithExistingNetwork<DefinitionWithSubnet>,
 		DefinitionCombos.WithNetworkInterfaceExisting<DefinitionWithAdminUsername> {}
 	
 

@@ -58,7 +58,7 @@ public class NetworkInterfacesSample {
     	NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     		.withRegion(Region.US_WEST)
     		.withNewGroup(newGroupName)
-    		.withNetworkNew("10.0.0.0/28")
+    		.withNewNetwork("10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
     		.withoutPublicIpAddress()
     		.provision();
@@ -85,7 +85,7 @@ public class NetworkInterfacesSample {
     	NetworkInterface nic = azure.networkInterfaces().define(newNetworkInterfaceName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingGroup(newGroupName)
-    		.withNetworkExisting(network)
+    		.withExistingNetwork(network)
     		.withSubnet("subnet1")
     		.withPrivateIpAddressStatic("10.0.0.5")
     		.withPublicIpAddressNew()

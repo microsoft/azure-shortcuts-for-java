@@ -55,8 +55,8 @@ public interface NetworkInterface extends
 	 * A network interface definition allowing to associate a virtual network with the network interface
 	 */
 	public interface DefinitionWithNetwork extends 
-		DefinitionCombos.WithNetworkExisting<DefinitionWithSubnet>,
-		DefinitionCombos.WithNetworkNew<DefinitionWithPrivateIp> {}
+		DefinitionCombos.WithExistingNetwork<DefinitionWithSubnet>,
+		DefinitionCombos.WithNewNetwork<DefinitionWithPrivateIp> {}
 	
 	/**
 	 * A network interface definition allowing to specify a subnet from the selected network to associate the network interface with

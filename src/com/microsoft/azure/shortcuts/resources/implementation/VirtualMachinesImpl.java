@@ -574,7 +574,7 @@ public class VirtualMachinesImpl
 				NetworkInterface nic = azure.networkInterfaces().define(this.nicId)
 					.withRegion(this.region())
 					.withExistingGroup(groupName)
-					.withNetworkExisting(network)
+					.withExistingNetwork(network)
 					.withSubnet(subnet.id())
 					.withPrivateIpAddressStatic(this.privateIpAddress)
 					.withPublicIpAddressExisting(pip)

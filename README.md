@@ -441,7 +441,7 @@ When using the minimum set of required inputs, a new resource group is created a
 NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     .withRegion(Region.US_WEST)
     .withNewGroup("<new-resource-group-name>")
-    .withNetworkNew("10.0.0.0/28")
+    .withNewNetwork("10.0.0.0/28")
     .withPrivateIpAddressDynamic()
     .withoutPublicIpAddress()
     .provision();
@@ -451,7 +451,7 @@ Creating a network interface with a new resource group, dynamic private IP and a
 NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
 	.withRegion(Region.US_WEST)
     .withExistingGroup("<existing-group-name>")
-    .withNetworkExisting(network)
+    .withExistingNetwork(network)
     .withSubnet("subnet1")
     .withPrivateIpAddressStatic("10.0.0.5")
     .withPublicIpAddressNew()
