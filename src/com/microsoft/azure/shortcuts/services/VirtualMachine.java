@@ -74,9 +74,9 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring an existing virtual network to be specified
 	 */
-	public interface DefinitionWithNetworkExisting<T> {
-		T withNetworkExisting(String network);
-		T withNetworkExisting(Network network);		
+	public interface DefinitionWithExistingNetwork<T> {
+		T withExistingNetwork(String network);
+		T withExistingNetwork(Network network);		
 	}
 	
 	
@@ -94,7 +94,7 @@ public interface VirtualMachine extends
 	 */
 	public interface DefinitionBlank extends 
 		DefinitionWithRegion<DefinitionWithSize>,
-		DefinitionWithNetworkExisting<DefinitionWithSize>,
+		DefinitionWithExistingNetwork<DefinitionWithSize>,
 		DefinitionWithCloudServiceExisting<DefinitionWithSize> {
 	}
 

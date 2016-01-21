@@ -434,14 +434,14 @@ public class VirtualMachinesImpl
 		 **************************************************************/
 		
 		@Override
-		public VirtualMachineImpl withNetworkExisting(String network) {
+		public VirtualMachineImpl withExistingNetwork(String network) {
 			this.azureDeployment.setVirtualNetworkName(network);
 			return this;
 		}
 
 		@Override
-		public VirtualMachineImpl withNetworkExisting(Network network) {
-			return this.withNetworkExisting(network.id());
+		public VirtualMachineImpl withExistingNetwork(Network network) {
+			return this.withExistingNetwork(network.id());
 		}
 
 		@Override

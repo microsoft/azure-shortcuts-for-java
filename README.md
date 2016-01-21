@@ -190,7 +190,7 @@ azure.virtualMachines().define("mylinuxvm")
 
 ```java
 azure.virtualMachines().define("mylinuxvm")
-	.withNetworkExisting(network)
+	.withExistingNetwork(network)
 	.withSize("Small")
 	.withAdminUsername("test")
 	.withAdminPassword("Xyz.098")

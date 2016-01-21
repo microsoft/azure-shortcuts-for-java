@@ -89,7 +89,7 @@ public class VirtualMachinesSample {
 		System.out.println(String.format("Creating virtual machine named '%s'...", vmName2));
 		final String cloudService2 = "cs" + timeStamp;
 		azure.virtualMachines().define(vmName2)
-			.withNetworkExisting(network)
+			.withExistingNetwork(network)
 			.withSize("Small")
 			.withAdminUsername("marcins")
 			.withAdminPassword("Abcd.1234")
