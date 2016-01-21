@@ -9,7 +9,7 @@ Here's an example for creating a virtual network, which is very representative o
 ```java
 azure.networks().define("mynetwork")
     .withRegion("US West")
-    .withGroupExisting("<resource-group-name>")
+    .withExistingGroup("<resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
@@ -346,7 +346,7 @@ With an explicitly defined address space, a default subnet containing the entire
 ```java
 Network network = azure.networks().define("<new-network-name>")
 	.withRegion(Region.US_WEST)
-	.withGroupNew()
+	.withNewGroup()
 	.withAddressSpace("10.0.0.0/28")
 	.provision();
 ```
@@ -354,7 +354,7 @@ With multiple, explicitly defined subnets and an existing resource group:
 ```java
 azure.networks().define(newNetworkName + "2")
     .withRegion(Region.US_WEST)
-    .withGroupExisting("<existing-group-name>")
+    .withExistingGroup("<existing-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
@@ -440,7 +440,7 @@ When using the minimum set of required inputs, a new resource group is created a
 ```java
 NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     .withRegion(Region.US_WEST)
-    .withGroupNew("<new-resource-group-name>")
+    .withNewGroup("<new-resource-group-name>")
     .withNetworkNew("10.0.0.0/28")
     .withPrivateIpAddressDynamic()
     .withoutPublicIpAddress()
@@ -450,7 +450,7 @@ Creating a network interface with a new resource group, dynamic private IP and a
 ```java
 NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
 	.withRegion(Region.US_WEST)
-    .withGroupExisting("<existing-group-name>")
+    .withExistingGroup("<existing-group-name>")
     .withNetworkExisting(network)
     .withSubnet("subnet1")
     .withPrivateIpAddressStatic("10.0.0.5")
@@ -512,14 +512,14 @@ Providing minimal inputs will result in a public IP address for which a resource
 ```java
 PublicIpAddress pipMinimal = azure.publicIpAddresses().define("<new-public-address-name>")
 	.withRegion(Region.US_WEST)
-   	.withGroupNew()
+   	.withNewGroup()
     .provision();
 ```
 With static IP allocation, an explicitly defined leaf domain label and a tag:
 ```java
 PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
 	.withRegion(Region.US_WEST)
-    .withGroupExisting(existingGroupName)
+    .withExistingGroup(existingGroupName)
     .withLeafDomainLabel("hellomarcins")
     .withStaticIp()
     .withTag("hello", "world")
@@ -633,14 +633,14 @@ With the required minimum set of input parameters:
 ```java
 StorageAccount storageAccount = azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
-    .withGroupNew()
+    .withNewGroup()
     .provision();```
 In an existing resource group:
 ```java
 azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withAccountType(AccountType.StandardLRS)
-    .withGroupExisting("<existing-group-name>")
+    .withExistingGroup("<existing-group-name>")
     .provision();
 ```
 
@@ -916,7 +916,7 @@ Within an existing resource group, and setting a tag:
 ```java
 azure.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
-    .withGroupExisting("myexistinggroup")
+    .withExistingGroup("myexistinggroup")
     .withTag("hello", "world")
     .provision();
 ```

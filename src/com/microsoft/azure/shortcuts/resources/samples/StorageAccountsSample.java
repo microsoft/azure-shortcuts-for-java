@@ -48,7 +48,7 @@ public class StorageAccountsSample {
     	// Provision a new storage account with minimum parameters
     	StorageAccount storageAccount = azure.storageAccounts().define(newStorageAccountName)
     		.withRegion(Region.US_WEST)
-    		.withGroupNew()
+    		.withNewGroup()
     		.provision();
 
     	printStorageAccount(storageAccount);
@@ -81,7 +81,7 @@ public class StorageAccountsSample {
     	// Provision a new storage account in an existing resource group
     	storageAccount = azure.storageAccounts().define(newStorageAccountName)
     		.withRegion(Region.US_WEST)
-    		.withGroupExisting(newGroupName)
+    		.withExistingGroup(newGroupName)
     		.withAccountType(AccountType.StandardLRS)
     		.provision();
     	

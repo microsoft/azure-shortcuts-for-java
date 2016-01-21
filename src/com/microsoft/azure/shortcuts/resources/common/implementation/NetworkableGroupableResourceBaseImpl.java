@@ -55,7 +55,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	
 			Network network = azure.networks().define(this.networkId)
 				.withRegion(this.region())
-				.withGroupExisting(groupName)
+				.withExistingGroup(groupName)
 				.withAddressSpace(this.networkCidr)
 				.provision();
 			this.isNetworkExisting = true;
@@ -97,7 +97,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 			
 			PublicIpAddress pip = azure.publicIpAddresses().define(this.publicIpAddressDns)
 				.withRegion(this.region())
-				.withGroupExisting(this.groupName)
+				.withExistingGroup(this.groupName)
 				.withLeafDomainLabel(this.publicIpAddressDns)
 				.provision();
 			this.isPublicIpAddressExisting = true;

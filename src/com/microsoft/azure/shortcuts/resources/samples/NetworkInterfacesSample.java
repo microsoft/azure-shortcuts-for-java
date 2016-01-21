@@ -57,7 +57,7 @@ public class NetworkInterfacesSample {
     	// Create a new network interface in a new default resource group
     	NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     		.withRegion(Region.US_WEST)
-    		.withGroupNew(newGroupName)
+    		.withNewGroup(newGroupName)
     		.withNetworkNew("10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
     		.withoutPublicIpAddress()
@@ -75,7 +75,7 @@ public class NetworkInterfacesSample {
     	// Create a virtual network to test the network interface with
     	Network network = azure.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
-    		.withGroupExisting(newGroupName)
+    		.withExistingGroup(newGroupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("subnet1", "10.0.0.0/29") 
     		.withSubnet("subnet2", "10.0.0.8/29")
@@ -84,7 +84,7 @@ public class NetworkInterfacesSample {
     	// More detailed NIC definition
     	NetworkInterface nic = azure.networkInterfaces().define(newNetworkInterfaceName + "2")
     		.withRegion(Region.US_WEST)
-    		.withGroupExisting(newGroupName)
+    		.withExistingGroup(newGroupName)
     		.withNetworkExisting(network)
     		.withSubnet("subnet1")
     		.withPrivateIpAddressStatic("10.0.0.5")

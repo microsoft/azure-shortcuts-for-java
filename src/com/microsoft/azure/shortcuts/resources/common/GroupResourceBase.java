@@ -37,41 +37,41 @@ public interface GroupResourceBase extends
 		 * @param groupName The name of an existing resource group to put this resource in.
 		 * @return The next stage of the resource definition
 		 */
-		T withGroupExisting(String groupName);
+		T withExistingGroup(String groupName);
 		
 		/**
 		 * Associates the resources with an existing resource group.
 		 * @param group An existing resource group to put the resource in
 		 * @return The next stage of the resource definition
 		 */
-		T withGroupExisting(Group group);
+		T withExistingGroup(Group group);
 		
 		/**
 		 * Associates the resources with an existing resource group.
 		 * @param group An existing resource group object as returned by the Azure SDK for Java to put the resource in
 		 * @return The next stage of the resource definition
 		 */
-		T withGroupExisting(ResourceGroupExtended group);
+		T withExistingGroup(ResourceGroupExtended group);
 
 		/**
 		 * Creates a new resource group to put the resource in. The group will be created in the same region as the resource. 
 		 * @param name The name of the new group
 		 * @return The next stage of the resource definition
 		 */
-		T withGroupNew(String name);
+		T withNewGroup(String name);
 		
 		/**
 		 * Creates a new resource group to put the resource in. The group will be created in the same region as the resource. 
 		 * The group's name is automatically derived from the resource's name.
 		 * @return The next stage of the resource definition
 		 */
-		T withGroupNew();
+		T withNewGroup();
 		
 		/**
 		 * Creates a new resource group to put the resource in based on the provisionable definition specified.
 		 * @param groupDefinition A provisionable definition for a new resource group
 		 * @return The next stage of the resource definition
 		 */
-		T withGroupNew(Group.DefinitionProvisionable groupDefinition) throws Exception;
+		T withNewGroup(Group.DefinitionProvisionable groupDefinition) throws Exception;
 	}
 }

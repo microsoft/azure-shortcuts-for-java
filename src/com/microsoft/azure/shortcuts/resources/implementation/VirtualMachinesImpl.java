@@ -528,7 +528,7 @@ public class VirtualMachinesImpl
 				
 				StorageAccount storageAccount = azure.storageAccounts().define(this.storageAccountId)
 					.withRegion(this.region())
-					.withGroupExisting(groupName)
+					.withExistingGroup(groupName)
 					.provision();
 				this.isExistingStorageAccount = true;
 				return storageAccount;
@@ -550,7 +550,7 @@ public class VirtualMachinesImpl
 				
 				AvailabilitySet availabilitySet = azure.availabilitySets().define(this.availabilitySetId)
 					.withRegion(this.region())
-					.withGroupExisting(groupName)
+					.withExistingGroup(groupName)
 					.provision();
 				this.isExistingAvailabilitySet = true;
 				return availabilitySet;
@@ -573,7 +573,7 @@ public class VirtualMachinesImpl
 				
 				NetworkInterface nic = azure.networkInterfaces().define(this.nicId)
 					.withRegion(this.region())
-					.withGroupExisting(groupName)
+					.withExistingGroup(groupName)
 					.withNetworkExisting(network)
 					.withSubnet(subnet.id())
 					.withPrivateIpAddressStatic(this.privateIpAddress)

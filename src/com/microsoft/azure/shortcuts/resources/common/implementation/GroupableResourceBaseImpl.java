@@ -80,7 +80,7 @@ public abstract class GroupableResourceBaseImpl<
 	 ****************************************/
 	
 	@SuppressWarnings("unchecked")
-	public final TI withGroupExisting(String groupName) {
+	public final TI withExistingGroup(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = true;
 		return (TI)this;
@@ -88,25 +88,25 @@ public abstract class GroupableResourceBaseImpl<
 	
 	
 	@SuppressWarnings("unchecked")
-	public final TI withGroupNew(String groupName) {
+	public final TI withNewGroup(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = false;
 		return (TI) this;
 	}
 	
-	public final TI withGroupNew() {
-		return this.withGroupNew((String)null);
+	public final TI withNewGroup() {
+		return this.withNewGroup((String)null);
 	}
 	
-	public final TI withGroupNew(Group.DefinitionProvisionable groupDefinition) throws Exception {
-		return withGroupExisting(groupDefinition.provision());
+	public final TI withNewGroup(Group.DefinitionProvisionable groupDefinition) throws Exception {
+		return withExistingGroup(groupDefinition.provision());
 	}
 	
-	public final TI withGroupExisting(Group group) {
-		return this.withGroupExisting(group.name());
+	public final TI withExistingGroup(Group group) {
+		return this.withExistingGroup(group.name());
 	}
 	
-	public final TI withGroupExisting(ResourceGroupExtended group) {
-		return this.withGroupExisting(group.getName());
+	public final TI withExistingGroup(ResourceGroupExtended group) {
+		return this.withExistingGroup(group.getName());
 	}
 }
