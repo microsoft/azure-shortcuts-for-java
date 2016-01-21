@@ -51,12 +51,15 @@ public class VirtualMachinesSample {
     		.withGroupNew(groupName)
     		.withNetworkNew("10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
+    		.withPublicIpAddressNew()
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
     		.withSize(Size.Type.BASIC_A1)
     		.withStorageAccountNew()
     		.provision();
+    	
+    	printVM(vmWin);
     	
     	// Listing all virtual machine ids in a subscription
     	Map<String, VirtualMachine> vms = azure.virtualMachines().list();

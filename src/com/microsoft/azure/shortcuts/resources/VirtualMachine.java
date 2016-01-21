@@ -90,11 +90,17 @@ public interface VirtualMachine extends
 	}
 	
 	/**
-	 * A virtual machine definition allowing the private IP address configuration to be specified
+	 * A virtual machine definition allowing the primary private IP address to be specified
 	 */
 	interface DefinitionWithPrivateIp extends 
-		DefinitionCombos.WithPrivateIpAddress<DefinitionWithAdminUsername> {}
-		
+		DefinitionCombos.WithPrivateIpAddress<DefinitionWithPublicIp> {}
+	
+	/**
+	 * A virtual machine definition allowing the primary public IP address to be specified
+	 */
+	interface DefinitionWithPublicIp extends
+		DefinitionCombos.WithPublicIpAddress<DefinitionWithAdminUsername> {}
+	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
 	 */

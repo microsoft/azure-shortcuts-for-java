@@ -114,8 +114,6 @@ public class NetworkInterfacesImpl
 			super(azureNetworkInterface.getName(), azureNetworkInterface);
 		}
 
-		private boolean isPublicIpAddressExisting;
-		private String publicIpAddressDns;
 				
 		/***********************************************************
 		 * Helpers
@@ -124,25 +122,7 @@ public class NetworkInterfacesImpl
 			// TODO: in the future, Azure will support multiple ipConfigs on a NIC, but currently it doesn't, so the first one can be assumed to be the primary
 			return this.inner().getIpConfigurations().get(0); 
 		}
-		
-		
-		private void ensurePublicIpAddress() throws Exception {
-			if(!this.isPublicIpAddressExisting) {
-				// Create a new public IP
-				if(this.publicIpAddressDns == null) {
-					// Generate a public leaf domain name if needed
-					this.publicIpAddressDns = this.name().toLowerCase();
-				}
-				
-				PublicIpAddress pip = azure.publicIpAddresses().define(this.publicIpAddressDns)
-					.withRegion(this.region())
-					.withGroupExisting(this.groupName)
-					.withLeafDomainLabel(this.publicIpAddressDns)
-					.provision();
-				this.isPublicIpAddressExisting = true;
-				this.withPublicIpAddressExisting(pip.id());
-			}
-		}
+
 		
 		
 		/***********************************************************
@@ -172,46 +152,7 @@ public class NetworkInterfacesImpl
 		 * Setters (fluent interface)
 		 **************************************************************/
 
-		@Override
-		public NetworkInterfaceImpl withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
-			return this.withPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.getId() : null);
-		}
 
-		@Override
-		public NetworkInterfaceImpl withPublicIpAddressExisting(PublicIpAddress publicIpAddress) {
-			return this.withPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.id() : null);
-		}
-
-		// Helper to associate with an existing public IP address using its resource ID
-		private NetworkInterfaceImpl withPublicIpAddressExisting(String resourceId) {
-			this.isPublicIpAddressExisting = true;
-			NetworkInterfaceIpConfiguration ipConfig = getPrimaryIpConfiguration();
-			if(resourceId == null) {
-				ipConfig.setPublicIpAddress(null);
-			} else {
-				ResourceId r = new ResourceId();
-				r.setId(resourceId);
-				ipConfig.setPublicIpAddress(r);
-			}
-			return this;
-		}
-		
-		@Override
-		public NetworkInterfaceImpl withPublicIpAddressNew() {
-			return this.withPublicIpAddressNew(null);
-		}
-
-		@Override
-		public NetworkInterfaceImpl withPublicIpAddressNew(String leafDnsLabel) {
-			this.isPublicIpAddressExisting = false;
-			this.publicIpAddressDns = (leafDnsLabel == null) ? null : leafDnsLabel.toLowerCase();
-			return this;
-		}
-
-		@Override
-		public NetworkInterfaceImpl withoutPublicIpAddress() {
-			return this.withPublicIpAddressExisting((PublicIpAddress)null);
-		}
 		
 
 		/************************************************************
@@ -235,14 +176,21 @@ public class NetworkInterfacesImpl
 			Network.Subnet subnet = ensureSubnet(network);
 			
 			// Set the subnet on the primary (first) IP configuration
-			NetworkInterfaceIpConfiguration ipConfig = this.inner().getIpConfigurations().get(0);
+			NetworkInterfaceIpConfiguration ipConfig = getPrimaryIpConfiguration();
 			ipConfig.setName(subnet.inner().getName());
 			ipConfig.setSubnet(subnet.inner());
+			
+			// Set the private IP
 			ipConfig.setPrivateIpAllocationMethod((this.privateIpAddress != null) ? IpAllocationMethod.STATIC : IpAllocationMethod.DYNAMIC);
 			ipConfig.setPrivateIpAddress(this.privateIpAddress);
 
-			// Ensure public IP as needed
-			ensurePublicIpAddress();
+			// Ensure and set public IP 
+			PublicIpAddress pip = ensurePublicIpAddress(azure);
+			if(pip != null) {
+				ResourceId r = new ResourceId();
+				r.setId(pip.id());
+				ipConfig.setPublicIpAddress(r);
+			}
 			
 			azure.networkManagementClient().getNetworkInterfacesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());

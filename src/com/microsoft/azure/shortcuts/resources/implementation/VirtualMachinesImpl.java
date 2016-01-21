@@ -45,6 +45,7 @@ import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
@@ -144,6 +145,7 @@ public class VirtualMachinesImpl
 			VirtualMachine.DefinitionWithNetworking,
 			VirtualMachine.DefinitionWithSubnet,
 			VirtualMachine.DefinitionWithPrivateIp,
+			VirtualMachine.DefinitionWithPublicIp,
 			VirtualMachine.DefinitionWithAdminUsername,
 			VirtualMachine.DefinitionWithAdminPassword,
 			VirtualMachine.DefinitionWithImage,
@@ -455,7 +457,7 @@ public class VirtualMachinesImpl
 			return this.withNetworkInterfaceExisting(networkInterface.getId());
 		}
 
-
+		
 		/*******************************************************
 		 * Verbs
 		 *******************************************************/
@@ -474,8 +476,11 @@ public class VirtualMachinesImpl
 			// Ensure subnet
 			Network.Subnet subnet = ensureSubnet(network);
 			
+			// Ensure public IP address
+			PublicIpAddress pip = ensurePublicIpAddress(azure);
+			
 			// Ensure primary NIC
-			NetworkInterface nic = this.ensureNetworkInterface(group.name(), network, subnet);
+			NetworkInterface nic = this.ensureNetworkInterface(group.name(), network, subnet, pip);
 			if(nic != null) {
 				this.withNetworkInterfaceExisting(nic);
 			}
@@ -558,7 +563,7 @@ public class VirtualMachinesImpl
 		
 
 		// Gets or creates if needed the specified network interface
-		private NetworkInterface ensureNetworkInterface(String groupName, Network network, Network.Subnet subnet) throws Exception {
+		private NetworkInterface ensureNetworkInterface(String groupName, Network network, Network.Subnet subnet, PublicIpAddress pip) throws Exception {
 			if(!this.isExistingPrimaryNIC) {
 				// Create a new NIC
 				if(this.nicId == null) {
@@ -572,7 +577,7 @@ public class VirtualMachinesImpl
 					.withNetworkExisting(network)
 					.withSubnet(subnet.id())
 					.withPrivateIpAddressStatic(this.privateIpAddress)
-					.withoutPublicIpAddress()
+					.withPublicIpAddressExisting(pip)
 					.provision();
 				this.isExistingPrimaryNIC = true;
 				return nic;
