@@ -37,7 +37,8 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	private boolean isNetworkExisting;
 	private String networkId;
 	private String networkCidr;
-	protected String subnetId;
+	private String subnetId;
+	protected String privateIpAddress;
 	
 	final protected Network ensureNetwork(Azure azure) throws Exception {
 		if(!this.isNetworkExisting) {
@@ -76,33 +77,33 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	 * WithNetwork* Implementation
 	 ***********************************************************/
 	@SuppressWarnings("unchecked")
-	public TI withNetworkExisting(String id) {
+	final public TI withNetworkExisting(String id) {
 		this.isNetworkExisting = true;
 		this.networkId = id;
 		return (TI)this;
 	}
 
-	public TI withNetworkExisting(Network network) {
+	final public TI withNetworkExisting(Network network) {
 		return this.withNetworkExisting(network.id());
 	}
 
-	public TI withNetworkExisting(VirtualNetwork network) {
+	final public TI withNetworkExisting(VirtualNetwork network) {
 		return this.withNetworkExisting(network.getId());
 	}
 
 	@SuppressWarnings("unchecked")
-	public TI withNetworkNew(String name, String addressSpace) {
+	final public TI withNetworkNew(String name, String addressSpace) {
 		this.isNetworkExisting = false;
 		this.networkId = name;
 		this.networkCidr = addressSpace;
 		return (TI) this;
 	}
 
-	public TI withNetworkNew(Network.DefinitionProvisionable networkDefinition) throws Exception {
+	final public TI withNetworkNew(Network.DefinitionProvisionable networkDefinition) throws Exception {
 		return this.withNetworkExisting(networkDefinition.provision());
 	}
 
-	public TI withNetworkNew(String addressSpace) {
+	final public TI withNetworkNew(String addressSpace) {
 		return this.withNetworkNew((String)null, addressSpace);
 	}
 	
@@ -111,8 +112,24 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	 * WithSubnet implementation
 	 ********************************************************/
 	@SuppressWarnings("unchecked")
-	public TI withSubnet(String subnetId) {
+	final public TI withSubnet(String subnetId) {
 		this.subnetId = subnetId;
 		return (TI)this;
 	}
+	
+
+	/*******************************************************
+	 * WithPrivateIpAddress implementation
+	 *******************************************************/
+	final public TI withPrivateIpAddressDynamic() {
+		return this.withPrivateIpAddressStatic(null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	final public TI withPrivateIpAddressStatic(String staticPrivateIpAddress) {
+		this.privateIpAddress = staticPrivateIpAddress;
+		return (TI)this;
+	}
+
+
 }

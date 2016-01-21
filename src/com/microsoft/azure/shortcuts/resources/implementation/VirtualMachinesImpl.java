@@ -157,7 +157,6 @@ public class VirtualMachinesImpl
 		
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
-		private String privateIpAddress;
 		
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
 			super(azureVM.getId(), azureVM);
@@ -454,17 +453,6 @@ public class VirtualMachinesImpl
 		@Override
 		public VirtualMachineImpl withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface) {
 			return this.withNetworkInterfaceExisting(networkInterface.getId());
-		}
-
-		@Override
-		public VirtualMachineImpl withPrivateIpAddressDynamic() {
-			return this.withPrivateIpAddressStatic(null);
-		}
-
-		@Override
-		public VirtualMachineImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
-			this.privateIpAddress = staticPrivateIpAddress;
-			return this;
 		}
 
 

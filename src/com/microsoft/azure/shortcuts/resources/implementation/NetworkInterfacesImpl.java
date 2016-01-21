@@ -173,20 +173,6 @@ public class NetworkInterfacesImpl
 		 **************************************************************/
 
 		@Override
-		public NetworkInterfaceImpl withPrivateIpAddressDynamic() {
-			return this.withPrivateIpAddressStatic(null);
-		}
-		
-		
-		@Override
-		public NetworkInterfaceImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
-			NetworkInterfaceIpConfiguration ipConfig = getPrimaryIpConfiguration(); 
-			ipConfig.setPrivateIpAllocationMethod((staticPrivateIpAddress != null) ? IpAllocationMethod.STATIC : IpAllocationMethod.DYNAMIC);
-			ipConfig.setPrivateIpAddress(staticPrivateIpAddress);
-			return this;
-		}
-
-		@Override
 		public NetworkInterfaceImpl withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
 			return this.withPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.getId() : null);
 		}
@@ -252,6 +238,8 @@ public class NetworkInterfacesImpl
 			NetworkInterfaceIpConfiguration ipConfig = this.inner().getIpConfigurations().get(0);
 			ipConfig.setName(subnet.inner().getName());
 			ipConfig.setSubnet(subnet.inner());
+			ipConfig.setPrivateIpAllocationMethod((this.privateIpAddress != null) ? IpAllocationMethod.STATIC : IpAllocationMethod.DYNAMIC);
+			ipConfig.setPrivateIpAddress(this.privateIpAddress);
 
 			// Ensure public IP as needed
 			ensurePublicIpAddress();
