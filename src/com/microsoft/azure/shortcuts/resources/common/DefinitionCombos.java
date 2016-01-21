@@ -97,35 +97,35 @@ public interface DefinitionCombos {
 		 * @param name The name of an existing storage account to associate with this resource
 		 * @return The next stage of the resource definition
 		 */
-		R withStorageAccountExisting(String name);
+		R withExistingStorageAccount(String name);
 		
 		/**
 		 * Associates an existing storage account with this resource
 		 * @param An existing storage account to associate with this resource
 		 * @return The next stage of the resource definition
 		 */
-		R withStorageAccountExisting(StorageAccount storageAccount);
+		R withExistingStorageAccount(StorageAccount storageAccount);
 
 		/**
 		 * Associates an existing storage account with this resource
 		 * @param storageAccount An existing Azure SDK StorageAccount to associate with this resource
 		 * @return The next stage of the resource definition
 		 */
-		R withStorageAccountExisting(com.microsoft.azure.management.storage.models.StorageAccount storageAccount);
+		R withExistingStorageAccount(com.microsoft.azure.management.storage.models.StorageAccount storageAccount);
 
 		/**
 		 * Creates a new storage account to associate with this resource, in the same region and resource group as this resource
 		 * @param name The name of the storage account to create and associate with this resource
 		 * @return The next stage of the resource definition
 		 */
-		R withStorageAccountNew(String name);
+		R withNewStorageAccount(String name);
 		
 		/**
 		 * Creates a new storage account to associate with this resource, in the same region and resource group as this resource, 
 		 * and with a name derived from the name of this resource
 		 * @return The next stage of the resource definition
 		 */
-		R withStorageAccountNew();
+		R withNewStorageAccount();
 		
 
 		/**
@@ -133,7 +133,7 @@ public interface DefinitionCombos {
 		 * @param definition A provisionable definition of a storage account
 		 * @return The next stage of the resource definition
 		 */
-		R withStorageAccountNew(StorageAccount.DefinitionProvisionable definition) throws Exception;
+		R withNewStorageAccount(StorageAccount.DefinitionProvisionable definition) throws Exception;
 	}
 
 

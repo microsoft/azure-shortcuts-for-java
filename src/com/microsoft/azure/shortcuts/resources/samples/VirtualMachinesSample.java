@@ -56,7 +56,7 @@ public class VirtualMachinesSample {
     		.withAdminPassword("Abcd.1234")
     		.withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
     		.withSize(Size.Type.BASIC_A1)
-    		.withStorageAccountNew()
+    		.withNewStorageAccount()
     		.provision();
     	
     	printVM(vmWin);

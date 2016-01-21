@@ -343,38 +343,37 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
-		public VirtualMachineImpl withStorageAccountExisting(String name) {
+		public VirtualMachineImpl withExistingStorageAccount(String name) {
 			this.storageAccountId = name;
 			this.isExistingStorageAccount = true;
 			return this;
 		}
 
 		@Override
-		public VirtualMachineImpl withStorageAccountExisting(StorageAccount storageAccount) {
-			return this.withStorageAccountExisting(storageAccount.name());
+		public VirtualMachineImpl withExistingStorageAccount(StorageAccount storageAccount) {
+			return this.withExistingStorageAccount(storageAccount.name());
 		}
 
 		@Override
-		public VirtualMachineImpl withStorageAccountExisting(
-				com.microsoft.azure.management.storage.models.StorageAccount storageAccount) {
-			return this.withStorageAccountExisting(storageAccount.getName());
+		public VirtualMachineImpl withExistingStorageAccount(com.microsoft.azure.management.storage.models.StorageAccount storageAccount) {
+			return this.withExistingStorageAccount(storageAccount.getName());
 		}
 
 		@Override
-		public VirtualMachineImpl withStorageAccountNew(String name) {
+		public VirtualMachineImpl withNewStorageAccount(String name) {
 			this.storageAccountId = name;
 			this.isExistingStorageAccount = false;
 			return this;
 		}
 		
 		@Override
-		public VirtualMachineImpl withStorageAccountNew() {
-			return this.withStorageAccountNew((String)null);
+		public VirtualMachineImpl withNewStorageAccount() {
+			return this.withNewStorageAccount((String)null);
 		}
 		
 		@Override
-		public VirtualMachineImpl withStorageAccountNew(StorageAccount.DefinitionProvisionable definition) throws Exception {
-			return this.withStorageAccountExisting(definition.provision());
+		public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionProvisionable definition) throws Exception {
+			return this.withExistingStorageAccount(definition.provision());
 		}
 		
 		@Override
