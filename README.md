@@ -454,7 +454,7 @@ NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
     .withExistingNetwork(network)
     .withSubnet("subnet1")
     .withPrivateIpAddressStatic("10.0.0.5")
-    .withPublicIpAddressNew()
+    .withNewPublicIpAddress()
     .withTag("hello", "world")
     .provision();
 ```

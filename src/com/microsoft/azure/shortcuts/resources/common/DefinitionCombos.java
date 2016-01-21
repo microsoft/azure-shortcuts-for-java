@@ -257,14 +257,14 @@ public interface DefinitionCombos {
 		 * @param publicIpAddress An existing public IP address
 		 * @return The next stage of the definition
 		 */
-		R withPublicIpAddressExisting(PublicIpAddress publicIpAddress);
+		R withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
 		
 		/**
 		 * Associates a public IP address that exists in the subscription with this resource
 		 * @param publicIpAddress An existing public IP address represented by an Azure SDK object
 		 * @return The next stage of the definition
 		 */
-		R withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress);
+		R withExistingPublicIpAddress(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress);
 		
 		
 		/**
@@ -277,14 +277,14 @@ public interface DefinitionCombos {
 		 * Creates a new public IP address for this resource, in the same region and group as the resource, with an internal name and DNS label derived from the resource
 		 * @return The next stage of the definition
 		 */
-		R withPublicIpAddressNew();
+		R withNewPublicIpAddress();
 		
 		/**
 		 * Creates a new public IP address for this resource, in the same region and group as the resource, with the specified leaf domain label and an internal name derived from it
 		 * @param leafDnsLabel The leaf domain label
 		 * @return The next stage of the definition
 		 */
-		R withPublicIpAddressNew(String leafDnsLabel);
+		R withNewPublicIpAddress(String leafDnsLabel);
 	}
 	
 	

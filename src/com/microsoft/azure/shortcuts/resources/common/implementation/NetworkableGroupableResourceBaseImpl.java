@@ -80,7 +80,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	
 	// Helper to associate with an existing public IP address using its resource ID
 	@SuppressWarnings("unchecked")
-	protected TI withPublicIpAddressExisting(String resourceId) {
+	protected TI withExistingPublicIpAddress(String resourceId) {
 		this.isPublicIpAddressExisting = true;
 		this.publicIpAddressId = resourceId;
 		return (TI)this;
@@ -173,26 +173,26 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	/*****************************************************
 	 * WithPublicIpAddress implementation
 	 *****************************************************/
-	final public TI withPublicIpAddressExisting(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
-		return this.withPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.getId() : null);
+	final public TI withExistingPublicIpAddress(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
+		return this.withExistingPublicIpAddress((publicIpAddress != null) ? publicIpAddress.getId() : null);
 	}
 
-	final public TI withPublicIpAddressExisting(PublicIpAddress publicIpAddress) {
-		return this.withPublicIpAddressExisting((publicIpAddress != null) ? publicIpAddress.id() : null);
+	final public TI withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
+		return this.withExistingPublicIpAddress((publicIpAddress != null) ? publicIpAddress.id() : null);
 	}
 
-	final public TI withPublicIpAddressNew() {
-		return this.withPublicIpAddressNew(null);
+	final public TI withNewPublicIpAddress() {
+		return this.withNewPublicIpAddress(null);
 	}
 
 	@SuppressWarnings("unchecked")
-	final public TI withPublicIpAddressNew(String leafDnsLabel) {
+	final public TI withNewPublicIpAddress(String leafDnsLabel) {
 		this.isPublicIpAddressExisting = false;
 		this.publicIpAddressDns = (leafDnsLabel == null) ? null : leafDnsLabel.toLowerCase();
 		return (TI) this;
 	}
 
 	final public TI withoutPublicIpAddress() {
-		return this.withPublicIpAddressExisting((PublicIpAddress)null);
+		return this.withExistingPublicIpAddress((PublicIpAddress)null);
 	}
 }

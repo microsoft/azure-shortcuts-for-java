@@ -576,7 +576,7 @@ public class VirtualMachinesImpl
 					.withExistingNetwork(network)
 					.withSubnet(subnet.id())
 					.withPrivateIpAddressStatic(this.privateIpAddress)
-					.withPublicIpAddressExisting(pip)
+					.withExistingPublicIpAddress(pip)
 					.provision();
 				this.isExistingPrimaryNIC = true;
 				return nic;

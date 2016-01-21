@@ -88,7 +88,7 @@ public class NetworkInterfacesSample {
     		.withExistingNetwork(network)
     		.withSubnet("subnet1")
     		.withPrivateIpAddressStatic("10.0.0.5")
-    		.withPublicIpAddressNew()
+    		.withNewPublicIpAddress()
     		.withTag("hello", "world")
     		.provision();
     		
