@@ -66,7 +66,7 @@ public class VirtualMachinesSample {
 		// Add a Windows VM to the same service deployment
 		final String vmNameWin = "wm" + timeStamp;
 		azure.virtualMachines().define(vmNameWin)
-			.withCloudServiceExisting(vmName)
+			.withExistingCloudService(vmName)
 			.withSize("Small")
 			.withAdminUsername("marcins")
 			.withAdminPassword("Abcd.1234")

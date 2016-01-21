@@ -83,10 +83,10 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring an existing cloud service to be specified
 	 */
-	public interface DefinitionWithCloudServiceExisting<T> {
-		T withCloudServiceExisting(String serviceName);
-		T withCloudServiceExisting(CloudService cloudService);
-		T withCloudServiceExisting(HostedService hostedService);
+	public interface DefinitionWithExistingCloudService<T> {
+		T withExistingCloudService(String serviceName);
+		T withExistingCloudService(CloudService cloudService);
+		T withExistingCloudService(HostedService hostedService);
 	}
 	
 	/**
@@ -95,7 +95,7 @@ public interface VirtualMachine extends
 	public interface DefinitionBlank extends 
 		DefinitionWithRegion<DefinitionWithSize>,
 		DefinitionWithExistingNetwork<DefinitionWithSize>,
-		DefinitionWithCloudServiceExisting<DefinitionWithSize> {
+		DefinitionWithExistingCloudService<DefinitionWithSize> {
 	}
 
 	

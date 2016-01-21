@@ -554,20 +554,20 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
-		public VirtualMachineImpl withCloudServiceExisting(String name) {
+		public VirtualMachineImpl withExistingCloudService(String name) {
 			this.setId(VirtualMachineId.withServiceName(name.toLowerCase(), this.id()));			
 			this.isExistingCloudService = true;
 			return this;
 		}
 		
 		@Override
-		public DefinitionWithSize withCloudServiceExisting(CloudService cloudService) {
-			return this.withCloudServiceExisting(cloudService.id());
+		public DefinitionWithSize withExistingCloudService(CloudService cloudService) {
+			return this.withExistingCloudService(cloudService.id());
 		}
 
 		@Override
-		public DefinitionWithSize withCloudServiceExisting(HostedService hostedService) {
-			return this.withCloudServiceExisting(hostedService.getServiceName());
+		public DefinitionWithSize withExistingCloudService(HostedService hostedService) {
+			return this.withExistingCloudService(hostedService.getServiceName());
 		}
 
 		@Override

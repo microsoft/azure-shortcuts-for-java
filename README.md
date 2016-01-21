@@ -210,7 +210,7 @@ azure.virtualMachines().define("mylinuxvm")
 
 ```java
 azure.virtualMachines().define("mywinvm")
-	.withCloudServiceExisting("mycloudservice")
+	.withExistingCloudService("mycloudservice")
 	.withSize("Small")
 	.withAdminUsername("test")
 	.withAdminPassword("Xyz.098")
