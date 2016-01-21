@@ -141,9 +141,9 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring an new cloud service to be specified
 	 */
-	public interface DefinitionWithCloudServiceNew<T> {
-		T withCloudServiceNew(String name);
-		T withCloudServiceNew(CloudService.DefinitionProvisionable cloudServiceDefinition);
+	public interface DefinitionWithNewCloudService<T> {
+		T withNewCloudService(String name);
+		T withNewCloudService(CloudService.DefinitionProvisionable cloudServiceDefinition);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public interface VirtualMachine extends
 		DefinitionWithDeployment<DefinitionProvisionable>,
 		DefinitionWithDeploymentLabel<DefinitionProvisionable>,
 		DefinitionWithExistingStorageAccount<DefinitionProvisionable>,
-		DefinitionWithCloudServiceNew<DefinitionProvisionable>,
+		DefinitionWithNewCloudService<DefinitionProvisionable>,
 		DefinitionWithSubnet<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 	}

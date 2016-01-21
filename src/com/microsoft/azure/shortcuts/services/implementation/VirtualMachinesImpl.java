@@ -571,14 +571,14 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withCloudServiceNew(String name) {
+		public VirtualMachineImpl withNewCloudService(String name) {
 			this.setId(VirtualMachineId.withServiceName(name.toLowerCase(), this.id()));			
 			this.isExistingCloudService = false;
 			return this;
 		}
 
 		@Override
-		public DefinitionProvisionable withCloudServiceNew(CloudService.DefinitionProvisionable cloudServiceDefinition) {
+		public DefinitionProvisionable withNewCloudService(CloudService.DefinitionProvisionable cloudServiceDefinition) {
 			this.cloudServiceDefinition = cloudServiceDefinition;
 			this.isExistingCloudService = false;
 			return this;

@@ -196,7 +196,7 @@ azure.virtualMachines().define("mylinuxvm")
 	.withAdminPassword("Xyz.098")
 	.withLinuxImage("b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB")
 	.withTcpEndpoint(22)
-	.withCloudServiceNew("mycloudservice")
+	.withNewCloudService("mycloudservice")
 	.withSubnet("mysubnet")
 	.provision();
 ```
