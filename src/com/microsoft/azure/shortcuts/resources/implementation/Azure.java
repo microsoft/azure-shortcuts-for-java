@@ -88,6 +88,10 @@ public class Azure {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
     }
     
+    public static Azure authenticate(String authenticationFilePath) throws Exception {
+    	return authenticate(authenticationFilePath, null);
+    }
+    
     public static Azure authenticate(String authenticationFilePath, String subscriptionId) throws Exception {
     	return new Azure(authenticationFilePath, subscriptionId);
     }

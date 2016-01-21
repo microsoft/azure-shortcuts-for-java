@@ -33,7 +33,7 @@ import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 public class VirtualMachinesSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
+            Azure azure = Azure.authenticate("my.azureauth");
             test(azure);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,7 +51,7 @@ public class VirtualMachinesSample {
     		.withGroupNew(groupName)
     		.withNetworkNew("10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
-    		.withPublicIpAddressNew()
+    		.withPublicIpAddressNew("myTestDnsLabel")
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
