@@ -591,18 +591,18 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withStorageAccountExisting(String name) {
+		public VirtualMachineImpl withExistingStorageAccount(String name) {
 			this.storageAccountName = name.toLowerCase();
 			return this;
 		}
 
 		@Override
-		public VirtualMachineImpl withStorageAccountExisting(StorageAccount account) {
-			return this.withStorageAccountExisting(account.id());
+		public VirtualMachineImpl withExistingStorageAccount(StorageAccount account) {
+			return this.withExistingStorageAccount(account.id());
 		}
 
 		@Override
-		public DefinitionProvisionable withStorageAccountExisting(
+		public DefinitionProvisionable withExistingStorageAccount(
 				com.microsoft.windowsazure.management.storage.models.StorageAccount account) {
 			this.storageAccountName = account.getName();
 			return this;
