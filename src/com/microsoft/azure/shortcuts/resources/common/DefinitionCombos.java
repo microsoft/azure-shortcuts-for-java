@@ -146,49 +146,49 @@ public interface DefinitionCombos {
 		 * @param id The resource ID of an existing availability set
 		 * @return The next stage of the resource definition
 		 */
-		R withAvailabilitySetExisting(String id);
+		R withExistingAvailabilitySet(String id);
 
 		/**
 		 * Associates an existing availability set with this resource
 		 * @param availabilitySet An existing availability set
 		 * @return The next stage of the resource definition
 		 */
-		R withAvailabilitySetExisting(AvailabilitySet availabilitySet);
+		R withExistingAvailabilitySet(AvailabilitySet availabilitySet);
 		
 		/**
 		 * Associates an existing availability set with this resource
 		 * @param uri The URI of an existing availability set
 		 * @return The next stage of the resource definition
 		 */
-		R withAvailabilitySetExisting(URI uri);
+		R withExistingAvailabilitySet(URI uri);
 		
 		/**
 		 * Associates an existing availability set with this resource
 		 * @param availabilitySet An existing AvailabilitySet from the Azure SDK API 
 		 * @return The next stage of the resource definition
 		 */
-		R withAvailabilitySetExisting(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
+		R withExistingAvailabilitySet(com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet);
 		
 		/**
 		 * Creates a new availability set to associate with this resource, in the same region and resource group
 		 * @param name The name of the new availability set
 		 * @return The next stage of the resource definition
 		 */
-		R withAvailabilitySetNew(String name);
+		R withNewAvailabilitySet(String name);
 		
 		/**
 		 * Creates a new availability set to associate with this resource, in the same region and resource group, 
 		 * and with a name derived from the name of this resource
 		 * @return The next stage of the resource definition
 		 */
-		R withAvailabilitySetNew();
+		R withNewAvailabilitySet();
 		
 		/**
 		 * Creates a new availability set to associate with this resource, based on the provided definition
 		 * @param definition A provisionable definition for a new availability set
 		 * @return The next stage of the resource definition
 		 */
-		R withAvailabilitySetNew(AvailabilitySet.DefinitionProvisionable definition) throws Exception;
+		R withNewAvailabilitySet(AvailabilitySet.DefinitionProvisionable definition) throws Exception;
 	}
 
 	/**

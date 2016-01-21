@@ -377,7 +377,7 @@ public class VirtualMachinesImpl
 		}
 		
 		@Override
-		public VirtualMachineImpl withAvailabilitySetExisting(String id) {
+		public VirtualMachineImpl withExistingAvailabilitySet(String id) {
 			this.availabilitySetId = id;
 			this.isExistingAvailabilitySet = true;
 			AvailabilitySetReference availabilitySetRef = this.inner().getAvailabilitySetReference();
@@ -393,38 +393,38 @@ public class VirtualMachinesImpl
 
 
 		@Override
-		public VirtualMachineImpl withAvailabilitySetExisting(AvailabilitySet availabilitySet) {
-			return this.withAvailabilitySetExisting(availabilitySet.id());
+		public VirtualMachineImpl withExistingAvailabilitySet(AvailabilitySet availabilitySet) {
+			return this.withExistingAvailabilitySet(availabilitySet.id());
 		}
 
 
 		@Override
-		public VirtualMachineImpl withAvailabilitySetExisting(
+		public VirtualMachineImpl withExistingAvailabilitySet(
 				com.microsoft.azure.management.compute.models.AvailabilitySet availabilitySet) {
-			return this.withAvailabilitySetExisting(availabilitySet.getId());
+			return this.withExistingAvailabilitySet(availabilitySet.getId());
 		}
 
 		
 		@Override
-		public VirtualMachineImpl withAvailabilitySetExisting(URI uri) {
-			return this.withAvailabilitySetExisting(uri.toString());
+		public VirtualMachineImpl withExistingAvailabilitySet(URI uri) {
+			return this.withExistingAvailabilitySet(uri.toString());
 		}
 
 		@Override
-		public VirtualMachineImpl withAvailabilitySetNew(String name) {
+		public VirtualMachineImpl withNewAvailabilitySet(String name) {
 			this.isExistingAvailabilitySet = false;
 			this.availabilitySetId = name;
 			return this;
 		}
 
 		@Override
-		public VirtualMachineImpl withAvailabilitySetNew() {
-			return this.withAvailabilitySetNew((String)null);
+		public VirtualMachineImpl withNewAvailabilitySet() {
+			return this.withNewAvailabilitySet((String)null);
 		}
 
 		@Override
-		public VirtualMachineImpl withAvailabilitySetNew(com.microsoft.azure.shortcuts.resources.AvailabilitySet.DefinitionProvisionable definition) throws Exception {
-			return this.withAvailabilitySetExisting(definition.provision());
+		public VirtualMachineImpl withNewAvailabilitySet(com.microsoft.azure.shortcuts.resources.AvailabilitySet.DefinitionProvisionable definition) throws Exception {
+			return this.withExistingAvailabilitySet(definition.provision());
 		}
 
 		@Override
@@ -487,7 +487,7 @@ public class VirtualMachinesImpl
 			// Ensure availability set (optional)
 			AvailabilitySet set = this.ensureAvailabilitySet(group.name());
 			if(set != null) {
-				this.withAvailabilitySetExisting(set);
+				this.withExistingAvailabilitySet(set);
 			}
 			
 			// Ensure default computer name
