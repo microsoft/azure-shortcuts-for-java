@@ -194,33 +194,33 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to create a primary network interface associated with this resource
 	 */
-	public interface WithNetworkInterfaceExisting<R> {
+	public interface WithExistingNetworkInterface<R> {
 		/**
 		 * Selects an existing network interface as the primary NIC for this resource
 		 * @param resourceId The resource ID of an existing network interface
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceExisting(String resourceId);
+		R withExistingNetworkInterface(String resourceId);
 		
 		/**
 		 * Selects an existing network interface as the primary NIC for this resource
 		 * @param networkInterface An existing network interface
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceExisting(NetworkInterface networkInterface);
+		R withExistingNetworkInterface(NetworkInterface networkInterface);
 		
 		/**
 		 * Selects an existing network interface as the primary NIC for this resource
 		 * @param networkInterface An existing Azure SDK network interface object
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface);		
+		R withExistingNetworkInterface(com.microsoft.azure.management.network.models.NetworkInterface networkInterface);		
 	}
 	
 	/**
 	 * A resource definition allowing to associate a primary network interface with this resource
 	 */
-	public interface WithNetworkInterfaceNew<R> {
+	public interface WithNewNetworkInterface<R> {
 		/**
 		 * Creates a new network interface to associate with this resource as its primary NIC, in the same region and group, 
 		 * using the provided name, within the provided existing subnet, with dynamic private IP allocation enabled
@@ -228,7 +228,7 @@ public interface DefinitionCombos {
 		 * @param subnet An existing subnet
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceNew(String name, Network.Subnet subnet);
+		R withNewNetworkInterface(String name, Network.Subnet subnet);
 		
 		/**
 		 * Creates a new network interface to associate with this resource as its primary NIC, in the same region and group, 
@@ -236,7 +236,7 @@ public interface DefinitionCombos {
 		 * @param subnet
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceNew(Network.Subnet subnet);
+		R withNewNetworkInterface(Network.Subnet subnet);
 		
 		/**
 		 * Creates a network interface to associate with this resource as its primary NIC, in the same region and group, 
@@ -244,7 +244,7 @@ public interface DefinitionCombos {
 		 * with dynamic private IP allocation enabled
 		 * @return The next stage of the resource definition
 		 */
-		R withNetworkInterfaceNew();
+		R withNewNetworkInterface();
 	}
 
 	

@@ -435,7 +435,7 @@ public class VirtualMachinesImpl
 		
 		
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceExisting(String resourceId) {
+		public VirtualMachineImpl withExistingNetworkInterface(String resourceId) {
 			NetworkInterfaceReference nicref = new NetworkInterfaceReference();
 			for(NetworkInterfaceReference n : this.inner().getNetworkProfile().getNetworkInterfaces()) {
 				n.setPrimary(false);
@@ -447,13 +447,13 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceExisting(NetworkInterface networkInterface) {
-			return this.withNetworkInterfaceExisting(networkInterface.id());
+		public VirtualMachineImpl withExistingNetworkInterface(NetworkInterface networkInterface) {
+			return this.withExistingNetworkInterface(networkInterface.id());
 		}
 		
 		@Override
-		public VirtualMachineImpl withNetworkInterfaceExisting(com.microsoft.azure.management.network.models.NetworkInterface networkInterface) {
-			return this.withNetworkInterfaceExisting(networkInterface.getId());
+		public VirtualMachineImpl withExistingNetworkInterface(com.microsoft.azure.management.network.models.NetworkInterface networkInterface) {
+			return this.withExistingNetworkInterface(networkInterface.getId());
 		}
 
 		
@@ -481,7 +481,7 @@ public class VirtualMachinesImpl
 			// Ensure primary NIC
 			NetworkInterface nic = this.ensureNetworkInterface(group.name(), network, subnet, pip);
 			if(nic != null) {
-				this.withNetworkInterfaceExisting(nic);
+				this.withExistingNetworkInterface(nic);
 			}
 			
 			// Ensure availability set (optional)

@@ -81,7 +81,7 @@ public interface VirtualMachine extends
 	interface DefinitionWithNetworking extends 
 		DefinitionCombos.WithNewNetwork<DefinitionWithPrivateIp>,
 		DefinitionCombos.WithExistingNetwork<DefinitionWithSubnet>,
-		DefinitionCombos.WithNetworkInterfaceExisting<DefinitionWithAdminUsername> {}
+		DefinitionCombos.WithExistingNetworkInterface<DefinitionWithAdminUsername> {}
 	
 
 	/**
