@@ -46,10 +46,11 @@ public class VirtualMachinesSample {
     	String deploymentId = String.valueOf(System.currentTimeMillis());
     	String groupName = "group" + deploymentId;
 
-    	azure.virtualMachines().define("vm" + deploymentId)
+    	VirtualMachine vmWin = azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withGroupNew(groupName)
     		.withNetworkNew("10.0.0.0/28")
+    		.withPrivateIpAddressDynamic()
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")

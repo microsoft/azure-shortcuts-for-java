@@ -77,7 +77,7 @@ public interface VirtualMachine extends
 	 * A virtual machine definition allowing the networking to be specified
 	 */
 	interface DefinitionWithNetworking extends 
-		DefinitionCombos.WithNetworkNew<DefinitionWithAdminUsername>,
+		DefinitionCombos.WithNetworkNew<DefinitionWithPrivateIp>,
 		DefinitionCombos.WithNetworkExisting<DefinitionWithSubnet>,
 		DefinitionCombos.WithNetworkInterfaceExisting<DefinitionWithAdminUsername> {}
 	
