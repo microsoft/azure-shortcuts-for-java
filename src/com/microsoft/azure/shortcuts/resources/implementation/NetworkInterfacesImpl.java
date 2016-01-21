@@ -28,13 +28,12 @@ import java.util.TreeMap;
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.management.network.models.ResourceId;
-import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.NetworkableGroupableResourceBaseImpl;
 
 
 public class NetworkInterfacesImpl 
@@ -97,7 +96,7 @@ public class NetworkInterfacesImpl
 	 ***************************************************************/
 	class NetworkInterfaceImpl 
 		extends 
-			GroupableResourceBaseImpl<
+			NetworkableGroupableResourceBaseImpl<
 				NetworkInterface, 
 				com.microsoft.azure.management.network.models.NetworkInterface,
 				NetworkInterfaceImpl>
@@ -117,13 +116,7 @@ public class NetworkInterfacesImpl
 
 		private boolean isPublicIpAddressExisting;
 		private String publicIpAddressDns;
-		
-		private boolean isNetworkExisting;
-		private String networkId;
-		private String addressSpace;
-		
-		private String subnetId;
-
+				
 		/***********************************************************
 		 * Helpers
 		 ***********************************************************/
@@ -148,40 +141,6 @@ public class NetworkInterfacesImpl
 					.provision();
 				this.isPublicIpAddressExisting = true;
 				this.withPublicIpAddressExisting(pip.id());
-			}
-		}
-		
-		
-		private Network.Subnet ensureSubnet(Network network) throws Exception {
-			if(network == null) {
-				return null;
-			} else if(this.subnetId != null) {
-				return network.subnets(this.subnetId);
-			} else {
-				// If no subnet specified, return the first one
-				return network.subnets().values().iterator().next();
-			}
-		}
-		
-		
-		//TODO Remove duplication with VirtualMachineImpl's verion
-		private Network ensureNetwork() throws Exception {
-			if(!this.isNetworkExisting) {
-				// Create a new virtual network
-				if(this.networkId == null) {
-					// Generate a name if needed
-					this.networkId = this.name() + "net";
-				}
-		
-				Network network = azure.networks().define(this.networkId)
-					.withRegion(this.region())
-					.withGroupExisting(groupName)
-					.withAddressSpace(this.addressSpace)
-					.provision();
-				this.isNetworkExisting = true;
-				return network;
-			} else {
-				return azure.networks(this.networkId);
 			}
 		}
 		
@@ -268,57 +227,7 @@ public class NetworkInterfacesImpl
 			return this.withPublicIpAddressExisting((PublicIpAddress)null);
 		}
 		
-		@Override
-		public NetworkInterfaceImpl withNetworkNew(Network.DefinitionProvisionable networkDefinition) throws Exception {
-			return this.withNetworkExisting(networkDefinition.provision());
-		}
 
-		@Override
-		public NetworkInterfaceImpl withNetworkNew(String name, String addressSpace) {
-			this.isNetworkExisting = false;
-			this.networkId = name;
-			this.addressSpace = addressSpace;
-			return this;
-		}
-
-		@Override
-		public NetworkInterfaceImpl withNetworkNew(String addressSpace) {
-			return this.withNetworkNew(null, addressSpace);
-		}
-
-		@Override
-		public NetworkInterfaceImpl withNetworkExisting(String id) {
-			this.isNetworkExisting = true;
-			this.networkId = id;
-			return this;
-		}
-
-		@Override
-		public NetworkInterfaceImpl withNetworkExisting(Network network) {
-			if(network != null) {
-				return this.withNetworkExisting(network.id());
-			} else {
-				return null;
-			}
-		}
-
-
-		@Override
-		public NetworkInterfaceImpl withNetworkExisting(VirtualNetwork network) {
-			if(network != null) {
-				return this.withNetworkExisting(network.getId());
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public NetworkInterfaceImpl withSubnet(String subnetId) {
-			this.subnetId = subnetId;
-			return this;
-		}
-
-		
 		/************************************************************
 		 * Verbs
 		 ************************************************************/
@@ -334,7 +243,7 @@ public class NetworkInterfacesImpl
 			ensureGroup(azure);
 		
 			// Ensure virtual network
-			Network network = ensureNetwork();
+			Network network = ensureNetwork(azure);
 			
 			// Ensure subnet
 			Network.Subnet subnet = ensureSubnet(network);

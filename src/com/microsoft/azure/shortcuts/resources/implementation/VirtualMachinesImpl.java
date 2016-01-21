@@ -41,7 +41,6 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -49,8 +48,8 @@ import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.NetworkableGroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
@@ -134,7 +133,7 @@ public class VirtualMachinesImpl
 	 ***************************************************/
 	class VirtualMachineImpl
 		extends 
-			GroupableResourceBaseImpl<
+			NetworkableGroupableResourceBaseImpl<
 				VirtualMachine, 
 				com.microsoft.azure.management.compute.models.VirtualMachine,
 				VirtualMachineImpl>
@@ -156,13 +155,8 @@ public class VirtualMachinesImpl
 		private boolean isExistingAvailabilitySet;
 		private String availabilitySetId;
 		
-		private boolean isExistingNetwork;
-		private String networkId;
-		
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
-		private String nicSubnetId;
-		private String networkCidr;
 		private String privateIpAddress;
 		
 		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
@@ -473,48 +467,7 @@ public class VirtualMachinesImpl
 			return this;
 		}
 
-		@Override
-		public VirtualMachineImpl withNetworkExisting(String id) {
-			this.isExistingNetwork = true;
-			this.networkId = id;
-			return this;
-		}
 
-		@Override
-		public VirtualMachineImpl withNetworkExisting(Network network) {
-			return this.withNetworkExisting(network.id());
-		}
-
-		@Override
-		public VirtualMachineImpl withNetworkExisting(VirtualNetwork network) {
-			return this.withNetworkExisting(network.getId());
-		}
-
-		@Override
-		public VirtualMachineImpl withNetworkNew(String name, String addressSpace) {
-			this.isExistingNetwork = false;
-			this.networkId = name;
-			this.networkCidr = addressSpace;
-			return this;
-		}
-
-		@Override
-		public VirtualMachineImpl withNetworkNew(
-				com.microsoft.azure.shortcuts.resources.Network.DefinitionProvisionable networkDefinition) throws Exception {
-			return this.withNetworkExisting(networkDefinition.provision());
-		}
-
-		@Override
-		public VirtualMachineImpl withNetworkNew(String addressSpace) {
-			return this.withNetworkNew((String)null, addressSpace);
-		}
-
-		@Override
-		public VirtualMachineImpl withSubnet(String id) {
-			this.nicSubnetId = id; 
-			return this;
-		}
-		
 		/*******************************************************
 		 * Verbs
 		 *******************************************************/
@@ -528,7 +481,7 @@ public class VirtualMachinesImpl
 			StorageAccount storageAccount = this.ensureStorageAccount(group.name());
 
 			// Ensure virtual network
-			Network network = this.ensureNetwork(group.name());
+			Network network = ensureNetwork(azure);
 			
 			// Ensure subnet
 			Network.Subnet subnet = ensureSubnet(network);
@@ -593,27 +546,6 @@ public class VirtualMachinesImpl
 		}
 		
 		
-		// Gets or creates if needed the specified virtual network
-		private Network ensureNetwork(String groupName) throws Exception {
-			if(!this.isExistingNetwork) {
-				// Create a new virtual network
-				if(this.networkId == null) {
-					// Generate a name if needed
-					this.networkId = this.name() + "net";
-				}
-		
-				Network network = azure.networks().define(this.networkId)
-					.withRegion(this.region())
-					.withGroupExisting(groupName)
-					.withAddressSpace(this.networkCidr)
-					.provision();
-				this.isExistingNetwork = true;
-				return network;
-			} else {
-				return azure.networks(this.networkId);
-			}
-		}
-		
 		// Gets or creates if needed the specified availability set
 		private AvailabilitySet ensureAvailabilitySet(String groupName) throws Exception {
 			if(!this.isExistingAvailabilitySet) {
@@ -636,18 +568,7 @@ public class VirtualMachinesImpl
 			}
 		}
 		
-		private Network.Subnet ensureSubnet(Network network) throws Exception {
-			if(network == null) {
-				return null;
-			} else if(this.nicSubnetId != null) {
-				return network.subnets(this.nicSubnetId);
-			} else {
-				// If no subnet specified, return the first one
-				return network.subnets().values().iterator().next();
-			}
-		}
-		
-		
+
 		// Gets or creates if needed the specified network interface
 		private NetworkInterface ensureNetworkInterface(String groupName, Network network, Network.Subnet subnet) throws Exception {
 			if(!this.isExistingPrimaryNIC) {
