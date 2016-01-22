@@ -116,7 +116,6 @@ Further simplification of the authentication process is a subject of active inve
 * [Virtual Networks](#virtual-networks)
 * [Network Interfaces](#network-interfaces)
 * [Public IP Addresses](#public-ip-addresses)
-* [Cloud Services](#cloud-services)
 * [Storage Accounts](#storage-accounts)
 * [Regions](#regions)
 * [Resource Groups](#resource-groups)
