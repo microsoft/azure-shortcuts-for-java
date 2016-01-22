@@ -130,14 +130,6 @@ Further simplification of the authentication process is a subject of active inve
 
 This is the first step for all the other examples.:
 
-> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-```java
-String publishSettingsPath = "<your file>.publishsettings";
-String subscriptionId = "<subscription-GUID>";
-final Azure azure = new Azure(publishSettingsPath, subscriptionId);
-```
-
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
@@ -164,9 +156,19 @@ Azure azure = Azure.authenticate(authFilePath, subscriptionId);
 
 You can just save a file with these contents and use it as your "auth-file" in the example above.
 
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+String publishSettingsPath = "<your file>.publishsettings";
+String subscriptionId = "<subscription-GUID>";
+final Azure azure = new Azure(publishSettingsPath, subscriptionId);
+```
+
 ### Virtual Machines
 
 #### Creating a Linux VM in a new, default cloud service with SSH set up
+
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -181,10 +183,10 @@ azure.virtualMachines().define("mylinuxvm")
 	.provision();
 ```
 
-> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-
 
 #### Creating a Linux VM in a new cloud service in an existing virtual network
+
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages 
 
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -201,23 +203,8 @@ azure.virtualMachines().define("mylinuxvm")
 	.provision();
 ```
 
-> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages 
-
 
 #### Creating a Windows VM in an existing cloud service
-
-> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-```java
-azure.virtualMachines().define("mywinvm")
-	.withExistingCloudService("mycloudservice")
-	.withSize("Small")
-	.withAdminUsername("test")
-	.withAdminPassword("Xyz.098")
-	.withWindowsImage("a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201504.01-en.us-127GB.vhd")
-	.withTcpEndpoint(3389)
-	.provision();
-```
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -254,16 +241,22 @@ Creating a virtual machine requires a storage account to keep the VHD in. A new 
   
 Any such related resource that is created in the process of provisioning a virtual machine will be provisioned in the same resource group and region as the virtual machine.
 
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+azure.virtualMachines().define("mywinvm")
+	.withExistingCloudService("mycloudservice")
+	.withSize("Small")
+	.withAdminUsername("test")
+	.withAdminPassword("Xyz.098")
+	.withWindowsImage("a699494373c04fc0bc8f2bb1389d6106__Windows-Server-2012-R2-201504.01-en.us-127GB.vhd")
+	.withTcpEndpoint(3389)
+	.provision();
+```
 
 #### Listing VMs
 
 All virtual machine names (or ids) in a subscription: 
-
-> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-```java
-List<String> vmNames = azure.virtualMachines().names();
-```
 
 > *ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -277,8 +270,25 @@ Map<String, VirtualMachine> vms = azure.virtualMachines().list("<group-name>");
 System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
 ```
 
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+List<String> vmNames = azure.virtualMachines().names();
+```
+
 
 #### Getting information about a VM
+
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+Using the resource id:
+```java
+VirtualMachine vm = azure.virtualMachines("<resource-id>");
+```
+Using the group name and virtual machine name:
+```java
+VirtualMachine vm = azure.virtualMachines("<group-name>", "<vm-name>");
+```
 
 >*ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -301,27 +311,7 @@ System.out.println(String.format("Reading information about vm: %s\n"
 ));
 ```
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-
-Using the resource id:
-```java
-VirtualMachine vm = azure.virtualMachines("<resource-id>");
-```
-Using the group name and virtual machine name:
-```java
-VirtualMachine vm = azure.virtualMachines("<group-name>", "<vm-name>");
-```
-
 #### Listing available VM sizes
-
-> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-```java
-boolean supportingVM = true;
-boolean supportingCloudServices = false;
-
-List<String> sizeNames = azure.sizes().list(supportingVM, supportingCloudServices);
-```
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -334,7 +324,18 @@ Therefore, to get the names only:
 Set<String> sizeNames = azure.sizes().list("westus").keySet();
 ```
 
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+boolean supportingVM = true;
+boolean supportingCloudServices = false;
+
+List<String> sizeNames = azure.sizes().list(supportingVM, supportingCloudServices);
+```
+
 #### Listing available OS image names
+
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -347,31 +348,9 @@ OS image names only:
 Set<String> osImageNames = azure.osImages().list().keySet();
 ```
 
-> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-
-
 ### Virtual Networks
 
 #### Creating a virtual network
-
-> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-With an explicitly defined address space and a default subnet containing the entirety of the IP address space:
-```java
-azure.networks().define("mynetwork")
-	.withRegion("West US")	
-	.withAddressSpace("10.0.0.0/29")
-	.provision();
-```
-With multiple, explicitly defined subnets:
-```java
-azure.networks().define("mynetwork")
-	.withRegion("US West")
-	.withAddressSpace("10.0.0.0/28")
-	.withSubnet("Foo", "10.0.0.0/29")
-	.withSubnet("Bar", "10.0.0.8/29")
-	.provision();
-```
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -394,14 +373,26 @@ azure.networks().define(newNetworkName + "2")
     .provision();
 ```
 
-#### Listing virtual networks 
-
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
-All network names in a subscription:
+With an explicitly defined address space and a default subnet containing the entirety of the IP address space:
 ```java
-List<String> virtualNetworkNames = azure.networks().names();
+azure.networks().define("mynetwork")
+	.withRegion("West US")	
+	.withAddressSpace("10.0.0.0/29")
+	.provision();
 ```
+With multiple, explicitly defined subnets:
+```java
+azure.networks().define("mynetwork")
+	.withRegion("US West")
+	.withAddressSpace("10.0.0.0/28")
+	.withSubnet("Foo", "10.0.0.0/29")
+	.withSubnet("Bar", "10.0.0.8/29")
+	.provision();
+```
+
+#### Listing virtual networks 
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -418,14 +409,14 @@ Networks in a specific resource group:
 Map<String, Network> networks = azure.networks().list("<resource-group-name">);
 ```
 
-#### Getting information about a virtual network
-
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
-By providing the virtual network name:
+All network names in a subscription:
 ```java
-Network network = azure.networks("<network-name>");
+List<String> virtualNetworkNames = azure.networks().names();
 ```
+
+#### Getting information about a virtual network
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -441,14 +432,14 @@ The subnets of the virtual network are available from `network.subnets()`.
 The IP addresses of DNS servers associated with the virtual network are available from `network.dnsServerIPs()`.
 The address spaces (in CIDR format) of the virtual network are available from `network.addressSpaces()`.
 
-
-#### Deleting a virtual network
-
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
+By providing the virtual network name:
 ```java
-azure.networks().delete("mynetwork");
+Network network = azure.networks("<network-name>");
 ```
+
+#### Deleting a virtual network
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -461,6 +452,12 @@ azure.networks().delete("<resource-group-name>", "<network-name>");
 azure.networks("<network-resource-id>").delete();
 
 azure.networks("<resource-group-name>", "<network-name>").delete();
+```
+
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+azure.networks().delete("mynetwork");
 ```
 
 ### Network Interfaces
@@ -652,14 +649,6 @@ azure.cloudServices().delete(serviceName);
 
 #### Creating a storage account
 
-> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-```java
-azure.storageAccounts().define("mystorage")
-	.withRegion("West US")
-	.provision();
-```
-
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 With the required minimum set of input parameters:
@@ -677,10 +666,18 @@ azure.storageAccounts().define("<new-storage-account-name>")
     .provision();
 ```
 
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+azure.storageAccounts().define("mystorage")
+	.withRegion("West US")
+	.provision();
+```
+
 #### Listing storage accounts in a subscription
 
+> *ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 As a map, indexed by name:
 ```java
@@ -700,6 +697,8 @@ Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list("<res
 
 #### Updating a storage account
 
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
@@ -709,15 +708,7 @@ azure.storageAccounts().update("<storage-account-name>")
 	.apply();
 ```
 
-> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-
 #### Getting information about a storage account
-
-> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
-
-```java
-StorageAccount storageAccount = azure.storageAccounts(accountName);
-```
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -730,13 +721,13 @@ StorageAccount storageAccount = azure.storageAccounts("<storage-account-id>");
 StorageAccount storageAccount = azure.storageAccounts("<group-name>", "<storage-account-name>");
 ```
 
-#### Deleting a storage account
-
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
 ```java
-azure.storageAccounts().delete("mystorage");
+StorageAccount storageAccount = azure.storageAccounts(accountName);
 ```
+
+#### Deleting a storage account
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -751,9 +742,23 @@ azure.storageAccounts("<storage-account-resource-id>").delete();
 azure.storageAccounts("<resource-group-name>", "<storage-account-name>").delete();
 ```
 
+> *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
+
+```java
+azure.storageAccounts().delete("mystorage");
+```
+
 ### Regions
 
 #### Listing regions
+
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+The `Region` enum provides the list (as constants) of all the possible Azure locations.
+
+```java
+Region[] regions = Region.values();
+```
 
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -766,15 +771,9 @@ Listing region names supporting a specific capability from the `LocationsAvailab
 Set<String> regionNames = azure.regions().list(LocationAvailableServiceNames.HIGHMEMORY).keySet();    	
 ```
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-
-The `Region` enum provides the list (as constants) of all the possible Azure locations.
-
-```java
-Region[] regions = Region.values();
-```
-
 #### Getting information about a specific region
+
+> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
 > *ASM*: import from `com.microsoft.azure.shortcuts.services.*` packages
 
@@ -784,9 +783,6 @@ Region region = azure.regions("West US");
 List<String> availableServices = region.availableServices();
 List<String> availableVMSizes = region.availableVirtualMachineSizes();
 ```
-
-> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
-
 
 ### Resource Groups
 
