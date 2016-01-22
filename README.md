@@ -44,13 +44,13 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 ## Scope
 
-Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability... But the general principles this project aspires to follow rigorously are *"Documentation is code"*.
+Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability. But the general principles this project aspires to follow rigorously are *"Documentation is code"*.
 
 There are no JavaDocs (yet). Someday there will be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense". So expect the JavaDocs to be rather minimalistic.
 
 ## Programming patterns 
 
-If you skip over this section and jump directly to the [examples](#examples), chances are it will just make sense. But if you'd like to learn more about the design approach in the abstract, read on:
+If you skip over this section and jump directly to the [examples](#examples), chances are it will "just make sense". But if you'd like to learn more about the design approach in the abstract, read on:
 
 The key design principles behind the shortcuts API are: to be **intuitive, succint, consistent, and preventing you from winding up in an invalid state**.
 
@@ -64,7 +64,7 @@ In more detail:
 
 1. start with the "collection" of those objects hanging off as a member of the `Azure` client instance object (e.g. `azure.networks()`), 
 2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
-3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the offered choices. 
+3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the possible choices.
 3. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
  
 ### Updating existing entities
@@ -219,7 +219,40 @@ azure.virtualMachines().define("mywinvm")
 	.provision();
 ```
 
-> :triangular_flag_on_post: **TODO**: *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+There are many variations possible of the following minimalistic approach:
+ 
+```java
+VirtualMachine vmWin = azure.virtualMachines().define("<vm-name>")
+	.withRegion(Region.US_WEST)
+    .withNewGroup("<new-group-name>")
+    .withNewNetwork("10.0.0.0/28")
+    .withPrivateIpAddressDynamic()
+    .withNewPublicIpAddress("<new-domain-label>")
+    .withAdminUsername("<admin-user-name>")
+    .withAdminPassword("<password>")
+    .withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
+    .withSize(Size.Type.BASIC_A1)
+    .withNewStorageAccount()
+    .provision();
+```		
+
+As a shortcut, this approach combines the provisioning or selection of the related required resources into one statement. 
+
+For example, a new group can be provisioned for the virtual machine (`.withNewGroup(...)`) or an existing one can be selected (`.withExistingGroup(...)`). 
+
+Similarly, a new virtual network can be provisioned (`.withNewNetwork(...)`) or an existing one can be used (`.withExistingNetwork(...)`).
+
+The private IP within the virtual network can be either dynamically allocated (`.withPrivateIpDynamic()`) or statically (`.withPrivateIpStatic("<private-ip-address>")`).
+
+Associating the VM with a public IP is optional. An existing public IP can be assigned (`.withExistingPublicIpAddress(...)`), or a new one created (`.withNewPublicIpAddress()`). If new, then it can be optionally associated with a leaf domain label which will form the DNS record for this VM (`.withNewPublicIpAddress("<new-domain-label>")`).
+
+If specifying the IP addresses and the network explicitly like in the above example, a new network interface is created implicitly behind the scenes and set as the primary interface for the virtual machine. The IP addresses go into the primary IP configuration for that network interface. If you want to use an already existing network interface in your subscription, then instead of `.withNewNetwork()`, invoke `.withExistingNetworkInterface()`. This will also skip over the selection of the rest of the networking information.
+
+Creating a virtual machine requires a storage account to keep the VHD in. A new storage account can be requested (`.withNewStorageAccount()`) or an existing one (`.withExistingStorageAccount()`).
+  
+Any such related resource that is created in the process of provisioning a virtual machine will be provisioned in the same resource group and region as the virtual machine.
 
 
 #### Listing VMs

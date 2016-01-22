@@ -51,7 +51,7 @@ public class VirtualMachinesSample {
     		.withNewGroup(groupName)
     		.withNewNetwork("10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
-    		.withNewPublicIpAddress("myTestDnsLabel")
+    		.withNewPublicIpAddress("vm" + deploymentId)
     		.withAdminUsername("shortcuts")
     		.withAdminPassword("Abcd.1234")
     		.withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
