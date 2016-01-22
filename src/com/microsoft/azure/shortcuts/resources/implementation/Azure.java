@@ -32,6 +32,8 @@ import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Groups;
+import com.microsoft.azure.shortcuts.resources.LoadBalancer;
+import com.microsoft.azure.shortcuts.resources.LoadBalancers;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
@@ -83,6 +85,7 @@ public class Azure {
     private final AvailabilitySetsImpl availabilitySets;
     private final NetworkInterfacesImpl networkInterfaces;
     private final PublicIpAddresses publicIpAddresses;
+    private final LoadBalancers loadBalancers;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -118,6 +121,7 @@ public class Azure {
         this.availabilitySets = new AvailabilitySetsImpl(this);
         this.networkInterfaces = new NetworkInterfacesImpl(this);
         this.publicIpAddresses = new PublicIpAddressesImpl(this);
+        this.loadBalancers = new LoadBalancersImpl(this);
     }
     
     
@@ -137,6 +141,18 @@ public class Azure {
     //* Getters
     //**********************************************************
 
+    public LoadBalancers loadBalancers() {
+    	return this.loadBalancers;
+    }
+    
+    public LoadBalancer loadBalancers(String id) throws Exception {
+    	return this.loadBalancers().get(id);
+    }
+    
+    public LoadBalancer loadBalancers(String groupName, String name) throws Exception {
+    	return this.loadBalancers().get(groupName, name);
+    }
+    
     public AvailabilitySets availabilitySets() {
     	return this.availabilitySets;
     }
