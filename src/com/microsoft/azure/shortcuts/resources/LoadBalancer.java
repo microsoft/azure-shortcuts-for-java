@@ -24,6 +24,7 @@ import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface LoadBalancer extends 
@@ -40,8 +41,14 @@ public interface LoadBalancer extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable> {}
-		
+		GroupResourceBase.DefinitionWithGroup<DefinitionWithFrontEnd> {}
+	
+	/**
+	 * A load balancer definition allowing to specify a front end IP address
+	 */
+	public interface DefinitionWithFrontEnd extends
+		DefinitionCombos.WithPublicIpAddress<DefinitionProvisionable> {
+	}
 	
 	/**
 	 * A load balancer definition with sufficient input parameters specified to be provisioned in the cloud

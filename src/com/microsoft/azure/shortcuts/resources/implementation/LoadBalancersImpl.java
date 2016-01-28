@@ -20,10 +20,14 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.List;
+
+import com.microsoft.azure.management.network.models.FrontendIpConfiguration;
+import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.LoadBalancer;
 import com.microsoft.azure.shortcuts.resources.LoadBalancers;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
+import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
+import com.microsoft.azure.shortcuts.resources.common.implementation.PublicIpGroupableResourceBaseImpl;
 
 public class LoadBalancersImpl 
 	extends GroupableResourcesBaseImpl<
@@ -41,6 +45,7 @@ public class LoadBalancersImpl
 	public LoadBalancerImpl define(String name) throws Exception {
 		com.microsoft.azure.management.network.models.LoadBalancer azureLB = new com.microsoft.azure.management.network.models.LoadBalancer();
 		azureLB.setName(name);
+		
 		return wrap(azureLB);
 	}
 
@@ -79,7 +84,7 @@ public class LoadBalancersImpl
 	 ***************************************************************/
 	class LoadBalancerImpl 
 		extends 
-			GroupableResourceBaseImpl<
+			PublicIpGroupableResourceBaseImpl<
 				LoadBalancer, 
 				com.microsoft.azure.management.network.models.LoadBalancer,
 				LoadBalancerImpl>
@@ -87,6 +92,7 @@ public class LoadBalancersImpl
 			LoadBalancer,
 			LoadBalancer.DefinitionBlank,
 			LoadBalancer.DefinitionWithGroup,
+			LoadBalancer.DefinitionWithFrontEnd,
 			LoadBalancer.DefinitionProvisionable {
 		
 		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem) {
@@ -103,7 +109,6 @@ public class LoadBalancersImpl
 		 * Setters (fluent interface)
 		 **************************************************************/
 
-
 		/************************************************************
 		 * Verbs
 		 ************************************************************/
@@ -117,7 +122,16 @@ public class LoadBalancersImpl
 		public LoadBalancer provision() throws Exception {
 			// Create a group as needed
 			ensureGroup(azure);
-					
+			
+			// Create public IP as needed and associate with the first IP config
+			PublicIpAddress pip = ensurePublicIpAddress(azure);
+			ResourceId r  = new ResourceId();
+			r.setId(pip.id());
+			FrontendIpConfiguration ipConfig = new FrontendIpConfiguration();
+			this.inner().getFrontendIpConfigurations().add(ipConfig);
+			ipConfig.setPublicIpAddress(r);
+			ipConfig.setName(this.name());
+			
 			azure.networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}

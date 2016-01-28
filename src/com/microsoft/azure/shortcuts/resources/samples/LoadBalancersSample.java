@@ -48,6 +48,7 @@ public class LoadBalancersSample {
     	lb = azure.loadBalancers().define(lbName)
     		.withRegion(Region.US_WEST)
     		.withNewGroup(groupName)
+    		.withNewPublicIpAddress("marcinstest2")
     		.provision();
     	
     	// Get info about a specific lb using its group and name
@@ -73,6 +74,7 @@ public class LoadBalancersSample {
     	lb = azure.loadBalancers().define(lbName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingGroup(groupName)
+    		.withNewPublicIpAddress("marcinstest3")
     		.provision();
     	
     	printLB(lb);
