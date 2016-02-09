@@ -454,6 +454,32 @@ public class VirtualMachinesImpl
 			return this.withExistingNetworkInterface(networkInterface.getId());
 		}
 
+
+		@Override
+		public DefinitionProvisionable withNewDataDisk(int diskSizeGB) {
+			DataDisk disk = new DataDisk();
+			this.inner().getStorageProfile().getDataDisks().add(disk);
+			disk.setCreateOption(DiskCreateOptionTypes.EMPTY);
+			disk.setDiskSizeGB(diskSizeGB);
+			return this;
+		}
+
+		@Override
+		public DefinitionProvisionable withExistingDataDisk(URI vhdUri) {
+			return this.withExistingDataDisk(vhdUri.toString());
+		}
+
+		@Override
+		public DefinitionProvisionable withExistingDataDisk(String vhdUri) {
+			DataDisk disk = new DataDisk();
+			this.inner().getStorageProfile().getDataDisks().add(disk);
+			disk.setCreateOption(DiskCreateOptionTypes.ATTACH);
+			VirtualHardDisk vhd = new VirtualHardDisk();
+			disk.setVirtualHardDisk(vhd);
+			vhd.setUri(vhdUri);
+			return this;
+		}
+		
 		
 		/*******************************************************
 		 * Verbs
@@ -542,8 +568,8 @@ public class VirtualMachinesImpl
 		
 		// Makes sure vhds are configured properly based on the storage account
 		private void ensureDataDisks(StorageAccount storageAccount) throws Exception {
+			int i = 0;
 			for(DataDisk dataDisk : this.inner().getStorageProfile().getDataDisks()) {
-				int i=1;
 				VirtualHardDisk vhd = dataDisk.getVirtualHardDisk();
 				if(vhd== null) {
 					vhd = new VirtualHardDisk();
@@ -571,6 +597,8 @@ public class VirtualMachinesImpl
 					URL diskBlob = new URL(container, dataDisk.getName() + ".vhd");
 					vhd.setUri(diskBlob.toString());
 				}
+				
+				i++;
 			}
 		}
 		
@@ -619,16 +647,6 @@ public class VirtualMachinesImpl
 			} else {
 				return azure.networkInterfaces(this.nicId);
 			}
-		}
-
-
-		@Override
-		public DefinitionProvisionable withNewDataDisk(int diskSizeGB) {
-			DataDisk disk = new DataDisk();
-			this.inner().getStorageProfile().getDataDisks().add(disk);
-			disk.setCreateOption(DiskCreateOptionTypes.EMPTY);
-			disk.setDiskSizeGB(diskSizeGB);
-			return this;
 		}
 	}
 }

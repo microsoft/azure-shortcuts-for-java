@@ -165,6 +165,8 @@ public interface VirtualMachine extends
 	 */
 	interface DefinitionWithDataDisk<R> {
 		R withNewDataDisk(int diskSizeGB);
+		R withExistingDataDisk(URI vhdUri);
+		R withExistingDataDisk(String vhdUri);
 	}
 	
 	

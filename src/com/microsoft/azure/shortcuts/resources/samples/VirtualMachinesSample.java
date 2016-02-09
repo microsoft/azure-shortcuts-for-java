@@ -58,7 +58,7 @@ public class VirtualMachinesSample {
     		.withSize(Size.Type.BASIC_A1)
     		.withNewStorageAccount()
     		.withNewDataDisk(100)
-    		.withNewDataDisk(200)
+    		.withExistingDataDisk("https://vm1455045717874store.blob.core.windows.net/vm1455045717874/disk0.vhd")
     		.provision();
     	
     	printVM(vmWin);

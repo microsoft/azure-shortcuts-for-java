@@ -216,12 +216,19 @@ At this stage, additional settings can be specified that are optional before 'pr
 
 ###### Attaching data disks
 
-Based on the earlier provisionable definition, the following code attaches 2 new data disks to the virtual machine definition. Their logical unit number (LUN) is set automatically based on the order of attachment:
+Based on the earlier provisionable definition, the following code attaches 2 **new** empty data disks to the virtual machine definition. Their logical unit number (LUN) is set automatically based on the order of attachment:
 
 ```java
-vmProvisionable = vmProvisionable
+vmProvisionable
 	.withNewDataDisk(100) 	// Attach a 100 GB disk as LUN 1
     .withNewDataDisk(200); 	// Attach a 200 GB disk as LUN 2
+```
+
+Attaching an existing VHD file as a data disk:
+
+```java
+vmProvisionable
+	.withExistingDataDisk("https://vm1455045717874store.blob.core.windows.net/vm1455045717874/disk0.vhd")
 ```
 
 ###### Selecting availability set
