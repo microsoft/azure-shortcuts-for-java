@@ -87,7 +87,7 @@ public class NetworkInterfacesImpl
 	
 	@Override
 	protected NetworkInterfaceImpl wrap(com.microsoft.azure.management.network.models.NetworkInterface nativeItem) {
-		return new NetworkInterfaceImpl(nativeItem);
+		return new NetworkInterfaceImpl(nativeItem, this.azure);
 	}
 	
 
@@ -110,8 +110,8 @@ public class NetworkInterfacesImpl
 			NetworkInterface.DefinitionWithPublicIpAddress,
 			NetworkInterface.DefinitionProvisionable {
 		
-		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface) {
-			super(azureNetworkInterface.getName(), azureNetworkInterface);
+		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, Azure azure) {
+			super(azureNetworkInterface.getName(), azureNetworkInterface, azure);
 		}
 
 				
@@ -161,16 +161,16 @@ public class NetworkInterfacesImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.networkInterfaces().delete(this.id());
+			this.azure.networkInterfaces().delete(this.id());
 		}
 
 		@Override
 		public NetworkInterface provision() throws Exception {
 			// Create a group as needed
-			ensureGroup(azure);
+			ensureGroup();
 		
 			// Ensure virtual network
-			Network network = ensureNetwork(azure);
+			Network network = ensureNetwork();
 			
 			// Ensure subnet
 			Network.Subnet subnet = ensureSubnet(network);
@@ -185,7 +185,7 @@ public class NetworkInterfacesImpl
 			ipConfig.setPrivateIpAddress(this.privateIpAddress);
 
 			// Ensure and set public IP 
-			PublicIpAddress pip = ensurePublicIpAddress(azure);
+			PublicIpAddress pip = ensurePublicIpAddress();
 			if(pip != null) {
 				ResourceId r = new ResourceId();
 				r.setId(pip.id());

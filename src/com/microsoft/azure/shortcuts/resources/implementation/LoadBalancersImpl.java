@@ -75,7 +75,7 @@ public class LoadBalancersImpl
 	
 	@Override 
 	protected LoadBalancerImpl wrap(com.microsoft.azure.management.network.models.LoadBalancer nativeItem) {
-		return new LoadBalancerImpl(nativeItem);
+		return new LoadBalancerImpl(nativeItem, this.azure);
 	}
 	
 	
@@ -95,8 +95,8 @@ public class LoadBalancersImpl
 			LoadBalancer.DefinitionWithFrontEnd,
 			LoadBalancer.DefinitionProvisionable {
 		
-		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem) {
-			super(nativeItem.getName(), nativeItem);
+		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, Azure azure) {
+			super(nativeItem.getName(), nativeItem, azure);
 		}
 
 
@@ -115,16 +115,16 @@ public class LoadBalancersImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.loadBalancers().delete(this.id());
+			this.azure.loadBalancers().delete(this.id());
 		}
 
 		@Override
 		public LoadBalancer provision() throws Exception {
 			// Create a group as needed
-			ensureGroup(azure);
+			ensureGroup();
 			
 			// Create public IP as needed and associate with the first IP config
-			PublicIpAddress pip = ensurePublicIpAddress(azure);
+			PublicIpAddress pip = ensurePublicIpAddress();
 			ResourceId r  = new ResourceId();
 			r.setId(pip.id());
 			FrontendIpConfiguration ipConfig = new FrontendIpConfiguration();
@@ -132,7 +132,7 @@ public class LoadBalancersImpl
 			ipConfig.setPublicIpAddress(r);
 			ipConfig.setName(this.name());
 			
-			azure.networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.azure.networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

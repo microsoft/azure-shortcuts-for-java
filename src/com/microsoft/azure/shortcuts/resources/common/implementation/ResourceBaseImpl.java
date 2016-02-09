@@ -26,6 +26,7 @@ import java.util.Map;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
+import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 
 public abstract class ResourceBaseImpl<
@@ -37,8 +38,11 @@ public abstract class ResourceBaseImpl<
 	implements 
 		ResourceBase {
 
-	protected ResourceBaseImpl(String id, I innerObject) {
+	protected final Azure azure;
+	
+	protected ResourceBaseImpl(String id, I innerObject, Azure azure) {
 		super(id, innerObject);
+		this.azure = azure;
 	}
 
 	/*******************************************

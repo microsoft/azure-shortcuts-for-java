@@ -72,7 +72,7 @@ public class AvailabilitySetsImpl
 	
 	@Override
 	protected AvailabilitySetImpl wrap(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
-		return new AvailabilitySetImpl(nativeItem);
+		return new AvailabilitySetImpl(nativeItem, this.azure);
 	}
 	
 	
@@ -91,8 +91,8 @@ public class AvailabilitySetsImpl
 			AvailabilitySet.DefinitionWithGroup,
 			AvailabilitySet.DefinitionProvisionable {
 		
-		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet) {
-			super(azureAvailabilitySet.getId(), azureAvailabilitySet);
+		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet, Azure azure) {
+			super(azureAvailabilitySet.getId(), azureAvailabilitySet, azure);
 		}
 
 
@@ -136,8 +136,8 @@ public class AvailabilitySetsImpl
 
 		@Override
 		public AvailabilitySet provision() throws Exception {
-			ensureGroup(azure); // Create group if needed
-			azure.computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
+			ensureGroup(); // Create group if needed
+			this.azure.computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
 			return get(this.groupName, this.name());
 		}
 	}

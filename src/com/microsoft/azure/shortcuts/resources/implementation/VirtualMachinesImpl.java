@@ -123,7 +123,7 @@ public class VirtualMachinesImpl
 	
 	@Override 
 	protected VirtualMachineImpl wrap(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
-		return new VirtualMachineImpl(nativeItem);
+		return new VirtualMachineImpl(nativeItem, this.azure);
 	}
 		
 	
@@ -158,8 +158,8 @@ public class VirtualMachinesImpl
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
 		
-		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM) {
-			super(azureVM.getId(), azureVM);
+		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM, Azure azure) {
+			super(azureVM.getId(), azureVM, azure);
 		}
 
 
@@ -488,28 +488,28 @@ public class VirtualMachinesImpl
 		@Override
 		public VirtualMachineImpl provision() throws Exception {
 			// Ensure group
-			Group group = this.ensureGroup(azure);
+			Group group = this.ensureGroup();
 			
 			// Ensure storage account
-			StorageAccount storageAccount = this.ensureStorageAccount(group.name());
+			StorageAccount storageAccount = this.ensureStorageAccount(group.name()); // TODO Remove group refernce
 
 			// Ensure virtual network
-			Network network = ensureNetwork(azure);
+			Network network = ensureNetwork();
 			
 			// Ensure subnet
 			Network.Subnet subnet = ensureSubnet(network);
 			
 			// Ensure public IP address
-			PublicIpAddress pip = ensurePublicIpAddress(azure);
+			PublicIpAddress pip = ensurePublicIpAddress();
 			
 			// Ensure primary NIC
-			NetworkInterface nic = this.ensureNetworkInterface(group.name(), network, subnet, pip);
+			NetworkInterface nic = this.ensureNetworkInterface(group.name(), network, subnet, pip); // TODO Remove group reference
 			if(nic != null) {
 				this.withExistingNetworkInterface(nic);
 			}
 			
 			// Ensure availability set (optional)
-			AvailabilitySet set = this.ensureAvailabilitySet(group.name());
+			AvailabilitySet set = this.ensureAvailabilitySet(group.name()); //TODO Remove group refereence?
 			if(set != null) {
 				this.withExistingAvailabilitySet(set);
 			}

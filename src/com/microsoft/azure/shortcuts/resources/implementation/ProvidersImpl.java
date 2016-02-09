@@ -45,7 +45,7 @@ public class ProvidersImpl
 	public Map<String, Provider> list() throws Exception {
 		HashMap<String, Provider> wrappers = new HashMap<>();
 		for(com.microsoft.azure.management.resources.models.Provider nativeItem : getNativeEntities(azure)) {
-			ProviderImpl wrapper = new ProviderImpl(nativeItem);
+			ProviderImpl wrapper = new ProviderImpl(nativeItem, this.azure);
 			wrappers.put(nativeItem.getNamespace(), wrapper);
 		}
 			
@@ -58,7 +58,7 @@ public class ProvidersImpl
 		com.microsoft.azure.management.resources.models.Provider azureProvider = 
 				azure.resourceManagementClient().getProvidersOperations().get(namespace).getProvider();
 
-		return new ProviderImpl(azureProvider);
+		return new ProviderImpl(azureProvider, this.azure);
 	}
 
 
@@ -75,8 +75,11 @@ public class ProvidersImpl
 		implements 
 			Provider {
 		
-		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider) {
+		private final Azure azure;
+		
+		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider, Azure azure) {
 			super(azureProvider.getNamespace(), azureProvider);
+			this.azure = azure;
 		}
 
 

@@ -45,7 +45,7 @@ public class GroupsImpl
 	public Map<String, Group> list() throws Exception {
 		HashMap<String, Group> wrappers = new HashMap<>();
 		for(ResourceGroupExtended nativeItem : getNativeEntities()) {
-			GroupImpl wrapper = new GroupImpl(nativeItem);
+			GroupImpl wrapper = new GroupImpl(nativeItem, this.azure);
 			wrappers.put(nativeItem.getName(), wrapper);
 		}
 		
@@ -57,7 +57,7 @@ public class GroupsImpl
 	// Gets a specific resource group
 	public GroupImpl get(String name) throws Exception {
 		ResourceGroupExtended azureGroup = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
-		return new GroupImpl(azureGroup);
+		return new GroupImpl(azureGroup, this.azure);
 	}
 	
 	
@@ -88,7 +88,7 @@ public class GroupsImpl
 	private GroupImpl createWrapper(String name) {
 		ResourceGroupExtended azureGroup = new ResourceGroupExtended();
 		azureGroup.setName(name);
-		return new GroupImpl(azureGroup);
+		return new GroupImpl(azureGroup, this.azure);
 		
 	}
 	
@@ -110,8 +110,11 @@ public class GroupsImpl
 			Group.DefinitionBlank,
 			Group {
 		
-		private GroupImpl(ResourceGroupExtended azureGroup) {
+		private final Azure azure;
+		
+		private GroupImpl(ResourceGroupExtended azureGroup, Azure azure) {
 			super(azureGroup.getName(), azureGroup);
+			this.azure = azure;
 		}
 
 

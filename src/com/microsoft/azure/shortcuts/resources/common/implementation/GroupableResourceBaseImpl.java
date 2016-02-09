@@ -35,8 +35,8 @@ public abstract class GroupableResourceBaseImpl<
 	implements 
 		GroupResourceBase {
 
-	protected GroupableResourceBaseImpl(String id, I innerObject) {
-		super(id, innerObject);
+	protected GroupableResourceBaseImpl(String id, I innerObject, Azure azure) {
+		super(id, innerObject, azure);
 	}
 
 	protected String groupName;
@@ -57,20 +57,20 @@ public abstract class GroupableResourceBaseImpl<
 	 * Helpers
 	 * @throws Exception 
 	 **************************************************/
-	final protected Group ensureGroup(Azure azure) throws Exception {
+	final protected Group ensureGroup() throws Exception {
 		Group group;
 		if(!this.isExistingGroup) {
 			if(this.groupName == null) {
 				this.groupName = this.name() + "group";
 			}
 				
-			group = azure.groups().define(this.groupName)
+			group = this.azure.groups().define(this.groupName)
 				.withRegion(this.region())
 				.provision();
 			this.isExistingGroup = true;
 			return group;
 		} else {
-			return azure.groups(this.groupName);
+			return this.azure.groups(this.groupName);
 		}
 	}
 	

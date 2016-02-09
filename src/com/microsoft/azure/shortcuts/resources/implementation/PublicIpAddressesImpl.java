@@ -81,7 +81,7 @@ public class PublicIpAddressesImpl
 	
 	@Override
 	protected PublicIpAddressImpl wrap(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
-		return new PublicIpAddressImpl(nativeItem);
+		return new PublicIpAddressImpl(nativeItem, this.azure);
 	}
 	
 	
@@ -102,8 +102,8 @@ public class PublicIpAddressesImpl
 			PublicIpAddress.DefinitionWithIpAddress,
 			PublicIpAddress.DefinitionProvisionable {
 		
-		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress) {
-			super(azurePublicIpAddress.getName(), azurePublicIpAddress);
+		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, Azure azure) {
+			super(azurePublicIpAddress.getName(), azurePublicIpAddress, azure);
 		}
 
 
@@ -173,7 +173,7 @@ public class PublicIpAddressesImpl
 		@Override
 		public PublicIpAddress provision() throws Exception {
 			// Create a group as needed
-			ensureGroup(azure);
+			ensureGroup();
 		
 			azure.networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());

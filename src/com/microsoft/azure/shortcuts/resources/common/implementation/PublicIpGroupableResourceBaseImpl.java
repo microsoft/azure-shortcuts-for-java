@@ -29,8 +29,8 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 	extends
 		GroupableResourceBaseImpl<T, I, TI> {
 
-	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject) {
-		super(id, innerObject);
+	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject, Azure azure) {
+		super(id, innerObject, azure);
 	}
 	
 	protected boolean isPublicIpAddressExisting;
@@ -47,7 +47,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 	}
 	
 	
-	final protected PublicIpAddress ensurePublicIpAddress(Azure azure) throws Exception {
+	final protected PublicIpAddress ensurePublicIpAddress() throws Exception {
 		if(!this.isPublicIpAddressExisting) {
 			// Create a new public IP
 			if(this.publicIpAddressDns == null) {
@@ -64,7 +64,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 			this.publicIpAddressId = pip.id();
 			return pip;
 		} else if(this.publicIpAddressId != null) {
-			return azure.publicIpAddresses(this.publicIpAddressId);
+			return this.azure.publicIpAddresses(this.publicIpAddressId);
 		} else {
 			return null;
 		}

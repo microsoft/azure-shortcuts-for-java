@@ -30,8 +30,8 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	extends
 		PublicIpGroupableResourceBaseImpl<T, I, TI> {
 
-	protected NetworkableGroupableResourceBaseImpl(String id, I innerObject) {
-		super(id, innerObject);
+	protected NetworkableGroupableResourceBaseImpl(String id, I innerObject, Azure azure) {
+		super(id, innerObject, azure);
 	}
 	
 	private boolean isNetworkExisting;
@@ -41,7 +41,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	protected String privateIpAddress;
 
 	
-	final protected Network ensureNetwork(Azure azure) throws Exception {
+	final protected Network ensureNetwork() throws Exception {
 		if(!this.isNetworkExisting) {
 			// Create a new virtual network
 			if(this.networkId == null) {
@@ -57,7 +57,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 			this.isNetworkExisting = true;
 			return network;
 		} else {
-			return azure.networks(this.networkId);
+			return this.azure.networks(this.networkId);
 		}
 	}
 

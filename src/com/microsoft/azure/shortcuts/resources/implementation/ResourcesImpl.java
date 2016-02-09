@@ -149,7 +149,7 @@ public class ResourcesImpl
 	// Returns a resource based on its group and identity object
 	private Resource get(String group, ResourceIdentity identity) throws Exception {
 		GenericResourceExtended azureResource= azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
-		ResourceImpl resource = new ResourceImpl(azureResource);
+		ResourceImpl resource = new ResourceImpl(azureResource, this.azure);
 		return resource;
 	}
 	
@@ -180,7 +180,7 @@ public class ResourcesImpl
 	public Map<String, Resource> list(String groupName) throws Exception {
 		HashMap<String, Resource> wrappers = new HashMap<>();
 		for(GenericResourceExtended nativeItem : getNativeEntities(groupName)) {
-			ResourceImpl wrapper = new ResourceImpl(nativeItem);
+			ResourceImpl wrapper = new ResourceImpl(nativeItem, this.azure);
 			wrappers.put(nativeItem.getId(), wrapper);
 		}
 		
@@ -209,8 +209,8 @@ public class ResourcesImpl
 		implements 
 			Resource {
 		
-		private ResourceImpl(GenericResourceExtended azureResource) {
-			super(azureResource.getId(), azureResource);
+		private ResourceImpl(GenericResourceExtended azureResource, Azure azure) {
+			super(azureResource.getId(), azureResource, azure);
 		}
 
 		

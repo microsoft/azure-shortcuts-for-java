@@ -96,7 +96,7 @@ public class NetworksImpl
 	
 	@Override 
 	protected NetworkImpl wrap(VirtualNetwork nativeItem) {
-		return new NetworkImpl(nativeItem);
+		return new NetworkImpl(nativeItem, this.azure);
 	}
 	
 	
@@ -118,8 +118,8 @@ public class NetworksImpl
 			Network.DefinitionProvisionableWithSubnet, 
 			Network.DefinitionWithSubnet {
 		
-		private NetworkImpl(VirtualNetwork azureVirtualNetwork) {
-			super(azureVirtualNetwork.getName(), azureVirtualNetwork);
+		private NetworkImpl(VirtualNetwork azureVirtualNetwork, Azure azure) {
+			super(azureVirtualNetwork.getName(), azureVirtualNetwork, azure);
 		}
 
 
@@ -201,13 +201,13 @@ public class NetworksImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.networks().delete(this.id());
+			this.azure.networks().delete(this.id());
 		}
 
 		@Override
 		public Network provision() throws Exception {
 			// Create a group as needed
-			ensureGroup(azure);
+			ensureGroup();
 		
 			// Ensure address spaces
 			if(this.addressSpaces().size() == 0) {
@@ -219,7 +219,7 @@ public class NetworksImpl
 				this.withSubnet("subnet1", this.addressSpaces().get(0));
 			}
 			
-			azure.networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.azure.networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

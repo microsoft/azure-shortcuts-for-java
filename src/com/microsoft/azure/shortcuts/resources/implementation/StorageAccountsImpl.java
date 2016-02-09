@@ -77,7 +77,7 @@ public class StorageAccountsImpl
 	
 	@Override
 	protected StorageAccountImpl wrap(com.microsoft.azure.management.storage.models.StorageAccount nativeItem) {
-		return new StorageAccountImpl(nativeItem);
+		return new StorageAccountImpl(nativeItem, this.azure);
 	}
 	
 	
@@ -96,8 +96,8 @@ public class StorageAccountsImpl
 			StorageAccount.DefinitionWithGroup,
 			StorageAccount.DefinitionProvisionable {
 		
-		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount) {
-			super(azureStorageAccount.getId(), azureStorageAccount);
+		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, Azure azure) {
+			super(azureStorageAccount.getId(), azureStorageAccount, azure);
 		}
 
 
@@ -138,7 +138,7 @@ public class StorageAccountsImpl
 		@Override
 		public StorageAccount provision() throws Exception {
 			// Create group if needed
-			ensureGroup(azure);
+			ensureGroup();
 
 			// Assume default account type if needed
 			if(this.accountType() == null) {
@@ -150,7 +150,7 @@ public class StorageAccountsImpl
 			params.setAccountType(this.accountType());
 			params.setTags(this.inner().getTags());
 
-			azure.storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
+			this.azure.storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
 			return get(this.groupName, this.name());
 		}
 
