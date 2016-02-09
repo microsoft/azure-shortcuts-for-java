@@ -38,29 +38,29 @@ public interface VirtualMachine extends
 	Refreshable<VirtualMachine>,
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine> {
 	
-	String size();
-	URI bootDiagnosticsStorage();
-	boolean isBootDiagnosticsEnabled();
-	URI availabilitySet();
-	ArrayList<VirtualMachineExtension> extensions();
-	Integer platformFaultDomain();
-	Integer platformUpdateDomain();
-	String remoteDesktopThumbprint();
-	String vmAgentVersion();
-	ArrayList<NetworkInterfaceReference> networkInterfaces();
-	String adminUserName();
-	String computerName();
-	String customData();
-	boolean isLinux();
-	boolean isWindows();
-	ImageReference image();
-	List<DataDisk> dataDisks();
+	public String size();
+	public URI bootDiagnosticsStorage();
+	public boolean isBootDiagnosticsEnabled();
+	public URI availabilitySet();
+	public ArrayList<VirtualMachineExtension> extensions();
+	public Integer platformFaultDomain();
+	public Integer platformUpdateDomain();
+	public String remoteDesktopThumbprint();
+	public String vmAgentVersion();
+	public ArrayList<NetworkInterfaceReference> networkInterfaces();
+	public String adminUserName();
+	public String computerName();
+	public String customData();
+	public boolean isLinux();
+	public boolean isWindows();
+	public ImageReference image();
+	public List<DataDisk> dataDisks();
 	
 	
 	/**
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
 	 */
-	interface DefinitionBlank extends 
+	public interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 		//TODO load balancers
 		//TODO network security groups
@@ -72,13 +72,13 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring the resource group to be specified
 	 */
-	interface DefinitionWithGroup extends
+	public interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithGroup<DefinitionWithNetworking> {}
 	
 	/**
 	 * A virtual machine definition allowing the networking to be specified
 	 */
-	interface DefinitionWithNetworking extends 
+	public interface DefinitionWithNetworking extends 
 		DefinitionCombos.WithNewNetwork<DefinitionWithPrivateIp>,
 		DefinitionCombos.WithExistingNetwork<DefinitionWithSubnet>,
 		DefinitionCombos.WithExistingNetworkInterface<DefinitionWithAdminUsername> {}
@@ -87,26 +87,26 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing a subnet with the selected virtual network to be associated with it
 	 */
-	interface DefinitionWithSubnet extends 
+	public interface DefinitionWithSubnet extends 
 		DefinitionCombos.WithSubnet<DefinitionWithPrivateIp> {
 	}
 	
 	/**
 	 * A virtual machine definition allowing the primary private IP address to be specified
 	 */
-	interface DefinitionWithPrivateIp extends 
+	public interface DefinitionWithPrivateIp extends 
 		DefinitionCombos.WithPrivateIpAddress<DefinitionWithPublicIp> {}
 	
 	/**
 	 * A virtual machine definition allowing the primary public IP address to be specified
 	 */
-	interface DefinitionWithPublicIp extends
+	public interface DefinitionWithPublicIp extends
 		DefinitionCombos.WithPublicIpAddress<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
 	 */
-	interface DefinitionWithAdminUsername {
+	public interface DefinitionWithAdminUsername {
 		/**
 		 * @param The desired admin username for the virtual machine
 		 * @return The next stage of the VM definition
@@ -118,7 +118,7 @@ public interface VirtualMachine extends
 	/** 
 	 * A virtual machine definition requiring the admin password to be specified
 	 */
-	interface DefinitionWithAdminPassword {
+	public interface DefinitionWithAdminPassword {
 		/**
 		 * @param password The desired admin password for the virtual machine
 		 * @return The next stage of the VM definition
@@ -130,7 +130,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing the selection of a base image for the virtual machine
 	 */
-	interface DefinitionWithImage {
+	public interface DefinitionWithImage {
 		DefinitionProvisionable withLatestImage(String publisher, String offer, String sku);
 		DefinitionProvisionable withImage(String publisher, String offer, String sku, String version);
 	}
@@ -139,7 +139,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing to specify the size of the new virtual machine
 	 */
-	interface DefinitionWithSize<T> {
+	public interface DefinitionWithSize<T> {
 		/**
 		 * @param sizeName The name of the size for the virtual machine as text
 		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
@@ -163,7 +163,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing to specify a data disk to attach to the VM
 	 */
-	interface DefinitionWithDataDisk<R> {
+	public interface DefinitionWithDataDisk<R> {
 		R withNewDataDisk(int diskSizeGB);
 		R withExistingDataDisk(URI vhdUri);
 		R withExistingDataDisk(String vhdUri);
@@ -174,7 +174,7 @@ public interface VirtualMachine extends
 	 * A virtual machine definition with sufficient inputs to provision a new virtual machine in the cloud, 
 	 * but exposing additional optional inputs to specify
 	 */
-	interface DefinitionProvisionable extends
+	public interface DefinitionProvisionable extends
 		DefinitionCombos.WithStorageAccount<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
@@ -189,7 +189,7 @@ public interface VirtualMachine extends
 		DefinitionProvisionable withComputerName(String computerName);
 	}
 	
-	interface UpdateBlank {
+	public interface UpdateBlank {
 		
 	}
 }

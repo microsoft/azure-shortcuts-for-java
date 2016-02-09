@@ -40,12 +40,12 @@ public interface StorageAccount extends
 	/**
 	 * @return The URL of the primary blob endpoint
 	 */
-	URL primaryBlobEndpoint();
+	public URL primaryBlobEndpoint();
 	
 	/**
 	 * @return The type of the storage account
 	 */
-	AccountType accountType();
+	public AccountType accountType();
 	
 	/**
 	 * A new blank storage account definition
