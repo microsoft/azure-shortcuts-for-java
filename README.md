@@ -156,7 +156,7 @@ You can just save a file with these contents and use it as your "auth-file" in t
 
 ### Virtual Machines
 
-#### Creating a Windows VM in a new resource group
+#### Creating a Windows VM
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
@@ -190,9 +190,48 @@ Associating the VM with a public IP is optional. An existing public IP can be as
 If specifying the IP addresses and the network explicitly like in the above example, a new network interface is created implicitly behind the scenes and set as the primary interface for the virtual machine. The IP addresses go into the primary IP configuration for that network interface. If you want to use an already existing network interface in your subscription, then instead of `.withNewNetwork()`, invoke `.withExistingNetworkInterface()`. This will also skip over the selection of the rest of the networking information.
 
 Creating a virtual machine requires a storage account to keep the VHD in. A new storage account can be requested (`.withNewStorageAccount()`) or an existing one (`.withExistingStorageAccount()`).
-  
+
 Any such related resource that is created in the process of provisioning a virtual machine will be provisioned in the same resource group and region as the virtual machine.
 
+##### Optional settings
+
+A number of settings are optional so they can be specified at the provisionable stage of the virtual machine definition, i.e. at the stage at which `.provision()` is available among the members. For example, the above example can rewritten to separate the provisionable stage from the required stages:
+
+```java
+VirtualMachine.DefinitionProvisionable vmProvisionable = azure.virtualMachines().define("vm" + deploymentId)
+	.withRegion(Region.US_WEST)
+    .withNewGroup(groupName)
+    .withNewNetwork("10.0.0.0/28")
+    .withPrivateIpAddressDynamic()
+    .withNewPublicIpAddress("vm" + deploymentId)
+    .withAdminUsername("shortcuts")
+    .withAdminPassword("Abcd.1234")
+    .withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
+    .withSize(Size.Type.BASIC_A1)
+    .withNewStorageAccount()
+    .withNewDataDisk(100);
+```
+
+At this stage, additional settings can be specified that are optional before 'provision()' is invoked. 
+
+###### Attaching data disks
+
+Based on the earlier provisionable definition, the following code attaches 2 new data disks to the virtual machine definition. Their logical unit number (LUN) is set automatically based on the order of attachment:
+
+```java
+vmProvisionable = vmProvisionable
+	.withNewDataDisk(100) 	// Attach a 100 GB disk as LUN 1
+    .withNewDataDisk(200); 	// Attach a 200 GB disk as LUN 2
+```
+
+###### Selecting availability set
+
+Based on the earlier provisionable definition, the following code specifies a new availability set to be created for this virtual machine to be associated with:
+
+```java
+vmProvisionable = vmProvisionable
+	.withNewAvailabilitySet("myAvailabilitySet");
+```
 
 #### Listing VMs
 

@@ -57,6 +57,8 @@ public class VirtualMachinesSample {
     		.withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
     		.withSize(Size.Type.BASIC_A1)
     		.withNewStorageAccount()
+    		.withNewDataDisk(100)
+    		.withNewDataDisk(200)
     		.provision();
     	
     	printVM(vmWin);

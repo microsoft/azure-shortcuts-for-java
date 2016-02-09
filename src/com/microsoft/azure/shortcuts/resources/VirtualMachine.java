@@ -161,6 +161,14 @@ public interface VirtualMachine extends
 
 	
 	/**
+	 * A virtual machine definition allowing to specify a data disk to attach to the VM
+	 */
+	interface DefinitionWithDataDisk<R> {
+		R withNewDataDisk(int diskSizeGB);
+	}
+	
+	
+	/**
 	 * A virtual machine definition with sufficient inputs to provision a new virtual machine in the cloud, 
 	 * but exposing additional optional inputs to specify
 	 */
@@ -169,6 +177,7 @@ public interface VirtualMachine extends
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionCombos.WithAvailabilitySet<DefinitionProvisionable>,
+		DefinitionWithDataDisk<DefinitionProvisionable>,
 		Provisionable<VirtualMachine> {
 		
 		/**

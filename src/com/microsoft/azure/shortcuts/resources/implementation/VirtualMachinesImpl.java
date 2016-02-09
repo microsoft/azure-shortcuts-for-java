@@ -94,8 +94,6 @@ public class VirtualMachinesImpl
 		azureVM.setNetworkProfile(networkProfile);
 		networkProfile.setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
 		
-		//TODO prepare the rest
-		
 		return wrap(azureVM);
 	}
 	
@@ -495,7 +493,11 @@ public class VirtualMachinesImpl
 				this.withComputerName(this.name());
 			}
 			
-			URL diskBlob = new URL(new URL(storageAccount.primaryBlobEndpoint(), "vhd" + this.name() + "/"), "vhd" + this.name() + ".vhd");
+			// Ensure data disks
+			ensureDataDisks(storageAccount);
+			
+			URL container = new URL(storageAccount.primaryBlobEndpoint(), this.name() + "/");
+			URL diskBlob = new URL(container, "osDisk.vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 
 			azure.computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.group(), this.inner());
@@ -537,6 +539,40 @@ public class VirtualMachinesImpl
 			}
 		}
 		
+		
+		// Makes sure vhds are configured properly based on the storage account
+		private void ensureDataDisks(StorageAccount storageAccount) throws Exception {
+			for(DataDisk dataDisk : this.inner().getStorageProfile().getDataDisks()) {
+				int i=1;
+				VirtualHardDisk vhd = dataDisk.getVirtualHardDisk();
+				if(vhd== null) {
+					vhd = new VirtualHardDisk();
+					dataDisk.setVirtualHardDisk(vhd);
+				}
+				
+				// Autogenerate name if needed
+				if(dataDisk.getName() == null) {
+					dataDisk.setName("disk" + i);
+				}
+				
+				// Autogenerate LUN if needed
+				if(dataDisk.getLun()==0) {
+					dataDisk.setLun(i);
+				}
+				
+				// Assume no caching if not set
+				if(dataDisk.getCaching() == null) {
+					dataDisk.setCaching(CachingTypes.NONE);
+				}
+				
+				// Autogenerate URI from name
+				if(vhd.getUri() == null) {
+					URL container = new URL(storageAccount.primaryBlobEndpoint(), this.name() + "/");
+					URL diskBlob = new URL(container, dataDisk.getName() + ".vhd");
+					vhd.setUri(diskBlob.toString());
+				}
+			}
+		}
 		
 		// Gets or creates if needed the specified availability set
 		private AvailabilitySet ensureAvailabilitySet(String groupName) throws Exception {
@@ -583,6 +619,16 @@ public class VirtualMachinesImpl
 			} else {
 				return azure.networkInterfaces(this.nicId);
 			}
+		}
+
+
+		@Override
+		public DefinitionProvisionable withNewDataDisk(int diskSizeGB) {
+			DataDisk disk = new DataDisk();
+			this.inner().getStorageProfile().getDataDisks().add(disk);
+			disk.setCreateOption(DiskCreateOptionTypes.EMPTY);
+			disk.setDiskSizeGB(diskSizeGB);
+			return this;
 		}
 	}
 }
