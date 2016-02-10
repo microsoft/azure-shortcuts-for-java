@@ -31,17 +31,17 @@ import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 
 public abstract class ResourceBaseImpl<
-		T, 
-		I extends com.microsoft.windowsazure.core.ResourceBaseExtended,
-		TI extends ResourceBaseImpl<T, I, TI>>
+		WRAPPER, 
+		INNER extends com.microsoft.windowsazure.core.ResourceBaseExtended,
+		WRAPPERIMPL extends ResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>>
 	extends 
-		IndexableRefreshableWrapperImpl<T, I>
+		IndexableRefreshableWrapperImpl<WRAPPER, INNER>
 	implements 
 		ResourceBase {
 
 	protected final EntitiesImpl<Azure> collection;
 	
-	protected ResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
+	protected ResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
 		super(id, innerObject);
 		this.collection = collection;
 	}
@@ -80,21 +80,21 @@ public abstract class ResourceBaseImpl<
 	 **************************************************/
 
 	@SuppressWarnings("unchecked")
-	public final TI withTags(Map<String, String> tags) {
+	public final WRAPPERIMPL withTags(Map<String, String> tags) {
 		this.inner().setTags(new HashMap<>(tags));
-		return (TI) this;
+		return (WRAPPERIMPL) this;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public final TI withTag(String name, String value) {
+	public final WRAPPERIMPL withTag(String name, String value) {
 		this.inner().getTags().put(name, value);
-		return (TI) this;
+		return (WRAPPERIMPL) this;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public final TI withoutTag(String name) {
+	public final WRAPPERIMPL withoutTag(String name) {
 		this.inner().getTags().remove(name);
-		return (TI) this;
+		return (WRAPPERIMPL) this;
 	}
 	
 	/**********************************************
@@ -102,12 +102,12 @@ public abstract class ResourceBaseImpl<
 	 **********************************************/
 	
 	@SuppressWarnings("unchecked")
-	public final TI withRegion(String regionName) {
+	public final WRAPPERIMPL withRegion(String regionName) {
 		this.inner().setLocation(regionName);
-		return (TI) this;
+		return (WRAPPERIMPL) this;
 	}
 	
-	public final TI withRegion(Region region) {
+	public final WRAPPERIMPL withRegion(Region region) {
 		return this.withRegion(region.toString());
 	}
 }

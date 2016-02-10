@@ -28,15 +28,15 @@ import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
 public abstract class GroupableResourceBaseImpl<
-		T, 
-		I extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
-		TI extends GroupableResourceBaseImpl<T, I, TI>>
+		WRAPPER, 
+		INNER extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
+		WRAPPERIMPL extends GroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>>
 	extends
-		ResourceBaseImpl<T, I, TI>
+		ResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>
 	implements 
 		GroupResourceBase {
 
-	protected GroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
+	protected GroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
 		super(id, innerObject, collection);
 	}
 
@@ -81,33 +81,33 @@ public abstract class GroupableResourceBaseImpl<
 	 ****************************************/
 	
 	@SuppressWarnings("unchecked")
-	public final TI withExistingGroup(String groupName) {
+	public final WRAPPERIMPL withExistingGroup(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = true;
-		return (TI)this;
+		return (WRAPPERIMPL)this;
 	}
 	
 	
 	@SuppressWarnings("unchecked")
-	public final TI withNewGroup(String groupName) {
+	public final WRAPPERIMPL withNewGroup(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = false;
-		return (TI) this;
+		return (WRAPPERIMPL) this;
 	}
 	
-	public final TI withNewGroup() {
+	public final WRAPPERIMPL withNewGroup() {
 		return this.withNewGroup((String)null);
 	}
 	
-	public final TI withNewGroup(Group.DefinitionProvisionable groupDefinition) throws Exception {
+	public final WRAPPERIMPL withNewGroup(Group.DefinitionProvisionable groupDefinition) throws Exception {
 		return withExistingGroup(groupDefinition.provision());
 	}
 	
-	public final TI withExistingGroup(Group group) {
+	public final WRAPPERIMPL withExistingGroup(Group group) {
 		return this.withExistingGroup(group.name());
 	}
 	
-	public final TI withExistingGroup(ResourceGroupExtended group) {
+	public final WRAPPERIMPL withExistingGroup(ResourceGroupExtended group) {
 		return this.withExistingGroup(group.getName());
 	}
 }
