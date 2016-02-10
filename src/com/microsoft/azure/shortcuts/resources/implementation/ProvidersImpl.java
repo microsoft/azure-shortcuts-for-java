@@ -26,14 +26,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.management.resources.models.ProviderResourceType;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
+import com.microsoft.azure.shortcuts.resources.common.implementation.ArmEntitiesImpl;
 
 public class ProvidersImpl
-	extends EntitiesImpl<Azure>
+	extends ArmEntitiesImpl
 	implements Providers {
 	
 	ProvidersImpl(Azure azure) {
@@ -75,9 +75,9 @@ public class ProvidersImpl
 		implements 
 			Provider {
 		
-		private final EntitiesImpl<Azure> collection;
+		private final ArmEntitiesImpl collection;
 		
-		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider, EntitiesImpl<Azure> collection) {
+		private ProviderImpl(com.microsoft.azure.management.resources.models.Provider azureProvider, ArmEntitiesImpl collection) {
 			super(azureProvider.getNamespace(), azureProvider);
 			this.collection = collection;
 		}
