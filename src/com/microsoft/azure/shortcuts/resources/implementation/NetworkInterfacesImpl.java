@@ -198,8 +198,8 @@ public class NetworkInterfacesImpl
 		@Override
 		public NetworkInterfaceImpl refresh() throws Exception {
 			this.setInner(getNativeEntity(
-					ResourcesImpl.groupFromResourceId(this.id()), 
-					ResourcesImpl.nameFromResourceId(this.id())));
+				ResourcesImpl.groupFromResourceId(this.id()), 
+				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;
 		}
 	}

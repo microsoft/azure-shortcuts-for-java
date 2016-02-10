@@ -486,7 +486,7 @@ public class VirtualMachinesImpl
 		 *******************************************************/
 		
 		@Override
-		public VirtualMachineImpl provision() throws Exception {
+		public VirtualMachine provision() throws Exception {
 			// Ensure group
 			Group group = this.ensureGroup();
 			
@@ -527,15 +527,15 @@ public class VirtualMachinesImpl
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.group(), this.inner());
-			return this;
+			return get(this.groupName, this.name());
 		}
 		
 		
 		@Override
 		public VirtualMachineImpl refresh() throws Exception {
-			this.setInner(azure.computeManagementClient().getVirtualMachinesOperations().get(
+			this.setInner(getNativeEntity(
 				ResourcesImpl.groupFromResourceId(this.id()),
-				ResourcesImpl.nameFromResourceId(this.id())).getVirtualMachine());
+				ResourcesImpl.nameFromResourceId(this.id())));
 			return this;
 		}
 		
