@@ -20,7 +20,6 @@
 package com.microsoft.azure.shortcuts.resources;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -28,7 +27,6 @@ import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface LoadBalancer extends 
-	Indexable,
 	GroupResourceBase,
 	Refreshable<LoadBalancer>,
 	Wrapper<com.microsoft.azure.management.network.models.LoadBalancer>,

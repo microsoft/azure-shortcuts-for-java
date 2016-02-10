@@ -31,7 +31,6 @@ import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface Network extends 
-	Indexable,
 	GroupResourceBase,
 	Refreshable<Network>,
 	Wrapper<VirtualNetwork>,

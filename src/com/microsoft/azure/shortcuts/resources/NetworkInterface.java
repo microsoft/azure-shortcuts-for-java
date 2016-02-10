@@ -22,7 +22,6 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -30,7 +29,6 @@ import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface NetworkInterface extends 
-	Indexable,
 	GroupResourceBase,
 	Refreshable<NetworkInterface>,
 	Wrapper<com.microsoft.azure.management.network.models.NetworkInterface>,

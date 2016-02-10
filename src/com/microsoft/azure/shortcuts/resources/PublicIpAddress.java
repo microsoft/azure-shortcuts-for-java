@@ -20,14 +20,12 @@
 package com.microsoft.azure.shortcuts.resources;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 
 public interface PublicIpAddress extends 
-	Indexable,
 	GroupResourceBase,
 	Refreshable<PublicIpAddress>,
 	Wrapper<com.microsoft.azure.management.network.models.PublicIpAddress>,
