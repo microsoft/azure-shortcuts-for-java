@@ -34,7 +34,7 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 public class AvailabilitySetsImpl 
 	extends GroupableResourcesBaseImpl<
 		Azure, 
-		AvailabilitySet, 
+		AvailabilitySet,
 		com.microsoft.azure.management.compute.models.AvailabilitySet,
 		AvailabilitySetsImpl.AvailabilitySetImpl>
 	implements AvailabilitySets {

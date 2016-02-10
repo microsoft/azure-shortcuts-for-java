@@ -28,38 +28,36 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
 
-public abstract class GroupableResourcesBaseImpl<
-		T, 
-		W, 
-		I extends ResourceBaseExtended,
-		WI extends W> extends EntitiesImpl<T> {
-	protected GroupableResourcesBaseImpl(T azure) {
+public abstract class GroupableResourcesBaseImpl<AZURE, WRAPPER, 
+		INNER extends ResourceBaseExtended,
+		WRAPPERIMPL extends WRAPPER> extends EntitiesImpl<AZURE> {
+	protected GroupableResourcesBaseImpl(AZURE azure) {
 		super(azure);
 	}
 	
-	protected abstract List<I> getNativeEntities(String group) throws Exception;
-	protected abstract I getNativeEntity(String group, String name) throws Exception;
-	protected abstract WI wrap(I nativeItem);
+	protected abstract List<INNER> getNativeEntities(String group) throws Exception;
+	protected abstract INNER getNativeEntity(String group, String name) throws Exception;
+	protected abstract WRAPPERIMPL wrap(INNER nativeItem);
 	
 	public abstract void delete(String groupName, String name) throws Exception;
 	
-	public final Map<String, W> list(String groupName) throws Exception {
-		HashMap<String, W> wrappers = new HashMap<>();
-		for(I nativeItem : getNativeEntities(groupName)) {
+	public final Map<String, WRAPPER> list(String groupName) throws Exception {
+		HashMap<String, WRAPPER> wrappers = new HashMap<>();
+		for(INNER nativeItem : getNativeEntities(groupName)) {
 			wrappers.put(nativeItem.getId(), wrap(nativeItem));
 		}
 		return Collections.unmodifiableMap(wrappers);
 	}
 	
-	public final Map<String, W> list() throws Exception {
+	public final Map<String, WRAPPER> list() throws Exception {
 		return list(null);
 	}
 	
-	public final W get(String groupName, String name) throws Exception {
+	public final WRAPPER get(String groupName, String name) throws Exception {
 		return wrap(getNativeEntity(groupName, name));
 	}
 	
-	public final W get(String id) throws Exception {
+	public final WRAPPER get(String id) throws Exception {
 		return get(
 			ResourcesImpl.groupFromResourceId(id), 
 			ResourcesImpl.nameFromResourceId(id));

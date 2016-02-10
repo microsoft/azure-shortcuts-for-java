@@ -25,13 +25,13 @@ import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 public abstract class NetworkableGroupableResourceBaseImpl<
-		T, 
-		I extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
-		TI extends NetworkableGroupableResourceBaseImpl<T, I, TI>>
+		WRAPPER, 
+		INNER extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
+		WRAPPERIMPL extends NetworkableGroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>>
 	extends
-		PublicIpGroupableResourceBaseImpl<T, I, TI> {
+		PublicIpGroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL> {
 
-	protected NetworkableGroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
+	protected NetworkableGroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
 		super(id, innerObject, collection);
 	}
 	
@@ -79,33 +79,33 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	 * WithNetwork* Implementation
 	 ***********************************************************/
 	@SuppressWarnings("unchecked")
-	final public TI withExistingNetwork(String id) {
+	final public WRAPPERIMPL withExistingNetwork(String id) {
 		this.isNetworkExisting = true;
 		this.networkId = id;
-		return (TI)this;
+		return (WRAPPERIMPL)this;
 	}
 
-	final public TI withExistingNetwork(Network network) {
+	final public WRAPPERIMPL withExistingNetwork(Network network) {
 		return this.withExistingNetwork(network.id());
 	}
 
-	final public TI withExistingNetwork(VirtualNetwork network) {
+	final public WRAPPERIMPL withExistingNetwork(VirtualNetwork network) {
 		return this.withExistingNetwork(network.getId());
 	}
 
 	@SuppressWarnings("unchecked")
-	final public TI withNewNetwork(String name, String addressSpace) {
+	final public WRAPPERIMPL withNewNetwork(String name, String addressSpace) {
 		this.isNetworkExisting = false;
 		this.networkId = name;
 		this.networkCidr = addressSpace;
-		return (TI) this;
+		return (WRAPPERIMPL) this;
 	}
 
-	final public TI withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception {
+	final public WRAPPERIMPL withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception {
 		return this.withExistingNetwork(networkDefinition.provision());
 	}
 
-	final public TI withNewNetwork(String addressSpace) {
+	final public WRAPPERIMPL withNewNetwork(String addressSpace) {
 		return this.withNewNetwork((String)null, addressSpace);
 	}
 	
@@ -114,22 +114,22 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	 * WithSubnet implementation
 	 ********************************************************/
 	@SuppressWarnings("unchecked")
-	final public TI withSubnet(String subnetId) {
+	final public WRAPPERIMPL withSubnet(String subnetId) {
 		this.subnetId = subnetId;
-		return (TI)this;
+		return (WRAPPERIMPL)this;
 	}
 	
 
 	/*******************************************************
 	 * WithPrivateIpAddress implementation
 	 *******************************************************/
-	final public TI withPrivateIpAddressDynamic() {
+	final public WRAPPERIMPL withPrivateIpAddressDynamic() {
 		return this.withPrivateIpAddressStatic(null);
 	}
 	
 	@SuppressWarnings("unchecked")
-	final public TI withPrivateIpAddressStatic(String staticPrivateIpAddress) {
+	final public WRAPPERIMPL withPrivateIpAddressStatic(String staticPrivateIpAddress) {
 		this.privateIpAddress = staticPrivateIpAddress;
-		return (TI)this;
+		return (WRAPPERIMPL)this;
 	}
 }
