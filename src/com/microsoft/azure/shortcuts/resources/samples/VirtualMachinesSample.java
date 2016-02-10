@@ -88,6 +88,9 @@ public class VirtualMachinesSample {
     	vm = azure.virtualMachines(groupName, vm.computerName());
     	printVM(vm);
     	
+    	// Delete VM
+    	vmWin.delete();
+    	
     	// Delete the group
     	azure.groups().delete(groupName);
 	}

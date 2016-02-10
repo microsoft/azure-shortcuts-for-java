@@ -76,7 +76,6 @@ public class VirtualMachinesImpl
 		azureVM.setType("Microsoft.Compute/virtualMachines");
 		azureVM.setId(name);
 		azureVM.setOSProfile(new OSProfile());
-		//azureVM.setAvailabilitySetReference(new AvailabilitySetReference());
 		azureVM.setHardwareProfile(new HardwareProfile());
 		
 		// Default storage profile
@@ -484,7 +483,11 @@ public class VirtualMachinesImpl
 		/*******************************************************
 		 * Verbs
 		 *******************************************************/
-		
+		@Override
+		public void delete() throws Exception {
+			this.collection.azure().virtualMachines().delete(this.id());
+		}
+
 		@Override
 		public VirtualMachine provision() throws Exception {
 			// Ensure group

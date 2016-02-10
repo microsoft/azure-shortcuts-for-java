@@ -22,5 +22,5 @@ package com.microsoft.azure.shortcuts.common;
 
 // Requires class to support deleting entities
 public interface SupportsDeleting {
-	void delete(String name) throws Exception;
+	void delete(String id) throws Exception;
 }

@@ -27,6 +27,7 @@ import com.microsoft.azure.management.compute.models.DataDisk;
 import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
+import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Provisionable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -36,7 +37,8 @@ import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 public interface VirtualMachine extends 
 	GroupResourceBase,
 	Refreshable<VirtualMachine>,
-	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine> {
+	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine>,
+	Deletable {
 	
 	public String size();
 	public URI bootDiagnosticsStorage();
@@ -64,7 +66,6 @@ public interface VirtualMachine extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 		//TODO load balancers
 		//TODO network security groups
-		//TODO data disks
 		//TODO custom images
 		//TODO image capture
 	}

@@ -286,6 +286,19 @@ Set<String> sizeNames = azure.sizes().list("westus").keySet();
 
 > :triangular_flag_on_post: **TODO**: 
 
+#### Deleting a virtual machine
+
+Any of the following approaches:
+```java
+azure.virtualMachines().delete("<vm-resource-id>");
+
+azure.virtualMachines().delete("<resource-group-name>", "<vm-name>");
+
+azure.virtualMachines("<vm-resource-id>").delete();
+
+azure.virtualMachines("<resource-group-name>", "<vm-name>").delete();
+```
+
 ### Virtual Networks
 
 #### Creating a virtual network
