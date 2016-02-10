@@ -489,6 +489,26 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
+		public void stop() throws Exception {
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().powerOff(this.group(), this.name());
+		}
+		
+		@Override
+		public void restart() throws Exception {
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().restart(this.group(), this.name());
+		}
+
+		@Override
+		public void deallocate() throws Exception {
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().deallocate(this.group(), this.name());
+		}
+		
+		@Override
+		public void start() throws Exception {
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().start(this.group(), this.name());
+		}
+		
+		@Override
 		public VirtualMachine provision() throws Exception {
 			// Ensure group
 			Group group = this.ensureGroup();

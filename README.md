@@ -299,6 +299,51 @@ azure.virtualMachines("<vm-resource-id>").delete();
 azure.virtualMachines("<resource-group-name>", "<vm-name>").delete();
 ```
 
+#### Stopping a virtual machine
+
+By resource group and name:
+```java
+azure.virtualMachines().get("<resource-group-name>", "<vm-name>").stop();
+```
+By resource id:
+```java
+azure.virtualMachines().get("<vm-resource-id>").stop();
+```
+
+#### Starting a stopped virtual machine
+
+By resource group and name:
+```java
+azure.virtualMachines().get("<resource-group-name>", "<vm-name>").start();
+```
+By resource id:
+```java
+azure.virtualMachines().get("<vm-resource-id>").start();
+```
+
+#### Restarting a virtual machine
+
+By resource group and name:
+```java
+azure.virtualMachines().get("<resource-group-name>", "<vm-name>").restart();
+```
+By resource id:
+```java
+azure.virtualMachines().get("<vm-resource-id>").restart();
+```
+
+#### Deallocating a virtual machine
+
+By resource group and name:
+```java
+azure.virtualMachines().get("<resource-group-name>", "<vm-name>").deallocate();
+```
+By resource id:
+```java
+azure.virtualMachines().get("<vm-resource-id>").deallocate();
+```
+
+
 ### Virtual Networks
 
 #### Creating a virtual network

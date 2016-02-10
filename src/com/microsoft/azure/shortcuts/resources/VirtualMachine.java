@@ -58,6 +58,29 @@ public interface VirtualMachine extends
 	public ImageReference image();
 	public List<DataDisk> dataDisks();
 	
+	/**
+	 * Stops (powers off) the virtual machine without deallocating it. Charges keep accruing.
+	 * @throws Exception 
+	 */
+	public void stop() throws Exception;
+
+	/** 
+	 * Restarts a virtual machine
+	 * @throws Exception
+	 */
+	public void restart() throws Exception;
+
+	/** 
+	 * Deallocates a virtual machine. Charges no longer accrue.
+	 * @throws Exception
+	 */
+	public void deallocate() throws Exception;
+
+	/**
+	 * Starts a stopped virtual machine.
+	 * @throws Exception
+	 */
+	public void start() throws Exception;
 	
 	/**
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified

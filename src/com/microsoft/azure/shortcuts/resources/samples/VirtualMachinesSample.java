@@ -88,6 +88,18 @@ public class VirtualMachinesSample {
     	vm = azure.virtualMachines(groupName, vm.computerName());
     	printVM(vm);
     	
+    	// Stop the VM
+    	vmWin.stop();
+    	
+    	// Starts a stopped VM
+    	vmWin.start();
+    	
+    	// Restart the VM
+    	vmWin.restart();
+    	
+    	// Deallocate the VM
+    	vmWin.deallocate();
+    	
     	// Delete VM
     	vmWin.delete();
     	
