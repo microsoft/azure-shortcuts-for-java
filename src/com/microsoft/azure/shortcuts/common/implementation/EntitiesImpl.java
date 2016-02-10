@@ -24,4 +24,8 @@ public abstract class EntitiesImpl<T> {
 	protected EntitiesImpl(T azure) {
 		this.azure = azure;
 	}
+	
+	public T azure() {
+		return this.azure;
+	}
 }

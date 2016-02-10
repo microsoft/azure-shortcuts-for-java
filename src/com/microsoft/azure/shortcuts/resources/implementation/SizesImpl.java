@@ -51,7 +51,7 @@ public class SizesImpl
 	public Map<String, Size> list(String region) throws Exception {
 		HashMap<String, Size> wrappers = new HashMap<>();
 		for(VirtualMachineSize nativeItem : getNativeEntities(region)) {
-			SizeImpl wrapper = new SizeImpl(nativeItem, this.azure);
+			SizeImpl wrapper = new SizeImpl(nativeItem, this);
 			wrappers.put(nativeItem.getName(), wrapper);
 		}
 		
@@ -77,12 +77,12 @@ public class SizesImpl
 		implements Size {
 
 		final private VirtualMachineSize azureSize;
-		final private Azure azure;
+		final private EntitiesImpl<Azure> collection;
 		
-		private SizeImpl(VirtualMachineSize azureSize, Azure azure) {
+		private SizeImpl(VirtualMachineSize azureSize, EntitiesImpl<Azure> collection) {
 			super(azureSize.getName());
 			this.azureSize = azureSize;
-			this.azure = azure;
+			this.collection = collection;
 		}
 
 		

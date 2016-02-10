@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
@@ -38,11 +39,11 @@ public abstract class ResourceBaseImpl<
 	implements 
 		ResourceBase {
 
-	protected final Azure azure;
+	protected final EntitiesImpl<Azure> collection;
 	
-	protected ResourceBaseImpl(String id, I innerObject, Azure azure) {
+	protected ResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
 		super(id, innerObject);
-		this.azure = azure;
+		this.collection = collection;
 	}
 
 	/*******************************************

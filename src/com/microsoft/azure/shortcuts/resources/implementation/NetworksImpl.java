@@ -30,6 +30,7 @@ import java.util.TreeMap;
 import com.microsoft.azure.management.network.models.AddressSpace;
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
@@ -96,7 +97,7 @@ public class NetworksImpl
 	
 	@Override 
 	protected NetworkImpl wrap(VirtualNetwork nativeItem) {
-		return new NetworkImpl(nativeItem, this.azure);
+		return new NetworkImpl(nativeItem, this);
 	}
 	
 	
@@ -118,8 +119,8 @@ public class NetworksImpl
 			Network.DefinitionProvisionableWithSubnet, 
 			Network.DefinitionWithSubnet {
 		
-		private NetworkImpl(VirtualNetwork azureVirtualNetwork, Azure azure) {
-			super(azureVirtualNetwork.getName(), azureVirtualNetwork, azure);
+		private NetworkImpl(VirtualNetwork azureVirtualNetwork, EntitiesImpl<Azure> collection) {
+			super(azureVirtualNetwork.getName(), azureVirtualNetwork, collection);
 		}
 
 
@@ -201,7 +202,7 @@ public class NetworksImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.azure.networks().delete(this.id());
+			this.collection.azure().networks().delete(this.id());
 		}
 
 		@Override
@@ -219,7 +220,7 @@ public class NetworksImpl
 				this.withSubnet("subnet1", this.addressSpaces().get(0));
 			}
 			
-			this.azure.networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.collection.azure().networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

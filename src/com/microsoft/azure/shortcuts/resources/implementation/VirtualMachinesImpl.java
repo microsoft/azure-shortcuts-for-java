@@ -41,6 +41,7 @@ import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -123,7 +124,7 @@ public class VirtualMachinesImpl
 	
 	@Override 
 	protected VirtualMachineImpl wrap(com.microsoft.azure.management.compute.models.VirtualMachine nativeItem) {
-		return new VirtualMachineImpl(nativeItem, this.azure);
+		return new VirtualMachineImpl(nativeItem, this);
 	}
 		
 	
@@ -158,8 +159,8 @@ public class VirtualMachinesImpl
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
 		
-		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM, Azure azure) {
-			super(azureVM.getId(), azureVM, azure);
+		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM, EntitiesImpl<Azure> collection) {
+			super(azureVM.getId(), azureVM, collection);
 		}
 
 
@@ -526,7 +527,7 @@ public class VirtualMachinesImpl
 			URL diskBlob = new URL(container, "osDisk.vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 
-			azure.computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.group(), this.inner());
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.group(), this.inner());
 			return this;
 		}
 		
@@ -561,7 +562,7 @@ public class VirtualMachinesImpl
 				return storageAccount;
 				
 			} else {
-				return azure.storageAccounts(this.storageAccountId);
+				return this.collection.azure().storageAccounts(this.storageAccountId);
 			}
 		}
 		
@@ -620,7 +621,7 @@ public class VirtualMachinesImpl
 			} else if(this.availabilitySetId == null) {
 				return null;
 			} else {
-				return azure.availabilitySets(this.availabilitySetId);
+				return this.collection.azure().availabilitySets(this.availabilitySetId);
 			}
 		}
 		
@@ -645,7 +646,7 @@ public class VirtualMachinesImpl
 				this.isExistingPrimaryNIC = true;
 				return nic;
 			} else {
-				return azure.networkInterfaces(this.nicId);
+				return this.collection.azure().networkInterfaces(this.nicId);
 			}
 		}
 	}

@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.PublicIpAddressDnsSettings;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
@@ -81,7 +82,7 @@ public class PublicIpAddressesImpl
 	
 	@Override
 	protected PublicIpAddressImpl wrap(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
-		return new PublicIpAddressImpl(nativeItem, this.azure);
+		return new PublicIpAddressImpl(nativeItem, this);
 	}
 	
 	
@@ -102,8 +103,8 @@ public class PublicIpAddressesImpl
 			PublicIpAddress.DefinitionWithIpAddress,
 			PublicIpAddress.DefinitionProvisionable {
 		
-		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, Azure azure) {
-			super(azurePublicIpAddress.getName(), azurePublicIpAddress, azure);
+		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, EntitiesImpl<Azure> collection) {
+			super(azurePublicIpAddress.getName(), azurePublicIpAddress, collection);
 		}
 
 
@@ -167,7 +168,7 @@ public class PublicIpAddressesImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.publicIpAddresses().delete(this.id());
+			this.collection.azure().publicIpAddresses().delete(this.id());
 		}
 
 		@Override
@@ -175,7 +176,7 @@ public class PublicIpAddressesImpl
 			// Create a group as needed
 			ensureGroup();
 		
-			azure.networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.collection.azure().networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

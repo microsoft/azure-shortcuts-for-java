@@ -28,6 +28,7 @@ import java.util.TreeMap;
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.management.network.models.ResourceId;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
@@ -87,7 +88,7 @@ public class NetworkInterfacesImpl
 	
 	@Override
 	protected NetworkInterfaceImpl wrap(com.microsoft.azure.management.network.models.NetworkInterface nativeItem) {
-		return new NetworkInterfaceImpl(nativeItem, this.azure);
+		return new NetworkInterfaceImpl(nativeItem, this);
 	}
 	
 
@@ -110,8 +111,8 @@ public class NetworkInterfacesImpl
 			NetworkInterface.DefinitionWithPublicIpAddress,
 			NetworkInterface.DefinitionProvisionable {
 		
-		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, Azure azure) {
-			super(azureNetworkInterface.getName(), azureNetworkInterface, azure);
+		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, EntitiesImpl<Azure> collection) {
+			super(azureNetworkInterface.getName(), azureNetworkInterface, collection);
 		}
 
 				
@@ -123,7 +124,6 @@ public class NetworkInterfacesImpl
 			return this.inner().getIpConfigurations().get(0); 
 		}
 
-		
 		
 		/***********************************************************
 		 * Getters
@@ -161,7 +161,7 @@ public class NetworkInterfacesImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.azure.networkInterfaces().delete(this.id());
+			this.collection.azure().networkInterfaces().delete(this.id());
 		}
 
 		@Override

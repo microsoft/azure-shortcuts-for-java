@@ -25,6 +25,7 @@ import java.util.List;
 
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
@@ -56,7 +57,6 @@ public class StorageAccountsImpl
 	}
 
 
-	
 	/***************************************************
 	 * Helpers
 	 ***************************************************/
@@ -77,7 +77,7 @@ public class StorageAccountsImpl
 	
 	@Override
 	protected StorageAccountImpl wrap(com.microsoft.azure.management.storage.models.StorageAccount nativeItem) {
-		return new StorageAccountImpl(nativeItem, this.azure);
+		return new StorageAccountImpl(nativeItem, this);
 	}
 	
 	
@@ -96,8 +96,8 @@ public class StorageAccountsImpl
 			StorageAccount.DefinitionWithGroup,
 			StorageAccount.DefinitionProvisionable {
 		
-		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, Azure azure) {
-			super(azureStorageAccount.getId(), azureStorageAccount, azure);
+		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, EntitiesImpl<Azure> collection) {
+			super(azureStorageAccount.getId(), azureStorageAccount, collection);
 		}
 
 
@@ -150,7 +150,7 @@ public class StorageAccountsImpl
 			params.setAccountType(this.accountType());
 			params.setTags(this.inner().getTags());
 
-			this.azure.storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
+			this.collection.azure().storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
 			return get(this.groupName, this.name());
 		}
 

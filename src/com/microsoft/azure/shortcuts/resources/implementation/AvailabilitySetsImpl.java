@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.microsoft.azure.management.compute.models.VirtualMachineReference;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
@@ -72,7 +73,7 @@ public class AvailabilitySetsImpl
 	
 	@Override
 	protected AvailabilitySetImpl wrap(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
-		return new AvailabilitySetImpl(nativeItem, this.azure);
+		return new AvailabilitySetImpl(nativeItem, this);
 	}
 	
 	
@@ -91,8 +92,8 @@ public class AvailabilitySetsImpl
 			AvailabilitySet.DefinitionWithGroup,
 			AvailabilitySet.DefinitionProvisionable {
 		
-		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet, Azure azure) {
-			super(azureAvailabilitySet.getId(), azureAvailabilitySet, azure);
+		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet, EntitiesImpl<Azure> collection) {
+			super(azureAvailabilitySet.getId(), azureAvailabilitySet, collection);
 		}
 
 
@@ -137,7 +138,7 @@ public class AvailabilitySetsImpl
 		@Override
 		public AvailabilitySet provision() throws Exception {
 			ensureGroup(); // Create group if needed
-			this.azure.computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
+			this.collection.azure().computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
 			return get(this.groupName, this.name());
 		}
 	}

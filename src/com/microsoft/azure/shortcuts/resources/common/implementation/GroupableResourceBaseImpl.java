@@ -20,6 +20,7 @@
 package com.microsoft.azure.shortcuts.resources.common.implementation;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Group;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
@@ -35,8 +36,8 @@ public abstract class GroupableResourceBaseImpl<
 	implements 
 		GroupResourceBase {
 
-	protected GroupableResourceBaseImpl(String id, I innerObject, Azure azure) {
-		super(id, innerObject, azure);
+	protected GroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
+		super(id, innerObject, collection);
 	}
 
 	protected String groupName;
@@ -63,14 +64,14 @@ public abstract class GroupableResourceBaseImpl<
 			if(this.groupName == null) {
 				this.groupName = this.name() + "group";
 			}
-				
-			group = this.azure.groups().define(this.groupName)
+			
+			group = this.collection.azure().groups().define(this.groupName)
 				.withRegion(this.region())
 				.provision();
 			this.isExistingGroup = true;
 			return group;
 		} else {
-			return this.azure.groups(this.groupName);
+			return this.collection.azure().groups(this.groupName);
 		}
 	}
 	

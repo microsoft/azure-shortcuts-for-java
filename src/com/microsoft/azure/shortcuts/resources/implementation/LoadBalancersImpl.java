@@ -23,6 +23,7 @@ import java.util.List;
 
 import com.microsoft.azure.management.network.models.FrontendIpConfiguration;
 import com.microsoft.azure.management.network.models.ResourceId;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.LoadBalancer;
 import com.microsoft.azure.shortcuts.resources.LoadBalancers;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
@@ -75,7 +76,7 @@ public class LoadBalancersImpl
 	
 	@Override 
 	protected LoadBalancerImpl wrap(com.microsoft.azure.management.network.models.LoadBalancer nativeItem) {
-		return new LoadBalancerImpl(nativeItem, this.azure);
+		return new LoadBalancerImpl(nativeItem, this);
 	}
 	
 	
@@ -95,8 +96,8 @@ public class LoadBalancersImpl
 			LoadBalancer.DefinitionWithFrontEnd,
 			LoadBalancer.DefinitionProvisionable {
 		
-		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, Azure azure) {
-			super(nativeItem.getName(), nativeItem, azure);
+		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, EntitiesImpl<Azure> collection) {
+			super(nativeItem.getName(), nativeItem, collection);
 		}
 
 
@@ -115,7 +116,7 @@ public class LoadBalancersImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.azure.loadBalancers().delete(this.id());
+			this.collection.azure().loadBalancers().delete(this.id());
 		}
 
 		@Override
@@ -132,7 +133,7 @@ public class LoadBalancersImpl
 			ipConfig.setPublicIpAddress(r);
 			ipConfig.setName(this.name());
 			
-			this.azure.networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.collection.azure().networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

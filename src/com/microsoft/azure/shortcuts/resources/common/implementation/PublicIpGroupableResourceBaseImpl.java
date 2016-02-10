@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources.common.implementation;
 
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -29,8 +30,8 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 	extends
 		GroupableResourceBaseImpl<T, I, TI> {
 
-	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject, Azure azure) {
-		super(id, innerObject, azure);
+	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
+		super(id, innerObject, collection);
 	}
 	
 	protected boolean isPublicIpAddressExisting;
@@ -55,7 +56,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 				this.publicIpAddressDns = this.name().toLowerCase();
 			}
 			
-			PublicIpAddress pip = azure.publicIpAddresses().define(this.publicIpAddressDns)
+			PublicIpAddress pip = this.collection.azure().publicIpAddresses().define(this.publicIpAddressDns)
 				.withRegion(this.region())
 				.withExistingGroup(this.groupName)
 				.withLeafDomainLabel(this.publicIpAddressDns)
@@ -64,7 +65,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 			this.publicIpAddressId = pip.id();
 			return pip;
 		} else if(this.publicIpAddressId != null) {
-			return this.azure.publicIpAddresses(this.publicIpAddressId);
+			return this.collection.azure().publicIpAddresses(this.publicIpAddressId);
 		} else {
 			return null;
 		}

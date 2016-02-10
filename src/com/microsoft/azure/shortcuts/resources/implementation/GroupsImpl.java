@@ -45,7 +45,7 @@ public class GroupsImpl
 	public Map<String, Group> list() throws Exception {
 		HashMap<String, Group> wrappers = new HashMap<>();
 		for(ResourceGroupExtended nativeItem : getNativeEntities()) {
-			GroupImpl wrapper = new GroupImpl(nativeItem, this.azure);
+			GroupImpl wrapper = new GroupImpl(nativeItem, this);
 			wrappers.put(nativeItem.getName(), wrapper);
 		}
 		
@@ -57,7 +57,7 @@ public class GroupsImpl
 	// Gets a specific resource group
 	public GroupImpl get(String name) throws Exception {
 		ResourceGroupExtended azureGroup = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
-		return new GroupImpl(azureGroup, this.azure);
+		return new GroupImpl(azureGroup, this);
 	}
 	
 	
@@ -88,7 +88,7 @@ public class GroupsImpl
 	private GroupImpl createWrapper(String name) {
 		ResourceGroupExtended azureGroup = new ResourceGroupExtended();
 		azureGroup.setName(name);
-		return new GroupImpl(azureGroup, this.azure);
+		return new GroupImpl(azureGroup, this);
 		
 	}
 	
@@ -110,11 +110,11 @@ public class GroupsImpl
 			Group.DefinitionBlank,
 			Group {
 		
-		private final Azure azure;
+		private final EntitiesImpl<Azure> collection;
 		
-		private GroupImpl(ResourceGroupExtended azureGroup, Azure azure) {
+		private GroupImpl(ResourceGroupExtended azureGroup, EntitiesImpl<Azure> collection) {
 			super(azureGroup.getName(), azureGroup);
-			this.azure = azure;
+			this.collection = collection;
 		}
 
 
@@ -200,14 +200,14 @@ public class GroupsImpl
 				params.setLocation(group.region());
 			}
 
-			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
+			this.collection.azure().resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
 			return this;
 		}
 
 		
 		@Override
 		public void delete() throws Exception {
-			azure.groups().delete(this.id);
+			this.collection.azure().groups().delete(this.id);
 		}
 
 		
@@ -216,14 +216,14 @@ public class GroupsImpl
 			ResourceGroup params = new ResourceGroup();
 			params.setLocation(this.inner().getLocation());
 			params.setTags(this.inner().getTags());
-			azure.resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
+			this.collection.azure().resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
 			return this;
 		}
 
 		
 		@Override
 		public GroupImpl refresh() throws Exception {
-			this.setInner(azure.resourceManagementClient().getResourceGroupsOperations().get(this.id).getResourceGroup());
+			this.setInner(this.collection.azure().resourceManagementClient().getResourceGroupsOperations().get(this.id).getResourceGroup());
 			return this;
 		}
 	}

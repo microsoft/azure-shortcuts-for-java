@@ -20,6 +20,7 @@
 package com.microsoft.azure.shortcuts.resources.common.implementation;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
+import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -30,8 +31,8 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	extends
 		PublicIpGroupableResourceBaseImpl<T, I, TI> {
 
-	protected NetworkableGroupableResourceBaseImpl(String id, I innerObject, Azure azure) {
-		super(id, innerObject, azure);
+	protected NetworkableGroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
+		super(id, innerObject, collection);
 	}
 	
 	private boolean isNetworkExisting;
@@ -49,7 +50,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 				this.networkId = this.name() + "net";
 			}
 	
-			Network network = azure.networks().define(this.networkId)
+			Network network = this.collection.azure().networks().define(this.networkId)
 				.withRegion(this.region())
 				.withExistingGroup(groupName)
 				.withAddressSpace(this.networkCidr)
@@ -57,7 +58,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 			this.isNetworkExisting = true;
 			return network;
 		} else {
-			return this.azure.networks(this.networkId);
+			return this.collection.azure().networks(this.networkId);
 		}
 	}
 
