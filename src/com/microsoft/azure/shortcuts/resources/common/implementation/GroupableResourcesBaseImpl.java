@@ -24,14 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
+import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
 
-public abstract class GroupableResourcesBaseImpl<AZURE, WRAPPER, 
+public abstract class GroupableResourcesBaseImpl<WRAPPER, 
 		INNER extends ResourceBaseExtended,
-		WRAPPERIMPL extends WRAPPER> extends EntitiesImpl<AZURE> {
-	protected GroupableResourcesBaseImpl(AZURE azure) {
+		WRAPPERIMPL extends WRAPPER> extends ArmEntitiesImpl {
+	protected GroupableResourcesBaseImpl(Azure azure) {
 		super(azure);
 	}
 	

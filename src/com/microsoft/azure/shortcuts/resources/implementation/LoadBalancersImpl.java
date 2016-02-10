@@ -32,7 +32,6 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.PublicIpGro
 
 public class LoadBalancersImpl 
 	extends GroupableResourcesBaseImpl<
-		Azure, 
 		LoadBalancer, 
 		com.microsoft.azure.management.network.models.LoadBalancer,
 		LoadBalancersImpl.LoadBalancerImpl>

@@ -39,7 +39,6 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.Networkable
 
 public class NetworkInterfacesImpl 
 	extends GroupableResourcesBaseImpl<
-		Azure, 
 		NetworkInterface, 
 		com.microsoft.azure.management.network.models.NetworkInterface,
 		NetworkInterfacesImpl.NetworkInterfaceImpl>

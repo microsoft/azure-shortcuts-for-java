@@ -32,7 +32,6 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 public class PublicIpAddressesImpl 
 	extends GroupableResourcesBaseImpl<
-		Azure, 
 		PublicIpAddress, 
 		com.microsoft.azure.management.network.models.PublicIpAddress,
 		PublicIpAddressesImpl.PublicIpAddressImpl>

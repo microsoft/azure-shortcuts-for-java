@@ -34,7 +34,6 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 public class StorageAccountsImpl 
 	extends GroupableResourcesBaseImpl<
-		Azure, 
 		StorageAccount, 
 		com.microsoft.azure.management.storage.models.StorageAccount,
 		StorageAccountsImpl.StorageAccountImpl>

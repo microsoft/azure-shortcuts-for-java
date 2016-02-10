@@ -40,7 +40,6 @@ import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableRe
 
 public class NetworksImpl 
 	extends GroupableResourcesBaseImpl<
-		Azure, 
 		Network, 
 		VirtualNetwork,
 		NetworksImpl.NetworkImpl>

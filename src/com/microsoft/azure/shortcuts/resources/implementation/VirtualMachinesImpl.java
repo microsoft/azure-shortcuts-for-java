@@ -56,7 +56,6 @@ import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
 	extends GroupableResourcesBaseImpl<
-		Azure, 
 		VirtualMachine, 
 		com.microsoft.azure.management.compute.models.VirtualMachine,
 		VirtualMachinesImpl.VirtualMachineImpl>
