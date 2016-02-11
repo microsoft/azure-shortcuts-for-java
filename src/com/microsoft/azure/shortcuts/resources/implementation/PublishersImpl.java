@@ -133,7 +133,7 @@ public class PublishersImpl
 			ArrayList<VirtualMachineImageResource> nativeItems = collection.azure().computeManagementClient().getVirtualMachineImagesOperations().listOffers(params).getResources();
 			TreeMap<String, Offer> offers = new TreeMap<>();
 			for(VirtualMachineImageResource nativeItem : nativeItems) {
-				offers.put(nativeItem.getId(), new OfferImpl(nativeItem.getName(), nativeItem, this));
+				offers.put(nativeItem.getId(), new OfferImpl(nativeItem.getName(), nativeItem, this, collection.azure()));
 			}
 			
 			return Collections.unmodifiableMap(offers);

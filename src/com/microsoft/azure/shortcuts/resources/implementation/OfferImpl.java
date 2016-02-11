@@ -20,20 +20,29 @@
 
 package com.microsoft.azure.shortcuts.resources.implementation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
+import com.microsoft.azure.management.compute.models.VirtualMachineImageListSkusParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Offer;
 import com.microsoft.azure.shortcuts.resources.Publisher;
+import com.microsoft.azure.shortcuts.resources.SKU;
 
 class OfferImpl 
 	extends IndexableWrapperImpl<com.microsoft.azure.management.compute.models.VirtualMachineImageResource>
 	implements Offer {
 
 	private final Publisher publisher;
+	private final Azure azure;
 	
-	OfferImpl(String name, VirtualMachineImageResource innerObject, Publisher publisher) {
+	OfferImpl(String name, VirtualMachineImageResource innerObject, Publisher publisher, Azure azure) {
 		super(name, innerObject);
 		this.publisher = publisher;
+		this.azure = azure;
 	}
 	
 	@Override
@@ -44,5 +53,20 @@ class OfferImpl
 	@Override
 	public Publisher publisher() {
 		return this.publisher;
+	}
+
+	@Override
+	public Map<String, SKU> skus() throws Exception {
+		VirtualMachineImageListSkusParameters params = new VirtualMachineImageListSkusParameters();
+		params.setLocation(this.publisher().region().toString());
+		params.setPublisherName(this.publisher().name());
+		params.setOffer(this.name());
+		ArrayList<VirtualMachineImageResource> nativeItems = this.azure.computeManagementClient().getVirtualMachineImagesOperations().listSkus(params).getResources();
+		TreeMap<String, SKU> skus = new TreeMap<>();
+		for(VirtualMachineImageResource nativeItem : nativeItems) {
+			skus.put(nativeItem.getId(), new SKUImpl(nativeItem.getName(), nativeItem, this));
+		}
+		
+		return Collections.unmodifiableMap(skus);
 	}	
 }

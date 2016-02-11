@@ -19,17 +19,14 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import java.util.Map;
-
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 
-public interface Offer extends 
+public interface SKU extends 
 	Indexable,
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachineImageResource> {
 	
 	String name();
-	Publisher publisher();
-	Map<String, SKU> skus() throws Exception;
+	Offer offer();
 }
 

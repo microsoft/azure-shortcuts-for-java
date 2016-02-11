@@ -17,19 +17,32 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources;
 
-import java.util.Map;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
-import com.microsoft.azure.shortcuts.common.Indexable;
-import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
+import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
+import com.microsoft.azure.shortcuts.resources.Offer;
+import com.microsoft.azure.shortcuts.resources.SKU;
 
-public interface Offer extends 
-	Indexable,
-	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachineImageResource> {
+class SKUImpl 
+	extends IndexableWrapperImpl<com.microsoft.azure.management.compute.models.VirtualMachineImageResource>
+	implements SKU {
+
+	private final Offer offer;
 	
-	String name();
-	Publisher publisher();
-	Map<String, SKU> skus() throws Exception;
+	SKUImpl(String name, VirtualMachineImageResource innerObject, Offer offer) {
+		super(name, innerObject);
+		this.offer = offer;
+	}
+	
+	@Override
+	public String name() {
+		return this.inner().getName();
+	}
+	
+	@Override
+	public Offer offer() {
+		return this.offer;
+	}	
 }
-

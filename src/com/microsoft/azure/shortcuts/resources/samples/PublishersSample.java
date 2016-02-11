@@ -25,6 +25,7 @@ import java.util.Map;
 import com.microsoft.azure.shortcuts.resources.Offer;
 import com.microsoft.azure.shortcuts.resources.Publisher;
 import com.microsoft.azure.shortcuts.resources.Region;
+import com.microsoft.azure.shortcuts.resources.SKU;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 public class PublishersSample {
@@ -53,13 +54,15 @@ public class PublishersSample {
     
     private static void printPublisher(Publisher publisher) {
     	System.out.println(String.format("\nPublisher: \t%s\n"
-    			+ "\tLocation: \t%s\n"
     			+ "\tOffers:", 
-    			publisher.name(),
-    			publisher.region().label));
+    			publisher.name()));
     	try {
 			for(Offer offer : publisher.offers().values()) {
-				System.out.println(String.format("\t\t%s by %s", offer.name(), offer.publisher().name()));
+				System.out.println(String.format("\t\t%s by %s\n\t\tSKUs:", offer.name(), offer.publisher().name()));
+				
+				for(SKU sku : offer.skus().values()) {
+					System.out.println(String.format("\t\t\t%s", sku.name()));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
