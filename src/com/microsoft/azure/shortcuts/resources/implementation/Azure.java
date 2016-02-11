@@ -42,6 +42,9 @@ import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
+import com.microsoft.azure.shortcuts.resources.Publisher;
+import com.microsoft.azure.shortcuts.resources.Publishers;
+import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.azure.shortcuts.resources.Sizes;
@@ -63,7 +66,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-
 public class Azure {
     public static String MANAGEMENT_URI = "https://management.core.windows.net/";
     public static String ARM_URL = "https://management.azure.com/";
@@ -84,8 +86,9 @@ public class Azure {
     private final StorageAccountsImpl storageAccounts;
     private final AvailabilitySetsImpl availabilitySets;
     private final NetworkInterfacesImpl networkInterfaces;
-    private final PublicIpAddresses publicIpAddresses;
-    private final LoadBalancers loadBalancers;
+    private final PublicIpAddressesImpl publicIpAddresses;
+    private final LoadBalancersImpl loadBalancers;
+    private final PublishersImpl publishers;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -122,6 +125,7 @@ public class Azure {
         this.networkInterfaces = new NetworkInterfacesImpl(this);
         this.publicIpAddresses = new PublicIpAddressesImpl(this);
         this.loadBalancers = new LoadBalancersImpl(this);
+        this.publishers = new PublishersImpl(this);
     }
     
     
@@ -141,6 +145,18 @@ public class Azure {
     //* Getters
     //**********************************************************
 
+    public Publishers publishers() {
+    	return this.publishers;
+    }
+    
+    public Publisher publishers(String id) throws Exception {
+    	return this.publishers().get(id);
+    }
+    
+    public Publisher publishers(Region region, String name) throws Exception {
+    	return this.publishers().get(region, name);
+    }
+    
     public LoadBalancers loadBalancers() {
     	return this.loadBalancers;
     }
