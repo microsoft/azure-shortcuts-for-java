@@ -22,8 +22,7 @@ package com.microsoft.azure.shortcuts.resources.samples;
 
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.microsoft.azure.shortcuts.resources.Offer;
 import com.microsoft.azure.shortcuts.resources.Publisher;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
@@ -41,7 +40,9 @@ public class PublishersSample {
     public static void test(Azure azure) throws Exception {
     	// List publishers
     	Map<String, Publisher> publishers = azure.publishers().list(Region.US_WEST);
-    	System.out.println(String.format("Publishers: %s\t", StringUtils.join(publishers.keySet(), "\n\t")));
+    	for(Publisher p : publishers.values()) {
+    		printPublisher(p);
+    	}
     	
     	Publisher publisher = azure.publishers().get(publishers.keySet().iterator().next());
     	printPublisher(publisher);
@@ -51,9 +52,18 @@ public class PublishersSample {
     }
     
     private static void printPublisher(Publisher publisher) {
-    	System.out.println(String.format("Publisher: \t%s\n"
-    			+ "Location: \t%s", 
+    	System.out.println(String.format("\nPublisher: \t%s\n"
+    			+ "\tLocation: \t%s\n"
+    			+ "\tOffers:", 
     			publisher.name(),
-    			publisher.region().label));    	
+    			publisher.region().label));
+    	try {
+			for(Offer offer : publisher.offers().values()) {
+				System.out.println(String.format("\t\t%s by %s", offer.name(), offer.publisher().name()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
     }
 }

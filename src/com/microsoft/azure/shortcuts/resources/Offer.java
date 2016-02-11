@@ -19,17 +19,14 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import java.util.Map;
-
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 
-public interface Publisher extends 
+public interface Offer extends 
 	Indexable,
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachineImageResource> {
 	
 	String name();
-	Region region();
-	Map<String, Offer> offers() throws Exception;
+	Publisher publisher();
 }
 

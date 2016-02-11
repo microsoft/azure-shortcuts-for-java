@@ -25,9 +25,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
+import com.microsoft.azure.management.compute.models.VirtualMachineImageListOffersParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageListPublishersParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
+import com.microsoft.azure.shortcuts.resources.Offer;
 import com.microsoft.azure.shortcuts.resources.Publisher;
 import com.microsoft.azure.shortcuts.resources.Publishers;
 import com.microsoft.azure.shortcuts.resources.Region;
@@ -109,6 +111,10 @@ public class PublishersImpl
 			this.collection = collection;
 		}
 
+		/***********************************************************
+		 * Getters
+		 ***********************************************************/		
+
 		@Override
 		public String name() {
 			return this.inner().getName();
@@ -119,14 +125,23 @@ public class PublishersImpl
 			return Region.fromName(this.inner().getLocation());
 		}
 
+		@Override
+		public Map<String, Offer> offers() throws Exception {
+			VirtualMachineImageListOffersParameters params = new VirtualMachineImageListOffersParameters();
+			params.setLocation(this.region().toString());
+			params.setPublisherName(this.name());
+			ArrayList<VirtualMachineImageResource> nativeItems = collection.azure().computeManagementClient().getVirtualMachineImagesOperations().listOffers(params).getResources();
+			TreeMap<String, Offer> offers = new TreeMap<>();
+			for(VirtualMachineImageResource nativeItem : nativeItems) {
+				offers.put(nativeItem.getId(), new OfferImpl(nativeItem.getName(), nativeItem, this));
+			}
+			
+			return Collections.unmodifiableMap(offers);
+		}
 
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/		
 
 		/************************************************************
 		 * Verbs
 		 ************************************************************/
-
 	}
 }
