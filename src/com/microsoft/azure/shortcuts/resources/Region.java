@@ -68,7 +68,7 @@ public enum Region {
 	
 	public static Region fromName(String name) {
 		for(Region region : Region.values()) {
-			if(region.label.equalsIgnoreCase(name)) {
+			if(region.name.equalsIgnoreCase(name)) {
 				return region;
 			}
 		}
