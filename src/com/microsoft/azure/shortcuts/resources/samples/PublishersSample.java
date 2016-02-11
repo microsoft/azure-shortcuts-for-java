@@ -52,21 +52,25 @@ public class PublishersSample {
     	printPublisher(publisher);
     }
     
+    
     private static void printPublisher(Publisher publisher) {
-    	System.out.println(String.format("\nPublisher: \t%s\n"
-    			+ "\tOffers:", 
-    			publisher.name()));
+    	StringBuilder info = new StringBuilder();
+    	info
+    		.append(String.format("Publisher: %s\n", publisher.name()));
+
     	try {
 			for(Offer offer : publisher.offers().values()) {
-				System.out.println(String.format("\t\t%s by %s\n\t\tSKUs:", offer.name(), offer.publisher().name()));
+				info.append(String.format("\tOffer: %s\n", offer.name()));
 				
 				for(SKU sku : offer.skus().values()) {
-					System.out.println(String.format("\t\t\t%s", sku.name()));
+					info.append(String.format("\t\tSKU: %s\n", sku.name()));
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
 		}
+    	
+    	System.out.println(info.toString());
     }
 }
