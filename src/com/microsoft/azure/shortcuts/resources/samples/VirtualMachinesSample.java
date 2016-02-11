@@ -49,7 +49,7 @@ public class VirtualMachinesSample {
     	VirtualMachine vmWin = azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withNewGroup(groupName)
-    		.withNewNetwork("10.0.0.0/28")
+    		.withNewNetwork("net" + deploymentId, "10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
     		.withNewPublicIpAddress("vm" + deploymentId)
     		.withAdminUsername("shortcuts")
@@ -67,6 +67,20 @@ public class VirtualMachinesSample {
     	Map<String, VirtualMachine> vms = azure.virtualMachines().list();
     	System.out.println(String.format("Virtual machines: \n\t%s",  StringUtils.join(vms.keySet(), "\n\t")));
 
+    	// Adding a Linux VM to the same group and VNet
+    	VirtualMachine vmLinux = azure.virtualMachines().define("lx" + deploymentId)
+    		.withRegion(Region.US_WEST)
+    		.withExistingGroup(groupName)
+    		.withExistingNetwork(azure.networks(groupName, "net" + deploymentId))
+    		.withSubnet("subnet1")
+    		.withPrivateIpAddressDynamic()
+    		.withNewPublicIpAddress()
+    		.withAdminUsername("shortcuts")
+    		.withAdminPassword("Abcd.1234")
+    		.withLatestImage("Canonical", "UbuntuServer", "14.04.3-LTS")
+    		.withSize(Size.Type.BASIC_A1)
+    		.provision();
+    	
     	// Listing vms in a specific group
     	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().list(groupName);
     	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmsInGroup.keySet(), "\n\t")));
