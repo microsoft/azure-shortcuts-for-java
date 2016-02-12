@@ -490,37 +490,43 @@ public class VirtualMachinesImpl
 		}
 
 		@Override
-		public void stop() throws Exception {
+		public VirtualMachineImpl stop() throws Exception {
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().powerOff(this.group(), this.name());
+			return this;
 		}
 		
 		@Override
-		public void restart() throws Exception {
+		public VirtualMachineImpl restart() throws Exception {
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().restart(this.group(), this.name());
+			return this;
 		}
 
 		@Override
-		public void deallocate() throws Exception {
+		public VirtualMachineImpl deallocate() throws Exception {
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().deallocate(this.group(), this.name());
+			return this;
 		}
 		
 		@Override
-		public void start() throws Exception {
+		public VirtualMachineImpl start() throws Exception {
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().start(this.group(), this.name());
+			return this;
 		}
 		
 		@Override
-		public void capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception {
+		public VirtualMachineImpl capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception {
 			VirtualMachineCaptureParameters params = new VirtualMachineCaptureParameters();
 			params.setDestinationContainerName(containerName.toLowerCase());
 			params.setVirtualHardDiskNamePrefix(diskNamePrefix);
 			params.setOverwrite(overwrite);
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().capture(this.group(), this.name(), params);
+			return this;
 		}
 		
 		@Override
-		public void generalize() throws Exception {
+		public VirtualMachineImpl generalize() throws Exception {
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().generalize(this.group(), this.name());
+			return this;
 		}
 		
 		

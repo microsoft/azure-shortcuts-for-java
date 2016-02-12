@@ -62,25 +62,25 @@ public interface VirtualMachine extends
 	 * Stops (powers off) the virtual machine without deallocating it. Charges keep accruing.
 	 * @throws Exception 
 	 */
-	public void stop() throws Exception;
+	public VirtualMachine stop() throws Exception;
 
 	/** 
 	 * Restarts a virtual machine
 	 * @throws Exception
 	 */
-	public void restart() throws Exception;
+	public VirtualMachine restart() throws Exception;
 
 	/** 
 	 * Deallocates a virtual machine. Charges no longer accrue.
 	 * @throws Exception
 	 */
-	public void deallocate() throws Exception;
+	public VirtualMachine deallocate() throws Exception;
 
 	/**
 	 * Starts a stopped virtual machine.
 	 * @throws Exception
 	 */
-	public void start() throws Exception;
+	public VirtualMachine start() throws Exception;
 	
 	/**
 	 * Captures a virtual machine image based on this virtual machine
@@ -89,13 +89,13 @@ public interface VirtualMachine extends
 	 * @param overwrite Determines whether to overwrite an existing image VHD, if any
 	 * @throws Exception
 	 */
-	public void capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception;
+	public VirtualMachine capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception;
 
 	/**
 	 * Sets the state of the virtual machine as generalized, which is required for capturing an image
 	 * @throws Exception
 	 */
-	public void generalize() throws Exception;
+	public VirtualMachine generalize() throws Exception;
 
 
 	/**
