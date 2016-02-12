@@ -36,7 +36,7 @@ public interface DefinitionCombos {
 		 * @param id The resource ID of the virtual network to associate with the resource
 		 * @return The next stage of the resource definition
 		 */
-		R withExistingNetwork(String id);
+		R withExistingNetwork(String resourceId);
 		
 		/**
 		 * Associates an existing virtual network with this resource
@@ -97,7 +97,7 @@ public interface DefinitionCombos {
 		 * @param name The name of an existing storage account to associate with this resource
 		 * @return The next stage of the resource definition
 		 */
-		R withExistingStorageAccount(String name);
+		R withExistingStorageAccount(String resourceId);
 		
 		/**
 		 * Associates an existing storage account with this resource
@@ -146,7 +146,7 @@ public interface DefinitionCombos {
 		 * @param id The resource ID of an existing availability set
 		 * @return The next stage of the resource definition
 		 */
-		R withExistingAvailabilitySet(String id);
+		R withExistingAvailabilitySet(String resourceId);
 
 		/**
 		 * Associates an existing availability set with this resource
