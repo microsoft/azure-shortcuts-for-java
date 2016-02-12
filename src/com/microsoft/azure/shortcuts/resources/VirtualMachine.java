@@ -83,6 +83,22 @@ public interface VirtualMachine extends
 	public void start() throws Exception;
 	
 	/**
+	 * Captures a virtual machine image based on this virtual machine
+	 * @param containerName The name of the container where to save the image
+	 * @param diskNamePrefix The prefix to use for the name of the virtual hard disk for the image
+	 * @param overwrite Determines whether to overwrite an existing image VHD, if any
+	 * @throws Exception
+	 */
+	public void capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception;
+
+	/**
+	 * Sets the state of the virtual machine as generalized, which is required for capturing an image
+	 * @throws Exception
+	 */
+	public void generalize() throws Exception;
+
+
+	/**
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
 	 */
 	public interface DefinitionBlank extends 

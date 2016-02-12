@@ -40,6 +40,7 @@ import com.microsoft.azure.management.compute.models.OSDisk;
 import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
+import com.microsoft.azure.management.compute.models.VirtualMachineCaptureParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
@@ -507,6 +508,21 @@ public class VirtualMachinesImpl
 		public void start() throws Exception {
 			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().start(this.group(), this.name());
 		}
+		
+		@Override
+		public void capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception {
+			VirtualMachineCaptureParameters params = new VirtualMachineCaptureParameters();
+			params.setDestinationContainerName(containerName.toLowerCase());
+			params.setVirtualHardDiskNamePrefix(diskNamePrefix);
+			params.setOverwrite(overwrite);
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().capture(this.group(), this.name(), params);
+		}
+		
+		@Override
+		public void generalize() throws Exception {
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().generalize(this.group(), this.name());
+		}
+		
 		
 		@Override
 		public VirtualMachine provision() throws Exception {
