@@ -47,11 +47,6 @@ public class NetworksSample {
     	String groupName = "vnettestgroup";
     	String newNetworkName = "marcinsvnetx";
     	
-    	// Create a test group
-    	Group group = azure.groups().define(groupName)
-    		.withRegion(Region.US_WEST)
-    		.provision();
-    	
     	// Create a new network with a default subnet in a new default resource group
     	network = azure.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
@@ -67,16 +62,17 @@ public class NetworksSample {
     	Map<String, Network> networks = azure.networks().list();
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
-    	// Listing networks in a specific resource group
-    	networks = azure.networks().list(groupName);
-    	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
-    	
     	// Get info about a specific network using its resource ID
     	network = azure.networks(network.group(), network.name());
     	printNetwork(network);
     	
     	// Delete the network
     	azure.networks().delete(network.id());
+    	
+    	// Create a test group
+    	Group group = azure.groups().define(groupName)
+    		.withRegion(Region.US_WEST)
+    		.provision();
     	
     	// Create a new network with two subnets, in an existing resource group
     	network = azure.networks().define(newNetworkName + "2")
@@ -89,6 +85,10 @@ public class NetworksSample {
     	
     	printNetwork(network);
 
+    	// Listing networks in a specific resource group
+    	networks = azure.networks().list(groupName);
+    	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
+    	
     	// Delete the network
     	network.delete();
     	

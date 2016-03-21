@@ -70,7 +70,7 @@ public class PublicIpAddressesSample {
     		.withStaticIp()
     		.withTag("hello", "world")
     		.provision();
-    		
+    	    	
     	// Listing PIPs in a specific resource group
     	pips = azure.publicIpAddresses().list(existingGroupName);
     	System.out.println(String.format("PIP ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(pips.keySet(), ",\n\t")));
