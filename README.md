@@ -212,7 +212,7 @@ VirtualMachine.DefinitionProvisionable vmProvisionable = azure.virtualMachines()
     .withNewDataDisk(100);
 ```
 
-At this stage, additional settings can be specified that are optional before 'provision()' is invoked. 
+At this stage, additional settings can be specified that are optional before `provision()` is invoked. 
 
 ###### Attaching data disks
 
@@ -569,7 +569,8 @@ With the required minimum set of input parameters:
 StorageAccount storageAccount = azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withNewGroup()
-    .provision();```
+    .provision();
+```
 In an existing resource group:
 ```java
 azure.storageAccounts().define("<new-storage-account-name>")

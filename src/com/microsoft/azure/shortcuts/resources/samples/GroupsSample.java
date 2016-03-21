@@ -39,20 +39,7 @@ public class GroupsSample {
             e.printStackTrace();
         }
     }
-
-    private static void printGroup(Group group) throws Exception {
-		System.out.println(String.format("Group: %s\n"
-			+ "\tRegion: %s\n"
-			+ "\tID: %s\n"
-			+ "\tTags: %s\n"
-			+ "\tProvisioning state: %s\n",
-			group.id(),
-			group.region(),
-			group.id(),
-			group.tags().toString(),
-			group.provisioningState()));
-    }
-    
+   
     
     public static void test(Azure azure) throws Exception {
 		// List resource groups
@@ -71,7 +58,7 @@ public class GroupsSample {
     		.withRegion(Region.US_WEST)
     		.withTag("hello", "world")
     		.provision();
-    	
+    	    	
     	// Read a specific resource group
 		Group resourceGroup = azure.groups(groupName);
 		printGroup(resourceGroup);
@@ -85,5 +72,19 @@ public class GroupsSample {
 		// Delete a specific resource group
 		System.out.println("Deleting group " + groupName);
 		azure.groups(groupName).delete();
+    }
+    
+
+    private static void printGroup(Group group) throws Exception {
+		System.out.println(String.format("Group: %s\n"
+			+ "\tRegion: %s\n"
+			+ "\tID: %s\n"
+			+ "\tTags: %s\n"
+			+ "\tProvisioning state: %s\n",
+			group.id(),
+			group.region(),
+			group.id(),
+			group.tags().toString(),
+			group.provisioningState()));
     }
 }

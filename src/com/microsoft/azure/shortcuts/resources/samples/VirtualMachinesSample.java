@@ -60,7 +60,7 @@ public class VirtualMachinesSample {
     		.withNewDataDisk(100)
     		//.withExistingDataDisk("https://vm1455045717874store.blob.core.windows.net/vm1455045717874/disk0.vhd")
     		.provision();
-    	
+    
     	printVM(vmWin);
     	
     	// Listing all virtual machine ids in a subscription
@@ -80,7 +80,7 @@ public class VirtualMachinesSample {
     		.withLatestImage("Canonical", "UbuntuServer", "14.04.3-LTS")
     		.withSize(Size.Type.BASIC_A1)
     		.provision();
-    	
+    	    	
     	// Listing vms in a specific group
     	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().list(groupName);
     	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmsInGroup.keySet(), "\n\t")));
