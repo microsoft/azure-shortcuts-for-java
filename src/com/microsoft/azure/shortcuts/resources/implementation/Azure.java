@@ -37,6 +37,8 @@ import com.microsoft.azure.shortcuts.resources.LoadBalancers;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroups;
 import com.microsoft.azure.shortcuts.resources.Networks;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
@@ -89,6 +91,7 @@ public class Azure {
     private final PublicIpAddressesImpl publicIpAddresses;
     private final LoadBalancersImpl loadBalancers;
     private final PublishersImpl publishers;
+    private final NetworkSecurityGroupsImpl networkSecurityGroups;
 
     public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	return new Azure(subscriptionId, tenantId, clientId, clientKey);
@@ -126,6 +129,7 @@ public class Azure {
         this.publicIpAddresses = new PublicIpAddressesImpl(this);
         this.loadBalancers = new LoadBalancersImpl(this);
         this.publishers = new PublishersImpl(this);
+        this.networkSecurityGroups = new NetworkSecurityGroupsImpl(this);
     }
     
     
@@ -145,6 +149,18 @@ public class Azure {
     //* Getters
     //**********************************************************
 
+    public NetworkSecurityGroups networkSecurityGroups() {
+    	return this.networkSecurityGroups;
+    }
+    
+    public NetworkSecurityGroup networkSecurityGroups(String id) throws Exception {
+    	return this.networkSecurityGroups().get(id);
+    }
+    
+    public NetworkSecurityGroup networkSecurityGroups(String groupName, String name) throws Exception {
+    	return this.networkSecurityGroups().get(groupName, name);
+    }
+    
     public Publishers publishers() {
     	return this.publishers;
     }

@@ -221,6 +221,7 @@ public class NetworksImpl
 			
 			this.collection.azure().networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
+			
 		}
 		
 		@Override

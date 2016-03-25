@@ -116,6 +116,7 @@ Further simplification of the authentication process is a subject of active inve
 * [Virtual Networks](#virtual-networks)
 * [Network Interfaces](#network-interfaces)
 * [Public IP Addresses](#public-ip-addresses)
+* [Network Security Groups](#network-security-groups)
 * [Storage Accounts](#storage-accounts)
 * [Regions](#regions)
 * [Resource Groups](#resource-groups)
@@ -489,11 +490,11 @@ azure.networkInterfaces("<resource-id>").delete();
 azure.networkInterfaces("<resource-group-name>", "<network-interface-name>").delete();
 ```
 
-## Public IP Addresses
+### Public IP Addresses
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-### Creating a public IP address
+#### Creating a public IP address
 
 Providing minimal inputs will result in a public IP address for which a resource group will be automatically generated, dynamic IP allocation will be enabled and a leaf domain name will be specified, derived from the provided name:
 ```java
@@ -513,7 +514,7 @@ PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + 
     .provision();
 ```
 
-### Listing public IP addresses
+#### Listing public IP addresses
 
 From the entire subscription, as a `Map` indexed by name:
 ```java
@@ -524,9 +525,7 @@ From a specific resource group, as a `Map` indexed by name:
 Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list("my-resoruce-group-name");
 ```
 
-### Getting information about an existing public IP address:
-
-#### Getting information about an existing network interface
+#### Getting information about an existing public IP address:
 
 Using its resource id:
 ```java
@@ -556,6 +555,71 @@ azure.publicIpAddresses().delete("<resource-group-name>", "<pip-name>");
 azure.publicIpAddresses("<pip-resource-id>").delete();
 
 azure.publicIpAddresses("<resource-group-name>", "<pip-name>").delete();
+```
+
+### Network Security Groups
+
+> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+
+#### Creating a network security group
+
+Providing minimal inputs will result in a network security group for which a resource group will be automatically generated and a default set of rules applied:
+```java
+NetworkSecurityGroup nsgMinimal = azure.networkSecurityGroups().define("<network-security-group-name>")
+	.withRegion(Region.US_WEST)
+	.withNewGroup()
+	.provision();
+```
+With an optional tag:
+```java
+NetworkSecurityGroup nsg = azure.networkSecurityGroups().define("<network-security-group-name>")
+    .withRegion(Region.US_WEST)
+    .withExistingGroup("<existing-group-name>")
+    .withTag("hello", "world")
+    .provision();
+```
+
+#### Listing network security groups
+
+From the entire subscription, as a `Map` indexed by id:
+```java
+Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().list();
+```
+From a specific resource group, as a `Map` indexed by id:
+```java
+Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().list("<resource-group-name>");
+```
+
+#### Getting information about an existing network security group:
+
+Using its resource id:
+```java
+NetworkSecurityGroup nsg = azure.networkSecurityGroups().get("<resource-id>");
+```
+or:
+```java
+NetworkSecurityGroup nsg = azure.networkSecurityGroups("<resource-id>");
+```
+Using its resource group and name:
+```java
+NetworkSecurityGroup nsg  = azure.networkSecurityGroups().get("<resource-group-name>", "<nsg-name>");
+```
+or
+```java
+NetworkSecurityGroup nsg  = azure.networkSecurityGroups("<resource-group-name>", "<nsg-name>");
+```
+
+#### Deleting a network security group
+
+Any of the following methods:
+```java
+azure.networkSecurityGroups().delete("<nsg-resource-id>");
+
+azure.networkSecurityGroups().delete("<resource-group-name>", "<nsg-name>");
+
+azure.networkSecurityGroups("<nsg-resource-id>").delete();
+
+azure.networkSecurityGroups("<resource-group-name>", "<nsg-name>").delete();
 ```
 
 ### Storage Accounts

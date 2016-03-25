@@ -17,22 +17,22 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.common.implementation;
+package com.microsoft.azure.shortcuts.resources;
 
-public abstract class IndexableRefreshableWrapperImpl<WRAPPER, INNER> 
-	extends IndexableRefreshableImpl<WRAPPER> {
+import com.microsoft.azure.shortcuts.common.SupportsListing;
+import com.microsoft.azure.shortcuts.common.SupportsCreating;
+import com.microsoft.azure.shortcuts.common.SupportsDeleting;
+import com.microsoft.azure.shortcuts.common.SupportsGetting;
+import com.microsoft.azure.shortcuts.resources.common.SupportsDeletingByGroup;
+import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
+import com.microsoft.azure.shortcuts.resources.common.SupportsListingByGroup;
 
-	private INNER innerObject; 
-	protected IndexableRefreshableWrapperImpl(String name, INNER innerObject) {
-		super(name);
-		this.innerObject = innerObject;
-	}
-	
-	public INNER inner() {
-		return this.innerObject;
-	}
-	
-	protected void setInner(INNER inner) {
-		this.innerObject = inner;
-	}
+public interface NetworkSecurityGroups extends 
+	SupportsListing<NetworkSecurityGroup>,
+	SupportsListingByGroup<NetworkSecurityGroup>,
+	SupportsGetting<NetworkSecurityGroup>,
+	SupportsGettingByGroup<NetworkSecurityGroup>,
+	SupportsCreating<NetworkSecurityGroup.DefinitionBlank>,
+	SupportsDeleting,
+	SupportsDeletingByGroup {
 }
