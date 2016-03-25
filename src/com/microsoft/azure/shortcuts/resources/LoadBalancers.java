@@ -19,17 +19,17 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.SupportsListing;
+import com.microsoft.azure.shortcuts.common.SupportsListingAsMap;
 import com.microsoft.azure.shortcuts.common.SupportsCreating;
 import com.microsoft.azure.shortcuts.common.SupportsDeleting;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.resources.common.SupportsDeletingByGroup;
 import com.microsoft.azure.shortcuts.resources.common.SupportsGettingByGroup;
-import com.microsoft.azure.shortcuts.resources.common.SupportsListingByGroup;
+import com.microsoft.azure.shortcuts.resources.common.SupportsListingAsMapByGroup;
 
 public interface LoadBalancers extends 
-	SupportsListing<LoadBalancer>,
-	SupportsListingByGroup<LoadBalancer>,
+	SupportsListingAsMap<LoadBalancer>,
+	SupportsListingAsMapByGroup<LoadBalancer>,
 	SupportsGetting<LoadBalancer>,
 	SupportsGettingByGroup<LoadBalancer>,
 	SupportsCreating<LoadBalancer.DefinitionBlank>,

@@ -43,7 +43,7 @@ public class NetworkSecurityGroupsSample {
     	String newNetworkSecurityGroupName = "testNSG";
     	
     	// Listing all network security groups
-    	Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().list();
+    	Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().asMap();
     	System.out.println("Network security groups:");
     	for(NetworkSecurityGroup nsg : nsgs.values()) {
     		printNSG(nsg);
@@ -69,7 +69,7 @@ public class NetworkSecurityGroupsSample {
     		.provision();
     	    	
     	// Listing NSGs in a specific resource group
-    	nsgs = azure.networkSecurityGroups().list(groupNameCreated);
+    	nsgs = azure.networkSecurityGroups().asMap(groupNameCreated);
     	System.out.println(String.format("NSG ids in group '%s': \n\t%s", groupNameCreated, StringUtils.join(nsgs.keySet(), ",\n\t")));
     	
     	// Get info about a specific PIP using its resource ID

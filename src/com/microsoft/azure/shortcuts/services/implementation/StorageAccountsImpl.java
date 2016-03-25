@@ -77,7 +77,7 @@ public class StorageAccountsImpl
 
 
 	@Override
-	public Map<String, StorageAccount> list() throws Exception {
+	public Map<String, StorageAccount> asMap() throws Exception {
 		HashMap<String, StorageAccount> wrappers = new HashMap<>();
 		for(com.microsoft.windowsazure.management.storage.models.StorageAccount nativeItem : getAzureStorageAccounts()) {
 			StorageAccountImpl wrapper = new StorageAccountImpl(nativeItem);

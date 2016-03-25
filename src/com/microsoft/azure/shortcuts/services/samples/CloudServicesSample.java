@@ -55,7 +55,7 @@ public class CloudServicesSample {
 			.provision();
 
 		// List cloud service names
-		Set<String> cloudServiceNames = azure.cloudServices().list().keySet();
+		Set<String> cloudServiceNames = azure.cloudServices().asMap().keySet();
 		System.out.println("Available cloud services: " + StringUtils.join(cloudServiceNames, ", "));
 
 		// Get cloud service info
@@ -78,7 +78,7 @@ public class CloudServicesSample {
 		azure.cloudServices().delete(serviceName);
 		
 		// List all cloud services
-		Collection<CloudService> cloudServices = azure.cloudServices().list().values();
+		Collection<CloudService> cloudServices = azure.cloudServices().asMap().values();
 		for(CloudService c : cloudServices) {
 			printCloudService(c);
 		}

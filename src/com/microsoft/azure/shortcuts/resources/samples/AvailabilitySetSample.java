@@ -56,7 +56,7 @@ public class AvailabilitySetSample {
     	printAvailabilitySet(availabilitySet);
 
     	// Listing availability sets in a specific resource group
-    	Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list(existingGroupName);
+    	Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().asMap(existingGroupName);
     	System.out.println(String.format("Availability set ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(availabilitySets.keySet(), ",\n\t")));
     	
     	// Delete availability set

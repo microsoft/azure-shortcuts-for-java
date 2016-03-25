@@ -42,7 +42,7 @@ public class RegionsImpl
 	}
 	
 	@Override
-	public Map<String, Region> list() throws Exception {
+	public Map<String, Region> asMap() throws Exception {
 		return this.list(null);
 	}
 	

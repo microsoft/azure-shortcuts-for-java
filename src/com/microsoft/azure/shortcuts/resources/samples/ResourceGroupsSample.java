@@ -43,10 +43,10 @@ public class ResourceGroupsSample {
     
     public static void test(Azure azure) throws Exception {
 		// List resource groups
-    	Set<String> groupNames = azure.resourceGroups().list().keySet();
+    	Set<String> groupNames = azure.resourceGroups().asMap().keySet();
     	System.out.println("Group names: \n\t" + StringUtils.join(groupNames, ",\n\t"));
     	
-    	Map<String, ResourceGroup> groups = azure.resourceGroups().list();
+    	Map<String, ResourceGroup> groups = azure.resourceGroups().asMap();
     	for(ResourceGroup group : groups.values()) {
     		printGroup(group);
     	}

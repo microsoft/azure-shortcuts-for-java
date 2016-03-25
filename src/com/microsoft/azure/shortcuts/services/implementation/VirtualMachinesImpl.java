@@ -150,7 +150,7 @@ public class VirtualMachinesImpl
 	
 	@Override
 	public List<String> names() throws Exception {
-		Set<String> serviceNames = azure.cloudServices().list().keySet();
+		Set<String> serviceNames = azure.cloudServices().asMap().keySet();
 		ArrayList<String> vms = new ArrayList<String>();
 		
 		// Find all virtual machine roles within cloud services 

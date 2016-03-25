@@ -53,7 +53,7 @@ public class OSImagesImpl
 
 	
 	@Override
-	public Map<String, OSImage> list() throws Exception {
+	public Map<String, OSImage> asMap() throws Exception {
 		ArrayList<VirtualMachineOSImage> osImages = getOSImages();
 		Collections.sort(osImages, new Comparator<VirtualMachineOSImage>() {
 			@Override

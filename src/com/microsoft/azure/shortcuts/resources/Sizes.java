@@ -21,15 +21,15 @@ package com.microsoft.azure.shortcuts.resources;
 
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.common.SupportsListing;
+import com.microsoft.azure.shortcuts.common.SupportsListingAsMap;
 
 public interface Sizes extends 
-	SupportsListing<Size> {
+	SupportsListingAsMap<Size> {
 
 	/**
 	 * @param region
 	 * @return Virtual machine sizes available in the specified region
 	 * @throws Exception 
 	 */
-	Map<String, Size> list(String region) throws Exception;
+	Map<String, Size> asMap(String region) throws Exception;
 }

@@ -17,11 +17,16 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.common;
+package com.microsoft.azure.shortcuts.resources.common;
 
 import java.util.Map;
 
-// Requires class to support listing entities
-public interface SupportsListing<T> {
-	Map<String, T> list() throws Exception;
+public interface SupportsListingAsMapByGroup<T> {
+	/**
+	 * Lists the entities in a specific group
+ 	 * @param groupName
+	 * @return
+	 * @throws Exception
+	 */
+	Map<String, T> asMap(String groupName) throws Exception;
 }

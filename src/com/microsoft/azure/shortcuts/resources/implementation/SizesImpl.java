@@ -42,13 +42,13 @@ public class SizesImpl
 	}
 	
 	@Override
-	public Map<String, Size> list() throws Exception {
+	public Map<String, Size> asMap() throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, Size> list(String region) throws Exception {
+	public Map<String, Size> asMap(String region) throws Exception {
 		HashMap<String, Size> wrappers = new HashMap<>();
 		for(VirtualMachineSize nativeItem : getNativeEntities(region)) {
 			SizeImpl wrapper = new SizeImpl(nativeItem, this);

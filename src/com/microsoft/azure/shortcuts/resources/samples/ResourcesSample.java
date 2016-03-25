@@ -41,12 +41,12 @@ public class ResourcesSample {
 
     public static void test(Azure azure) throws Exception {
     	// Listing all resource names
-    	Map<String, Resource> resources = azure.resources().list();
+    	Map<String, Resource> resources = azure.resources().asMap();
     	System.out.println(String.format("Resource ids: %s\n\t", StringUtils.join(resources.keySet(), ",\n\t")));
 
     	// Listing resources in a specific group
     	String groupName = "azchat";
-    	Map<String, Resource> resources2 = azure.resources().list(groupName);
+    	Map<String, Resource> resources2 = azure.resources().asMap(groupName);
     	System.out.println("Resources inside group '" + groupName + "':");
     	for(Resource resource : resources2.values()) {
     		printResource(resource);

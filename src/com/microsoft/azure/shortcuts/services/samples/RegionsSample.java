@@ -51,7 +51,7 @@ public class RegionsSample {
 		System.out.println("Available regions supporting VMs: " + StringUtils.join(regionNames, ", "));
 		
 		// List all regions info
-		Map<String, Region> regions = azure.regions().list();
+		Map<String, Region> regions = azure.regions().asMap();
 		for(Region r : regions.values()) {
 			printRegion(r);
 		}

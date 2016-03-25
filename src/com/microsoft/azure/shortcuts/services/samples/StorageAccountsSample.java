@@ -53,7 +53,7 @@ public class StorageAccountsSample {
 			.provision();
 
 		// List storage accounts
-		Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
+		Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap();
 		System.out.println("Available storage accounts:\n\t" + StringUtils.join(storageAccounts.keySet(), ",\n\t"));
 
 		// Get storage account information

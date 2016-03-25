@@ -171,13 +171,13 @@ public class ResourcesImpl
 	
 	
 	@Override
-	public Map<String, Resource> list() throws Exception {
-		return this.list(null);
+	public Map<String, Resource> asMap() throws Exception {
+		return this.asMap(null);
 	}
 
 	
 	@Override
-	public Map<String, Resource> list(String groupName) throws Exception {
+	public Map<String, Resource> asMap(String groupName) throws Exception {
 		HashMap<String, Resource> wrappers = new HashMap<>();
 		for(GenericResourceExtended nativeItem : getNativeEntities(groupName)) {
 			ResourceImpl wrapper = new ResourceImpl(nativeItem, this);

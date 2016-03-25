@@ -56,11 +56,11 @@ public class StorageAccountsSample {
     	String groupName = storageAccount.resourceGroup();
     	
     	// Listing all storage accounts
-    	Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
+    	Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap();
     	System.out.println(String.format("Storage accounts ids: \n\t%s", StringUtils.join(storageAccounts.keySet(), ",\n\t")));
 
     	// Listing storage accounts in a specific resource group
-    	storageAccounts = azure.storageAccounts().list(groupName);
+    	storageAccounts = azure.storageAccounts().asMap(groupName);
     	System.out.println(String.format("Storage account ids in group '%s': \n\t%s", groupName, StringUtils.join(storageAccounts.keySet(), ",\n\t")));
     	
     	// Get info about a specific storage account using its group and name

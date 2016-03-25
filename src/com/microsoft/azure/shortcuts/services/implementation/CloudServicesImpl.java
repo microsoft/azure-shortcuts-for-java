@@ -71,7 +71,7 @@ public class CloudServicesImpl
 
 	
 	@Override
-	public Map<String, CloudService> list() throws Exception {
+	public Map<String, CloudService> asMap() throws Exception {
 		HashMap<String, CloudService> wrappers = new HashMap<>();
 		for(HostedService nativeItem : getHostedServices()) {
 			CloudServiceImpl wrapper = new CloudServiceImpl(nativeItem);

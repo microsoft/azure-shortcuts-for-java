@@ -40,7 +40,7 @@ public class PublishersSample {
 
     public static void test(Azure azure) throws Exception {
     	// List publishers
-    	Map<String, Publisher> publishers = azure.publishers().list(Region.US_WEST);
+    	Map<String, Publisher> publishers = azure.publishers().asMap(Region.US_WEST);
     	for(Publisher p : publishers.values()) {
     		printPublisher(p);
     	}

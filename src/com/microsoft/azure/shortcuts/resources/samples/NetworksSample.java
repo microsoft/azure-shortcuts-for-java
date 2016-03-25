@@ -59,7 +59,7 @@ public class NetworksSample {
     	printNetwork(network);
 
     	// Listing all networks
-    	Map<String, Network> networks = azure.networks().list();
+    	Map<String, Network> networks = azure.networks().asMap();
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
@@ -86,7 +86,7 @@ public class NetworksSample {
     	printNetwork(network);
 
     	// Listing networks in a specific resource group
-    	networks = azure.networks().list(groupName);
+    	networks = azure.networks().asMap(groupName);
     	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Delete the network

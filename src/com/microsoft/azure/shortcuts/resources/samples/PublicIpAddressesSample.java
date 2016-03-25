@@ -44,7 +44,7 @@ public class PublicIpAddressesSample {
     	String newPublicIpAddressName = "testPIP";
     	
     	// Listing all public IP addresses
-    	Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list();
+    	Map<String, PublicIpAddress> pips = azure.publicIpAddresses().asMap();
     	System.out.println("Public IP addresses:");
     	for(PublicIpAddress pip : pips.values()) {
     		printPIP(pip);
@@ -72,7 +72,7 @@ public class PublicIpAddressesSample {
     		.provision();
     	    	
     	// Listing PIPs in a specific resource group
-    	pips = azure.publicIpAddresses().list(existingGroupName);
+    	pips = azure.publicIpAddresses().asMap(existingGroupName);
     	System.out.println(String.format("PIP ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(pips.keySet(), ",\n\t")));
     	
     	// Get info about a specific PIP using its resource ID

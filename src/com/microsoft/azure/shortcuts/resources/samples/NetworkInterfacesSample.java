@@ -48,7 +48,7 @@ public class NetworkInterfacesSample {
     	String newGroupName = "testgroup";
     	
     	// Listing all network interfaces
-    	Map<String, NetworkInterface> nics = azure.networkInterfaces().list();
+    	Map<String, NetworkInterface> nics = azure.networkInterfaces().asMap();
     	System.out.println("Network interfaces:");
     	for(NetworkInterface nic : nics.values()) {
     		printNetworkInterface(nic);
@@ -69,7 +69,7 @@ public class NetworkInterfacesSample {
     	printNetworkInterface(nicMinimal);
 
     	// Listing network interfaces in a specific resource group
-    	nics = azure.networkInterfaces().list(newGroupName);
+    	nics = azure.networkInterfaces().asMap(newGroupName);
     	System.out.println(String.format("Network interface ids in group '%s': \n\t%s", newGroupName, StringUtils.join(nics.keySet(), ",\n\t")));
 
     	// Create a virtual network to test the network interface with

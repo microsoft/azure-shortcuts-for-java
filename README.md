@@ -248,12 +248,12 @@ All virtual machine names (or ids) in a subscription:
 > *ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
-Map<String, VirtualMachine> vms = azure.virtualMachines().list();
+Map<String, VirtualMachine> vms = azure.virtualMachines().asMap();
 System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
 ```
 Virtual machines in a specific resource group (resource model "ARM" only)
 ```java
-Map<String, VirtualMachine> vms = azure.virtualMachines().list("<group-name>");
+Map<String, VirtualMachine> vms = azure.virtualMachines().asMap("<group-name>");
 System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
 ```
 
@@ -276,11 +276,11 @@ VirtualMachine vm = azure.virtualMachines("<resource-group-name>", "<vm-name>");
 
 You need to specify the region to get the sizes. The returned sizes are indexed by their name:
 ```java
-Map<String, Size> sizes = azure.sizes().list("westus");
+Map<String, Size> sizes = azure.sizes().asMap("westus");
 ```
 Therefore, to get the names only:
 ```java
-Set<String> sizeNames = azure.sizes().list("westus").keySet();
+Set<String> sizeNames = azure.sizes().asMap("westus").keySet();
 ```
 
 #### Listing available OS image names
@@ -376,22 +376,22 @@ azure.networks().define(newNetworkName + "2")
 
 All networks in a subscription, as a map indexed by resource id:
 ```java
-Map<String, Network> networks = azure.networks().list();
+Map<String, Network> networks = azure.networks().asMap();
 ```
 Resource ids only:
 ```java
-Set<String> networkIds = azure.networks().list().keySet();
+Set<String> networkIds = azure.networks().asMap().keySet();
 ```
 Networks in a specific resource group:
 ```java
-Map<String, Network> networks = azure.networks().list("<resource-group-name">);
+Map<String, Network> networks = azure.networks().asMap("<resource-group-name">);
 ```
 
 #### Getting information about a virtual network
 
 > *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
 
-By providing a virtual network resource ID (returned as a key in `networks().list()`):
+By providing a virtual network resource ID (returned as a key in `networks().asMap()`):
 ```java
 Network network = azure.networks("<network-resource-id>");
 ```
@@ -451,11 +451,11 @@ NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
 
 In the subscription (all resource groups):
 ```java
-Map<String, NetworkInterface> nics = azure.networkInterfaces().list();
+Map<String, NetworkInterface> nics = azure.networkInterfaces().asMap();
 ```
 In a specific resource group: 
 ```java
-Map<String, NetworkInterface> nics = azure.networkInterfaces().list("<resource-group-name>");
+Map<String, NetworkInterface> nics = azure.networkInterfaces().asMap("<resource-group-name>");
 ```
 
 #### Getting information about an existing network interface
@@ -518,11 +518,11 @@ PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + 
 
 From the entire subscription, as a `Map` indexed by name:
 ```java
-Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list();
+Map<String, PublicIpAddress> pips = azure.publicIpAddresses().asMap();
 ```
 From a specific resource group, as a `Map` indexed by name:
 ```java
-Map<String, PublicIpAddress> pips = azure.publicIpAddresses().list("my-resoruce-group-name");
+Map<String, PublicIpAddress> pips = azure.publicIpAddresses().asMap("my-resoruce-group-name");
 ```
 
 #### Getting information about an existing public IP address:
@@ -583,11 +583,11 @@ NetworkSecurityGroup nsg = azure.networkSecurityGroups().define("<network-securi
 
 From the entire subscription, as a `Map` indexed by id:
 ```java
-Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().list();
+Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().asMap();
 ```
 From a specific resource group, as a `Map` indexed by id:
 ```java
-Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().list("<resource-group-name>");
+Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().asMap("<resource-group-name>");
 ```
 
 #### Getting information about an existing network security group:
@@ -650,16 +650,16 @@ azure.storageAccounts().define("<new-storage-account-name>")
 
 As a map, indexed by name:
 ```java
-Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
+Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap();
 ```
 Names only:
 ```java
-List<String> storageAccountNames = azure.storageAccounts().list().keySet();
+List<String> storageAccountNames = azure.storageAccounts().asMap().keySet();
 ```
 
 Storage accounts in a selected resource group:
 ```java
-Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list("<resource-group-name>");
+Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap("<resource-group-name>");
 ```
 
 #### Updating a storage account
@@ -728,11 +728,11 @@ azure.resourceGroups().define("myResourceGroup")
 
 Indexed by name:
 ```java
-Map<String, ResourceGroup> resourceGroups = azure.resourceGroups().list();
+Map<String, ResourceGroup> resourceGroups = azure.resourceGroups().asMap();
 ```
 Names only:
 ```java
-Set<String> resourceGroupNames = azure.resourceGroups().list().keySet();
+Set<String> resourceGroupNames = azure.resourceGroups().asMap().keySet();
 ```
 
 #### Updating a resource group (changing its tags)
@@ -777,16 +777,16 @@ azure.resourceGroups("<resource-group-name>").delete();
 
 All resources in a subscription, indexed by id:
 ```java
-Map<String, Resource> resources = azure.resources().list();
+Map<String, Resource> resources = azure.resources().asMap();
 ```
 Resources in a specific resource group:
 ```java
-Map<String, Resource> resources = azure.resources().list("<resource-group-name>");
+Map<String, Resource> resources = azure.resources().asMap("<resource-group-name>");
 ```
 
 #### Getting information about a resource
 
-If you know the full ID of the resource (e.g. you got it from the `resources().list().keySet()`), then:
+If you know the full ID of the resource (e.g. you got it from the `resources().asMap().keySet()`), then:
 ```java
 Resource resource = azure.resources("<resource-id>");
 ```
@@ -822,11 +822,11 @@ resource.delete();
 
 Providers as a `Map`, indexed by namespace:
 ```java
-Map<String, Provider> providers = azure.providers().list();
+Map<String, Provider> providers = azure.providers().asMap();
 ```
 Namespaces only:
 ```java
-Set<String> providerNamespaces = azure.providers().list().keySet();
+Set<String> providerNamespaces = azure.providers().asMap().keySet();
 ```
 
 #### Getting information about a resource provider
@@ -881,7 +881,7 @@ azure.availabilitySets().define("myavailabilityset")
 
 Availability sets as a map, in a specific resource group, indexed by id:
 ```java
-Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("<resource-group-name>");
+Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().asMap("<resource-group-name>");
 ```
 
 #### Getting information about an availability set

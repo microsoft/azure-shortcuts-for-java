@@ -26,6 +26,6 @@ import com.microsoft.azure.shortcuts.common.SupportsGetting;
 public interface Publishers extends 
 	SupportsGetting<Publisher> {
 	
-	Map<String, Publisher> list(Region region) throws Exception;
+	Map<String, Publisher> asMap(Region region) throws Exception;
 	Publisher get(Region region, String name) throws Exception;
 }

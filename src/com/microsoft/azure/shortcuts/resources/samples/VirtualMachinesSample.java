@@ -64,7 +64,7 @@ public class VirtualMachinesSample {
     	printVM(vmWin);
     	
     	// Listing all virtual machine ids in a subscription
-    	Map<String, VirtualMachine> vms = azure.virtualMachines().list();
+    	Map<String, VirtualMachine> vms = azure.virtualMachines().asMap();
     	System.out.println(String.format("Virtual machines: \n\t%s",  StringUtils.join(vms.keySet(), "\n\t")));
 
     	// Adding a Linux VM to the same group and VNet
@@ -82,7 +82,7 @@ public class VirtualMachinesSample {
     		.provision();
     	    	
     	// Listing vms in a specific group
-    	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().list(groupName);
+    	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().asMap(groupName);
     	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmsInGroup.keySet(), "\n\t")));
     	
     	// Listing virtual machines as objects

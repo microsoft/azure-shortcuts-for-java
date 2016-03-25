@@ -56,11 +56,11 @@ public class LoadBalancersSample {
     	printLB(lb);
 
     	// Listing all lbs
-    	Map<String, LoadBalancer> lbs = azure.loadBalancers().list();
+    	Map<String, LoadBalancer> lbs = azure.loadBalancers().asMap();
     	System.out.println(String.format("Load Balancer ids: \n\t%s", StringUtils.join(lbs.keySet(), ",\n\t")));
     	
     	// Listing lbs in a specific resource group
-    	lbs = azure.loadBalancers().list(groupName);
+    	lbs = azure.loadBalancers().asMap(groupName);
     	System.out.println(String.format("Load balancer ids in group '%s': \n\t%s", groupName, StringUtils.join(lbs.keySet(), ",\n\t")));
     	
     	// Get info about a specific lb using its resource ID

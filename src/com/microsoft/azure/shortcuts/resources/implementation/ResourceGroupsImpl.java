@@ -41,7 +41,7 @@ public class ResourceGroupsImpl
 	
 	
 	@Override
-	public Map<String, ResourceGroup> list() throws Exception {
+	public Map<String, ResourceGroup> asMap() throws Exception {
 		HashMap<String, ResourceGroup> wrappers = new HashMap<>();
 		for(ResourceGroupExtended nativeItem : getNativeEntities()) {
 			ResourceGroupImpl wrapper = new ResourceGroupImpl(nativeItem, this);

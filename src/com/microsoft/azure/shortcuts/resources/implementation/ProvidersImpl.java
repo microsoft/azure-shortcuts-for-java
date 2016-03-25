@@ -42,7 +42,7 @@ public class ProvidersImpl
 	
 	
 	@Override
-	public Map<String, Provider> list() throws Exception {
+	public Map<String, Provider> asMap() throws Exception {
 		HashMap<String, Provider> wrappers = new HashMap<>();
 		for(com.microsoft.azure.management.resources.models.Provider nativeItem : getNativeEntities(azure)) {
 			ProviderImpl wrapper = new ProviderImpl(nativeItem, this);

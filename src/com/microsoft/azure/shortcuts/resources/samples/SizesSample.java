@@ -41,11 +41,11 @@ public class SizesSample {
 
     public static void test(Azure azure) throws Exception {
 		// List size names in a specific region
-    	Set<String> sizeNames = azure.sizes().list("westus").keySet();
+    	Set<String> sizeNames = azure.sizes().asMap("westus").keySet();
     	System.out.println("VM sizes: \n\t" + StringUtils.join(sizeNames, ",\n\t"));
     	
     	// List sizes in a specific region
-    	Map<String, Size> sizes = azure.sizes().list("westus");
+    	Map<String, Size> sizes = azure.sizes().asMap("westus");
     	for(Size size : sizes.values()) {
         	System.out.println(String.format("VM size: %s\n"
         		+ "\tMax data disk count: %d\n"

@@ -65,7 +65,7 @@ public class PublishersImpl
 	
 	
 	@Override
-	public Map<String, Publisher> list(Region region) throws Exception {
+	public Map<String, Publisher> asMap(Region region) throws Exception {
 		TreeMap<String, Publisher> wrappers = new TreeMap<>();
 		for(VirtualMachineImageResource nativeItem : getNativeEntities(region.toString())) {
 			PublisherImpl wrapper = new PublisherImpl(nativeItem, this);

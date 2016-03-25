@@ -19,10 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.services;
 
-import com.microsoft.azure.shortcuts.common.SupportsListing;
+import com.microsoft.azure.shortcuts.common.SupportsListingAsMap;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 
 public interface OSImages extends
-	SupportsListing<OSImage>,
+	SupportsListingAsMap<OSImage>,
 	SupportsGetting<OSImage>  {
 }

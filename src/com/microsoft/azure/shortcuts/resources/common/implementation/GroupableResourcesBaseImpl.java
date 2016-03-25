@@ -41,7 +41,7 @@ public abstract class GroupableResourcesBaseImpl<WRAPPER,
 	
 	public abstract void delete(String groupName, String name) throws Exception;
 	
-	public final Map<String, WRAPPER> list(String groupName) throws Exception {
+	public final Map<String, WRAPPER> asMap(String groupName) throws Exception {
 		HashMap<String, WRAPPER> wrappers = new HashMap<>();
 		for(INNER nativeItem : getNativeEntities(groupName)) {
 			wrappers.put(nativeItem.getId(), wrap(nativeItem));
@@ -49,8 +49,8 @@ public abstract class GroupableResourcesBaseImpl<WRAPPER,
 		return Collections.unmodifiableMap(wrappers);
 	}
 	
-	public final Map<String, WRAPPER> list() throws Exception {
-		return list(null);
+	public final Map<String, WRAPPER> asMap() throws Exception {
+		return asMap(null);
 	}
 	
 	public final WRAPPER get(String groupName, String name) throws Exception {
