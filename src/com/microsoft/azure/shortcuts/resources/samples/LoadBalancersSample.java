@@ -83,7 +83,7 @@ public class LoadBalancersSample {
     	lb.delete();
     	
     	// Delete the group
-    	azure.groups(groupName).delete();
+    	azure.resourceGroups(groupName).delete();
     }
     
     

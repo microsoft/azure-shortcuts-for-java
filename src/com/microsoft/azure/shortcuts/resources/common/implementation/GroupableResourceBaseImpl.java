@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.resources.common.implementation;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
@@ -58,20 +58,20 @@ public abstract class GroupableResourceBaseImpl<
 	 * Helpers
 	 * @throws Exception 
 	 **************************************************/
-	final protected Group ensureGroup() throws Exception {
-		Group group;
+	final protected ResourceGroup ensureGroup() throws Exception {
+		ResourceGroup group;
 		if(!this.isExistingGroup) {
 			if(this.groupName == null) {
 				this.groupName = this.name() + "group";
 			}
 			
-			group = this.collection.azure().groups().define(this.groupName)
+			group = this.collection.azure().resourceGroups().define(this.groupName)
 				.withRegion(this.region())
 				.provision();
 			this.isExistingGroup = true;
 			return group;
 		} else {
-			return this.collection.azure().groups(this.groupName);
+			return this.collection.azure().resourceGroups(this.groupName);
 		}
 	}
 	
@@ -99,11 +99,11 @@ public abstract class GroupableResourceBaseImpl<
 		return this.withNewGroup((String)null);
 	}
 	
-	public final WRAPPERIMPL withNewGroup(Group.DefinitionProvisionable groupDefinition) throws Exception {
+	public final WRAPPERIMPL withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
 		return withExistingGroup(groupDefinition.provision());
 	}
 	
-	public final WRAPPERIMPL withExistingGroup(Group group) {
+	public final WRAPPERIMPL withExistingGroup(ResourceGroup group) {
 		return this.withExistingGroup(group.name());
 	}
 	

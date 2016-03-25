@@ -25,7 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
@@ -71,10 +71,10 @@ public class StorageAccountsSample {
     	storageAccount.delete();
 
     	// Delete the group
-    	azure.groups().delete(groupName);
+    	azure.resourceGroups().delete(groupName);
     	
     	// Provision a test group
-    	Group group = azure.groups().define(newGroupName)
+    	ResourceGroup group = azure.resourceGroups().define(newGroupName)
     		.withRegion(Region.US_WEST)
     		.provision();
     	

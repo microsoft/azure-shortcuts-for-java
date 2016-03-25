@@ -25,7 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
@@ -63,10 +63,10 @@ public class AvailabilitySetSample {
     	availabilitySet.delete();
     	
     	// Delete its group
-    	azure.groups().delete(availabilitySet.group());
+    	azure.resourceGroups().delete(availabilitySet.group());
     	
     	// Create a new group
-    	Group group = azure.groups().define("marcinstestgroup").withRegion(Region.US_WEST).provision();
+    	ResourceGroup group = azure.resourceGroups().define("marcinstestgroup").withRegion(Region.US_WEST).provision();
     	
     	// Create an availability set in an existing group
     	availabilitySet = azure.availabilitySets().define(newAvailabilitySetName + "2")
@@ -81,7 +81,7 @@ public class AvailabilitySetSample {
     	printAvailabilitySet(availabilitySet);
     	
     	// Delete the entire group
-    	azure.groups().delete(group.id());
+    	azure.resourceGroups().delete(group.id());
     }
     
     

@@ -25,10 +25,10 @@ import com.microsoft.azure.shortcuts.common.SupportsListing;
 import com.microsoft.azure.shortcuts.common.SupportsGetting;
 import com.microsoft.azure.shortcuts.common.SupportsUpdating;
 
-public interface Groups extends 
-	SupportsListing<Group>,
-	SupportsGetting<Group>,
-	SupportsCreating<Group.DefinitionBlank>,
+public interface ResourceGroups extends 
+	SupportsListing<ResourceGroup>,
+	SupportsGetting<ResourceGroup>,
+	SupportsCreating<ResourceGroup.DefinitionBlank>,
 	SupportsDeleting,
-	SupportsUpdating<Group.UpdateBlank> {
+	SupportsUpdating<ResourceGroup.UpdateBlank> {
 }

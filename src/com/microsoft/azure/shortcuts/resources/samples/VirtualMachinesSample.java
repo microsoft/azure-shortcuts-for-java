@@ -112,7 +112,7 @@ public class VirtualMachinesSample {
     	vmWin.delete();
     	
     	// Delete the group
-    	azure.groups().delete(groupName);
+    	azure.resourceGroups().delete(groupName);
 	}
     
     

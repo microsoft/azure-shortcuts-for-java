@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Network.Subnet;
 import com.microsoft.azure.shortcuts.resources.Region;
@@ -70,7 +70,7 @@ public class NetworksSample {
     	azure.networks().delete(network.id());
     	
     	// Create a test group
-    	Group group = azure.groups().define(groupName)
+    	ResourceGroup group = azure.resourceGroups().define(groupName)
     		.withRegion(Region.US_WEST)
     		.provision();
     	

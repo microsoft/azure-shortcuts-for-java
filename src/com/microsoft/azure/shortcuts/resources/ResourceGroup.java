@@ -30,9 +30,9 @@ import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.Taggable;
 
-public interface Group extends 
+public interface ResourceGroup extends 
 	Indexable,
-	Refreshable<Group>,
+	Refreshable<ResourceGroup>,
 	Wrapper<ResourceGroupExtended>,
 	Deletable {
 	
@@ -54,7 +54,7 @@ public interface Group extends
 	 * A new resource group definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
 	public interface DefinitionProvisionable extends 
-		Provisionable<Group> {
+		Provisionable<ResourceGroup> {
 		
 		DefinitionProvisionable withTags(Map<String, String> tags);
 		DefinitionProvisionable withTag(String key, String value);

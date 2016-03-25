@@ -25,12 +25,12 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Azure;
 
 // Tests resources
-public class GroupsSample {
+public class ResourceGroupsSample {
     public static void main(String[] args) {
         try {
             Azure azure = Azure.authenticate("my.azureauth", null);
@@ -43,39 +43,39 @@ public class GroupsSample {
     
     public static void test(Azure azure) throws Exception {
 		// List resource groups
-    	Set<String> groupNames = azure.groups().list().keySet();
+    	Set<String> groupNames = azure.resourceGroups().list().keySet();
     	System.out.println("Group names: \n\t" + StringUtils.join(groupNames, ",\n\t"));
     	
-    	Map<String, Group> groups = azure.groups().list();
-    	for(Group group : groups.values()) {
+    	Map<String, ResourceGroup> groups = azure.resourceGroups().list();
+    	for(ResourceGroup group : groups.values()) {
     		printGroup(group);
     	}
     	
     	// Create a resource group
     	String groupName = "group" + String.valueOf(System.currentTimeMillis());
     	System.out.println("Creating group " + groupName);
-    	azure.groups().define(groupName)
+    	azure.resourceGroups().define(groupName)
     		.withRegion(Region.US_WEST)
     		.withTag("hello", "world")
     		.provision();
     	    	
     	// Read a specific resource group
-		Group resourceGroup = azure.groups(groupName);
+		ResourceGroup resourceGroup = azure.resourceGroups(groupName);
 		printGroup(resourceGroup);
 		
 		// Update a resource group
-		azure.groups().update(groupName)
+		azure.resourceGroups().update(groupName)
 			.withTag("foo", "bar")
 			.withoutTag("hello")
 			.apply();
 		
 		// Delete a specific resource group
 		System.out.println("Deleting group " + groupName);
-		azure.groups(groupName).delete();
+		azure.resourceGroups(groupName).delete();
     }
     
 
-    private static void printGroup(Group group) throws Exception {
+    private static void printGroup(ResourceGroup group) throws Exception {
 		System.out.println(String.format("Group: %s\n"
 			+ "\tRegion: %s\n"
 			+ "\tID: %s\n"

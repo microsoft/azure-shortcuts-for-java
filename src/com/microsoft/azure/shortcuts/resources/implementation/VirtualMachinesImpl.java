@@ -44,7 +44,7 @@ import com.microsoft.azure.management.compute.models.VirtualMachineCaptureParame
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
@@ -533,7 +533,7 @@ public class VirtualMachinesImpl
 		@Override
 		public VirtualMachine provision() throws Exception {
 			// Ensure group
-			Group group = this.ensureGroup();
+			ResourceGroup group = this.ensureGroup();
 			
 			// Ensure storage account
 			StorageAccount storageAccount = this.ensureStorageAccount(group.name()); // TODO Remove group refernce

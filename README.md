@@ -180,7 +180,7 @@ VirtualMachine vmWin = azure.virtualMachines().define("<vm-name>")
 
 As a shortcut, this approach combines the provisioning or selection of the related required resources into one statement. 
 
-For example, a new group can be provisioned for the virtual machine (`.withNewGroup(...)`) or an existing one can be selected (`.withExistingGroup(...)`). 
+For example, a new resource group can be provisioned for the virtual machine (`.withNewGroup(...)`) or an existing one can be selected (`.withExistingGroup(...)`). 
 
 Similarly, a new virtual network can be provisioned (`.withNewNetwork(...)`) or an existing one can be used (`.withExistingNetwork(...)`).
 
@@ -265,9 +265,9 @@ Using the resource id:
 ```java
 VirtualMachine vm = azure.virtualMachines("<resource-id>");
 ```
-Using the group name and virtual machine name:
+Using the resource group name and virtual machine name:
 ```java
-VirtualMachine vm = azure.virtualMachines("<group-name>", "<vm-name>");
+VirtualMachine vm = azure.virtualMachines("<resource-group-name>", "<vm-name>");
 ```
 
 #### Listing available VM sizes
@@ -363,7 +363,7 @@ With multiple, explicitly defined subnets and an existing resource group:
 ```java
 azure.networks().define(newNetworkName + "2")
     .withRegion(Region.US_WEST)
-    .withExistingGroup("<existing-group-name>")
+    .withExistingGroup("<existing-resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
@@ -395,9 +395,9 @@ By providing a virtual network resource ID (returned as a key in `networks().lis
 ```java
 Network network = azure.networks("<network-resource-id>");
 ```
-or by providing the group name and the virtual network name:
+or by providing the resource group name and the virtual network name:
 ```java
-Network network = azure.networks("<group-name>", "<network-name>");
+Network network = azure.networks("<resource-group-name>", "<network-name>");
 ```
 The subnets of the virtual network are available from `network.subnets()`.
 The IP addresses of DNS servers associated with the virtual network are available from `network.dnsServerIPs()`.
@@ -640,7 +640,7 @@ In an existing resource group:
 azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withAccountType(AccountType.StandardLRS)
-    .withExistingGroup("<existing-group-name>")
+    .withExistingGroup("<existing-resource-group-name>")
     .provision();
 ```
 
@@ -676,7 +676,7 @@ StorageAccount storageAccount = azure.storageAccounts().get("<storage-account-id
 
 StorageAccount storageAccount = azure.storageAccounts("<storage-account-id>");
 
-StorageAccount storageAccount = azure.storageAccounts("<group-name>", "<storage-account-name>");
+StorageAccount storageAccount = azure.storageAccounts("<resource-group-name>", "<storage-account-name>");
 ```
 
 #### Deleting a storage account
@@ -718,7 +718,7 @@ Region[] regions = Region.values();
 #### Creating a resource group
 
 ```java
-azure.groups().define("myResourceGroup")
+azure.resourceGroups().define("myResourceGroup")
 	.withRegion(Region.US_WEST)
 	.withTag("hello", "world")
     .provision();
@@ -728,25 +728,25 @@ azure.groups().define("myResourceGroup")
 
 Indexed by name:
 ```java
-Map<String, Group> groups = azure.groups().list();
+Map<String, ResourceGroup> resourceGroups = azure.resourceGroups().list();
 ```
 Names only:
 ```java
-Set<String> groupNames = azure.groups().list().keySet();
+Set<String> resourceGroupNames = azure.resourceGroups().list().keySet();
 ```
 
 #### Updating a resource group (changing its tags)
 
 Tags are key/value pairs.
 ```java
-azure.groups().update("<resource-group-name>")
+azure.resourceGroups().update("<resource-group-name>")
 	.withTag("foo", "bar")
 	.withoutTag("hello")
 	.apply();
 ```
 You can also pass an instance of `Map<String, String>` with all the tags in it:
 ```java
-azure.groups().update("<resource-group-name>")
+azure.resourceGroups().update("<resource-group-name>")
 	.withTags(myMap)
 	.apply();
 ```
@@ -755,18 +755,18 @@ azure.groups().update("<resource-group-name>")
 
 Either of the following methods:
 ```java
-Group resourceGroup = azure.groups("<resource-group-name>");
+ResourceGroup resourceGroup = azure.resourceGroups("<resource-group-name>");
 
-Group resourceGroup = azure.groups().get("<resource-group-name>");
+ResourceGroup resourceGroup = azure.resourceGroups().get("<resource-group-name>");
 ```
 
 #### Deleting a resource group
 
 Either of the following methods:
 ```java
-azure.groups().delete("<resource-group-name>");
+azure.resourceGroups().delete("<resource-group-name>");
 
-azure.groups("<resource-group-name>").delete();
+azure.resourceGroups("<resource-group-name>").delete();
 ````
 
 ### Resources
@@ -779,7 +779,7 @@ All resources in a subscription, indexed by id:
 ```java
 Map<String, Resource> resources = azure.resources().list();
 ```
-Resources in a specific group:
+Resources in a specific resource group:
 ```java
 Map<String, Resource> resources = azure.resources().list("<resource-group-name>");
 ```
@@ -790,7 +790,7 @@ If you know the full ID of the resource (e.g. you got it from the `resources().l
 ```java
 Resource resource = azure.resources("<resource-id>");
 ```
-Else, if you know the resource name, type, provider and group, then:
+Else, if you know the resource name, type, provider and resource group, then:
 ```java
 Resource resource = azure.resources().get(
 	"<resource-name>",
@@ -807,7 +807,7 @@ azure.resources().delete("<resource-id">);
 ```
 Or using its metadata:
 ```java
-azure.resources().delete("<short-name>", "<resource-type>", "<provider-namespace>", "<group-name>");
+azure.resources().delete("<short-name>", "<resource-type>", "<provider-namespace>", "<resource-group-name>");
 ```
 Or, if you've already gotten a reference to a `Resource` object (represented by `resource` below) from `get()`, then:
 ```java
@@ -872,7 +872,7 @@ Within an existing resource group, and setting a tag:
 ```java
 azure.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
-    .withExistingGroup("myexistinggroup")
+    .withExistingGroup("<existing-resource-group-name>")
     .withTag("hello", "world")
     .provision();
 ```
@@ -881,7 +881,7 @@ azure.availabilitySets().define("myavailabilityset")
 
 Availability sets as a map, in a specific resource group, indexed by id:
 ```java
-Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("myresourcegroup");
+Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().list("<resource-group-name>");
 ```
 
 #### Getting information about an availability set
@@ -896,11 +896,11 @@ AvailabilitySet availabilitySet = azure.availabilitySets().get("<resource-id>");
 ``` 
 Using its resource group and name:
 ```java
-AvailabilitySet availabilitySet = azure.availabilitySets("<group-name>", "<availability-set-name>");
+AvailabilitySet availabilitySet = azure.availabilitySets("<resource-group-name>", "<availability-set-name>");
 ```
 or:
 ```java
-AvailabilitySet availabilitySet = azure.availabilitySets().get("<group-name>", "<availability-set-name>");
+AvailabilitySet availabilitySet = azure.availabilitySets().get("<resource-group-name>", "<availability-set-name>");
 ```
 
 #### Deleting an availability set

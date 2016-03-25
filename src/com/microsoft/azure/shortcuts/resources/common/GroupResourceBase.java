@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.resources.common;
 
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
-import com.microsoft.azure.shortcuts.resources.Group;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 
 public interface GroupResourceBase extends 
 	ResourceBase {
@@ -44,7 +44,7 @@ public interface GroupResourceBase extends
 		 * @param group An existing resource group to put the resource in
 		 * @return The next stage of the resource definition
 		 */
-		T withExistingGroup(Group group);
+		T withExistingGroup(ResourceGroup group);
 		
 		/**
 		 * Associates the resources with an existing resource group.
@@ -72,6 +72,6 @@ public interface GroupResourceBase extends
 		 * @param groupDefinition A provisionable definition for a new resource group
 		 * @return The next stage of the resource definition
 		 */
-		T withNewGroup(Group.DefinitionProvisionable groupDefinition) throws Exception;
+		T withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception;
 	}
 }

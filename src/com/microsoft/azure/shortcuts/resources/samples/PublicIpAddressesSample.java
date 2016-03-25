@@ -84,7 +84,7 @@ public class PublicIpAddressesSample {
     	pip.delete();
     	
     	// Delete the auto-created group
-    	azure.groups(groupNameCreated).delete();
+    	azure.resourceGroups(groupNameCreated).delete();
     }
     
     

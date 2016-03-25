@@ -104,7 +104,7 @@ public class NetworkInterfacesSample {
     	network.delete();
     	
     	// Delete the auto-created group
-    	azure.groups(newGroupName).delete();
+    	azure.resourceGroups(newGroupName).delete();
     }
     
     

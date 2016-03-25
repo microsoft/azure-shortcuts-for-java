@@ -30,8 +30,8 @@ import com.microsoft.azure.management.storage.StorageManagementService;
 import com.microsoft.azure.shortcuts.common.implementation.Utils;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
-import com.microsoft.azure.shortcuts.resources.Group;
-import com.microsoft.azure.shortcuts.resources.Groups;
+import com.microsoft.azure.shortcuts.resources.ResourceGroup;
+import com.microsoft.azure.shortcuts.resources.ResourceGroups;
 import com.microsoft.azure.shortcuts.resources.LoadBalancer;
 import com.microsoft.azure.shortcuts.resources.LoadBalancers;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -80,7 +80,7 @@ public class Azure {
     private NetworkResourceProviderClient networkResourceProviderClient;
 
     private final ResourcesImpl resources;
-    private final GroupsImpl groups;
+    private final ResourceGroupsImpl resourceGroups;
     private final ProvidersImpl providers;
     private final SizesImpl sizes;
     private final NetworksImpl networks;
@@ -118,7 +118,7 @@ public class Azure {
     private Azure(Configuration configuration) {
     	this.configuration = configuration;
         this.resources = new ResourcesImpl(this);
-        this.groups = new GroupsImpl(this);
+        this.resourceGroups = new ResourceGroupsImpl(this);
         this.providers = new ProvidersImpl(this);
         this.sizes = new SizesImpl(this);
         this.networks = new NetworksImpl(this);
@@ -221,12 +221,12 @@ public class Azure {
     	return this.publicIpAddresses().get(groupName, name);
     }
     
-    public Groups groups() {
-    	return this.groups;
+    public ResourceGroups resourceGroups() {
+    	return this.resourceGroups;
     }
     
-    public Group groups(String name) throws Exception {
-    	return this.groups().get(name);
+    public ResourceGroup resourceGroups(String name) throws Exception {
+    	return this.resourceGroups().get(name);
     }
     
     public Providers providers() {
