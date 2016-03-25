@@ -41,7 +41,7 @@ public interface NetworkSecurityGroup extends
 	 * An NSG definition allowing to specify the resource group to include it in.
 	 */
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
 	
 	/**
 	 * A public IP address definition with sufficient input parameters specified to be provisioned in the cloud

@@ -58,7 +58,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 			
 			PublicIpAddress pip = this.collection.azure().publicIpAddresses().define(this.publicIpAddressDns)
 				.withRegion(this.region())
-				.withExistingGroup(this.groupName)
+				.withExistingResourceGroup(this.groupName)
 				.withLeafDomainLabel(this.publicIpAddressDns)
 				.provision();
 			this.isPublicIpAddressExisting = true;

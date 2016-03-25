@@ -52,7 +52,7 @@ public class NetworkSecurityGroupsSample {
     	// Create a NSG in a default new group
     	NetworkSecurityGroup nsgMinimal = azure.networkSecurityGroups().define(newNetworkSecurityGroupName)
     		.withRegion(Region.US_WEST)
-    		.withNewGroup()
+    		.withNewResourceGroup()
     		.provision();
     	
     	// Get info about a specific NSG using its group and name
@@ -64,7 +64,7 @@ public class NetworkSecurityGroupsSample {
     	// More detailed NSG definition
     	NetworkSecurityGroup nsg = azure.networkSecurityGroups().define(newNetworkSecurityGroupName + "2")
     		.withRegion(Region.US_WEST)
-    		.withExistingGroup(groupNameCreated)
+    		.withExistingResourceGroup(groupNameCreated)
     		.withTag("hello", "world")
     		.provision();
     	    	

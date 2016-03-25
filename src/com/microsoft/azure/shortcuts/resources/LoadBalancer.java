@@ -39,7 +39,7 @@ public interface LoadBalancer extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionWithFrontEnd> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionWithFrontEnd> {}
 	
 	/**
 	 * A load balancer definition allowing to specify a front end IP address

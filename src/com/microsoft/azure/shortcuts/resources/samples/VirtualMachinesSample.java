@@ -48,7 +48,7 @@ public class VirtualMachinesSample {
 
     	VirtualMachine vmWin = azure.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
-    		.withNewGroup(groupName)
+    		.withNewResourceGroup(groupName)
     		.withNewNetwork("net" + deploymentId, "10.0.0.0/28")
     		.withPrivateIpAddressDynamic()
     		.withNewPublicIpAddress("vm" + deploymentId)
@@ -70,7 +70,7 @@ public class VirtualMachinesSample {
     	// Adding a Linux VM to the same group and VNet
     	VirtualMachine vmLinux = azure.virtualMachines().define("lx" + deploymentId)
     		.withRegion(Region.US_WEST)
-    		.withExistingGroup(groupName)
+    		.withExistingResourceGroup(groupName)
     		.withExistingNetwork(azure.networks(groupName, "net" + deploymentId))
     		.withSubnet("subnet1")
     		.withPrivateIpAddressDynamic()

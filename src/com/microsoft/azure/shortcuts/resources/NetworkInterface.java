@@ -47,7 +47,7 @@ public interface NetworkInterface extends
 	 * A network interface definition allowing to specify a group to associate with it
 	 */
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionWithNetwork> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionWithNetwork> {}
 	
 	/**
 	 * A network interface definition allowing to associate a virtual network with the network interface

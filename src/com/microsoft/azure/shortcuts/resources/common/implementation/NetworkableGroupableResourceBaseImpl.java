@@ -52,7 +52,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	
 			Network network = this.collection.azure().networks().define(this.networkId)
 				.withRegion(this.region())
-				.withExistingGroup(groupName)
+				.withExistingResourceGroup(groupName)
 				.withAddressSpace(this.networkCidr)
 				.provision();
 			this.isNetworkExisting = true;

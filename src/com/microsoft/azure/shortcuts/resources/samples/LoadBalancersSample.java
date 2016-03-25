@@ -47,7 +47,7 @@ public class LoadBalancersSample {
     	// Create a new LB in a new resource group
     	lb = azure.loadBalancers().define(lbName)
     		.withRegion(Region.US_WEST)
-    		.withNewGroup(groupName)
+    		.withNewResourceGroup(groupName)
     		.withNewPublicIpAddress("marcinstest2")
     		.provision();
     	
@@ -73,7 +73,7 @@ public class LoadBalancersSample {
     	// Create a new lb in an existing resource group
     	lb = azure.loadBalancers().define(lbName + "2")
     		.withRegion(Region.US_WEST)
-    		.withExistingGroup(groupName)
+    		.withExistingResourceGroup(groupName)
     		.withNewPublicIpAddress("marcinstest3")
     		.provision();
     	

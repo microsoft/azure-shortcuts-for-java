@@ -9,7 +9,7 @@ Here's an example for creating a virtual network, which is very representative o
 ```java
 azure.networks().define("mynetwork")
     .withRegion("US West")
-    .withExistingGroup("<resource-group-name>")
+    .withExistingResourceGroup("<resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
@@ -62,7 +62,7 @@ In more detail:
 
 1. start with the "collection" of those objects hanging off as a member of the `Azure` client instance object (e.g. `azure.networks()`), 
 2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
-3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withExistingGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the possible choices.
+3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withExistingResourceGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the possible choices.
 4. many resource types in Azure (e.g. virtual machines) require other resources (e.g. resource group, storage acocunt) to be already present. The `.with*` setters often enable you to either select an existing related resource (`.withExisting*()`) or to request a new such resource to be created on the fly (`.withNew*()`). When created on the fly, it is created in the region and resource group.
 5. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
  
@@ -166,7 +166,7 @@ There are many variations possible of the following minimalistic approach:
 ```java
 VirtualMachine vmWin = azure.virtualMachines().define("<vm-name>")
 	.withRegion(Region.US_WEST)
-    .withNewGroup("<new-group-name>")
+    .withNewResourceGroup("<new-group-name>")
     .withNewNetwork("10.0.0.0/28")
     .withPrivateIpAddressDynamic()
     .withNewPublicIpAddress("<new-domain-label>")
@@ -180,7 +180,7 @@ VirtualMachine vmWin = azure.virtualMachines().define("<vm-name>")
 
 As a shortcut, this approach combines the provisioning or selection of the related required resources into one statement. 
 
-For example, a new resource group can be provisioned for the virtual machine (`.withNewGroup(...)`) or an existing one can be selected (`.withExistingGroup(...)`). 
+For example, a new resource group can be provisioned for the virtual machine (`.withNewResourceGroup(...)`) or an existing one can be selected (`.withExistingResourceGroup(...)`). 
 
 Similarly, a new virtual network can be provisioned (`.withNewNetwork(...)`) or an existing one can be used (`.withExistingNetwork(...)`).
 
@@ -201,7 +201,7 @@ A number of settings are optional so they can be specified at the provisionable 
 ```java
 VirtualMachine.DefinitionProvisionable vmProvisionable = azure.virtualMachines().define("vm" + deploymentId)
 	.withRegion(Region.US_WEST)
-    .withNewGroup(groupName)
+    .withNewResourceGroup(groupName)
     .withNewNetwork("10.0.0.0/28")
     .withPrivateIpAddressDynamic()
     .withNewPublicIpAddress("vm" + deploymentId)
@@ -355,7 +355,7 @@ With an explicitly defined address space, a default subnet containing the entire
 ```java
 Network network = azure.networks().define("<new-network-name>")
 	.withRegion(Region.US_WEST)
-	.withNewGroup()
+	.withNewResourceGroup()
 	.withAddressSpace("10.0.0.0/28")
 	.provision();
 ```
@@ -363,7 +363,7 @@ With multiple, explicitly defined subnets and an existing resource group:
 ```java
 azure.networks().define(newNetworkName + "2")
     .withRegion(Region.US_WEST)
-    .withExistingGroup("<existing-resource-group-name>")
+    .withExistingResourceGroup("<existing-resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
@@ -428,7 +428,7 @@ When using the minimum set of required inputs, a new resource group is created a
 ```java
 NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
     .withRegion(Region.US_WEST)
-    .withNewGroup("<new-resource-group-name>")
+    .withNewResourceGroup("<new-resource-group-name>")
     .withNewNetwork("10.0.0.0/28")
     .withPrivateIpAddressDynamic()
     .withoutPublicIpAddress()
@@ -438,7 +438,7 @@ Creating a network interface with a new resource group, dynamic private IP and a
 ```java
 NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
 	.withRegion(Region.US_WEST)
-    .withExistingGroup("<existing-group-name>")
+    .withExistingResourceGroup("<existing-group-name>")
     .withExistingNetwork(network)
     .withSubnet("subnet1")
     .withPrivateIpAddressStatic("10.0.0.5")
@@ -500,14 +500,14 @@ Providing minimal inputs will result in a public IP address for which a resource
 ```java
 PublicIpAddress pipMinimal = azure.publicIpAddresses().define("<new-public-address-name>")
 	.withRegion(Region.US_WEST)
-   	.withNewGroup()
+   	.withNewResourceGroup()
     .provision();
 ```
 With static IP allocation, an explicitly defined leaf domain label and a tag:
 ```java
 PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
 	.withRegion(Region.US_WEST)
-    .withExistingGroup(existingGroupName)
+    .withExistingResourceGroup(existingGroupName)
     .withLeafDomainLabel("hellomarcins")
     .withStaticIp()
     .withTag("hello", "world")
@@ -567,14 +567,14 @@ Providing minimal inputs will result in a network security group for which a res
 ```java
 NetworkSecurityGroup nsgMinimal = azure.networkSecurityGroups().define("<network-security-group-name>")
 	.withRegion(Region.US_WEST)
-	.withNewGroup()
+	.withNewResourceGroup()
 	.provision();
 ```
 With an optional tag:
 ```java
 NetworkSecurityGroup nsg = azure.networkSecurityGroups().define("<network-security-group-name>")
     .withRegion(Region.US_WEST)
-    .withExistingGroup("<existing-group-name>")
+    .withExistingResourceGroup("<existing-group-name>")
     .withTag("hello", "world")
     .provision();
 ```
@@ -632,7 +632,7 @@ With the required minimum set of input parameters:
 ```java
 StorageAccount storageAccount = azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
-    .withNewGroup()
+    .withNewResourceGroup()
     .provision();
 ```
 In an existing resource group:
@@ -640,7 +640,7 @@ In an existing resource group:
 azure.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withAccountType(AccountType.StandardLRS)
-    .withExistingGroup("<existing-resource-group-name>")
+    .withExistingResourceGroup("<existing-resource-group-name>")
     .provision();
 ```
 
@@ -872,7 +872,7 @@ Within an existing resource group, and setting a tag:
 ```java
 azure.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
-    .withExistingGroup("<existing-resource-group-name>")
+    .withExistingResourceGroup("<existing-resource-group-name>")
     .withTag("hello", "world")
     .provision();
 ```

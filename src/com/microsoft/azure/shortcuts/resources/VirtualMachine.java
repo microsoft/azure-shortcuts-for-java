@@ -113,7 +113,7 @@ public interface VirtualMachine extends
 	 * A virtual machine definition requiring the resource group to be specified
 	 */
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionWithNetworking> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionWithNetworking> {}
 	
 	/**
 	 * A virtual machine definition allowing the networking to be specified

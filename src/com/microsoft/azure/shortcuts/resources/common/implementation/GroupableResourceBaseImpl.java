@@ -81,7 +81,7 @@ public abstract class GroupableResourceBaseImpl<
 	 ****************************************/
 	
 	@SuppressWarnings("unchecked")
-	public final WRAPPERIMPL withExistingGroup(String groupName) {
+	public final WRAPPERIMPL withExistingResourceGroup(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = true;
 		return (WRAPPERIMPL)this;
@@ -89,25 +89,25 @@ public abstract class GroupableResourceBaseImpl<
 	
 	
 	@SuppressWarnings("unchecked")
-	public final WRAPPERIMPL withNewGroup(String groupName) {
+	public final WRAPPERIMPL withNewResourceGroup(String groupName) {
 		this.groupName = groupName;
 		this.isExistingGroup = false;
 		return (WRAPPERIMPL) this;
 	}
 	
-	public final WRAPPERIMPL withNewGroup() {
-		return this.withNewGroup((String)null);
+	public final WRAPPERIMPL withNewResourceGroup() {
+		return this.withNewResourceGroup((String)null);
 	}
 	
-	public final WRAPPERIMPL withNewGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
-		return withExistingGroup(groupDefinition.provision());
+	public final WRAPPERIMPL withNewResourceGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
+		return withExistingResourceGroup(groupDefinition.provision());
 	}
 	
-	public final WRAPPERIMPL withExistingGroup(ResourceGroup group) {
-		return this.withExistingGroup(group.name());
+	public final WRAPPERIMPL withExistingResourceGroup(ResourceGroup group) {
+		return this.withExistingResourceGroup(group.name());
 	}
 	
-	public final WRAPPERIMPL withExistingGroup(ResourceGroupExtended group) {
-		return this.withExistingGroup(group.getName());
+	public final WRAPPERIMPL withExistingResourceGroup(ResourceGroupExtended group) {
+		return this.withExistingResourceGroup(group.getName());
 	}
 }

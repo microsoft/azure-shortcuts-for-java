@@ -49,7 +49,7 @@ public interface Network extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithGroup<DefinitionProvisionable> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
 		
 	
 	/**
