@@ -53,7 +53,7 @@ public class StorageAccountsSample {
 
     	printStorageAccount(storageAccount);
     	
-    	String groupName = storageAccount.group();
+    	String groupName = storageAccount.resourceGroup();
     	
     	// Listing all storage accounts
     	Map<String, StorageAccount> storageAccounts = azure.storageAccounts().list();
@@ -74,7 +74,7 @@ public class StorageAccountsSample {
     	azure.resourceGroups().delete(groupName);
     	
     	// Provision a test group
-    	ResourceGroup group = azure.resourceGroups().define(newGroupName)
+    	ResourceGroup resourceGroup = azure.resourceGroups().define(newGroupName)
     		.withRegion(Region.US_WEST)
     		.provision();
     	
@@ -91,7 +91,7 @@ public class StorageAccountsSample {
     	storageAccount.delete();
     	
     	// Delete the groups
-    	group.delete();
+    	resourceGroup.delete();
     	
     }
     
@@ -101,7 +101,7 @@ public class StorageAccountsSample {
     	output
     		.append(String.format("Storage account id: %s\n", storageAccount.id()))
     		.append(String.format("\tName: %s\n", storageAccount.name()))
-    		.append(String.format("\tGroup: %s\n", storageAccount.group()))
+    		.append(String.format("\tGroup: %s\n", storageAccount.resourceGroup()))
     		.append(String.format("\tPrimary blob endpoint: %s\n", storageAccount.primaryBlobEndpoint().toString()))
     		.append(String.format("\tAccount type: %s\n", storageAccount.accountType().toString()))
     		;

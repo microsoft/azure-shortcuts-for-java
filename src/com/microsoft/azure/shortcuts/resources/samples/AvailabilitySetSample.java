@@ -63,7 +63,7 @@ public class AvailabilitySetSample {
     	availabilitySet.delete();
     	
     	// Delete its group
-    	azure.resourceGroups().delete(availabilitySet.group());
+    	azure.resourceGroups().delete(availabilitySet.resourceGroup());
     	
     	// Create a new group
     	ResourceGroup group = azure.resourceGroups().define("marcinstestgroup").withRegion(Region.US_WEST).provision();
@@ -77,7 +77,7 @@ public class AvailabilitySetSample {
     		.provision();
     	
     	// Get an existing availability set based onb group and name
-    	availabilitySet = azure.availabilitySets(availabilitySet.group(), availabilitySet.name());
+    	availabilitySet = azure.availabilitySets(availabilitySet.resourceGroup(), availabilitySet.name());
     	printAvailabilitySet(availabilitySet);
     	
     	// Delete the entire group
@@ -90,7 +90,7 @@ public class AvailabilitySetSample {
     	output
     		.append(String.format("Availability set id: %s\n", availabilitySet.id()))
     		.append(String.format("\tName: %s\n", availabilitySet.name()))
-    		.append(String.format("\tGroup: %s\n", availabilitySet.group()))
+    		.append(String.format("\tGroup: %s\n", availabilitySet.resourceGroup()))
     		.append(String.format("\tVirtual machine ids: \n\t%s", StringUtils.join(availabilitySet.virtualMachineIds(), "\n\t")))
     		;
     	

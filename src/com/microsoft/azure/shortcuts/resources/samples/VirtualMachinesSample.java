@@ -127,7 +127,7 @@ public class VirtualMachinesSample {
 			.append(String.format("\tCustom data: %s\n", vm.customData()))
 			.append(String.format("\tNumber of data disks: %d\n", vm.dataDisks().size()))
 			.append(String.format("\tNumber of extensions: %d\n", (vm.extensions()!=null) ? vm.extensions().size() : 0))
-			.append(String.format("\tGroup: %s\n", vm.group()))
+			.append(String.format("\tGroup: %s\n", vm.resourceGroup()))
 			;
 			
 		System.out.println(info.toString());

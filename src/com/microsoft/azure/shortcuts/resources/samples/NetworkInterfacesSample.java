@@ -93,7 +93,7 @@ public class NetworkInterfacesSample {
     		.provision();
     		
     	// Get info about a specific NIC using its resource ID
-    	nic = azure.networkInterfaces(nic.group(), nic.name());
+    	nic = azure.networkInterfaces(nic.resourceGroup(), nic.name());
     	printNetworkInterface(nic);
     	
     	// Delete the NIC
@@ -115,7 +115,7 @@ public class NetworkInterfacesSample {
     	output
     		.append(String.format("Network interface ID: %s\n", nic.id()))
     		.append(String.format("\tName: %s\n", nic.name()))
-    		.append(String.format("\tGroup: %s\n", nic.group()))
+    		.append(String.format("\tGroup: %s\n", nic.resourceGroup()))
     		.append(String.format("\tRegion: %s\n", nic.region()))
     		.append(String.format("\tPrimary subnet ID: %s\n", ipConfig.getSubnet().getId()))
     		.append(String.format("\tPrimary private IP: %s\n", ipConfig.getPrivateIpAddress()))

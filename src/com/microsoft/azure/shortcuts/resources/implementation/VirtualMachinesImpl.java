@@ -491,25 +491,25 @@ public class VirtualMachinesImpl
 
 		@Override
 		public VirtualMachineImpl stop() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().powerOff(this.group(), this.name());
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().powerOff(this.resourceGroup(), this.name());
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl restart() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().restart(this.group(), this.name());
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().restart(this.resourceGroup(), this.name());
 			return this;
 		}
 
 		@Override
 		public VirtualMachineImpl deallocate() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().deallocate(this.group(), this.name());
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().deallocate(this.resourceGroup(), this.name());
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl start() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().start(this.group(), this.name());
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().start(this.resourceGroup(), this.name());
 			return this;
 		}
 		
@@ -519,13 +519,13 @@ public class VirtualMachinesImpl
 			params.setDestinationContainerName(containerName.toLowerCase());
 			params.setVirtualHardDiskNamePrefix(diskNamePrefix);
 			params.setOverwrite(overwrite);
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().capture(this.group(), this.name(), params);
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().capture(this.resourceGroup(), this.name(), params);
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl generalize() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().generalize(this.group(), this.name());
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().generalize(this.resourceGroup(), this.name());
 			return this;
 		}
 		
@@ -571,7 +571,7 @@ public class VirtualMachinesImpl
 			URL diskBlob = new URL(container, "osDisk.vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.group(), this.inner());
+			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.resourceGroup(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

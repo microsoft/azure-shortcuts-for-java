@@ -26,7 +26,7 @@ import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 public interface GroupResourceBase extends 
 	ResourceBase {
 	
-	public String group();
+	public String resourceGroup();
 
 	/**
 	 * A resource definition allowing a resource group to be selected

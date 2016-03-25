@@ -61,7 +61,7 @@ public class ResourcesSample {
         	resource.name(),
         	resource.type(),
         	resource.provider(),
-        	resource.group());
+        	resource.resourceGroup());
         printResource(resource);	
     	    	
     	// Delete a resource 
@@ -69,7 +69,7 @@ public class ResourcesSample {
         	resource.name(),
         	resource.type(),
         	resource.provider(),
-        	resource.group()));
+        	resource.resourceGroup()));
 
         resource.delete();
         
@@ -93,7 +93,7 @@ public class ResourcesSample {
 			+ "\tProvisioning state %s\n",
 			
 			resource.id(),
-			resource.group(),
+			resource.resourceGroup(),
 			resource.provider(),
 			resource.region(),
 			resource.name(),

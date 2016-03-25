@@ -59,7 +59,7 @@ public class PublicIpAddressesSample {
     	// Get info about a specific PIP using its group and name
     	pipMinimal = azure.publicIpAddresses(pipMinimal.id());
     	pipMinimal = azure.publicIpAddresses().get(pipMinimal.id());
-    	String groupNameCreated = pipMinimal.group(); 
+    	String groupNameCreated = pipMinimal.resourceGroup(); 
     	printPIP(pipMinimal);
 
     	// More detailed PIP definition
@@ -76,7 +76,7 @@ public class PublicIpAddressesSample {
     	System.out.println(String.format("PIP ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(pips.keySet(), ",\n\t")));
     	
     	// Get info about a specific PIP using its resource ID
-    	pip = azure.publicIpAddresses(pip.group(), pip.name());
+    	pip = azure.publicIpAddresses(pip.resourceGroup(), pip.name());
     	printPIP(pip);
     	
     	// Delete the PIP
@@ -93,7 +93,7 @@ public class PublicIpAddressesSample {
     	output
     		.append(String.format("Public IP ID: %s\n", pip.id()))
     		.append(String.format("\tName: %s\n", pip.name()))
-    		.append(String.format("\tGroup: %s\n", pip.group()))
+    		.append(String.format("\tGroup: %s\n", pip.resourceGroup()))
     		.append(String.format("\tRegion: %s\n", pip.region()))
     		.append(String.format("\tIP Address: %s\n", pip.ipAddress()))
     		.append(String.format("\tLeaf domain label: %s\n", pip.leafDomainLabel()))

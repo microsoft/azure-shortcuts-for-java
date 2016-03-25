@@ -64,7 +64,7 @@ public class LoadBalancersSample {
     	System.out.println(String.format("Load balancer ids in group '%s': \n\t%s", groupName, StringUtils.join(lbs.keySet(), ",\n\t")));
     	
     	// Get info about a specific lb using its resource ID
-    	lb = azure.loadBalancers(lb.group(), lb.name());
+    	lb = azure.loadBalancers(lb.resourceGroup(), lb.name());
     	printLB(lb);
     	
     	// Delete the load balancer
@@ -92,7 +92,7 @@ public class LoadBalancersSample {
     	output
     		.append(String.format("Load Balancer ID: %s\n", lb.id()))
     		.append(String.format("\tName: %s\n", lb.name()))
-    		.append(String.format("\tGroup: %s\n", lb.group()))
+    		.append(String.format("\tGroup: %s\n", lb.resourceGroup()))
     		;
     	
     	System.out.println(output.toString());

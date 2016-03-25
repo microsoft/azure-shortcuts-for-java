@@ -48,7 +48,7 @@ public abstract class GroupableResourceBaseImpl<
 	 *******************************************/
 	
 	@Override 
-	final public String group() {
+	final public String resourceGroup() {
 		String groupNameTemp = ResourcesImpl.groupFromResourceId(this.id());
 		return (groupNameTemp == null) ? this.groupName : groupNameTemp;
 	}

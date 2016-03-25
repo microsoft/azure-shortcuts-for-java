@@ -58,7 +58,7 @@ public class NetworkSecurityGroupsSample {
     	// Get info about a specific NSG using its group and name
     	nsgMinimal = azure.networkSecurityGroups(nsgMinimal.id());
     	nsgMinimal = azure.networkSecurityGroups().get(nsgMinimal.id());
-    	String groupNameCreated = nsgMinimal.group(); 
+    	String groupNameCreated = nsgMinimal.resourceGroup(); 
     	printNSG(nsgMinimal);
 
     	// More detailed NSG definition
@@ -73,7 +73,7 @@ public class NetworkSecurityGroupsSample {
     	System.out.println(String.format("NSG ids in group '%s': \n\t%s", groupNameCreated, StringUtils.join(nsgs.keySet(), ",\n\t")));
     	
     	// Get info about a specific PIP using its resource ID
-    	nsg = azure.networkSecurityGroups(nsg.group(), nsg.name());
+    	nsg = azure.networkSecurityGroups(nsg.resourceGroup(), nsg.name());
     	printNSG(nsg);
     	
     	// Delete the NSG
@@ -90,7 +90,7 @@ public class NetworkSecurityGroupsSample {
     	output
     		.append(String.format("Network Security Group ID: %s\n", nsg.id()))
     		.append(String.format("\tName: %s\n", nsg.name()))
-    		.append(String.format("\tGroup: %s\n", nsg.group()))
+    		.append(String.format("\tGroup: %s\n", nsg.resourceGroup()))
     		.append(String.format("\tRegion: %s\n", nsg.region()))
     		;
     	

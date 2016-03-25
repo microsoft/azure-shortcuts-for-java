@@ -63,7 +63,7 @@ public class NetworksSample {
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
-    	network = azure.networks(network.group(), network.name());
+    	network = azure.networks(network.resourceGroup(), network.name());
     	printNetwork(network);
     	
     	// Delete the network
@@ -102,7 +102,7 @@ public class NetworksSample {
     	output
     		.append(String.format("Network ID: %s\n", network.id()))
     		.append(String.format("\tName: %s\n", network.name()))
-    		.append(String.format("\tGroup: %s\n", network.group()))
+    		.append(String.format("\tGroup: %s\n", network.resourceGroup()))
     		.append(String.format("\tProvisioning state: %s\n", network.provisioningState()))
     		.append(String.format("\tAddress spaces: %s\n", StringUtils.join(network.addressSpaces(), ", ")))
     		.append(String.format("\tDNS servers: %s\n", StringUtils.join(network.dnsServerIPs(), ", ")));
