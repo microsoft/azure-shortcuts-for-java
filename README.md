@@ -8,7 +8,7 @@ Here's an example for creating a virtual network, which is very representative o
 
 ```java
 azure.networks().define("mynetwork")
-    .withRegion("US West")
+    .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
