@@ -27,7 +27,7 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 
 public abstract class ResourceBaseImpl<
@@ -39,9 +39,9 @@ public abstract class ResourceBaseImpl<
 	implements 
 		ResourceBase {
 
-	protected final EntitiesImpl<Azure> collection;
+	protected final EntitiesImpl<Subscription> collection;
 	
-	protected ResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
+	protected ResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Subscription> collection) {
 		super(id, innerObject);
 		this.collection = collection;
 	}

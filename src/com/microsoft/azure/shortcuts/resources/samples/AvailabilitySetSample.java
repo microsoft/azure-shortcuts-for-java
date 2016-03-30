@@ -27,49 +27,49 @@ import org.apache.commons.lang3.StringUtils;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class AvailabilitySetSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	String existingGroupName = "javasampleresourcegroup1";
     	String newAvailabilitySetName = "marcinsas";
     	AvailabilitySet availabilitySet;
     	
     	// Create a new availability set in a new default group
-    	availabilitySet = azure.availabilitySets().define(newAvailabilitySetName)
+    	availabilitySet = subscription.availabilitySets().define(newAvailabilitySetName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
     		.provision();
     	
     	// Get info about a specific availability set using its group and name
-    	availabilitySet = azure.availabilitySets(availabilitySet.id());
+    	availabilitySet = subscription.availabilitySets(availabilitySet.id());
     	printAvailabilitySet(availabilitySet);
 
     	// Listing availability sets in a specific resource group
-    	Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().asMap(existingGroupName);
+    	Map<String, AvailabilitySet> availabilitySets = subscription.availabilitySets().asMap(existingGroupName);
     	System.out.println(String.format("Availability set ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(availabilitySets.keySet(), ",\n\t")));
     	
     	// Delete availability set
     	availabilitySet.delete();
     	
     	// Delete its group
-    	azure.resourceGroups().delete(availabilitySet.resourceGroup());
+    	subscription.resourceGroups().delete(availabilitySet.resourceGroup());
     	
     	// Create a new group
-    	ResourceGroup group = azure.resourceGroups().define("marcinstestgroup").withRegion(Region.US_WEST).provision();
+    	ResourceGroup group = subscription.resourceGroups().define("marcinstestgroup").withRegion(Region.US_WEST).provision();
     	
     	// Create an availability set in an existing group
-    	availabilitySet = azure.availabilitySets().define(newAvailabilitySetName + "2")
+    	availabilitySet = subscription.availabilitySets().define(newAvailabilitySetName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(group)
     		.withTag("hello", "world")
@@ -77,11 +77,11 @@ public class AvailabilitySetSample {
     		.provision();
     	
     	// Get an existing availability set based onb group and name
-    	availabilitySet = azure.availabilitySets(availabilitySet.resourceGroup(), availabilitySet.name());
+    	availabilitySet = subscription.availabilitySets(availabilitySet.resourceGroup(), availabilitySet.name());
     	printAvailabilitySet(availabilitySet);
     	
     	// Delete the entire group
-    	azure.resourceGroups().delete(group.id());
+    	subscription.resourceGroups().delete(group.id());
     }
     
     

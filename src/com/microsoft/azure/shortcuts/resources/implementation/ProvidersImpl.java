@@ -36,8 +36,8 @@ public class ProvidersImpl
 	extends ArmEntitiesImpl
 	implements Providers {
 	
-	ProvidersImpl(Azure azure) {
-		super(azure);
+	ProvidersImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	
@@ -63,7 +63,7 @@ public class ProvidersImpl
 
 
 	// Get providers from Azure
-	private static ArrayList<com.microsoft.azure.management.resources.models.Provider> getNativeEntities(Azure azure) throws Exception {
+	private static ArrayList<com.microsoft.azure.management.resources.models.Provider> getNativeEntities(Subscription azure) throws Exception {
 		return azure.resourceManagementClient().getProvidersOperations().list(null).getProviders();		
 	}
 		

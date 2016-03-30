@@ -62,8 +62,8 @@ public class VirtualMachinesImpl
 		VirtualMachinesImpl.VirtualMachineImpl>
 	implements VirtualMachines {
 	
-	VirtualMachinesImpl(Azure azure) {
-		super(azure);
+	VirtualMachinesImpl(Subscription subscription) {
+		super(subscription);
 	}
 
 	/*****************************************************
@@ -158,7 +158,7 @@ public class VirtualMachinesImpl
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
 		
-		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM, EntitiesImpl<Azure> collection) {
+		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM, EntitiesImpl<Subscription> collection) {
 			super(azureVM.getId(), azureVM, collection);
 		}
 

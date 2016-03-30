@@ -26,52 +26,52 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.LoadBalancer;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class LoadBalancersSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	LoadBalancer lb;
     	String groupName = "lbtestgroup";
     	String lbName = "marcinslb";
     	
     	// Create a new LB in a new resource group
-    	lb = azure.loadBalancers().define(lbName)
+    	lb = subscription.loadBalancers().define(lbName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup(groupName)
     		.withNewPublicIpAddress("marcinstest2")
     		.provision();
     	
     	// Get info about a specific lb using its group and name
-    	lb = azure.loadBalancers(lb.id());
+    	lb = subscription.loadBalancers(lb.id());
     	printLB(lb);
 
     	// Listing all lbs
-    	Map<String, LoadBalancer> lbs = azure.loadBalancers().asMap();
+    	Map<String, LoadBalancer> lbs = subscription.loadBalancers().asMap();
     	System.out.println(String.format("Load Balancer ids: \n\t%s", StringUtils.join(lbs.keySet(), ",\n\t")));
     	
     	// Listing lbs in a specific resource group
-    	lbs = azure.loadBalancers().asMap(groupName);
+    	lbs = subscription.loadBalancers().asMap(groupName);
     	System.out.println(String.format("Load balancer ids in group '%s': \n\t%s", groupName, StringUtils.join(lbs.keySet(), ",\n\t")));
     	
     	// Get info about a specific lb using its resource ID
-    	lb = azure.loadBalancers(lb.resourceGroup(), lb.name());
+    	lb = subscription.loadBalancers(lb.resourceGroup(), lb.name());
     	printLB(lb);
     	
     	// Delete the load balancer
     	lb.delete();
     	
     	// Create a new lb in an existing resource group
-    	lb = azure.loadBalancers().define(lbName + "2")
+    	lb = subscription.loadBalancers().define(lbName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(groupName)
     		.withNewPublicIpAddress("marcinstest3")
@@ -83,7 +83,7 @@ public class LoadBalancersSample {
     	lb.delete();
     	
     	// Delete the group
-    	azure.resourceGroups(groupName).delete();
+    	subscription.resourceGroups(groupName).delete();
     }
     
     

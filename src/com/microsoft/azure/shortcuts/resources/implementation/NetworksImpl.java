@@ -45,8 +45,8 @@ public class NetworksImpl
 		NetworksImpl.NetworkImpl>
 	implements Networks {
 	
-	NetworksImpl(Azure azure) {
-		super(azure);
+	NetworksImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -118,7 +118,7 @@ public class NetworksImpl
 			Network.DefinitionProvisionableWithSubnet, 
 			Network.DefinitionWithSubnet {
 		
-		private NetworkImpl(VirtualNetwork azureVirtualNetwork, EntitiesImpl<Azure> collection) {
+		private NetworkImpl(VirtualNetwork azureVirtualNetwork, EntitiesImpl<Subscription> collection) {
 			super(azureVirtualNetwork.getName(), azureVirtualNetwork, collection);
 		}
 

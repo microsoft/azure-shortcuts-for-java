@@ -27,43 +27,43 @@ import org.apache.commons.lang3.StringUtils;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.Protocol;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class NetworkSecurityGroupsSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	String newNetworkSecurityGroupName = "testNSG";
     	
     	// Listing all network security groups
-    	Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().asMap();
+    	Map<String, NetworkSecurityGroup> nsgs = subscription.networkSecurityGroups().asMap();
     	System.out.println("Network security groups:");
     	for(NetworkSecurityGroup nsg : nsgs.values()) {
     		printNSG(nsg);
     	}
     	
     	// Create a NSG in a default new group
-    	NetworkSecurityGroup nsgMinimal = azure.networkSecurityGroups().define(newNetworkSecurityGroupName)
+    	NetworkSecurityGroup nsgMinimal = subscription.networkSecurityGroups().define(newNetworkSecurityGroupName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
     		.provision();
     	
     	// Get info about a specific NSG using its group and name
-    	nsgMinimal = azure.networkSecurityGroups(nsgMinimal.id());
-    	nsgMinimal = azure.networkSecurityGroups().get(nsgMinimal.id());
+    	nsgMinimal = subscription.networkSecurityGroups(nsgMinimal.id());
+    	nsgMinimal = subscription.networkSecurityGroups().get(nsgMinimal.id());
     	String groupNameCreated = nsgMinimal.resourceGroup(); 
     	printNSG(nsgMinimal);
 
     	// More detailed NSG definition
-    	NetworkSecurityGroup nsg = azure.networkSecurityGroups().define(newNetworkSecurityGroupName + "2")
+    	NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define(newNetworkSecurityGroupName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(groupNameCreated)
     		.withAllowInbound(Protocol.TCP, "*", "80", "*", "8080", "tcp80to8080", 100)
@@ -72,11 +72,11 @@ public class NetworkSecurityGroupsSample {
     		.provision();
     	    	
     	// Listing NSGs in a specific resource group
-    	nsgs = azure.networkSecurityGroups().asMap(groupNameCreated);
+    	nsgs = subscription.networkSecurityGroups().asMap(groupNameCreated);
     	System.out.println(String.format("NSG ids in group '%s': \n\t%s", groupNameCreated, StringUtils.join(nsgs.keySet(), ",\n\t")));
     	
     	// Get info about a specific PIP using its resource ID
-    	nsg = azure.networkSecurityGroups(nsg.resourceGroup(), nsg.name());
+    	nsg = subscription.networkSecurityGroups(nsg.resourceGroup(), nsg.name());
     	printNSG(nsg);
     	
     	// Delete the NSG
@@ -84,7 +84,7 @@ public class NetworkSecurityGroupsSample {
     	nsg.delete();
     	
     	// Delete the auto-created group
-    	azure.resourceGroups(groupNameCreated).delete();
+    	subscription.resourceGroups(groupNameCreated).delete();
     }
     
     

@@ -39,8 +39,8 @@ public class StorageAccountsImpl
 		StorageAccountsImpl.StorageAccountImpl>
 	implements StorageAccounts {
 	
-	StorageAccountsImpl(Azure azure) {
-		super(azure);
+	StorageAccountsImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -95,7 +95,7 @@ public class StorageAccountsImpl
 			StorageAccount.DefinitionWithGroup,
 			StorageAccount.DefinitionProvisionable {
 		
-		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, EntitiesImpl<Azure> collection) {
+		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, EntitiesImpl<Subscription> collection) {
 			super(azureStorageAccount.getId(), azureStorageAccount, collection);
 		}
 

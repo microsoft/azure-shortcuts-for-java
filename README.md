@@ -7,7 +7,7 @@ The goal of this project is to provide a radically simplified Java API for Azure
 Here's an example for creating a virtual network, which is very representative of the approach followed by the shortcuts:
 
 ```java
-azure.networks().define("mynetwork")
+subscription.networks().define("mynetwork")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
@@ -56,11 +56,11 @@ There are a small handful of general patterns to be aware of; once you remember 
 
 ### Creating new entities
 
-Other than `new Azure()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`), you use the top level "collection" of those objects (hanging off of the `Azure` client object) as the factory. And yes, there is only one single client object to instantiate and deal with. 
+Other than `new Subscription()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`), you use the top level "collection" of those objects (hanging off of the `Subscription` client object) as the factory. And yes, there is only one single client object to instantiate and deal with. 
 
 In more detail: 
 
-1. start with the "collection" of those objects hanging off as a member of the `Azure` client instance object (e.g. `azure.networks()`), 
+1. start with the "collection" of those objects hanging off as a member of the `Subscription` client instance object (e.g. `subscription.networks()`), 
 2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
 3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withExistingResourceGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the possible choices.
 4. many resource types in Azure (e.g. virtual machines) require other resources (e.g. resource group, storage acocunt) to be already present. The `.with*` setters often enable you to either select an existing related resource (`.withExisting*()`) or to request a new such resource to be created on the fly (`.withNew*()`). When created on the fly, it is created in the region and resource group.
@@ -133,7 +133,7 @@ This is the first step for all the other examples.:
 ```java
 String authFilePath = "<my-auth-file>"; // See explanation below
 String subscriptionId = "<subscription-GUID>";
-Azure azure = Azure.authenticate(authFilePath, subscriptionId);
+Subscription subscription = Subscription.authenticate(authFilePath, subscriptionId);
 ```
 
 > :warning: **NOTE**: Active Directory auth for ARM currently requires a lot of inputs and token management logic. To simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:
@@ -164,7 +164,7 @@ You can just save a file with these contents and use it as your "auth-file" in t
 There are many variations possible of the following minimalistic approach:
  
 ```java
-VirtualMachine vmWin = azure.virtualMachines().define("<vm-name>")
+VirtualMachine vmWin = subscription.virtualMachines().define("<vm-name>")
 	.withRegion(Region.US_WEST)
     .withNewResourceGroup("<new-group-name>")
     .withNewNetwork("10.0.0.0/28")
@@ -199,7 +199,7 @@ Any such related resource that is created in the process of provisioning a virtu
 A number of settings are optional so they can be specified at the provisionable stage of the virtual machine definition, i.e. at the stage at which `.provision()` is available among the members. For example, the above example can rewritten to separate the provisionable stage from the required stages:
 
 ```java
-VirtualMachine.DefinitionProvisionable vmProvisionable = azure.virtualMachines().define("vm" + deploymentId)
+VirtualMachine.DefinitionProvisionable vmProvisionable = subscription.virtualMachines().define("vm" + deploymentId)
 	.withRegion(Region.US_WEST)
     .withNewResourceGroup(groupName)
     .withNewNetwork("10.0.0.0/28")
@@ -248,12 +248,12 @@ All virtual machine names (or ids) in a subscription:
 > *ARM*: import from `com.microsoft.azure.shortcuts.resources.*` packages
 
 ```java
-Map<String, VirtualMachine> vms = azure.virtualMachines().asMap();
+Map<String, VirtualMachine> vms = subscription.virtualMachines().asMap();
 System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
 ```
 Virtual machines in a specific resource group (resource model "ARM" only)
 ```java
-Map<String, VirtualMachine> vms = azure.virtualMachines().asMap("<group-name>");
+Map<String, VirtualMachine> vms = subscription.virtualMachines().asMap("<group-name>");
 System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t", vms.keySet())));
 ```
 
@@ -263,11 +263,11 @@ System.out.println(String.format("Virtual machines: \n\t%s", String.join("\n\t",
 
 Using the resource id:
 ```java
-VirtualMachine vm = azure.virtualMachines("<resource-id>");
+VirtualMachine vm = subscription.virtualMachines("<resource-id>");
 ```
 Using the resource group name and virtual machine name:
 ```java
-VirtualMachine vm = azure.virtualMachines("<resource-group-name>", "<vm-name>");
+VirtualMachine vm = subscription.virtualMachines("<resource-group-name>", "<vm-name>");
 ```
 
 #### Listing available VM sizes
@@ -276,11 +276,11 @@ VirtualMachine vm = azure.virtualMachines("<resource-group-name>", "<vm-name>");
 
 You need to specify the region to get the sizes. The returned sizes are indexed by their name:
 ```java
-Map<String, Size> sizes = azure.sizes().asMap("westus");
+Map<String, Size> sizes = subscription.sizes().asMap("westus");
 ```
 Therefore, to get the names only:
 ```java
-Set<String> sizeNames = azure.sizes().asMap("westus").keySet();
+Set<String> sizeNames = subscription.sizes().asMap("westus").keySet();
 ```
 
 #### Listing available OS image names
@@ -291,57 +291,57 @@ Set<String> sizeNames = azure.sizes().asMap("westus").keySet();
 
 Any of the following approaches:
 ```java
-azure.virtualMachines().delete("<vm-resource-id>");
+subscription.virtualMachines().delete("<vm-resource-id>");
 
-azure.virtualMachines().delete("<resource-group-name>", "<vm-name>");
+subscription.virtualMachines().delete("<resource-group-name>", "<vm-name>");
 
-azure.virtualMachines("<vm-resource-id>").delete();
+subscription.virtualMachines("<vm-resource-id>").delete();
 
-azure.virtualMachines("<resource-group-name>", "<vm-name>").delete();
+subscription.virtualMachines("<resource-group-name>", "<vm-name>").delete();
 ```
 
 #### Stopping a virtual machine
 
 By resource group and name:
 ```java
-azure.virtualMachines().get("<resource-group-name>", "<vm-name>").stop();
+subscription.virtualMachines().get("<resource-group-name>", "<vm-name>").stop();
 ```
 By resource id:
 ```java
-azure.virtualMachines().get("<vm-resource-id>").stop();
+subscription.virtualMachines().get("<vm-resource-id>").stop();
 ```
 
 #### Starting a stopped virtual machine
 
 By resource group and name:
 ```java
-azure.virtualMachines().get("<resource-group-name>", "<vm-name>").start();
+subscription.virtualMachines().get("<resource-group-name>", "<vm-name>").start();
 ```
 By resource id:
 ```java
-azure.virtualMachines().get("<vm-resource-id>").start();
+subscription.virtualMachines().get("<vm-resource-id>").start();
 ```
 
 #### Restarting a virtual machine
 
 By resource group and name:
 ```java
-azure.virtualMachines().get("<resource-group-name>", "<vm-name>").restart();
+subscription.virtualMachines().get("<resource-group-name>", "<vm-name>").restart();
 ```
 By resource id:
 ```java
-azure.virtualMachines().get("<vm-resource-id>").restart();
+subscription.virtualMachines().get("<vm-resource-id>").restart();
 ```
 
 #### Deallocating a virtual machine
 
 By resource group and name:
 ```java
-azure.virtualMachines().get("<resource-group-name>", "<vm-name>").deallocate();
+subscription.virtualMachines().get("<resource-group-name>", "<vm-name>").deallocate();
 ```
 By resource id:
 ```java
-azure.virtualMachines().get("<vm-resource-id>").deallocate();
+subscription.virtualMachines().get("<vm-resource-id>").deallocate();
 ```
 
 
@@ -353,7 +353,7 @@ azure.virtualMachines().get("<vm-resource-id>").deallocate();
 
 With an explicitly defined address space, a default subnet containing the entirety of the IP address space, in a new auto-generated resource group:
 ```java
-Network network = azure.networks().define("<new-network-name>")
+Network network = subscription.networks().define("<new-network-name>")
 	.withRegion(Region.US_WEST)
 	.withNewResourceGroup()
 	.withAddressSpace("10.0.0.0/28")
@@ -361,7 +361,7 @@ Network network = azure.networks().define("<new-network-name>")
 ```
 With multiple, explicitly defined subnets and an existing resource group:
 ```java
-azure.networks().define(newNetworkName + "2")
+subscription.networks().define(newNetworkName + "2")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<existing-resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
@@ -376,15 +376,15 @@ azure.networks().define(newNetworkName + "2")
 
 All networks in a subscription, as a map indexed by resource id:
 ```java
-Map<String, Network> networks = azure.networks().asMap();
+Map<String, Network> networks = subscription.networks().asMap();
 ```
 Resource ids only:
 ```java
-Set<String> networkIds = azure.networks().asMap().keySet();
+Set<String> networkIds = subscription.networks().asMap().keySet();
 ```
 Networks in a specific resource group:
 ```java
-Map<String, Network> networks = azure.networks().asMap("<resource-group-name">);
+Map<String, Network> networks = subscription.networks().asMap("<resource-group-name">);
 ```
 
 #### Getting information about a virtual network
@@ -393,11 +393,11 @@ Map<String, Network> networks = azure.networks().asMap("<resource-group-name">);
 
 By providing a virtual network resource ID (returned as a key in `networks().asMap()`):
 ```java
-Network network = azure.networks("<network-resource-id>");
+Network network = subscription.networks("<network-resource-id>");
 ```
 or by providing the resource group name and the virtual network name:
 ```java
-Network network = azure.networks("<resource-group-name>", "<network-name>");
+Network network = subscription.networks("<resource-group-name>", "<network-name>");
 ```
 The subnets of the virtual network are available from `network.subnets()`.
 The IP addresses of DNS servers associated with the virtual network are available from `network.dnsServerIPs()`.
@@ -405,28 +405,28 @@ The address spaces (in CIDR format) of the virtual network are available from `n
 
 #### Deleting a virtual network
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 Any of the following methods:
 ```java
-azure.networks().delete("<network-resource-id>");
+subscription.networks().delete("<network-resource-id>");
 
-azure.networks().delete("<resource-group-name>", "<network-name>");
+subscription.networks().delete("<resource-group-name>", "<network-name>");
 
-azure.networks("<network-resource-id>").delete();
+subscription.networks("<network-resource-id>").delete();
 
-azure.networks("<resource-group-name>", "<network-name>").delete();
+subscription.networks("<resource-group-name>", "<network-name>").delete();
 ```
 
 ### Network Interfaces
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 #### Creating a network interface
 
 When using the minimum set of required inputs, a new resource group is created automatically, in the same region, with a name derived from the NIC's name. A virtual network providing the subnet the NIC is to be associated with is also created automatically, with one subnet covering the entirety of the address space:
 ```java
-NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
+NetworkInterface nicMinimal = subscription.networkInterfaces().define(newNetworkInterfaceName)
     .withRegion(Region.US_WEST)
     .withNewResourceGroup("<new-resource-group-name>")
     .withNewNetwork("10.0.0.0/28")
@@ -436,7 +436,7 @@ NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfa
 ```
 Creating a network interface with a new resource group, dynamic private IP and a new, dynamically allocated public IP with a leaf domain label automatically generated based on the name of the NIC:
 ```java
-NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
+NetworkInterface nic = subscription.networkInterfaces().define("<new-nic-name>")
 	.withRegion(Region.US_WEST)
     .withExistingResourceGroup("<existing-group-name>")
     .withExistingNetwork(network)
@@ -451,61 +451,61 @@ NetworkInterface nic = azure.networkInterfaces().define("<new-nic-name>")
 
 In the subscription (all resource groups):
 ```java
-Map<String, NetworkInterface> nics = azure.networkInterfaces().asMap();
+Map<String, NetworkInterface> nics = subscription.networkInterfaces().asMap();
 ```
 In a specific resource group: 
 ```java
-Map<String, NetworkInterface> nics = azure.networkInterfaces().asMap("<resource-group-name>");
+Map<String, NetworkInterface> nics = subscription.networkInterfaces().asMap("<resource-group-name>");
 ```
 
 #### Getting information about an existing network interface
 
 Using its resource id:
 ```java
-NetworkInterface nic = azure.networkInterfaces().get("<resource-id>");
+NetworkInterface nic = subscription.networkInterfaces().get("<resource-id>");
 ```
 or:
 ```java
-NetworkInterface nic = azure.networkInterfaces("<resource-id>");
+NetworkInterface nic = subscription.networkInterfaces("<resource-id>");
 ```
 Using its resource group and name:
 ```java
-NetworkInterface nic = azure.networkInterfaces().get("<resource-group-name>", "<network-interface-name>");
+NetworkInterface nic = subscription.networkInterfaces().get("<resource-group-name>", "<network-interface-name>");
 ```
 or
 ```java
-NetworkInterface nic = azure.networkInterfaces("<resource-group-name>", "<network-interface-name>");
+NetworkInterface nic = subscription.networkInterfaces("<resource-group-name>", "<network-interface-name>");
 ```
 
 #### Deleting a network interface
 
 Any of the following approaches:
 ```java
-azure.networkInterfaces().delete("<resource-id>");
+subscription.networkInterfaces().delete("<resource-id>");
 
-azure.networkInterfaces().delete("<resource-group-name>", "<network-interface-name>");
+subscription.networkInterfaces().delete("<resource-group-name>", "<network-interface-name>");
 
-azure.networkInterfaces("<resource-id>").delete();
+subscription.networkInterfaces("<resource-id>").delete();
 
-azure.networkInterfaces("<resource-group-name>", "<network-interface-name>").delete();
+subscription.networkInterfaces("<resource-group-name>", "<network-interface-name>").delete();
 ```
 
 ### Public IP Addresses
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 #### Creating a public IP address
 
 Providing minimal inputs will result in a public IP address for which a resource group will be automatically generated, dynamic IP allocation will be enabled and a leaf domain name will be specified, derived from the provided name:
 ```java
-PublicIpAddress pipMinimal = azure.publicIpAddresses().define("<new-public-address-name>")
+PublicIpAddress pipMinimal = subscription.publicIpAddresses().define("<new-public-address-name>")
 	.withRegion(Region.US_WEST)
    	.withNewResourceGroup()
     .provision();
 ```
 With static IP allocation, an explicitly defined leaf domain label and a tag:
 ```java
-PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
+PublicIpAddress pip = subscription.publicIpAddresses().define(newPublicIpAddressName + "2")
 	.withRegion(Region.US_WEST)
     .withExistingResourceGroup(existingGroupName)
     .withLeafDomainLabel("hellomarcins")
@@ -518,61 +518,61 @@ PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + 
 
 From the entire subscription, as a `Map` indexed by name:
 ```java
-Map<String, PublicIpAddress> pips = azure.publicIpAddresses().asMap();
+Map<String, PublicIpAddress> pips = subscription.publicIpAddresses().asMap();
 ```
 From a specific resource group, as a `Map` indexed by name:
 ```java
-Map<String, PublicIpAddress> pips = azure.publicIpAddresses().asMap("my-resoruce-group-name");
+Map<String, PublicIpAddress> pips = subscription.publicIpAddresses().asMap("my-resoruce-group-name");
 ```
 
 #### Getting information about an existing public IP address:
 
 Using its resource id:
 ```java
-PublicIpAddress pip = azure.publicIpAddresses().get("resource-id");
+PublicIpAddress pip = subscription.publicIpAddresses().get("resource-id");
 ```
 or:
 ```java
-PublicIpAddress pip = azure.publicIpAddresses("resource-id");
+PublicIpAddress pip = subscription.publicIpAddresses("resource-id");
 ```
 Using its resource group and name:
 ```java
-PublicIpAddress pip  = azure.publicIpAddresses().get("<resource-group-name>", "<pip-name>");
+PublicIpAddress pip  = subscription.publicIpAddresses().get("<resource-group-name>", "<pip-name>");
 ```
 or
 ```java
-PublicIpAddress pip  = azure.publicIpAddresses("<resource-group-name>", "<pip-name>");
+PublicIpAddress pip  = subscription.publicIpAddresses("<resource-group-name>", "<pip-name>");
 ```
 
 #### Deleting a public IP address
 
 Any of the following methods:
 ```java
-azure.publicIpAddresses().delete("<pip-resource-id>");
+subscription.publicIpAddresses().delete("<pip-resource-id>");
 
-azure.publicIpAddresses().delete("<resource-group-name>", "<pip-name>");
+subscription.publicIpAddresses().delete("<resource-group-name>", "<pip-name>");
 
-azure.publicIpAddresses("<pip-resource-id>").delete();
+subscription.publicIpAddresses("<pip-resource-id>").delete();
 
-azure.publicIpAddresses("<resource-group-name>", "<pip-name>").delete();
+subscription.publicIpAddresses("<resource-group-name>", "<pip-name>").delete();
 ```
 
 ### Network Security Groups
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 #### Creating a network security group
 
 Providing minimal inputs will result in a network security group for which a resource group will be automatically generated and a default set of rules applied:
 ```java
-NetworkSecurityGroup nsgMinimal = azure.networkSecurityGroups().define("<network-security-group-name>")
+NetworkSecurityGroup nsgMinimal = subscription.networkSecurityGroups().define("<network-security-group-name>")
 	.withRegion(Region.US_WEST)
 	.withNewResourceGroup()
 	.provision();
 ```
 With an network security rules and tags:
 ```java
-NetworkSecurityGroup nsg = azure.networkSecurityGroups().define("<network-security-group-name>")
+NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<network-security-group-name>")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<existing-group-name>")
     .withAllowInbound(Protocol.TCP, "*", "80", "*", "8080", "tcp80to8080", 100)
@@ -585,61 +585,61 @@ NetworkSecurityGroup nsg = azure.networkSecurityGroups().define("<network-securi
 
 From the entire subscription, as a `Map` indexed by id:
 ```java
-Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().asMap();
+Map<String, NetworkSecurityGroup> nsgs = subscription.networkSecurityGroups().asMap();
 ```
 From a specific resource group, as a `Map` indexed by id:
 ```java
-Map<String, NetworkSecurityGroup> nsgs = azure.networkSecurityGroups().asMap("<resource-group-name>");
+Map<String, NetworkSecurityGroup> nsgs = subscription.networkSecurityGroups().asMap("<resource-group-name>");
 ```
 
 #### Getting information about an existing network security group:
 
 Using its resource id:
 ```java
-NetworkSecurityGroup nsg = azure.networkSecurityGroups().get("<resource-id>");
+NetworkSecurityGroup nsg = subscription.networkSecurityGroups().get("<resource-id>");
 ```
 or:
 ```java
-NetworkSecurityGroup nsg = azure.networkSecurityGroups("<resource-id>");
+NetworkSecurityGroup nsg = subscription.networkSecurityGroups("<resource-id>");
 ```
 Using its resource group and name:
 ```java
-NetworkSecurityGroup nsg  = azure.networkSecurityGroups().get("<resource-group-name>", "<nsg-name>");
+NetworkSecurityGroup nsg  = subscription.networkSecurityGroups().get("<resource-group-name>", "<nsg-name>");
 ```
 or
 ```java
-NetworkSecurityGroup nsg  = azure.networkSecurityGroups("<resource-group-name>", "<nsg-name>");
+NetworkSecurityGroup nsg  = subscription.networkSecurityGroups("<resource-group-name>", "<nsg-name>");
 ```
 
 #### Deleting a network security group
 
 Any of the following methods:
 ```java
-azure.networkSecurityGroups().delete("<nsg-resource-id>");
+subscription.networkSecurityGroups().delete("<nsg-resource-id>");
 
-azure.networkSecurityGroups().delete("<resource-group-name>", "<nsg-name>");
+subscription.networkSecurityGroups().delete("<resource-group-name>", "<nsg-name>");
 
-azure.networkSecurityGroups("<nsg-resource-id>").delete();
+subscription.networkSecurityGroups("<nsg-resource-id>").delete();
 
-azure.networkSecurityGroups("<resource-group-name>", "<nsg-name>").delete();
+subscription.networkSecurityGroups("<resource-group-name>", "<nsg-name>").delete();
 ```
 
 ### Storage Accounts
 
 #### Creating a storage account
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 With the required minimum set of input parameters:
 ```java
-StorageAccount storageAccount = azure.storageAccounts().define("<new-storage-account-name>")
+StorageAccount storageAccount = subscription.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withNewResourceGroup()
     .provision();
 ```
 In an existing resource group:
 ```java
-azure.storageAccounts().define("<new-storage-account-name>")
+subscription.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withAccountType(AccountType.StandardLRS)
     .withExistingResourceGroup("<existing-resource-group-name>")
@@ -652,16 +652,16 @@ azure.storageAccounts().define("<new-storage-account-name>")
 
 As a map, indexed by name:
 ```java
-Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap();
+Map<String, StorageAccount> storageAccounts = subscription.storageAccounts().asMap();
 ```
 Names only:
 ```java
-List<String> storageAccountNames = azure.storageAccounts().asMap().keySet();
+List<String> storageAccountNames = subscription.storageAccounts().asMap().keySet();
 ```
 
 Storage accounts in a selected resource group:
 ```java
-Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap("<resource-group-name>");
+Map<String, StorageAccount> storageAccounts = subscription.storageAccounts().asMap("<resource-group-name>");
 ```
 
 #### Updating a storage account
@@ -670,37 +670,37 @@ Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap("<re
 
 #### Getting information about a storage account
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 Getting a storage account using its unique resource id using any of the following methods:
 ```java
-StorageAccount storageAccount = azure.storageAccounts().get("<storage-account-id>");
+StorageAccount storageAccount = subscription.storageAccounts().get("<storage-account-id>");
 
-StorageAccount storageAccount = azure.storageAccounts("<storage-account-id>");
+StorageAccount storageAccount = subscription.storageAccounts("<storage-account-id>");
 
-StorageAccount storageAccount = azure.storageAccounts("<resource-group-name>", "<storage-account-name>");
+StorageAccount storageAccount = subscription.storageAccounts("<resource-group-name>", "<storage-account-name>");
 ```
 
 #### Deleting a storage account
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 Any of the following methods:
 ```java
-azure.storageAccounts().delete("<storage-account-resource-id>");
+subscription.storageAccounts().delete("<storage-account-resource-id>");
 
-azure.storageAccounts().delete("<resource-group-name>", "<storage-account-name>");
+subscription.storageAccounts().delete("<resource-group-name>", "<storage-account-name>");
 
-azure.storageAccounts("<storage-account-resource-id>").delete();
+subscription.storageAccounts("<storage-account-resource-id>").delete();
 
-azure.storageAccounts("<resource-group-name>", "<storage-account-name>").delete();
+subscription.storageAccounts("<resource-group-name>", "<storage-account-name>").delete();
 ```
 
 ### Regions
 
 #### Listing regions
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 The `Region` enum provides the list (as constants) of all the possible Azure locations.
 
@@ -715,12 +715,12 @@ Region[] regions = Region.values();
 
 ### Resource Groups
 
-> *ARM*: import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> *ARM*: import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 #### Creating a resource group
 
 ```java
-azure.resourceGroups().define("myResourceGroup")
+subscription.resourceGroups().define("myResourceGroup")
 	.withRegion(Region.US_WEST)
 	.withTag("hello", "world")
     .provision();
@@ -730,25 +730,25 @@ azure.resourceGroups().define("myResourceGroup")
 
 Indexed by name:
 ```java
-Map<String, ResourceGroup> resourceGroups = azure.resourceGroups().asMap();
+Map<String, ResourceGroup> resourceGroups = subscription.resourceGroups().asMap();
 ```
 Names only:
 ```java
-Set<String> resourceGroupNames = azure.resourceGroups().asMap().keySet();
+Set<String> resourceGroupNames = subscription.resourceGroups().asMap().keySet();
 ```
 
 #### Updating a resource group (changing its tags)
 
 Tags are key/value pairs.
 ```java
-azure.resourceGroups().update("<resource-group-name>")
+subscription.resourceGroups().update("<resource-group-name>")
 	.withTag("foo", "bar")
 	.withoutTag("hello")
 	.apply();
 ```
 You can also pass an instance of `Map<String, String>` with all the tags in it:
 ```java
-azure.resourceGroups().update("<resource-group-name>")
+subscription.resourceGroups().update("<resource-group-name>")
 	.withTags(myMap)
 	.apply();
 ```
@@ -757,44 +757,44 @@ azure.resourceGroups().update("<resource-group-name>")
 
 Either of the following methods:
 ```java
-ResourceGroup resourceGroup = azure.resourceGroups("<resource-group-name>");
+ResourceGroup resourceGroup = subscription.resourceGroups("<resource-group-name>");
 
-ResourceGroup resourceGroup = azure.resourceGroups().get("<resource-group-name>");
+ResourceGroup resourceGroup = subscription.resourceGroups().get("<resource-group-name>");
 ```
 
 #### Deleting a resource group
 
 Either of the following methods:
 ```java
-azure.resourceGroups().delete("<resource-group-name>");
+subscription.resourceGroups().delete("<resource-group-name>");
 
-azure.resourceGroups("<resource-group-name>").delete();
+subscription.resourceGroups("<resource-group-name>").delete();
 ````
 
 ### Resources
 
-> This applies only to ARM, so import from the `com.microsoft.azure.shortcuts.resources.*` packages
+> This applies only to ARM, so import from the `com.microsoft.subscription.shortcuts.resources.*` packages
 
 #### Listing resources
 
 All resources in a subscription, indexed by id:
 ```java
-Map<String, Resource> resources = azure.resources().asMap();
+Map<String, Resource> resources = subscription.resources().asMap();
 ```
 Resources in a specific resource group:
 ```java
-Map<String, Resource> resources = azure.resources().asMap("<resource-group-name>");
+Map<String, Resource> resources = subscription.resources().asMap("<resource-group-name>");
 ```
 
 #### Getting information about a resource
 
 If you know the full ID of the resource (e.g. you got it from the `resources().asMap().keySet()`), then:
 ```java
-Resource resource = azure.resources("<resource-id>");
+Resource resource = subscription.resources("<resource-id>");
 ```
 Else, if you know the resource name, type, provider and resource group, then:
 ```java
-Resource resource = azure.resources().get(
+Resource resource = subscription.resources().get(
 	"<resource-name>",
 	"<resource-type>",
 	"<resource-provider-namespace>",
@@ -805,11 +805,11 @@ Resource resource = azure.resources().get(
 
 Using its resource ID:
 ```java
-azure.resources().delete("<resource-id">);
+subscription.resources().delete("<resource-id">);
 ```
 Or using its metadata:
 ```java
-azure.resources().delete("<short-name>", "<resource-type>", "<provider-namespace>", "<resource-group-name>");
+subscription.resources().delete("<short-name>", "<resource-type>", "<provider-namespace>", "<resource-group-name>");
 ```
 Or, if you've already gotten a reference to a `Resource` object (represented by `resource` below) from `get()`, then:
 ```java
@@ -824,24 +824,24 @@ resource.delete();
 
 Providers as a `Map`, indexed by namespace:
 ```java
-Map<String, Provider> providers = azure.providers().asMap();
+Map<String, Provider> providers = subscription.providers().asMap();
 ```
 Namespaces only:
 ```java
-Set<String> providerNamespaces = azure.providers().asMap().keySet();
+Set<String> providerNamespaces = subscription.providers().asMap().keySet();
 ```
 
 #### Getting information about a resource provider
 
 Using the namespace of the provider you can get from `providers().names()`:
 ```java
-Provider provider = azure.providers("microsoft.classicstorage");
+Provider provider = subscription.providers("microsoft.classicstorage");
 ```
 
 #### Listing provider resource types and their versions
 
 ```java
-Provider provider = azure.providers("<provider-namespace>");
+Provider provider = subscription.providers("<provider-namespace>");
 for(ResourceType t : provider.resourceTypes().values()) {
 	System.out.println(String.format("%s: %s", t.name(), Arrays.toString(t.apiVersions())));
 }
@@ -851,9 +851,9 @@ for(ResourceType t : provider.resourceTypes().values()) {
 
 Either of the following methods;
 ```java
-String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
+String latestAPIVersion = subscription.providers("<provider-namespace>").resourceTypes().get("<resource-type>").latestApiVersion();
 
-String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
+String latestAPIVersion = subscription.providers("<provider-namespace>").resourceTypes("<resource-type>").latestApiVersion();
 ```
 
 
@@ -865,14 +865,14 @@ String latestAPIVersion = azure.providers("<provider-namespace>").resourceTypes(
 
 With minimum inputs, in its own new default resource group:
 ```java
-azure.availabilitySets().define("myavailabilityset")
+subscription.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
     .witgGroupNew()
     .provision();
 ```
 Within an existing resource group, and setting a tag:
 ```java
-azure.availabilitySets().define("myavailabilityset")
+subscription.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<existing-resource-group-name>")
     .withTag("hello", "world")
@@ -883,37 +883,37 @@ azure.availabilitySets().define("myavailabilityset")
 
 Availability sets as a map, in a specific resource group, indexed by id:
 ```java
-Map<String, AvailabilitySet> availabilitySets = azure.availabilitySets().asMap("<resource-group-name>");
+Map<String, AvailabilitySet> availabilitySets = subscription.availabilitySets().asMap("<resource-group-name>");
 ```
 
 #### Getting information about an availability set
 
 Using its resource id:
 ```java
-AvailabilitySet availabilitySet = azure.availabilitySets("<resource-id>");
+AvailabilitySet availabilitySet = subscription.availabilitySets("<resource-id>");
 ```
 or:
 ```java
-AvailabilitySet availabilitySet = azure.availabilitySets().get("<resource-id>");
+AvailabilitySet availabilitySet = subscription.availabilitySets().get("<resource-id>");
 ``` 
 Using its resource group and name:
 ```java
-AvailabilitySet availabilitySet = azure.availabilitySets("<resource-group-name>", "<availability-set-name>");
+AvailabilitySet availabilitySet = subscription.availabilitySets("<resource-group-name>", "<availability-set-name>");
 ```
 or:
 ```java
-AvailabilitySet availabilitySet = azure.availabilitySets().get("<resource-group-name>", "<availability-set-name>");
+AvailabilitySet availabilitySet = subscription.availabilitySets().get("<resource-group-name>", "<availability-set-name>");
 ```
 
 #### Deleting an availability set
 
 Any of the following approaches:
 ```java
-azure.availabilitySets().delete("<resource-id>");
+subscription.availabilitySets().delete("<resource-id>");
 
-azure.availabilitySets().delete("<resource-group-name>", "<availability-set-name>");
+subscription.availabilitySets().delete("<resource-group-name>", "<availability-set-name>");
 
-azure.availabilitySets("<resource-id>").delete();
+subscription.availabilitySets("<resource-id>").delete();
 
-azure.availabilitySets("<resource-group-name>", "<availability-set-name>").delete();
+subscription.availabilitySets("<resource-group-name>", "<availability-set-name>").delete();
 ```

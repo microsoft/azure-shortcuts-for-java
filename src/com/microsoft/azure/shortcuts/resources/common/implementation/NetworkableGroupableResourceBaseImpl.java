@@ -22,7 +22,7 @@ package com.microsoft.azure.shortcuts.resources.common.implementation;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public abstract class NetworkableGroupableResourceBaseImpl<
 		WRAPPER, 
@@ -31,7 +31,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	extends
 		PublicIpGroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL> {
 
-	protected NetworkableGroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
+	protected NetworkableGroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Subscription> collection) {
 		super(id, innerObject, collection);
 	}
 	

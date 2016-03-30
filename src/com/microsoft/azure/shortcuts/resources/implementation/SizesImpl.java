@@ -34,11 +34,11 @@ import com.microsoft.azure.shortcuts.resources.Sizes;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 public class SizesImpl 
-	extends EntitiesImpl<Azure>
+	extends EntitiesImpl<Subscription>
 	implements Sizes {
 
-	SizesImpl(Azure azure) {
-		super(azure);
+	SizesImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -77,9 +77,9 @@ public class SizesImpl
 		implements Size {
 
 		final private VirtualMachineSize azureSize;
-		final private EntitiesImpl<Azure> collection;
+		final private EntitiesImpl<Subscription> collection;
 		
-		private SizeImpl(VirtualMachineSize azureSize, EntitiesImpl<Azure> collection) {
+		private SizeImpl(VirtualMachineSize azureSize, EntitiesImpl<Subscription> collection) {
 			super(azureSize.getName());
 			this.azureSize = azureSize;
 			this.collection = collection;

@@ -36,11 +36,11 @@ import com.microsoft.windowsazure.core.ResourceIdentity;
 
 
 public class ResourcesImpl
-	extends EntitiesImpl<Azure>
+	extends EntitiesImpl<Subscription>
 	implements Resources {
 	
-	ResourcesImpl(Azure azure) {
-		super(azure);
+	ResourcesImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 
@@ -209,7 +209,7 @@ public class ResourcesImpl
 		implements 
 			Resource {
 		
-		private ResourceImpl(GenericResourceExtended azureResource, EntitiesImpl<Azure> collection) {
+		private ResourceImpl(GenericResourceExtended azureResource, EntitiesImpl<Subscription> collection) {
 			super(azureResource.getId(), azureResource, collection);
 		}
 

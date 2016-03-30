@@ -37,8 +37,8 @@ public class PublicIpAddressesImpl
 		PublicIpAddressesImpl.PublicIpAddressImpl>
 	implements PublicIpAddresses {
 		
-	PublicIpAddressesImpl(Azure azure) {
-		super(azure);
+	PublicIpAddressesImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -102,7 +102,7 @@ public class PublicIpAddressesImpl
 			PublicIpAddress.DefinitionWithIpAddress,
 			PublicIpAddress.DefinitionProvisionable {
 		
-		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, EntitiesImpl<Azure> collection) {
+		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, EntitiesImpl<Subscription> collection) {
 			super(azurePublicIpAddress.getName(), azurePublicIpAddress, collection);
 		}
 

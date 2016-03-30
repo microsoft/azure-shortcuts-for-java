@@ -26,29 +26,29 @@ import com.microsoft.azure.shortcuts.resources.Offer;
 import com.microsoft.azure.shortcuts.resources.Publisher;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.SKU;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class PublishersSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	// List publishers
-    	Map<String, Publisher> publishers = azure.publishers().asMap(Region.US_WEST);
+    	Map<String, Publisher> publishers = subscription.publishers().asMap(Region.US_WEST);
     	for(Publisher p : publishers.values()) {
     		printPublisher(p);
     	}
     	
-    	Publisher publisher = azure.publishers().get(publishers.keySet().iterator().next());
+    	Publisher publisher = subscription.publishers().get(publishers.keySet().iterator().next());
     	printPublisher(publisher);
     	
-    	publisher = azure.publishers(Region.US_WEST, "Canonical");
+    	publisher = subscription.publishers(Region.US_WEST, "Canonical");
     	printPublisher(publisher);
     }
     

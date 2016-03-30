@@ -44,8 +44,8 @@ public class NetworkInterfacesImpl
 		NetworkInterfacesImpl.NetworkInterfaceImpl>
 	implements NetworkInterfaces {
 		
-	NetworkInterfacesImpl(Azure azure) {
-		super(azure);
+	NetworkInterfacesImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -110,7 +110,7 @@ public class NetworkInterfacesImpl
 			NetworkInterface.DefinitionWithPublicIpAddress,
 			NetworkInterface.DefinitionProvisionable {
 		
-		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, EntitiesImpl<Azure> collection) {
+		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, EntitiesImpl<Subscription> collection) {
 			super(azureNetworkInterface.getName(), azureNetworkInterface, collection);
 		}
 

@@ -20,11 +20,11 @@
 package com.microsoft.azure.shortcuts.resources.common.implementation;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
-public abstract class ArmEntitiesImpl extends EntitiesImpl<Azure> {
+public abstract class ArmEntitiesImpl extends EntitiesImpl<Subscription> {
 
-	protected ArmEntitiesImpl(Azure azure) {
+	protected ArmEntitiesImpl(Subscription azure) {
 		super(azure);
 	}
 }

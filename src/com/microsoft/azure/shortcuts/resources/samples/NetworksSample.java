@@ -28,54 +28,54 @@ import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Network.Subnet;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 // Tests resources
 public class NetworksSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	Network network;
     	String groupName = "vnettestgroup";
     	String newNetworkName = "marcinsvnetx";
     	
     	// Create a new network with a default subnet in a new default resource group
-    	network = azure.networks().define(newNetworkName)
+    	network = subscription.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
     		.withAddressSpace("10.0.0.0/28")
     		.provision();
     	
     	// Get info about a specific network using its group and name
-    	network = azure.networks(network.id());
+    	network = subscription.networks(network.id());
     	printNetwork(network);
 
     	// Listing all networks
-    	Map<String, Network> networks = azure.networks().asMap();
+    	Map<String, Network> networks = subscription.networks().asMap();
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Get info about a specific network using its resource ID
-    	network = azure.networks(network.resourceGroup(), network.name());
+    	network = subscription.networks(network.resourceGroup(), network.name());
     	printNetwork(network);
     	
     	// Delete the network
-    	azure.networks().delete(network.id());
+    	subscription.networks().delete(network.id());
     	
     	// Create a test group
-    	ResourceGroup group = azure.resourceGroups().define(groupName)
+    	ResourceGroup group = subscription.resourceGroups().define(groupName)
     		.withRegion(Region.US_WEST)
     		.provision();
     	
     	// Create a new network with two subnets, in an existing resource group
-    	network = azure.networks().define(newNetworkName + "2")
+    	network = subscription.networks().define(newNetworkName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(groupName)
     		.withAddressSpace("10.0.0.0/28")
@@ -86,7 +86,7 @@ public class NetworksSample {
     	printNetwork(network);
 
     	// Listing networks in a specific resource group
-    	networks = azure.networks().asMap(groupName);
+    	networks = subscription.networks().asMap(groupName);
     	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
     	// Delete the network

@@ -38,8 +38,8 @@ public class AvailabilitySetsImpl
 		AvailabilitySetsImpl.AvailabilitySetImpl>
 	implements AvailabilitySets {
 	
-	AvailabilitySetsImpl(Azure azure) {
-		super(azure);
+	AvailabilitySetsImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class AvailabilitySetsImpl
 			AvailabilitySet.DefinitionWithGroup,
 			AvailabilitySet.DefinitionProvisionable {
 		
-		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet, EntitiesImpl<Azure> collection) {
+		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet, EntitiesImpl<Subscription> collection) {
 			super(azureAvailabilitySet.getId(), azureAvailabilitySet, collection);
 		}
 

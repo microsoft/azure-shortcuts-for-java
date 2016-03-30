@@ -29,33 +29,33 @@ import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class NetworkInterfacesSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	String newNetworkInterfaceName = "testnic";
     	String newNetworkName = "myvnet";
     	String newGroupName = "testgroup";
     	
     	// Listing all network interfaces
-    	Map<String, NetworkInterface> nics = azure.networkInterfaces().asMap();
+    	Map<String, NetworkInterface> nics = subscription.networkInterfaces().asMap();
     	System.out.println("Network interfaces:");
     	for(NetworkInterface nic : nics.values()) {
     		printNetworkInterface(nic);
     	}
     	
     	// Create a new network interface in a new default resource group
-    	NetworkInterface nicMinimal = azure.networkInterfaces().define(newNetworkInterfaceName)
+    	NetworkInterface nicMinimal = subscription.networkInterfaces().define(newNetworkInterfaceName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup(newGroupName)
     		.withNewNetwork("10.0.0.0/28")
@@ -64,16 +64,16 @@ public class NetworkInterfacesSample {
     		.provision();
     	
     	// Get info about a specific network interface using its group and name
-    	nicMinimal = azure.networkInterfaces(nicMinimal.id());
-    	nicMinimal = azure.networkInterfaces().get(nicMinimal.id());
+    	nicMinimal = subscription.networkInterfaces(nicMinimal.id());
+    	nicMinimal = subscription.networkInterfaces().get(nicMinimal.id());
     	printNetworkInterface(nicMinimal);
 
     	// Listing network interfaces in a specific resource group
-    	nics = azure.networkInterfaces().asMap(newGroupName);
+    	nics = subscription.networkInterfaces().asMap(newGroupName);
     	System.out.println(String.format("Network interface ids in group '%s': \n\t%s", newGroupName, StringUtils.join(nics.keySet(), ",\n\t")));
 
     	// Create a virtual network to test the network interface with
-    	Network network = azure.networks().define(newNetworkName)
+    	Network network = subscription.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(newGroupName)
     		.withAddressSpace("10.0.0.0/28")
@@ -82,7 +82,7 @@ public class NetworkInterfacesSample {
     		.provision();
     	
     	// More detailed NIC definition
-    	NetworkInterface nic = azure.networkInterfaces().define(newNetworkInterfaceName + "2")
+    	NetworkInterface nic = subscription.networkInterfaces().define(newNetworkInterfaceName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(newGroupName)
     		.withExistingNetwork(network)
@@ -93,7 +93,7 @@ public class NetworkInterfacesSample {
     		.provision();
     		
     	// Get info about a specific NIC using its resource ID
-    	nic = azure.networkInterfaces(nic.resourceGroup(), nic.name());
+    	nic = subscription.networkInterfaces(nic.resourceGroup(), nic.name());
     	printNetworkInterface(nic);
     	
     	// Delete the NIC
@@ -104,7 +104,7 @@ public class NetworkInterfacesSample {
     	network.delete();
     	
     	// Delete the auto-created group
-    	azure.resourceGroups(newGroupName).delete();
+    	subscription.resourceGroups(newGroupName).delete();
     }
     
     

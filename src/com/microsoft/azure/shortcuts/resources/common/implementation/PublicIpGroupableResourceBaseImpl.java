@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.resources.common.implementation;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public abstract class PublicIpGroupableResourceBaseImpl<
 		T, 
@@ -30,7 +30,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 	extends
 		GroupableResourceBaseImpl<T, I, TI> {
 
-	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Azure> collection) {
+	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Subscription> collection) {
 		super(id, innerObject, collection);
 	}
 	

@@ -39,8 +39,8 @@ public class PublishersImpl
 	extends ArmEntitiesImpl
 	implements Publishers {
 	
-	PublishersImpl(Azure azure) {
-		super(azure);
+	PublishersImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	

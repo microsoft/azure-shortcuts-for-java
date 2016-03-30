@@ -27,26 +27,26 @@ import org.apache.commons.lang.StringUtils;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 // Tests resources
 public class VirtualMachinesSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth");
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth");
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	// Creating a Windows VM
     	String deploymentId = String.valueOf(System.currentTimeMillis());
     	String groupName = "group" + deploymentId;
 
-    	VirtualMachine vmWin = azure.virtualMachines().define("vm" + deploymentId)
+    	VirtualMachine vmWin = subscription.virtualMachines().define("vm" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup(groupName)
     		.withNewNetwork("net" + deploymentId, "10.0.0.0/28")
@@ -64,14 +64,14 @@ public class VirtualMachinesSample {
     	printVM(vmWin);
     	
     	// Listing all virtual machine ids in a subscription
-    	Map<String, VirtualMachine> vms = azure.virtualMachines().asMap();
+    	Map<String, VirtualMachine> vms = subscription.virtualMachines().asMap();
     	System.out.println(String.format("Virtual machines: \n\t%s",  StringUtils.join(vms.keySet(), "\n\t")));
 
     	// Adding a Linux VM to the same group and VNet
-    	VirtualMachine vmLinux = azure.virtualMachines().define("lx" + deploymentId)
+    	VirtualMachine vmLinux = subscription.virtualMachines().define("lx" + deploymentId)
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(groupName)
-    		.withExistingNetwork(azure.networks(groupName, "net" + deploymentId))
+    		.withExistingNetwork(subscription.networks(groupName, "net" + deploymentId))
     		.withSubnet("subnet1")
     		.withPrivateIpAddressDynamic()
     		.withNewPublicIpAddress()
@@ -82,7 +82,7 @@ public class VirtualMachinesSample {
     		.provision();
     	    	
     	// Listing vms in a specific group
-    	Map<String, VirtualMachine> vmsInGroup = azure.virtualMachines().asMap(groupName);
+    	Map<String, VirtualMachine> vmsInGroup = subscription.virtualMachines().asMap(groupName);
     	System.out.println(String.format("Virtual machines: \n\t%s", StringUtils.join(vmsInGroup.keySet(), "\n\t")));
     	
     	// Listing virtual machines as objects
@@ -95,11 +95,11 @@ public class VirtualMachinesSample {
     	}
     	
     	// Getting a specific virtual machine using its id
-    	VirtualMachine vm = azure.virtualMachines(vmID);
+    	VirtualMachine vm = subscription.virtualMachines(vmID);
     	printVM(vm);
     	
     	// Getting a specific virtual machine using its group and name
-    	vm = azure.virtualMachines(groupName, vm.computerName());
+    	vm = subscription.virtualMachines(groupName, vm.computerName());
     	printVM(vm);
     	
     	// Restart the VM
@@ -112,7 +112,7 @@ public class VirtualMachinesSample {
     	vmWin.delete();
     	
     	// Delete the group
-    	azure.resourceGroups().delete(groupName);
+    	subscription.resourceGroups().delete(groupName);
 	}
     
     

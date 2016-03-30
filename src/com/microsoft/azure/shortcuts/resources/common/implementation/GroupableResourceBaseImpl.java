@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
@@ -36,7 +36,7 @@ public abstract class GroupableResourceBaseImpl<
 	implements 
 		GroupResourceBase {
 
-	protected GroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Azure> collection) {
+	protected GroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Subscription> collection) {
 		super(id, innerObject, collection);
 	}
 

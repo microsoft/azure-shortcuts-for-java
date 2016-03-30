@@ -40,8 +40,8 @@ public class NetworkSecurityGroupsImpl
 		NetworkSecurityGroupsImpl.NetworkSecurityGroupImpl>
 	implements NetworkSecurityGroups {
 		
-	NetworkSecurityGroupsImpl(Azure azure) {
-		super(azure);
+	NetworkSecurityGroupsImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -99,7 +99,7 @@ public class NetworkSecurityGroupsImpl
 			NetworkSecurityGroup.DefinitionProvisionable {
 		
 		private NetworkSecurityGroupImpl(com.microsoft.azure.management.network.models.NetworkSecurityGroup azureItem, 
-				EntitiesImpl<Azure> collection) {
+				EntitiesImpl<Subscription> collection) {
 			super(azureItem.getName(), azureItem, collection);
 		}
 

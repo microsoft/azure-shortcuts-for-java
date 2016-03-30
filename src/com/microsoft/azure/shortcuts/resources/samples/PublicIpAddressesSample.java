@@ -26,44 +26,44 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class PublicIpAddressesSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	String existingGroupName = "javasampleresourcegroup1";
     	String newPublicIpAddressName = "testPIP";
     	
     	// Listing all public IP addresses
-    	Map<String, PublicIpAddress> pips = azure.publicIpAddresses().asMap();
+    	Map<String, PublicIpAddress> pips = subscription.publicIpAddresses().asMap();
     	System.out.println("Public IP addresses:");
     	for(PublicIpAddress pip : pips.values()) {
     		printPIP(pip);
     	}
     	
     	// Create a public IP address in a default new group
-    	PublicIpAddress pipMinimal = azure.publicIpAddresses().define(newPublicIpAddressName)
+    	PublicIpAddress pipMinimal = subscription.publicIpAddresses().define(newPublicIpAddressName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
     		.provision();
     	
     	// Get info about a specific PIP using its group and name
-    	pipMinimal = azure.publicIpAddresses(pipMinimal.id());
-    	pipMinimal = azure.publicIpAddresses().get(pipMinimal.id());
+    	pipMinimal = subscription.publicIpAddresses(pipMinimal.id());
+    	pipMinimal = subscription.publicIpAddresses().get(pipMinimal.id());
     	String groupNameCreated = pipMinimal.resourceGroup(); 
     	printPIP(pipMinimal);
 
     	// More detailed PIP definition
-    	PublicIpAddress pip = azure.publicIpAddresses().define(newPublicIpAddressName + "2")
+    	PublicIpAddress pip = subscription.publicIpAddresses().define(newPublicIpAddressName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(existingGroupName)
     		.withLeafDomainLabel("hellomarcins")
@@ -72,11 +72,11 @@ public class PublicIpAddressesSample {
     		.provision();
     	    	
     	// Listing PIPs in a specific resource group
-    	pips = azure.publicIpAddresses().asMap(existingGroupName);
+    	pips = subscription.publicIpAddresses().asMap(existingGroupName);
     	System.out.println(String.format("PIP ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(pips.keySet(), ",\n\t")));
     	
     	// Get info about a specific PIP using its resource ID
-    	pip = azure.publicIpAddresses(pip.resourceGroup(), pip.name());
+    	pip = subscription.publicIpAddresses(pip.resourceGroup(), pip.name());
     	printPIP(pip);
     	
     	// Delete the PIP
@@ -84,7 +84,7 @@ public class PublicIpAddressesSample {
     	pip.delete();
     	
     	// Delete the auto-created group
-    	azure.resourceGroups(groupNameCreated).delete();
+    	subscription.resourceGroups(groupNameCreated).delete();
     }
     
     

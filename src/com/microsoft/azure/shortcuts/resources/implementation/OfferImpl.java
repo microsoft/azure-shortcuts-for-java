@@ -37,12 +37,15 @@ class OfferImpl
 	implements Offer {
 
 	private final Publisher publisher;
-	private final Azure azure;
+	private final Subscription azure;
 	
-	OfferImpl(String name, VirtualMachineImageResource innerObject, Publisher publisher, Azure azure) {
+	OfferImpl(String name, 
+			VirtualMachineImageResource innerObject, 
+			Publisher publisher, 
+			Subscription subscription) {
 		super(name, innerObject);
 		this.publisher = publisher;
-		this.azure = azure;
+		this.azure = subscription;
 	}
 	
 	@Override

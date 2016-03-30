@@ -26,26 +26,26 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Size;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 // Tests sizes
 public class SizesSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
 		// List size names in a specific region
-    	Set<String> sizeNames = azure.sizes().asMap("westus").keySet();
+    	Set<String> sizeNames = subscription.sizes().asMap("westus").keySet();
     	System.out.println("VM sizes: \n\t" + StringUtils.join(sizeNames, ",\n\t"));
     	
     	// List sizes in a specific region
-    	Map<String, Size> sizes = azure.sizes().asMap("westus");
+    	Map<String, Size> sizes = subscription.sizes().asMap("westus");
     	for(Size size : sizes.values()) {
         	System.out.println(String.format("VM size: %s\n"
         		+ "\tMax data disk count: %d\n"

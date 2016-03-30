@@ -68,7 +68,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-public class Azure {
+public class Subscription {
     public static String MANAGEMENT_URI = "https://management.core.windows.net/";
     public static String ARM_URL = "https://management.azure.com/";
     public static String ARM_AAD_URL = "https://login.windows.net/";
@@ -93,29 +93,29 @@ public class Azure {
     private final PublishersImpl publishers;
     private final NetworkSecurityGroupsImpl networkSecurityGroups;
 
-    public static Azure authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
-    	return new Azure(subscriptionId, tenantId, clientId, clientKey);
+    public static Subscription authenticate(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
+    	return new Subscription(subscriptionId, tenantId, clientId, clientKey);
     }
     
-    public static Azure authenticate(String authenticationFilePath) throws Exception {
+    public static Subscription authenticate(String authenticationFilePath) throws Exception {
     	return authenticate(authenticationFilePath, null);
     }
     
-    public static Azure authenticate(String authenticationFilePath, String subscriptionId) throws Exception {
-    	return new Azure(authenticationFilePath, subscriptionId);
+    public static Subscription authenticate(String authenticationFilePath, String subscriptionId) throws Exception {
+    	return new Subscription(authenticationFilePath, subscriptionId);
     }
     
-    private Azure(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
+    private Subscription(String subscriptionId, String tenantId, String clientId, String clientKey) throws Exception {
     	this(createConfiguration(subscriptionId, tenantId, clientId, clientKey, null, null, null));
     }
 
     
-    private Azure(String authenticationFilePath, String subscriptionId) throws Exception {
+    private Subscription(String authenticationFilePath, String subscriptionId) throws Exception {
     	this(getConfigFromFile(authenticationFilePath, subscriptionId));
     }
     
     
-    private Azure(Configuration configuration) {
+    private Subscription(Configuration configuration) {
     	this.configuration = configuration;
         this.resources = new ResourcesImpl(this);
         this.resourceGroups = new ResourceGroupsImpl(this);
@@ -397,16 +397,16 @@ public class Azure {
 		}
 		
 		if(baseUrl == null) {
-			baseUrl = Azure.ARM_URL;
+			baseUrl = Subscription.ARM_URL;
 		}
 		URI baseUri = new URI(baseUrl);
 		
 		if(managementUri == null) {
-			managementUri = Azure.MANAGEMENT_URI;
+			managementUri = Subscription.MANAGEMENT_URI;
 		}
 		
 		if(authUrl == null) {
-			authUrl = Azure.ARM_AAD_URL;
+			authUrl = Subscription.ARM_AAD_URL;
 		}
 		
 		String accessToken = AuthHelper.getAccessTokenFromServicePrincipalCredentials(

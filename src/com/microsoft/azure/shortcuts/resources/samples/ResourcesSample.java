@@ -25,39 +25,39 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Resource;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 // Tests resources
 public class ResourcesSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	// Listing all resource names
-    	Map<String, Resource> resources = azure.resources().asMap();
+    	Map<String, Resource> resources = subscription.resources().asMap();
     	System.out.println(String.format("Resource ids: %s\n\t", StringUtils.join(resources.keySet(), ",\n\t")));
 
     	// Listing resources in a specific group
     	String groupName = "azchat";
-    	Map<String, Resource> resources2 = azure.resources().asMap(groupName);
+    	Map<String, Resource> resources2 = subscription.resources().asMap(groupName);
     	System.out.println("Resources inside group '" + groupName + "':");
     	for(Resource resource : resources2.values()) {
     		printResource(resource);
     	}
     	
         // Getting information about a specific resource based on ID
-    	Resource resource = azure.resources("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup/providers/Microsoft.Storage/storageAccounts/javastojzgsg");
+    	Resource resource = subscription.resources("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/javasampleresourcegroup/providers/Microsoft.Storage/storageAccounts/javastojzgsg");
     	printResource(resource);
     		
     	// Getting information about a specific resource based on name, type, provider and group
-        resource =  azure.resources().get(
+        resource =  subscription.resources().get(
         	resource.name(),
         	resource.type(),
         	resource.provider(),
@@ -76,7 +76,7 @@ public class ResourcesSample {
     	// Delete a resource based on its ID
     	String resourceToDelete = "ThisMustFail";
     	System.out.println("Deleting resource " + resourceToDelete);
-    	azure.resources().delete(resourceToDelete);
+    	subscription.resources().delete(resourceToDelete);
     	
 	}
     

@@ -27,26 +27,26 @@ import org.apache.commons.lang.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 // Tests resources
 public class ResourceGroupsSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
    
     
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
 		// List resource groups
-    	Set<String> groupNames = azure.resourceGroups().asMap().keySet();
+    	Set<String> groupNames = subscription.resourceGroups().asMap().keySet();
     	System.out.println("Group names: \n\t" + StringUtils.join(groupNames, ",\n\t"));
     	
-    	Map<String, ResourceGroup> groups = azure.resourceGroups().asMap();
+    	Map<String, ResourceGroup> groups = subscription.resourceGroups().asMap();
     	for(ResourceGroup group : groups.values()) {
     		printGroup(group);
     	}
@@ -54,24 +54,24 @@ public class ResourceGroupsSample {
     	// Create a resource group
     	String groupName = "group" + String.valueOf(System.currentTimeMillis());
     	System.out.println("Creating group " + groupName);
-    	azure.resourceGroups().define(groupName)
+    	subscription.resourceGroups().define(groupName)
     		.withRegion(Region.US_WEST)
     		.withTag("hello", "world")
     		.provision();
     	    	
     	// Read a specific resource group
-		ResourceGroup resourceGroup = azure.resourceGroups(groupName);
+		ResourceGroup resourceGroup = subscription.resourceGroups(groupName);
 		printGroup(resourceGroup);
 		
 		// Update a resource group
-		azure.resourceGroups().update(groupName)
+		subscription.resourceGroups().update(groupName)
 			.withTag("foo", "bar")
 			.withoutTag("hello")
 			.apply();
 		
 		// Delete a specific resource group
 		System.out.println("Deleting group " + groupName);
-		azure.resourceGroups(groupName).delete();
+		subscription.resourceGroups(groupName).delete();
     }
     
 

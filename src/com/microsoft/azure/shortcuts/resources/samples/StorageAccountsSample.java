@@ -28,25 +28,25 @@ import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class StorageAccountsSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
     
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	String newStorageAccountName = "store" + String.valueOf(System.currentTimeMillis());
     	String newGroupName = "testgroup";
     	
     	// Provision a new storage account with minimum parameters
-    	StorageAccount storageAccount = azure.storageAccounts().define(newStorageAccountName)
+    	StorageAccount storageAccount = subscription.storageAccounts().define(newStorageAccountName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
     		.provision();
@@ -56,30 +56,30 @@ public class StorageAccountsSample {
     	String groupName = storageAccount.resourceGroup();
     	
     	// Listing all storage accounts
-    	Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap();
+    	Map<String, StorageAccount> storageAccounts = subscription.storageAccounts().asMap();
     	System.out.println(String.format("Storage accounts ids: \n\t%s", StringUtils.join(storageAccounts.keySet(), ",\n\t")));
 
     	// Listing storage accounts in a specific resource group
-    	storageAccounts = azure.storageAccounts().asMap(groupName);
+    	storageAccounts = subscription.storageAccounts().asMap(groupName);
     	System.out.println(String.format("Storage account ids in group '%s': \n\t%s", groupName, StringUtils.join(storageAccounts.keySet(), ",\n\t")));
     	
     	// Get info about a specific storage account using its group and name
-    	storageAccount = azure.storageAccounts(groupName, newStorageAccountName);
+    	storageAccount = subscription.storageAccounts(groupName, newStorageAccountName);
     	printStorageAccount(storageAccount);
 
     	// Delete this storage account
     	storageAccount.delete();
 
     	// Delete the group
-    	azure.resourceGroups().delete(groupName);
+    	subscription.resourceGroups().delete(groupName);
     	
     	// Provision a test group
-    	ResourceGroup resourceGroup = azure.resourceGroups().define(newGroupName)
+    	ResourceGroup resourceGroup = subscription.resourceGroups().define(newGroupName)
     		.withRegion(Region.US_WEST)
     		.provision();
     	
     	// Provision a new storage account in an existing resource group
-    	storageAccount = azure.storageAccounts().define(newStorageAccountName)
+    	storageAccount = subscription.storageAccounts().define(newStorageAccountName)
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(newGroupName)
     		.withAccountType(AccountType.StandardLRS)

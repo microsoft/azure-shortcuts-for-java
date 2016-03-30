@@ -37,8 +37,8 @@ public class LoadBalancersImpl
 		LoadBalancersImpl.LoadBalancerImpl>
 	implements LoadBalancers {
 	
-	LoadBalancersImpl(Azure azure) {
-		super(azure);
+	LoadBalancersImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	@Override
@@ -95,7 +95,7 @@ public class LoadBalancersImpl
 			LoadBalancer.DefinitionWithFrontEnd,
 			LoadBalancer.DefinitionProvisionable {
 		
-		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, EntitiesImpl<Azure> collection) {
+		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, EntitiesImpl<Subscription> collection) {
 			super(nativeItem.getName(), nativeItem, collection);
 		}
 

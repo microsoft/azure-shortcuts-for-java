@@ -32,11 +32,11 @@ import com.microsoft.azure.shortcuts.resources.ResourceGroups;
 import com.microsoft.azure.shortcuts.resources.Region;
 
 public class ResourceGroupsImpl 
-	extends EntitiesImpl<Azure>
+	extends EntitiesImpl<Subscription>
 	implements ResourceGroups {
 	
-	ResourceGroupsImpl(Azure azure) {
-		super(azure);
+	ResourceGroupsImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
 	
@@ -109,9 +109,9 @@ public class ResourceGroupsImpl
 			ResourceGroup.DefinitionBlank,
 			ResourceGroup {
 		
-		private final EntitiesImpl<Azure> collection;
+		private final EntitiesImpl<Subscription> collection;
 		
-		private ResourceGroupImpl(ResourceGroupExtended azureGroup, EntitiesImpl<Azure> collection) {
+		private ResourceGroupImpl(ResourceGroupExtended azureGroup, EntitiesImpl<Subscription> collection) {
 			super(azureGroup.getName(), azureGroup);
 			this.collection = collection;
 		}

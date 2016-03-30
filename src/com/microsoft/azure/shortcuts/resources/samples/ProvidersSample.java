@@ -26,22 +26,22 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Provider.ResourceType;
-import com.microsoft.azure.shortcuts.resources.implementation.Azure;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 // Tests resources
 public class ProvidersSample {
     public static void main(String[] args) {
         try {
-            Azure azure = Azure.authenticate("my.azureauth", null);
-            test(azure);
+            Subscription subscription = Subscription.authenticate("my.azureauth", null);
+            test(subscription);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void test(Azure azure) throws Exception {
+    public static void test(Subscription subscription) throws Exception {
     	// List provider namespaces
-    	Map<String, Provider> providers = azure.providers().asMap();
+    	Map<String, Provider> providers = subscription.providers().asMap();
     	System.out.println(String.format("Provider namespaces: %s\t", StringUtils.join(providers.keySet(), "\n\t")));
     	
     	// List providers
@@ -51,7 +51,7 @@ public class ProvidersSample {
     	
     	if(providers.size() > 0) {
     		// Get information about a specific provider
-    		Provider provider = azure.providers("microsoft.classicstorage");
+    		Provider provider = subscription.providers("microsoft.classicstorage");
 
     		System.out.println(String.format("Found provider: %s\n" 
     				+ "\tRegistration State: %s\n"
