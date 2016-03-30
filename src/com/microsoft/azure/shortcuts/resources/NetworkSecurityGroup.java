@@ -49,5 +49,41 @@ public interface NetworkSecurityGroup extends
 	public interface DefinitionProvisionable extends 
 		Provisionable<NetworkSecurityGroup>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
+		
+		DefinitionProvisionable withAllowInbound(
+			Protocol protocol, 
+			String sourceAddressPrefix,
+			String sourcePortRange,
+			String destinationAddressPrefix,
+			String destinationPortRange,
+			String name,
+			int priority);
+		
+		DefinitionProvisionable withAllowOutbound(
+			Protocol protocol, 
+			String sourceAddressPrefix,
+			String sourcePortRange,
+			String destinationAddressPrefix,
+			String destinationPortRange,
+			String name,
+			int priority);
+			
+		DefinitionProvisionable withDenyInbound(
+			Protocol protocol, 
+			String sourceAddressPrefix,
+			String sourcePortRange,
+			String destinationAddressPrefix,
+			String destinationPortRange,
+			String name,
+			int priority);
+			
+		DefinitionProvisionable withDenyOutbound(
+			Protocol protocol, 
+			String sourceAddressPrefix,
+			String sourcePortRange,
+			String destinationAddressPrefix,
+			String destinationPortRange,
+			String name,
+			int priority);
 	}
 }

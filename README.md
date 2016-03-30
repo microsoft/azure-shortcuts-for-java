@@ -570,11 +570,13 @@ NetworkSecurityGroup nsgMinimal = azure.networkSecurityGroups().define("<network
 	.withNewResourceGroup()
 	.provision();
 ```
-With an optional tag:
+With an network security rules and tags:
 ```java
 NetworkSecurityGroup nsg = azure.networkSecurityGroups().define("<network-security-group-name>")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<existing-group-name>")
+    .withAllowInbound(Protocol.TCP, "*", "80", "*", "8080", "tcp80to8080", 100)
+    .withDenyInbound(Protocol.ANY, "*", "25", "*", "*", "deny25", 200)
     .withTag("hello", "world")
     .provision();
 ```
