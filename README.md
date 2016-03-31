@@ -228,8 +228,8 @@ vmProvisionable
 Attaching an existing VHD file as a data disk:
 
 ```java
-vmProvisionable
-	.withExistingDataDisk("https://vm1455045717874store.blob.core.windows.net/vm1455045717874/disk0.vhd")
+vmProvisionable = vmProvisionable
+	.withExistingDataDisk("https://vm1455045717874store.blob.core.windows.net/vm1455045717874/disk0.vhd");
 ```
 
 ###### Selecting availability set
