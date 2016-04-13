@@ -16,11 +16,11 @@ subscription.networks().define("mynetwork")
     .provision();
 ```
 
-The shortcuts library supports APIs "modern" ARM (Azure Resource Model) model. The previous "classic" ASM (Azure Service Model) API is no longer maintained nor documented.
+The shortcuts library supports Azure's "modern" ARM (Azure Resource Model) model. The previous "classic" ASM (Azure Service Model) API is no longer maintained nor documented.
 
-A lot of short code samples are in the packages `com.microsoft.azure.shortcuts.resources.samples` (https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/resources/samples).
+A lot of short code samples are located in the packages `com.microsoft.azure.shortcuts.resources.samples` (https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/resources/samples).
 
-It is *not* currently a goal of this library to cover all of the Azure API surface. Rather, it is to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, the [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) is the fallback, which this project is also built on.
+It is *not* currently a goal of this library to cover all of the Azure API surface. Rather, it is to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, the [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) can be used as the fallback, which this project is also built on.
 
 ## Setting up the dev machine
 
@@ -37,14 +37,14 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 > :warning: **NOTE**: Although the project is currently based on Java 7, switching to Java 8 is under consideration, as v8 offers some important programming features it'd make a lot of sense to take advantage of (especially lambda support).  
 
-* Azure SDK for Java v0.9.0 (installed by the pom.xml file, so no need to install separately)
+* Azure SDK for Java v0.9.* (installed by the pom.xml file, so no need to install separately)
 * An Azure subscription
 
 ## Scope
 
 Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability. But the general principles this project aspires to follow rigorously are *"Documentation is code"*.
 
-There are no JavaDocs (yet). Someday there will be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense". So expect the JavaDocs to be rather minimalistic.
+There are no JavaDocs (yet). Someday there may be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense".
 
 ## Programming patterns 
 
@@ -52,19 +52,21 @@ If you skip over this section and jump directly to the [examples](#examples), ch
 
 The key design principles behind the shortcuts API are: to be **intuitive, succint, consistent, and preventing you from winding up in an invalid state**.
 
-There are a small handful of general patterns to be aware of; once you remember these, everything else should be self-explanatory:
+There are a small handful of general patterns to be aware of; once you remember these, everything else should be self-explanatory.
 
 ### Creating new entities
 
-Other than `new Subscription()`, there are **no constructors anywhere**. To create a new instance of some type of cloud entity (e.g. `Network`), you use the top level "collection" of those objects (hanging off of the `Subscription` client object) as the factory. And yes, there is only one single client object to instantiate and deal with. 
+There are **no constructors anywhere**. The only class exposed to the user is `Subscription`, but only so that the user can use the static `authenticate()` method on it as th eentry point to evarything else.  Everything else that is intended for the user's use is an interface. 
 
-In more detail: 
+To create a new instance of any type of a top level cloud entity (e.g. `Network`), you use the top level "collection" of those objects hanging off of the `Subscription` client object as the factory. And yes, there is only one single client object to instantiate and deal with. 
+
+In more detail:
 
 1. start with the "collection" of those objects hanging off as a member of the `Subscription` client instance object (e.g. `subscription.networks()`), 
 2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
-3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withExistingResourceGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the possible choices.
-4. many resource types in Azure (e.g. virtual machines) require other resources (e.g. resource group, storage acocunt) to be already present. The `.with*` setters often enable you to either select an existing related resource (`.withExisting*()`) or to request a new such resource to be created on the fly (`.withNew*()`). When created on the fly, it is created in the region and resource group.
-5. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional (some defaults are assumed.) Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
+3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withExistingResourceGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each such "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the possible choices.  This is how the equivalent of required constructor parameters are exposed.
+4. many resource types in Azure (e.g. virtual machines) require other associated resources (e.g. a resource group, a storage account) to be already present. The `.with*` setters often enable you to either select an existing related resource, i.e. `.withExisting*()`, or to request a new such resource to be created on the fly in a shortcut way, i.e. `.withNew*()`. When created on the fly, the associated resource is created in the same region and resource group and by default uses a derived name.
+5. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional. Some of those setters are optional because Azure allows them to be so, and others are optional because the shortcuts assume some sort of a default, but Azure still requires them. Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
  
 ### Updating existing entities
 
@@ -76,17 +78,17 @@ Updates to existing entities are also done in a "builder pattern/fluent interfac
 
 In essence, the above is the shortcuts API's take on the "builder pattern + fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`.define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
 
-> :warning: TODO Update functionality is only beginning to be implemented in the shortcuts
+> :warning: TODO The Update functionality is only beginning to be implemented in the shortcuts
 
 ### Naming patterns 
 
 In general, the shortcut naming tends to be consistent with the Azure SDK. However, it does not follow the SDK naming rigorously. Sometimes, simplicity or succinctness trumps consistency (e.g. Azure SDK has `VirtualNetwork`, shortcuts have `Network`.). 
 
-Some helpful pointers: 
+Some helpful pointers:
 
 * In the cases when the same class name is used, make sure you reference the right package!
-* As for class member naming, it is hard to avoid the impression that the Azure SDK heavily abuses the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
-* Since the shortcuts are all about fluent interface, you will not see `.set*(...)` anywhere, only `.with*(...)`. The "with" naming convention in the context of fluent interface setters has been adopted because "set" functions are conventionally expected to return `void`, whereas "with" returns an object. Modern Java API implementations from other vendors are increasingly adopting the same "with" setter naming convention. (e.g. AWS)
+* As for class member naming, it is hard to avoid the impression that the Azure SDK has somewhat abused the "get/set" convention. The shortcuts don't. In fact, it is only on the very rare occasion that using the "get" prefix is justified, so you will practically never see it in the shortcuts.
+* Since the shortcuts rely heavily on the fluent interface, you will not see `.set*(...)` anywhere, only `.with*(...)`. The "with" naming convention in the context of fluent interface setters has been adopted because "set" functions are conventionally expected to return `void`, whereas "with" returns an object. Modern Java API implementations from other projects are increasingly adopting the same "with" setter naming convention. (e.g. AWS SDK)
 
 And again, a quick look at any of the below code samples should make the above points rather obvious.
 
@@ -101,9 +103,9 @@ And again, a quick look at any of the below code samples should make the above p
 
 ## Examples
 
-Inside the `\*.samples` packages, you will find a number of runnable code samples (classes with `main()`). For each of the sample classes, you can just **Debug As** > **Java Application**.
+Inside the `\*.samples` packages, you will find a number of runnable code samples. They are implemented as classes with `main()`, so they can be run as console apps. So for each of the sample classes, you can just **Debug As** > **Java Application**.
 
-Many of the samples rely on credentials files in the **root of the project**:
+Many of the samples rely on a credentials file in the **root of the project**:
 
 For the **"Resource" ARM-based APIs** specifically, you can use the very experimental *"my.authfile"* format containing all the inputs needed by the Azure Active Directory authentication and relying on you setting up a **service principal** for your app. 
 
