@@ -35,24 +35,24 @@ public interface LoadBalancer extends
 	/**
 	 * A new blank load balancer definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
-	public interface DefinitionWithGroup extends
+	interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithResourceGroup<DefinitionWithFrontEnd> {}
 	
 	/**
 	 * A load balancer definition allowing to specify a front end IP address
 	 */
-	public interface DefinitionWithFrontEnd extends
+	interface DefinitionWithFrontEnd extends
 		DefinitionCombos.WithPublicIpAddress<DefinitionProvisionable> {
 	}
 	
 	/**
 	 * A load balancer definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	
-	public interface DefinitionProvisionable extends 
+
+	interface DefinitionProvisionable extends
 		Provisionable<LoadBalancer>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}

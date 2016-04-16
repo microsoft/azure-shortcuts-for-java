@@ -30,7 +30,7 @@ import com.microsoft.azure.shortcuts.resources.StorageAccount;
 
 public interface DefinitionCombos {
 	
-	public interface WithExistingNetwork<R> {
+	interface WithExistingNetwork<R> {
 		/**
 		 * Associates an existing virtual network with this resource
 		 * @param id The resource ID of the virtual network to associate with the resource
@@ -56,7 +56,7 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to associate a virtual network with it
 	 */
-	public interface WithNewNetwork<R> {
+	interface WithNewNetwork<R> {
 		/**
 		 * Creates a new virtual network to associate with this resource, based on the provided definition
 		 * @param networkDefinition A provisionable definition of a virtual network
@@ -84,14 +84,14 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to associate a subnet with it
 	 */
-	public interface WithSubnet<R> {
+	interface WithSubnet<R> {
 		R withSubnet(String subnetId);
 	}
 	
 	/**
 	 * A resource definition allowing to associate a storage account with this resource
 	 */
-	public interface WithStorageAccount<R> {
+	interface WithStorageAccount<R> {
 		/**
 		 * Associates an existing storage account with this resource
 		 * @param name The name of an existing storage account to associate with this resource
@@ -140,7 +140,7 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to associate an availability set with this resource
 	 */
-	public interface WithAvailabilitySet<R> {
+	interface WithAvailabilitySet<R> {
 		/**
 		 * Associates an existing availability set with this resource
 		 * @param id The resource ID of an existing availability set
@@ -194,7 +194,7 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to create a primary network interface associated with this resource
 	 */
-	public interface WithExistingNetworkInterface<R> {
+	interface WithExistingNetworkInterface<R> {
 		/**
 		 * Selects an existing network interface as the primary NIC for this resource
 		 * @param resourceId The resource ID of an existing network interface
@@ -220,7 +220,7 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to associate a primary network interface with this resource
 	 */
-	public interface WithNewNetworkInterface<R> {
+	interface WithNewNetworkInterface<R> {
 		/**
 		 * Creates a new network interface to associate with this resource as its primary NIC, in the same region and group, 
 		 * using the provided name, within the provided existing subnet, with dynamic private IP allocation enabled
@@ -251,7 +251,7 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to associate it with a public IP address
 	 */
-	public interface WithPublicIpAddress<R> {
+	interface WithPublicIpAddress<R> {
 		/**
 		 * Associates a public IP address that exists in the subscription with this resource
 		 * @param publicIpAddress An existing public IP address
@@ -291,7 +291,7 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to associate it with a private IP address within a virtual network subnet
 	 */
-	public interface WithPrivateIpAddress<R> {
+	interface WithPrivateIpAddress<R> {
 		/**
 		 * Enables dynamic private IP address allocation within the specified existing virtual network subnet as the primary subnet
 		 * @param subnet The Subnet to associate with the resource

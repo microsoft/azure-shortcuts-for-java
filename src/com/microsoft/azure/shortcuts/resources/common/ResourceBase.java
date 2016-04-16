@@ -27,10 +27,10 @@ import com.microsoft.azure.shortcuts.resources.Region;
 public interface ResourceBase extends 
 	Indexable {
 	
-	public String type();
-	public String name();
-	public String region();
-	public Map<String, String> tags();
+	String type();
+	String name();
+	String region();
+	Map<String, String> tags();
 	
 	/**
 	 * A resource definition allowing a region be selected for the resource

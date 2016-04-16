@@ -45,17 +45,17 @@ public interface Network extends
 	/**
 	 * A new blank virtual network definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
-	public interface DefinitionWithGroup extends
+	interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
 		
 	
 	/**
 	 * A virtual network definition expecting at least one subnet to be specified
 	 */
-	public interface DefinitionWithSubnet {
+	interface DefinitionWithSubnet {
 		DefinitionProvisionableWithSubnet withSubnet(String name, String cidr);
 		DefinitionProvisionableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
 	}
@@ -63,34 +63,34 @@ public interface Network extends
 	/**
 	 * A virtual network definition expecting the network's address space to be specified
 	 */
-	public interface DefinitionWithAddressSpace {
+	interface DefinitionWithAddressSpace {
 		DefinitionProvisionableWithSubnet withAddressSpace(String cidr);
 	}
 	
 	/**
 	 * A virtual network definition expecting the IP address of an existing DNS server to be associated with the network 
 	 */
-	public interface DefinitionWithDNSServer {
+	interface DefinitionWithDNSServer {
 		DefinitionProvisionable withDnsServer(String ipAddress);
 	}
 	
 	/**
 	 * A new virtual network definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		Provisionable<Network>,
 		DefinitionWithAddressSpace,
 		DefinitionWithDNSServer,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 	
-	public interface DefinitionProvisionableWithSubnet extends 
+	interface DefinitionProvisionableWithSubnet extends
 		DefinitionProvisionable,
 		DefinitionWithSubnet { 
 	}
 	
 	
-	public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
+	interface Subnet extends Indexable, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
 		String addressPrefix();
 		String networkSecurityGroup();
 	}

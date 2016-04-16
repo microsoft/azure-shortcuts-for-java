@@ -41,8 +41,8 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	private String subnetId;
 	protected String privateIpAddress;
 
-	
-	final protected Network ensureNetwork() throws Exception {
+
+	protected final Network ensureNetwork() throws Exception {
 		if(!this.isNetworkExisting) {
 			// Create a new virtual network
 			if(this.networkId == null) {
@@ -62,8 +62,8 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 		}
 	}
 
-	
-	final protected Network.Subnet ensureSubnet(Network network) throws Exception {
+
+	protected final Network.Subnet ensureSubnet(Network network) throws Exception {
 		if(network == null) {
 			return null;
 		} else if(this.subnetId != null) {
@@ -79,33 +79,33 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	 * WithNetwork* Implementation
 	 ***********************************************************/
 	@SuppressWarnings("unchecked")
-	final public WRAPPERIMPL withExistingNetwork(String id) {
+	public final WRAPPERIMPL withExistingNetwork(String id) {
 		this.isNetworkExisting = true;
 		this.networkId = id;
 		return (WRAPPERIMPL)this;
 	}
 
-	final public WRAPPERIMPL withExistingNetwork(Network network) {
+	public final WRAPPERIMPL withExistingNetwork(Network network) {
 		return this.withExistingNetwork(network.id());
 	}
 
-	final public WRAPPERIMPL withExistingNetwork(VirtualNetwork network) {
+	public final WRAPPERIMPL withExistingNetwork(VirtualNetwork network) {
 		return this.withExistingNetwork(network.getId());
 	}
 
 	@SuppressWarnings("unchecked")
-	final public WRAPPERIMPL withNewNetwork(String name, String addressSpace) {
+	public final WRAPPERIMPL withNewNetwork(String name, String addressSpace) {
 		this.isNetworkExisting = false;
 		this.networkId = name;
 		this.networkCidr = addressSpace;
 		return (WRAPPERIMPL) this;
 	}
 
-	final public WRAPPERIMPL withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception {
+	public final WRAPPERIMPL withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception {
 		return this.withExistingNetwork(networkDefinition.provision());
 	}
 
-	final public WRAPPERIMPL withNewNetwork(String addressSpace) {
+	public final WRAPPERIMPL withNewNetwork(String addressSpace) {
 		return this.withNewNetwork((String)null, addressSpace);
 	}
 	
@@ -114,7 +114,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	 * WithSubnet implementation
 	 ********************************************************/
 	@SuppressWarnings("unchecked")
-	final public WRAPPERIMPL withSubnet(String subnetId) {
+	public final WRAPPERIMPL withSubnet(String subnetId) {
 		this.subnetId = subnetId;
 		return (WRAPPERIMPL)this;
 	}
@@ -123,12 +123,12 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	/*******************************************************
 	 * WithPrivateIpAddress implementation
 	 *******************************************************/
-	final public WRAPPERIMPL withPrivateIpAddressDynamic() {
+	public final WRAPPERIMPL withPrivateIpAddressDynamic() {
 		return this.withPrivateIpAddressStatic(null);
 	}
 	
 	@SuppressWarnings("unchecked")
-	final public WRAPPERIMPL withPrivateIpAddressStatic(String staticPrivateIpAddress) {
+	public final WRAPPERIMPL withPrivateIpAddressStatic(String staticPrivateIpAddress) {
 		this.privateIpAddress = staticPrivateIpAddress;
 		return (WRAPPERIMPL)this;
 	}

@@ -40,47 +40,47 @@ public interface VirtualMachine extends
 	Wrapper<com.microsoft.azure.management.compute.models.VirtualMachine>,
 	Deletable {
 	
-	public String size();
-	public URI bootDiagnosticsStorage();
-	public boolean isBootDiagnosticsEnabled();
-	public URI availabilitySet();
-	public ArrayList<VirtualMachineExtension> extensions();
-	public Integer platformFaultDomain();
-	public Integer platformUpdateDomain();
-	public String remoteDesktopThumbprint();
-	public String vmAgentVersion();
-	public ArrayList<NetworkInterfaceReference> networkInterfaces();
-	public String adminUserName();
-	public String computerName();
-	public String customData();
-	public boolean isLinux();
-	public boolean isWindows();
-	public ImageReference image();
-	public List<DataDisk> dataDisks();
+	String size();
+	URI bootDiagnosticsStorage();
+	boolean isBootDiagnosticsEnabled();
+	URI availabilitySet();
+	ArrayList<VirtualMachineExtension> extensions();
+	Integer platformFaultDomain();
+	Integer platformUpdateDomain();
+	String remoteDesktopThumbprint();
+	String vmAgentVersion();
+	ArrayList<NetworkInterfaceReference> networkInterfaces();
+	String adminUserName();
+	String computerName();
+	String customData();
+	boolean isLinux();
+	boolean isWindows();
+	ImageReference image();
+	List<DataDisk> dataDisks();
 	
 	/**
 	 * Stops (powers off) the virtual machine without deallocating it. Charges keep accruing.
 	 * @throws Exception 
 	 */
-	public VirtualMachine stop() throws Exception;
+	VirtualMachine stop() throws Exception;
 
 	/** 
 	 * Restarts a virtual machine
 	 * @throws Exception
 	 */
-	public VirtualMachine restart() throws Exception;
+	VirtualMachine restart() throws Exception;
 
 	/** 
 	 * Deallocates a virtual machine. Charges no longer accrue.
 	 * @throws Exception
 	 */
-	public VirtualMachine deallocate() throws Exception;
+	VirtualMachine deallocate() throws Exception;
 
 	/**
 	 * Starts a stopped virtual machine.
 	 * @throws Exception
 	 */
-	public VirtualMachine start() throws Exception;
+	VirtualMachine start() throws Exception;
 	
 	/**
 	 * Captures a virtual machine image based on this virtual machine
@@ -89,19 +89,19 @@ public interface VirtualMachine extends
 	 * @param overwrite Determines whether to overwrite an existing image VHD, if any
 	 * @throws Exception
 	 */
-	public VirtualMachine capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception;
+	VirtualMachine capture(String containerName, String diskNamePrefix, boolean overwrite) throws Exception;
 
 	/**
 	 * Sets the state of the virtual machine as generalized, which is required for capturing an image
 	 * @throws Exception
 	 */
-	public VirtualMachine generalize() throws Exception;
+	VirtualMachine generalize() throws Exception;
 
 
 	/**
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 		//TODO load balancers
 		//TODO network security groups
@@ -112,13 +112,13 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition requiring the resource group to be specified
 	 */
-	public interface DefinitionWithGroup extends
+	interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithResourceGroup<DefinitionWithNetworking> {}
 	
 	/**
 	 * A virtual machine definition allowing the networking to be specified
 	 */
-	public interface DefinitionWithNetworking extends 
+	interface DefinitionWithNetworking extends
 		DefinitionCombos.WithNewNetwork<DefinitionWithPrivateIp>,
 		DefinitionCombos.WithExistingNetwork<DefinitionWithSubnet>,
 		DefinitionCombos.WithExistingNetworkInterface<DefinitionWithAdminUsername> {}
@@ -127,26 +127,26 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing a subnet with the selected virtual network to be associated with it
 	 */
-	public interface DefinitionWithSubnet extends 
+	interface DefinitionWithSubnet extends
 		DefinitionCombos.WithSubnet<DefinitionWithPrivateIp> {
 	}
 	
 	/**
 	 * A virtual machine definition allowing the primary private IP address to be specified
 	 */
-	public interface DefinitionWithPrivateIp extends 
+	interface DefinitionWithPrivateIp extends
 		DefinitionCombos.WithPrivateIpAddress<DefinitionWithPublicIp> {}
 	
 	/**
 	 * A virtual machine definition allowing the primary public IP address to be specified
 	 */
-	public interface DefinitionWithPublicIp extends
+	interface DefinitionWithPublicIp extends
 		DefinitionCombos.WithPublicIpAddress<DefinitionWithAdminUsername> {}
 	
 	/**
 	 * A virtual machine definition requiring the admin username to be specified
 	 */
-	public interface DefinitionWithAdminUsername {
+	interface DefinitionWithAdminUsername {
 		/**
 		 * @param The desired admin username for the virtual machine
 		 * @return The next stage of the VM definition
@@ -158,7 +158,7 @@ public interface VirtualMachine extends
 	/** 
 	 * A virtual machine definition requiring the admin password to be specified
 	 */
-	public interface DefinitionWithAdminPassword {
+	interface DefinitionWithAdminPassword {
 		/**
 		 * @param password The desired admin password for the virtual machine
 		 * @return The next stage of the VM definition
@@ -170,7 +170,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing the selection of a base image for the virtual machine
 	 */
-	public interface DefinitionWithImage {
+	interface DefinitionWithImage {
 		DefinitionProvisionable withLatestImage(String publisher, String offer, String sku);
 		DefinitionProvisionable withImage(String publisher, String offer, String sku, String version);
 	}
@@ -179,7 +179,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing to specify the size of the new virtual machine
 	 */
-	public interface DefinitionWithSize<T> {
+	interface DefinitionWithSize<T> {
 		/**
 		 * @param sizeName The name of the size for the virtual machine as text
 		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
@@ -203,7 +203,7 @@ public interface VirtualMachine extends
 	/**
 	 * A virtual machine definition allowing to specify a data disk to attach to the VM
 	 */
-	public interface DefinitionWithDataDisk<R> {
+	interface DefinitionWithDataDisk<R> {
 		R withNewDataDisk(int diskSizeGB);
 		R withExistingDataDisk(URI vhdUri);
 		R withExistingDataDisk(String vhdUri);
@@ -214,7 +214,7 @@ public interface VirtualMachine extends
 	 * A virtual machine definition with sufficient inputs to provision a new virtual machine in the cloud, 
 	 * but exposing additional optional inputs to specify
 	 */
-	public interface DefinitionProvisionable extends
+	interface DefinitionProvisionable extends
 		DefinitionCombos.WithStorageAccount<DefinitionProvisionable>,
 		DefinitionWithSize<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
@@ -229,7 +229,7 @@ public interface VirtualMachine extends
 		DefinitionProvisionable withComputerName(String computerName);
 	}
 	
-	public interface UpdateBlank {
+	interface UpdateBlank {
 		
 	}
 }

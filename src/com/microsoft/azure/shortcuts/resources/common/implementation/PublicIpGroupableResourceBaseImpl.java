@@ -46,9 +46,9 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 		this.publicIpAddressId = resourceId;
 		return (TI)this;
 	}
-	
-	
-	final protected PublicIpAddress ensurePublicIpAddress() throws Exception {
+
+
+	protected final PublicIpAddress ensurePublicIpAddress() throws Exception {
 		if(!this.isPublicIpAddressExisting) {
 			// Create a new public IP
 			if(this.publicIpAddressDns == null) {
@@ -75,26 +75,26 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 	/*****************************************************
 	 * WithPublicIpAddress implementation
 	 *****************************************************/
-	final public TI withExistingPublicIpAddress(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
+	public final TI withExistingPublicIpAddress(com.microsoft.azure.management.network.models.PublicIpAddress publicIpAddress) {
 		return this.withExistingPublicIpAddress((publicIpAddress != null) ? publicIpAddress.getId() : null);
 	}
 
-	final public TI withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
+	public final TI withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
 		return this.withExistingPublicIpAddress((publicIpAddress != null) ? publicIpAddress.id() : null);
 	}
 
-	final public TI withNewPublicIpAddress() {
+	public final TI withNewPublicIpAddress() {
 		return this.withNewPublicIpAddress(null);
 	}
 
 	@SuppressWarnings("unchecked")
-	final public TI withNewPublicIpAddress(String leafDnsLabel) {
+	public final TI withNewPublicIpAddress(String leafDnsLabel) {
 		this.isPublicIpAddressExisting = false;
 		this.publicIpAddressDns = (leafDnsLabel == null) ? null : leafDnsLabel.toLowerCase();
 		return (TI) this;
 	}
 
-	final public TI withoutPublicIpAddress() {
+	public final TI withoutPublicIpAddress() {
 		return this.withExistingPublicIpAddress((PublicIpAddress)null);
 	}
 }

@@ -47,7 +47,7 @@ public interface CloudService extends
 	/**
 	 * A cloud service definition requiring a region to be specified
 	 */
-	public interface DefinitionWithRegion<T> {
+	interface DefinitionWithRegion<T> {
 		T withRegion(String region);
 		T withRegion(Region region);
 	}
@@ -55,14 +55,14 @@ public interface CloudService extends
 	/** 
 	 * A cloud service definition requiring an affinity group to be specified
 	 */
-	public interface DefinitionWithAffinityGroup<T> {
+	interface DefinitionWithAffinityGroup<T> {
 		T withAffinityGroup(String affinityGroup);
 	}
 	
 	/**
 	 * A new blank cloud service definition
 	 */
-	public interface DefinitionBlank extends
+	interface DefinitionBlank extends
 		DefinitionWithRegion<DefinitionProvisionable>,
 		DefinitionWithAffinityGroup<DefinitionProvisionable> {
 	}
@@ -70,28 +70,28 @@ public interface CloudService extends
 	/** 
 	 * A cloud service definition requiring a description to be specified
 	 */
-	public interface DefinitionWithDescription<T> {
-		public T withDescription(String description);
+	interface DefinitionWithDescription<T> {
+		T withDescription(String description);
 	}
 
 	/** 
 	 * A cloud service definition requiring a label to be specified
 	 */
-	public interface DefinitionWithLabel<T> {
-		public T withLabel(String label);
+	interface DefinitionWithLabel<T> {
+		T withLabel(String label);
 	}
 
 	/** 
 	 * A cloud service definition requiring a reverse DNS fully qualified domain name to be specified
 	 */
-	public interface DefinitionWithReverseDnsFqdn<T> {
-		public T withReverseDnsFqdn(String fqdn);
+	interface DefinitionWithReverseDnsFqdn<T> {
+		T withReverseDnsFqdn(String fqdn);
 	}
 
 	/**
 	 * A new cloud service definition with sufficient settings to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		DefinitionWithDescription<DefinitionProvisionable>,
 		DefinitionWithLabel<DefinitionProvisionable>,
 		DefinitionWithReverseDnsFqdn<DefinitionProvisionable>,
@@ -101,18 +101,18 @@ public interface CloudService extends
 	/**
 	 * An existing cloud service update request ready to applied in the cloud
 	 */
-	public interface Update extends UpdateBlank, Updatable<Update> {
+	interface Update extends UpdateBlank, Updatable<Update> {
 	}
 	
 	
 	/**
 	 * A blank existing cloud service update request
 	 */
-	public interface UpdateBlank extends 
+	interface UpdateBlank extends
 		Deletable {
 		
-		public Update withDescription(String description);
-		public Update withReverseDnsFqdn(String fqdn);
-		public Update withLabel(String label);
+		Update withDescription(String description);
+		Update withReverseDnsFqdn(String fqdn);
+		Update withLabel(String label);
 	}
 }

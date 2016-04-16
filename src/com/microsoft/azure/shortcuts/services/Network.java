@@ -42,7 +42,7 @@ public interface Network extends
 	Map<String, Subnet> subnets() throws Exception;
 	String state() throws Exception;
 	
-	public interface Subnet extends Indexable {	
+	interface Subnet extends Indexable {
 		String addressPrefix();
 		String networkSecurityGroup();
 	}
@@ -50,14 +50,14 @@ public interface Network extends
 	/**
 	 * A new blank network definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		DefinitionWithRegion<DefinitionWithAddressSpace> {
 	}
 	
 	/**
 	 * A virtual network definition requiring a region to be specified
 	 */
-	public interface DefinitionWithRegion<T> {
+	interface DefinitionWithRegion<T> {
 		T withRegion(String region);
 		T withRegion(Region region);		
 	}
@@ -65,14 +65,14 @@ public interface Network extends
 	/**
 	 * A virtual network definition requiring a new subnet to be specified
 	 */
-	public interface DefinitionWithSubnet<T> {
+	interface DefinitionWithSubnet<T> {
 		T withSubnet(String name, String cidr);		
 	}
 	
 	/**
 	 * A new network definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		DefinitionWithSubnet<DefinitionProvisionable>,
 		Provisionable<UpdateBlank> {
 	}
@@ -80,7 +80,7 @@ public interface Network extends
 	/**
 	 * A new network definition requiring the CIDR input parameter to be specified
 	 */
-	public interface DefinitionWithAddressSpace {
+	interface DefinitionWithAddressSpace {
 		DefinitionProvisionable withAddressSpace(String cidr);
 	}
 	
@@ -88,7 +88,7 @@ public interface Network extends
 	/**
 	 * A blank update request for an existing network
 	 */
-	public interface UpdateBlank extends Deletable {
+	interface UpdateBlank extends Deletable {
 		// TODO?
 	}
 	
@@ -96,7 +96,7 @@ public interface Network extends
 	/**
 	 * An existing network update request ready to be applied in the cloud
 	 */
-	public interface Update extends UpdateBlank, Updatable<Update> {
+	interface Update extends UpdateBlank, Updatable<Update> {
 	}
 
 }

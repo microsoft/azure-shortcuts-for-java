@@ -34,19 +34,19 @@ public interface NetworkSecurityGroup extends
 	/**
 	 * A new blank NSG definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {}
 	
 	/**
 	 * An NSG definition allowing to specify the resource group to include it in.
 	 */
-	public interface DefinitionWithGroup extends
+	interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
 	
 	/**
 	 * A public IP address definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		Provisionable<NetworkSecurityGroup>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 		

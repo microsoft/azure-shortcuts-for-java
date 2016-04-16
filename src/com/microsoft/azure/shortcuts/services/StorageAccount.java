@@ -55,7 +55,7 @@ public interface StorageAccount extends
 	/**
 	 * A storage account definition requiring the region (location) to be specified
 	 */
-	public interface DefinitionWithRegion<T> {
+	interface DefinitionWithRegion<T> {
 		T withRegion(String region);
 		T withRegion(Region region);		
 	}
@@ -63,35 +63,35 @@ public interface StorageAccount extends
 	/**
 	 * A new blank storage account definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		DefinitionWithRegion<DefinitionProvisionable> {
 	}
 	
 	/**
 	 * A storage account definition requring the label to be specified
 	 */
-	public interface DefinitionWithLabel<T> {
+	interface DefinitionWithLabel<T> {
 		T withLabel(String label);
 	}
 	
 	/**
 	 * A storage account definition requiring the storage type to be specified
 	 */
-	public interface DefinitionWithType<T> {
+	interface DefinitionWithType<T> {
 		T withType(String type);
 	}
 
 	/**
 	 * A storage account definition requiring the description to be specified
 	 */
-	public interface DefinitionWithDescription<T> {
+	interface DefinitionWithDescription<T> {
 		T withDescription(String description);
 	}
 	
 	/**
 	 * A storage account definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		DefinitionWithType<DefinitionProvisionable>,
 		DefinitionWithLabel<DefinitionProvisionable>,
 		DefinitionWithDescription<DefinitionProvisionable>,
@@ -102,14 +102,14 @@ public interface StorageAccount extends
 	/**
 	 * An existing storage account update ready to be applied in the cloud
 	 */
-	public interface Update extends UpdateBlank, Updatable<Update> {
+	interface Update extends UpdateBlank, Updatable<Update> {
 	}
 
 	
 	/**
 	 * A blank update request for an existing storage account
 	 */
-	public interface UpdateBlank extends Deletable {
+	interface UpdateBlank extends Deletable {
 		Update withType(String type);
 		Update withDescription(String description);
 		Update withLabel(String label);

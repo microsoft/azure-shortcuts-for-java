@@ -40,19 +40,19 @@ public interface PublicIpAddress extends
 	/**
 	 * A new blank public IP address definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {}
 	
 	/**
 	 * A public IP address definition allowing to specify the resource group to include it in.
 	 */
-	public interface DefinitionWithGroup extends
+	interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
 	
 	/**
 	 * A public IP address definition allowing to specify the IP address allocation method and a static IP address, if needed
 	 */
-	public interface DefinitionWithIpAddress {
+	interface DefinitionWithIpAddress {
 		/**
 		 * Enables static IP address allocation. The actual IP address allocated for this resource by Azure can be obtained 
 		 * after the provisioning process is complete from ipAddress().
@@ -70,7 +70,7 @@ public interface PublicIpAddress extends
 	/**
 	 * A public IP address definition allowing to specify the leaf domain label, if any
 	 */
-	public interface DefinitionWithLeafDomainLabel {
+	interface DefinitionWithLeafDomainLabel {
 		/**
 		 * Specifies the leaf domain label to associate with this public IP address. The fully qualified domain name (FQDN) 
 		 * will be constructed automatically by appending the rest of the domain to this label.
@@ -89,7 +89,7 @@ public interface PublicIpAddress extends
 	/**
 	 * A public IP address definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		Provisionable<PublicIpAddress>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		DefinitionWithLeafDomainLabel,

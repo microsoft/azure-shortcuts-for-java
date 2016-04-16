@@ -44,7 +44,7 @@ public interface ResourceGroup extends
 	/**
 	 * A new blank resource group definition
 	 */
-	public interface DefinitionBlank {
+	interface DefinitionBlank {
 		DefinitionProvisionable withRegion(String regionName);
 		DefinitionProvisionable withRegion(Region region);
 	}
@@ -53,7 +53,7 @@ public interface ResourceGroup extends
 	/**
 	 * A new resource group definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		Provisionable<ResourceGroup> {
 		
 		DefinitionProvisionable withTags(Map<String, String> tags);
@@ -64,7 +64,7 @@ public interface ResourceGroup extends
 	/**
 	 * An existing resource group modification request ready to be applied in the cloud
 	 */
-	public interface Update extends 
+	interface Update extends
 		UpdateBlank, 
 		Updatable<Update> {
 	}
@@ -73,7 +73,7 @@ public interface ResourceGroup extends
 	/**
 	 * A blank modification request for an existing resource group
 	 */
-	public interface UpdateBlank extends 
+	interface UpdateBlank extends
 		Deletable, 
 		Taggable<Update>  {
 	}

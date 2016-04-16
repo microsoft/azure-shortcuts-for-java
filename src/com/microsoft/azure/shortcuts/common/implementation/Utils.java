@@ -45,8 +45,12 @@ import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class Utils {
-	
+public final class Utils {
+
+	private Utils() {
+		throw new AssertionError("Class should not be instantiated.");
+	}
+
 	// Create a new self-signed public/private key pair for an X.509 certificate packaged inside a PKCS#12 (PFX) file
 	public static File createCertPkcs12(
 			File targetPfxFile, 
@@ -175,7 +179,7 @@ public class Utils {
 	
 	
 	// Returns the first node matching the xpath in the xml
-	static public Node findXMLNode(String xml, String xpath) throws XPathExpressionException {
+	public static Node findXMLNode(String xml, String xpath) throws XPathExpressionException {
 		final InputSource parentSource = new InputSource(new StringReader(xml));
 		final XPath xpathObject = XPathFactory.newInstance().newXPath();
 		return (Node) xpathObject.evaluate(xpath, parentSource, XPathConstants.NODE);
@@ -196,7 +200,7 @@ public class Utils {
 	
 	
 	// Returns the XML document as a string
-	static String XMLtoString(Document doc) {
+	public static String XMLtoString(Document doc) {
 		try {
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			StringWriter writer = new StringWriter();

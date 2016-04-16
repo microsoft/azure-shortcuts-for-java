@@ -47,8 +47,8 @@ public abstract class GroupableResourceBaseImpl<
 	 * Getters
 	 *******************************************/
 	
-	@Override 
-	final public String resourceGroup() {
+	@Override
+	public final String resourceGroup() {
 		String groupNameTemp = ResourcesImpl.groupFromResourceId(this.id());
 		return (groupNameTemp == null) ? this.groupName : groupNameTemp;
 	}
@@ -58,7 +58,7 @@ public abstract class GroupableResourceBaseImpl<
 	 * Helpers
 	 * @throws Exception 
 	 **************************************************/
-	final protected ResourceGroup ensureGroup() throws Exception {
+	protected final ResourceGroup ensureGroup() throws Exception {
 		ResourceGroup group;
 		if(!this.isExistingGroup) {
 			if(this.groupName == null) {

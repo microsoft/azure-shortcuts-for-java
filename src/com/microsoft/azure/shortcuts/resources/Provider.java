@@ -35,7 +35,7 @@ public interface Provider extends
 	Map<String, ResourceType> resourceTypes() throws Exception;
 	ResourceType resourceTypes(String name) throws Exception;
 
-	public interface ResourceType extends Indexable {
+	interface ResourceType extends Indexable {
 		List<String> apiVersions();
 		String latestApiVersion();
 	}

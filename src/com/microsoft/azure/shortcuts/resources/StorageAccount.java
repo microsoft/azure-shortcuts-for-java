@@ -40,29 +40,29 @@ public interface StorageAccount extends
 	/**
 	 * @return The URL of the primary blob endpoint
 	 */
-	public URL primaryBlobEndpoint();
+	URL primaryBlobEndpoint();
 	
 	/**
 	 * @return The type of the storage account
 	 */
-	public AccountType accountType();
+	AccountType accountType();
 	
 	/**
 	 * A new blank storage account definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
 	/**
-	 * A new storage account definition allowing to specifiy the resource group to put it in
+	 * A new storage account definition allowing to specify the resource group to put it in
 	 */
-	public interface DefinitionWithGroup extends
+	interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
 	
 	/**
 	 * A new storage account definition with sufficient input parameters specified already to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
 		Provisionable<StorageAccount> {
 		
@@ -77,7 +77,7 @@ public interface StorageAccount extends
 	/**
 	 * An existing storage account update request ready to be applied in the cloud.
 	 */
-	public interface Update extends 
+	interface Update extends
 		UpdateBlank, 
 		Updatable<Update> {
 	}
@@ -86,7 +86,7 @@ public interface StorageAccount extends
 	/**
 	 * A blank modification request for an existing storage account
 	 */
-	public interface UpdateBlank extends 
+	interface UpdateBlank extends
 		Deletable, 
 		Taggable<Update> {
 	

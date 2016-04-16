@@ -165,7 +165,7 @@ public class Azure {
 	
 	
 	// Returns the management client, creating it as needed
-	ManagementClient managementClient() {
+	public ManagementClient managementClient() {
 		if(this.management == null) {
 			this.management = ManagementService.create(configuration);
 		}
@@ -175,7 +175,7 @@ public class Azure {
 	
 	
 	// Returns the compute management client, creating it as needed
-	ComputeManagementClient computeManagementClient() {
+	public ComputeManagementClient computeManagementClient() {
 		if(this.compute == null) {
 			this.compute = ComputeManagementService.create(configuration);
 		}
@@ -185,7 +185,7 @@ public class Azure {
 	
 	
 	// Returns the storage management client, creating it as needed
-	StorageManagementClient storageManagementClient() {
+	public StorageManagementClient storageManagementClient() {
 		if(this.storage == null) {
 			this.storage = StorageManagementService.create(configuration);
 		}
@@ -195,7 +195,7 @@ public class Azure {
 	
 	
 	// Returns the network management client, creating as needed
-	NetworkManagementClient networkManagementClient() {
+	public NetworkManagementClient networkManagementClient() {
 		if(this.networking == null) {
 			this.networking = NetworkManagementService.create(configuration);
 		}

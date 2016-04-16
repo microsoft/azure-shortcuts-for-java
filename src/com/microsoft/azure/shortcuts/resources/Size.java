@@ -33,7 +33,7 @@ public interface Size extends
 	Type toSizeType();
 
 	
-	public enum Type {
+	enum Type {
 		BASIC_A0(VirtualMachineSizeTypes.BASIC_A0),
 		BASIC_A1(VirtualMachineSizeTypes.BASIC_A1),
 		BASIC_A2(VirtualMachineSizeTypes.BASIC_A2),

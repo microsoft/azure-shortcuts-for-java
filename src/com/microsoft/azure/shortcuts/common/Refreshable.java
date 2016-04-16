@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.common;
 
-// Reprepresents refreshable objecta
+// Reprepresents refreshable objects
 public interface Refreshable<T> {
 	T refresh() throws Exception;
 }

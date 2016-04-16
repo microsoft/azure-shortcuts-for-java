@@ -39,45 +39,45 @@ public interface NetworkInterface extends
 	/**
 	 * A new blank network interface definition
 	 */
-	public interface DefinitionBlank extends 
+	interface DefinitionBlank extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 	}
 	
 	/**
 	 * A network interface definition allowing to specify a group to associate with it
 	 */
-	public interface DefinitionWithGroup extends
+	interface DefinitionWithGroup extends
 		GroupResourceBase.DefinitionWithResourceGroup<DefinitionWithNetwork> {}
 	
 	/**
 	 * A network interface definition allowing to associate a virtual network with the network interface
 	 */
-	public interface DefinitionWithNetwork extends 
+	interface DefinitionWithNetwork extends
 		DefinitionCombos.WithExistingNetwork<DefinitionWithSubnet>,
 		DefinitionCombos.WithNewNetwork<DefinitionWithPrivateIp> {}
 	
 	/**
 	 * A network interface definition allowing to specify a subnet from the selected network to associate the network interface with
 	 */
-	public interface DefinitionWithSubnet extends 
+	interface DefinitionWithSubnet extends
 		DefinitionCombos.WithSubnet<DefinitionWithPrivateIp> {}
 	
 	/**
 	 * A network interface definition allowing to assign a private IP address within an existing virtual network subnet
 	 */
-	public interface DefinitionWithPrivateIp extends 
+	interface DefinitionWithPrivateIp extends
 		DefinitionCombos.WithPrivateIpAddress<DefinitionWithPublicIpAddress> {}	
 	
 	/**
 	 * A network interface definition allowing to associate it with a public IP address
 	 */
-	public interface DefinitionWithPublicIpAddress extends 
+	interface DefinitionWithPublicIpAddress extends
 		DefinitionCombos.WithPublicIpAddress<DefinitionProvisionable> { }	
 	
 	/**
 	 * A network interface definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
+	interface DefinitionProvisionable extends
 		Provisionable<NetworkInterface>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
