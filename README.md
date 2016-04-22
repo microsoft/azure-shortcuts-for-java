@@ -572,16 +572,16 @@ NetworkSecurityGroup nsgMinimal = subscription.networkSecurityGroups().define("<
 	.withNewResourceGroup()
 	.provision();
 ```
-With an network security rules and tags:
+With network security rules and tags:
 ```java
-NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<network-security-group-name>")
+NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-name>")
     .withRegion(Region.US_WEST)
-    .withExistingResourceGroup("<existing-group-name>")
-    .withAllowInbound(Protocol.TCP, "*", "80", "*", "8080", "tcp80to8080", 100)
-    .withDenyInbound(Protocol.ANY, "*", "25", "*", "*", "deny25", 200)
-    .withTag("hello", "world")
-    .provision();
-```
+    .withExistingResourceGroup(groupNameCreated)
+    .withRules()
+    	.define("rule1")
+    	.allowInbound()
+    	.fromAnyAddress()
+    	.fromPort(80)		.toAnyAddress()		.toPort(8080)		.withProtocol(Protocol.TCP)		.attach()	.withRules()		.define("rule2")		.denyOutbound()		.fromAnyAddress()		.fromAnyPort()		.toAnyAddress()		.toAnyPort()		.withProtocol(Protocol.UDP)		.attach()	.provision();```
 
 #### Listing network security groups
 

@@ -19,13 +19,15 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
+import com.microsoft.azure.management.network.models.SecurityRuleProtocol;
+
 /**
  * Enumeration of the Azure network protocols. 
  */
 public enum Protocol {
-	TCP("tcp"),
-	UDP("udp"),
-	ANY("*");
+	TCP(SecurityRuleProtocol.TCP),
+	UDP(SecurityRuleProtocol.UDP),
+	ANY(SecurityRuleProtocol.ALL);
 	
 	public final String name;
 	Protocol(String name) {

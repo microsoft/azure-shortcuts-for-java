@@ -66,11 +66,26 @@ public class NetworkSecurityGroupsSample {
     	NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define(newNetworkSecurityGroupName + "2")
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(groupNameCreated)
-    		.withAllowInbound(Protocol.TCP, "*", "80", "*", "8080", "tcp80to8080", 100)
-    		.withDenyInbound(Protocol.ANY, "*", "25", "*", "*", "deny25", 200)
-    		.withTag("hello", "world")
+    		.withRules()
+    			.define("rule1")
+    			.allowInbound()
+    			.fromAnyAddress()
+    			.fromPort(80)
+    			.toAnyAddress()
+    			.toPort(8080)
+    			.withProtocol(Protocol.TCP)
+    			.attach()
+    		.withRules()
+    			.define("rule2")
+    			.allowOutbound()
+    			.fromAnyAddress()
+    			.fromAnyPort()
+    			.toAnyAddress()
+    			.toAnyPort()
+    			.withProtocol(Protocol.UDP)
+    			.attach()
     		.provision();
-    	    	
+    		    	    	
     	// Listing NSGs in a specific resource group
     	nsgs = subscription.networkSecurityGroups().asMap(groupNameCreated);
     	System.out.println(String.format("NSG ids in group '%s': \n\t%s", groupNameCreated, StringUtils.join(nsgs.keySet(), ",\n\t")));

@@ -89,7 +89,6 @@ public interface Network extends
 		DefinitionWithSubnet { 
 	}
 	
-	
 	public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
 		String addressPrefix();
 		String networkSecurityGroup();

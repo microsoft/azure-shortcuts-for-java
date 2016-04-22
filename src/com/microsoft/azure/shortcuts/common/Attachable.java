@@ -19,8 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.common;
 
-
-// Requires the inheritor (typically a "collection"-like type) to support creating member entities using a builder pattern
-public interface SupportsCreating<T> {
-	T define(String name) throws Exception;
+// Encapsulates the "add to parent" method 
+public interface Attachable<PARENT> {
+	PARENT attach() throws Exception;
 }

@@ -23,12 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.microsoft.azure.management.network.models.SecurityRule;
-import com.microsoft.azure.management.network.models.SecurityRuleAccess;
-import com.microsoft.azure.management.network.models.SecurityRuleDirection;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroups;
-import com.microsoft.azure.shortcuts.resources.Protocol;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityRules;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
@@ -138,129 +136,11 @@ public class NetworkSecurityGroupsImpl
 			return this;
 		}
 
-		
-		private SecurityRule createSecurityRule(
-			String direction,
-			String access,
-			Protocol protocol,
-			String sourceAddressPrefix,
-			String sourcePortRange,
-			String destinationAddressPrefix,
-			String destinationPortRange,
-			String name,
-			int priority) {
-			
-			SecurityRule rule = new SecurityRule();
-			rule.setDirection(direction);
-			rule.setAccess(access);
-			rule.setProtocol(protocol.toString());
-			rule.setSourceAddressPrefix(sourceAddressPrefix);
-			rule.setSourcePortRange(sourcePortRange);
-			rule.setDestinationAddressPrefix(destinationAddressPrefix);
-			rule.setDestinationPortRange(destinationPortRange);
-			rule.setName(name);
-			rule.setPriority(priority);
-			return rule;
-		}
-		
 
 		@Override
-		public NetworkSecurityGroupImpl withAllowInbound(
-			Protocol protocol, 
-			String sourceAddressPrefix,
-			String sourcePortRange, 
-			String destinationAddressPrefix, 
-			String destinationPortRange, 
-			String name,
-			int priority) {
-			
-			this.inner().getSecurityRules().add(
-				createSecurityRule(
-					SecurityRuleDirection.INBOUND, 
-					SecurityRuleAccess.ALLOW,
-					protocol, 
-					sourceAddressPrefix, 
-					sourcePortRange, 
-					destinationAddressPrefix, 
-					destinationPortRange, 
-					name, 
-					priority));
-			return this;
+		public NetworkSecurityRules.Definition<DefinitionProvisionable> withRules() {
+			return new NetworkSecurityRulesImpl(this);
 		}
 
-
-		@Override
-		public NetworkSecurityGroupImpl withAllowOutbound(
-			Protocol protocol, 
-			String sourceAddressPrefix,
-			String sourcePortRange, 
-			String destinationAddressPrefix, 
-			String destinationPortRange, 
-			String name,
-			int priority) {
-			this.inner().getSecurityRules().add(
-					createSecurityRule(
-						SecurityRuleDirection.OUTBOUND, 
-						SecurityRuleAccess.ALLOW,
-						protocol, 
-						sourceAddressPrefix, 
-						sourcePortRange, 
-						destinationAddressPrefix, 
-						destinationPortRange, 
-						name, 
-						priority));
-			return this;
-		}
-
-
-		@Override
-		public NetworkSecurityGroupImpl withDenyInbound(
-			Protocol protocol, 
-			String sourceAddressPrefix,
-			String sourcePortRange, 
-			String destinationAddressPrefix, 
-			String destinationPortRange, 
-			String name,
-			int priority) {
-
-			this.inner().getSecurityRules().add(
-				createSecurityRule(
-					SecurityRuleDirection.INBOUND, 
-					SecurityRuleAccess.DENY,
-					protocol, 
-					sourceAddressPrefix, 
-					sourcePortRange, 
-					destinationAddressPrefix, 
-					destinationPortRange, 
-					name, 
-					priority));
-			return this;
-		}
-
-
-		@Override
-		public NetworkSecurityGroupImpl withDenyOutbound(
-			Protocol protocol, 
-			String sourceAddressPrefix,
-			String sourcePortRange, 
-			String destinationAddressPrefix, 
-			String destinationPortRange, 
-			String name,
-			int priority) {
-			
-			this.inner().getSecurityRules().add(
-				createSecurityRule(
-					SecurityRuleDirection.OUTBOUND, 
-					SecurityRuleAccess.DENY,
-					protocol, 
-					sourceAddressPrefix, 
-					sourcePortRange, 
-					destinationAddressPrefix, 
-					destinationPortRange, 
-					name, 
-					priority));
-			
-			return this;
-		}
 	}
 }

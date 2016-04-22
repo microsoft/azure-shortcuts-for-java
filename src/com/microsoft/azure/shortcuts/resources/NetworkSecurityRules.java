@@ -19,36 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.resources;
 
-import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
-import com.microsoft.azure.shortcuts.common.Refreshable;
-import com.microsoft.azure.shortcuts.common.Wrapper;
-import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
+import com.microsoft.azure.shortcuts.common.SupportsCreating;
 
-public interface NetworkSecurityGroup extends 
-	GroupResourceBase,
-	Refreshable<NetworkSecurityGroup>,
-	Wrapper<com.microsoft.azure.management.network.models.NetworkSecurityGroup>,
-	Deletable {
-	
-	/**
-	 * A new blank NSG definition
-	 */
-	public interface DefinitionBlank extends 
-		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {}
-	
-	/**
-	 * An NSG definition allowing to specify the resource group to include it in.
-	 */
-	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
-	
-	/**
-	 * An NSG definition with sufficient attributes specified to be provisioned in the cloud
-	 */
-	public interface DefinitionProvisionable extends 
-		Provisionable<NetworkSecurityGroup>,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
-		NetworkSecurityRules.Definition<DefinitionProvisionable> withRules();		
+public interface NetworkSecurityRules {
+	public interface Definition<PARENT> extends SupportsCreating<NetworkSecurityRule.DefinitionBlank<PARENT>> {
+			
 	}
 }
