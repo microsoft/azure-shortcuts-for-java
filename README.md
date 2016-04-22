@@ -576,12 +576,24 @@ With network security rules and tags:
 ```java
 NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-name>")
     .withRegion(Region.US_WEST)
-    .withExistingResourceGroup(groupNameCreated)
-    .withRules()
-    	.define("rule1")
+    .withExistingResourceGroup("<group-name>")
+	.withNewRule("rule1")
     	.allowInbound()
     	.fromAnyAddress()
-    	.fromPort(80)		.toAnyAddress()		.toPort(8080)		.withProtocol(Protocol.TCP)		.attach()	.withRules()		.define("rule2")		.denyOutbound()		.fromAnyAddress()		.fromAnyPort()		.toAnyAddress()		.toAnyPort()		.withProtocol(Protocol.UDP)		.attach()	.provision();```
+    	.fromPort(80)
+    	.toAddress("10.0.0.0/29")
+    	.toPort(80)
+    	.withProtocol(Protocol.TCP)
+    	.attach()
+    .withNewRule("rule2")
+    	.denyOutbound()
+    	.fromAnyAddress()
+    	.fromAnyPort()
+    	.toAnyAddress()
+    	.toAnyPort()
+    	.withProtocol(Protocol.UDP)
+    	.attach()
+    .provision();```
 
 #### Listing network security groups
 

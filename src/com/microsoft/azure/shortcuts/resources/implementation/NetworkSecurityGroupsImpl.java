@@ -26,10 +26,9 @@ import com.microsoft.azure.management.network.models.SecurityRule;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroups;
-import com.microsoft.azure.shortcuts.resources.NetworkSecurityRules;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityRule;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
-
 
 public class NetworkSecurityGroupsImpl 
 	extends GroupableResourcesBaseImpl<
@@ -136,11 +135,12 @@ public class NetworkSecurityGroupsImpl
 			return this;
 		}
 
-
 		@Override
-		public NetworkSecurityRules.Definition<DefinitionProvisionable> withRules() {
-			return new NetworkSecurityRulesImpl(this);
+		public NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> withNewRule(String name) {
+			SecurityRule nativeItem = new SecurityRule();
+			nativeItem.setName(name);
+			nativeItem.setPriority(100);
+			return NetworkSecurityRuleImpl.wrap(nativeItem, this);
 		}
-
 	}
 }
