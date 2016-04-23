@@ -111,12 +111,7 @@ public class NetworksImpl
 				NetworkImpl>
 		implements
 			Network,
-			Network.DefinitionBlank,
-			Network.DefinitionWithGroup,
-			Network.DefinitionProvisionable,
-			Network.DefinitionWithAddressSpace,
-			Network.DefinitionProvisionableWithSubnet, 
-			Network.DefinitionWithSubnet {
+			Network.Definition {
 		
 		private NetworkImpl(VirtualNetwork azureVirtualNetwork, EntitiesImpl<Subscription> collection) {
 			super(azureVirtualNetwork.getName(), azureVirtualNetwork, collection);

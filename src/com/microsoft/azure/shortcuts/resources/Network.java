@@ -42,6 +42,15 @@ public interface Network extends
 	Map<String, Subnet> subnets();
 	Subnet subnets(String id);
 	
+	public interface Definition extends 
+		DefinitionBlank,
+		DefinitionWithGroup,
+		DefinitionWithSubnet,
+		DefinitionWithAddressSpace,
+		DefinitionWithDNSServer,
+		DefinitionProvisionable,
+		DefinitionProvisionableWithSubnet {}
+	
 	/**
 	 * A new blank virtual network definition
 	 */
