@@ -90,10 +90,7 @@ public class LoadBalancersImpl
 				LoadBalancerImpl>
 		implements
 			LoadBalancer,
-			LoadBalancer.DefinitionBlank,
-			LoadBalancer.DefinitionWithGroup,
-			LoadBalancer.DefinitionWithFrontEnd,
-			LoadBalancer.DefinitionProvisionable {
+			LoadBalancer.Definition {
 		
 		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, EntitiesImpl<Subscription> collection) {
 			super(nativeItem.getName(), nativeItem, collection);

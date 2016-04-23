@@ -35,6 +35,13 @@ public interface LoadBalancer extends
 	/**
 	 * A new blank load balancer definition
 	 */
+	
+	public interface Definition extends 
+		DefinitionBlank,
+		DefinitionWithGroup,
+		DefinitionWithFrontEnd,
+		DefinitionProvisionable {}
+	
 	public interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
