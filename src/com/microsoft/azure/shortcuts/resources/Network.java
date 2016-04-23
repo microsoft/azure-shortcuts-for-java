@@ -47,7 +47,7 @@ public interface Network extends
 		DefinitionWithGroup,
 		DefinitionWithSubnet,
 		DefinitionWithAddressSpace,
-		DefinitionWithDNSServer,
+		DefinitionWithDnsServer,
 		DefinitionProvisionable,
 		DefinitionProvisionableWithSubnet {}
 	
@@ -79,7 +79,7 @@ public interface Network extends
 	/**
 	 * A virtual network definition expecting the IP address of an existing DNS server to be associated with the network 
 	 */
-	public interface DefinitionWithDNSServer {
+	public interface DefinitionWithDnsServer {
 		DefinitionProvisionable withDnsServer(String ipAddress);
 	}
 	
@@ -89,7 +89,7 @@ public interface Network extends
 	public interface DefinitionProvisionable extends 
 		Provisionable<Network>,
 		DefinitionWithAddressSpace,
-		DefinitionWithDNSServer,
+		DefinitionWithDnsServer,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 	
