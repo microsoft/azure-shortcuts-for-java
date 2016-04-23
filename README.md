@@ -20,7 +20,7 @@ The shortcuts library supports Azure's "modern" ARM (Azure Resource Model) model
 
 A lot of short code samples are located in the packages `com.microsoft.azure.shortcuts.resources.samples` (https://github.com/Microsoft/azure-shortcuts-for-java/tree/master/src/com/microsoft/azure/shortcuts/resources/samples).
 
-It is *not* currently a goal of this library to cover all of the Azure API surface. Rather, it is to drastically simplify the hardest of the most important scenarios that developers have been running into. For everything else, the [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java) can be used as the fallback, which this project is also built on.
+This "shortcuts" project is now the experimental pilot for the new version of the [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java). Although its original goal has been to drastically simplify only the hardest of the most important scenarios that developers have been running into, the current revamping of the Azure SDK for Java (especially the management API) is in large parts being modeled after this "shortcuts" project.
 
 ## Setting up the dev machine
 
@@ -44,11 +44,11 @@ To work on this project, it's easiest to use Eclipse and Maven (kudos to Ted Gao
 
 Everything that is explicitly documented in this readme is being tested. The samples are excerpts from automation tests. Some typos are still occasionally possible - sorry! Someday this will be more automated for maximum reliability. But the general principles this project aspires to follow rigorously are *"Documentation is code"*.
 
-There are no JavaDocs (yet). Someday there may be. Note though that the point of this API design is to *minimize* the user's dependence on API documentation. The API should "just make sense".
+There are no JavaDocs. Someday there may be but note that an important goal of this design approach is to *minimize* the user's dependence on API documentation. The API should "just make sense". The basic philosophy here is: the more documentation a design requires, the less optimal it is. *"If you have to explain it, then you're doing it wrong"*.
 
 ## Programming patterns 
 
-If you skip over this section and jump directly to the [examples](#examples), chances are it will "just make sense". But if you'd like to learn more about the design approach in the abstract, read on:
+In that spirit, if you skip over this section and jump directly to the [examples](#examples), chances are it will "just make sense". But if you'd like to learn more about the design approach in the abstract, read on:
 
 The key design principles behind the shortcuts API are: to be **intuitive, succint, consistent, and preventing you from winding up in an invalid state**.
 
@@ -56,7 +56,7 @@ There are a small handful of general patterns to be aware of; once you remember 
 
 ### Creating new entities
 
-There are **no constructors anywhere**. The only class exposed to the user is `Subscription`, but only so that the user can use the static `authenticate()` method on it as th eentry point to evarything else.  Everything else that is intended for the user's use is an interface. 
+There are **no constructors anywhere**. The only class exposed to the user is `Subscription`, but only so that the user can use the static `authenticate()` method on it as the entry point to everything else.  Everything else that is intended for the user's use is an interface. 
 
 To create a new instance of any type of a top level cloud entity (e.g. `Network`), you use the top level "collection" of those objects hanging off of the `Subscription` client object as the factory. And yes, there is only one single client object to instantiate and deal with. 
 
