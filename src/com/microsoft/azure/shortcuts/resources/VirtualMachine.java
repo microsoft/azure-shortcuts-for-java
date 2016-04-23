@@ -98,6 +98,18 @@ public interface VirtualMachine extends
 	public VirtualMachine generalize() throws Exception;
 
 
+	public interface Definition extends 
+		DefinitionBlank,
+		DefinitionWithGroup,
+		DefinitionWithNetworking,
+		DefinitionWithSubnet,
+		DefinitionWithPrivateIp,
+		DefinitionWithPublicIp,
+		DefinitionWithAdminUsername,
+		DefinitionWithAdminPassword,
+		DefinitionWithImage,
+		DefinitionProvisionable {}
+	
 	/**
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
 	 */

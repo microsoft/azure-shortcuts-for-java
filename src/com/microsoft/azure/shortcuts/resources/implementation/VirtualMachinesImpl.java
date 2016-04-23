@@ -138,16 +138,7 @@ public class VirtualMachinesImpl
 				VirtualMachineImpl>
 		implements 
 			VirtualMachine,
-			VirtualMachine.DefinitionBlank,
-			VirtualMachine.DefinitionWithGroup,
-			VirtualMachine.DefinitionWithNetworking,
-			VirtualMachine.DefinitionWithSubnet,
-			VirtualMachine.DefinitionWithPrivateIp,
-			VirtualMachine.DefinitionWithPublicIp,
-			VirtualMachine.DefinitionWithAdminUsername,
-			VirtualMachine.DefinitionWithAdminPassword,
-			VirtualMachine.DefinitionWithImage,
-			VirtualMachine.DefinitionProvisionable {
+			VirtualMachine.Definition {
 
 		private boolean isExistingStorageAccount;
 		private String storageAccountId;
