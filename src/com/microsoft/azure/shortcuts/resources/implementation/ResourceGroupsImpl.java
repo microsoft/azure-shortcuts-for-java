@@ -105,8 +105,7 @@ public class ResourceGroupsImpl
 			IndexableRefreshableWrapperImpl<ResourceGroup, ResourceGroupExtended>
 		implements
 			ResourceGroup.Update,
-			ResourceGroup.DefinitionProvisionable,
-			ResourceGroup.DefinitionBlank,
+			ResourceGroup.Definition,
 			ResourceGroup {
 		
 		private final EntitiesImpl<Subscription> collection;

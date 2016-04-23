@@ -41,6 +41,11 @@ public interface ResourceGroup extends
 	String provisioningState() throws Exception;
 	String name();
 
+	
+	public interface Definition extends
+		DefinitionBlank,
+		DefinitionProvisionable {}
+	
 	/**
 	 * A new blank resource group definition
 	 */
