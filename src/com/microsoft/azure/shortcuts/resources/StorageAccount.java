@@ -47,6 +47,11 @@ public interface StorageAccount extends
 	 */
 	public AccountType accountType();
 	
+	public interface Definition extends
+		DefinitionBlank,
+		DefinitionWithGroup,
+		DefinitionProvisionable {}
+		
 	/**
 	 * A new blank storage account definition
 	 */

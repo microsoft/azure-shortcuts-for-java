@@ -91,9 +91,7 @@ public class StorageAccountsImpl
 				StorageAccountImpl>
 		implements
 			StorageAccount,
-			StorageAccount.DefinitionBlank,
-			StorageAccount.DefinitionWithGroup,
-			StorageAccount.DefinitionProvisionable {
+			StorageAccount.Definition {
 		
 		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, EntitiesImpl<Subscription> collection) {
 			super(azureStorageAccount.getId(), azureStorageAccount, collection);
