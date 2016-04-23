@@ -91,9 +91,7 @@ public class NetworkSecurityGroupsImpl
 				NetworkSecurityGroupImpl>
 		implements
 			NetworkSecurityGroup,
-			NetworkSecurityGroup.DefinitionBlank,
-			NetworkSecurityGroup.DefinitionWithGroup,
-			NetworkSecurityGroup.DefinitionProvisionable {
+			NetworkSecurityGroup.Definition {
 		
 		private NetworkSecurityGroupImpl(com.microsoft.azure.management.network.models.NetworkSecurityGroup azureItem, 
 				EntitiesImpl<Subscription> collection) {

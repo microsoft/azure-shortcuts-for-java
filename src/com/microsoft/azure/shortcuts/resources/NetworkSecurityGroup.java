@@ -31,6 +31,12 @@ public interface NetworkSecurityGroup extends
 	Wrapper<com.microsoft.azure.management.network.models.NetworkSecurityGroup>,
 	Deletable {
 	
+	public interface Definition extends
+		DefinitionBlank,
+		DefinitionWithGroup,
+		DefinitionProvisionable {}
+	
+	
 	/**
 	 * A new blank NSG definition
 	 */
