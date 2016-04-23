@@ -63,7 +63,7 @@ public interface NetworkSecurityRule {
 	}
 	
 	
-	public interface Definitions<PARENT> extends
+	public interface Definition<PARENT> extends
 		DefinitionBlank<PARENT>,
 		DefinitionWithDirection<PARENT>,
 		DefinitionWithPermission<PARENT>,

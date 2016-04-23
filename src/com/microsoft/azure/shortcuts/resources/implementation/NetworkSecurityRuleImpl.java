@@ -30,7 +30,7 @@ import com.microsoft.azure.shortcuts.resources.implementation.NetworkSecurityGro
  ***************************************************************/
 class NetworkSecurityRuleImpl implements
 	NetworkSecurityRule,
-	NetworkSecurityRule.Definitions<NetworkSecurityGroup.DefinitionProvisionable> {
+	NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionProvisionable> {
 		
 	private final com.microsoft.azure.management.network.models.SecurityRule nativeItem;
 	private final NetworkSecurityGroupImpl nsg;
