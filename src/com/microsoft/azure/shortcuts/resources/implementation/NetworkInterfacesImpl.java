@@ -102,13 +102,7 @@ public class NetworkInterfacesImpl
 				NetworkInterfaceImpl>
 		implements
 			NetworkInterface,
-			NetworkInterface.DefinitionBlank,
-			NetworkInterface.DefinitionWithGroup,
-			NetworkInterface.DefinitionWithNetwork,
-			NetworkInterface.DefinitionWithSubnet,
-			NetworkInterface.DefinitionWithPrivateIp,
-			NetworkInterface.DefinitionWithPublicIpAddress,
-			NetworkInterface.DefinitionProvisionable {
+			NetworkInterface.Definition {
 		
 		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, EntitiesImpl<Subscription> collection) {
 			super(azureNetworkInterface.getName(), azureNetworkInterface, collection);

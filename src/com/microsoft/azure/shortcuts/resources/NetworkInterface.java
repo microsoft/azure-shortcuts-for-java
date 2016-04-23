@@ -36,6 +36,15 @@ public interface NetworkInterface extends
 
 	Map<String, PublicIpAddress> publicIpAddresses();
 	
+	public interface Definition extends 
+		DefinitionBlank,
+		DefinitionWithGroup,
+		DefinitionWithNetwork,
+		DefinitionWithSubnet,
+		DefinitionWithPrivateIp,
+		DefinitionWithPublicIpAddress,
+		DefinitionProvisionable {}
+		
 	/**
 	 * A new blank network interface definition
 	 */
