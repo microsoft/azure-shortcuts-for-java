@@ -37,6 +37,13 @@ public interface PublicIpAddress extends
 	String ipAddress();
 	String leafDomainLabel();
 
+	public interface Definition extends 
+		DefinitionBlank,
+		DefinitionWithGroup,
+		DefinitionWithIpAddress,
+		DefinitionWithLeafDomainLabel,
+		DefinitionProvisionable {}
+		
 	/**
 	 * A new blank public IP address definition
 	 */

@@ -96,11 +96,7 @@ public class PublicIpAddressesImpl
 				PublicIpAddressImpl>
 		implements
 			PublicIpAddress,
-			PublicIpAddress.DefinitionBlank,
-			PublicIpAddress.DefinitionWithGroup,
-			PublicIpAddress.DefinitionWithLeafDomainLabel,
-			PublicIpAddress.DefinitionWithIpAddress,
-			PublicIpAddress.DefinitionProvisionable {
+			PublicIpAddress.Definition {
 		
 		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, EntitiesImpl<Subscription> collection) {
 			super(azurePublicIpAddress.getName(), azurePublicIpAddress, collection);
