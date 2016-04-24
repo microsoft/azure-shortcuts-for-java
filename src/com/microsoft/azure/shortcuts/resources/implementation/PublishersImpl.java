@@ -25,11 +25,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
 
-import com.microsoft.azure.management.compute.models.VirtualMachineImageListOffersParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageListPublishersParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineImageResource;
-import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
-import com.microsoft.azure.shortcuts.resources.Offer;
 import com.microsoft.azure.shortcuts.resources.Publisher;
 import com.microsoft.azure.shortcuts.resources.Publishers;
 import com.microsoft.azure.shortcuts.resources.Region;
@@ -68,7 +65,7 @@ public class PublishersImpl
 	public Map<String, Publisher> asMap(Region region) throws Exception {
 		TreeMap<String, Publisher> wrappers = new TreeMap<>();
 		for(VirtualMachineImageResource nativeItem : getNativeEntities(region.toString())) {
-			PublisherImpl wrapper = new PublisherImpl(nativeItem, this);
+			PublisherImpl wrapper = PublisherImpl.wrap(nativeItem, this);
 			wrappers.put(nativeItem.getId(), wrapper);
 		}
 
@@ -88,60 +85,12 @@ public class PublishersImpl
 		params.setLocation(region.toString());
 		for(VirtualMachineImageResource nativeItem : azure.computeManagementClient().getVirtualMachineImagesOperations().listPublishers(params).getResources()) {
 			if(nativeItem.getId().equalsIgnoreCase(name)) {
-				return new PublisherImpl(nativeItem, this);
+				return PublisherImpl.wrap(nativeItem, this);
 			} else if(nativeItem.getName().equalsIgnoreCase(name)) {
-				return new PublisherImpl(nativeItem, this);
+				return PublisherImpl.wrap(nativeItem, this);
 			}
 		}
 
 		throw new NoSuchElementException("Publisher not found.");		
-	}
-
-	// Implements logic for individual provider
-	private class PublisherImpl
-		extends
-			IndexableWrapperImpl<com.microsoft.azure.management.compute.models.VirtualMachineImageResource>
-		implements 
-			Publisher {
-		
-		private final ArmEntitiesImpl collection;
-		
-		private PublisherImpl(com.microsoft.azure.management.compute.models.VirtualMachineImageResource publisher, ArmEntitiesImpl collection) {
-			super(publisher.getId(), publisher);
-			this.collection = collection;
-		}
-
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/		
-
-		@Override
-		public String name() {
-			return this.inner().getName();
-		}
-
-		@Override
-		public Region region() {
-			return Region.fromName(this.inner().getLocation());
-		}
-
-		@Override
-		public Map<String, Offer> offers() throws Exception {
-			VirtualMachineImageListOffersParameters params = new VirtualMachineImageListOffersParameters();
-			params.setLocation(this.region().toString());
-			params.setPublisherName(this.name());
-			ArrayList<VirtualMachineImageResource> nativeItems = collection.azure().computeManagementClient().getVirtualMachineImagesOperations().listOffers(params).getResources();
-			TreeMap<String, Offer> offers = new TreeMap<>();
-			for(VirtualMachineImageResource nativeItem : nativeItems) {
-				offers.put(nativeItem.getId(), new OfferImpl(nativeItem.getName(), nativeItem, this, collection.azure()));
-			}
-			
-			return Collections.unmodifiableMap(offers);
-		}
-
-
-		/************************************************************
-		 * Verbs
-		 ************************************************************/
 	}
 }
