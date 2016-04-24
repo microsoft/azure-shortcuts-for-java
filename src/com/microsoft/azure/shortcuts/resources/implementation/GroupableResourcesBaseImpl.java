@@ -17,27 +17,25 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.common.implementation;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
-import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
 
 public abstract class GroupableResourcesBaseImpl<WRAPPER, 
 		INNER extends ResourceBaseExtended,
 		WRAPPERIMPL extends WRAPPER> extends ArmEntitiesImpl {
-	protected GroupableResourcesBaseImpl(Subscription azure) {
-		super(azure);
+	protected GroupableResourcesBaseImpl(Subscription subscription) {
+		super(subscription);
 	}
 	
-	protected abstract List<INNER> getNativeEntities(String group) throws Exception;
-	protected abstract INNER getNativeEntity(String group, String name) throws Exception;
-	protected abstract WRAPPERIMPL wrap(INNER nativeItem);
+	abstract List<INNER> getNativeEntities(String group) throws Exception;
+	abstract INNER getNativeEntity(String group, String name) throws Exception;
+	abstract WRAPPERIMPL wrap(INNER nativeItem);
 	
 	public abstract void delete(String groupName, String name) throws Exception;
 	

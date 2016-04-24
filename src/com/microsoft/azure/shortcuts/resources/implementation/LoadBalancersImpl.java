@@ -27,8 +27,6 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.LoadBalancer;
 import com.microsoft.azure.shortcuts.resources.LoadBalancers;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
-import com.microsoft.azure.shortcuts.resources.common.implementation.PublicIpGroupableResourceBaseImpl;
 
 public class LoadBalancersImpl 
 	extends GroupableResourcesBaseImpl<
@@ -51,7 +49,7 @@ public class LoadBalancersImpl
 
 	@Override
 	public void delete(String groupName, String name) throws Exception {
-		azure.networkManagementClient().getLoadBalancersOperations().delete(groupName, name);
+		subscription.networkManagementClient().getLoadBalancersOperations().delete(groupName, name);
 	}
 
 
@@ -62,15 +60,15 @@ public class LoadBalancersImpl
 	@Override
 	protected List<com.microsoft.azure.management.network.models.LoadBalancer> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
-			return this.azure.networkManagementClient().getLoadBalancersOperations().listAll().getLoadBalancers();
+			return this.subscription.networkManagementClient().getLoadBalancersOperations().listAll().getLoadBalancers();
 		} else {
-			return this.azure.networkManagementClient().getLoadBalancersOperations().list(resourceGroupName).getLoadBalancers();
+			return this.subscription.networkManagementClient().getLoadBalancersOperations().list(resourceGroupName).getLoadBalancers();
 		}
 	}
 	
 	@Override
 	protected com.microsoft.azure.management.network.models.LoadBalancer getNativeEntity(String groupName, String name) throws Exception {
-		return azure.networkManagementClient().getLoadBalancersOperations().get(groupName, name).getLoadBalancer();
+		return subscription.networkManagementClient().getLoadBalancersOperations().get(groupName, name).getLoadBalancer();
 	}
 	
 	@Override 
@@ -112,7 +110,7 @@ public class LoadBalancersImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.collection.azure().loadBalancers().delete(this.id());
+			this.collection.subscription().loadBalancers().delete(this.id());
 		}
 
 		@Override
@@ -129,7 +127,7 @@ public class LoadBalancersImpl
 			ipConfig.setPublicIpAddress(r);
 			ipConfig.setName(this.name());
 			
-			this.collection.azure().networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.collection.subscription().networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

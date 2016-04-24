@@ -33,8 +33,6 @@ import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
-import com.microsoft.azure.shortcuts.resources.common.implementation.NetworkableGroupableResourceBaseImpl;
 
 
 public class NetworkInterfacesImpl 
@@ -63,7 +61,7 @@ public class NetworkInterfacesImpl
 
 	@Override
 	public void delete(String groupName, String name) throws Exception {
-		azure.networkManagementClient().getNetworkInterfacesOperations().delete(groupName, name);
+		subscription.networkManagementClient().getNetworkInterfacesOperations().delete(groupName, name);
 	}
 
 
@@ -74,15 +72,15 @@ public class NetworkInterfacesImpl
 	@Override
 	protected List<com.microsoft.azure.management.network.models.NetworkInterface> getNativeEntities(String groupName) throws Exception {
 		if(groupName == null) {
-			return this.azure.networkManagementClient().getNetworkInterfacesOperations().listAll().getNetworkInterfaces();
+			return this.subscription.networkManagementClient().getNetworkInterfacesOperations().listAll().getNetworkInterfaces();
 		} else {
-			return this.azure.networkManagementClient().getNetworkInterfacesOperations().list(groupName).getNetworkInterfaces();
+			return this.subscription.networkManagementClient().getNetworkInterfacesOperations().list(groupName).getNetworkInterfaces();
 		}
 	}
 	
 	@Override
 	protected com.microsoft.azure.management.network.models.NetworkInterface getNativeEntity(String groupName, String name) throws Exception {
-		return azure.networkManagementClient().getNetworkInterfacesOperations().get(groupName, name).getNetworkInterface();
+		return subscription.networkManagementClient().getNetworkInterfacesOperations().get(groupName, name).getNetworkInterface();
 	}
 	
 	@Override
@@ -131,7 +129,7 @@ public class NetworkInterfacesImpl
 					if(pipId == null) {
 						continue;
 					} else {
-						PublicIpAddress pip = azure.publicIpAddresses(pipId.getId());
+						PublicIpAddress pip = subscription.publicIpAddresses(pipId.getId());
 						pips.put(pip.id(), pip);						
 					}
 				}
@@ -154,7 +152,7 @@ public class NetworkInterfacesImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.collection.azure().networkInterfaces().delete(this.id());
+			this.collection.subscription().networkInterfaces().delete(this.id());
 		}
 
 		@Override
@@ -185,7 +183,7 @@ public class NetworkInterfacesImpl
 				ipConfig.setPublicIpAddress(r);
 			}
 			
-			azure.networkManagementClient().getNetworkInterfacesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			subscription.networkManagementClient().getNetworkInterfacesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

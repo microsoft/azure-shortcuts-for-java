@@ -17,12 +17,11 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.common.implementation;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
-import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public abstract class NetworkableGroupableResourceBaseImpl<
 		WRAPPER, 
@@ -50,7 +49,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 				this.networkId = this.name() + "net";
 			}
 	
-			Network network = this.collection.azure().networks().define(this.networkId)
+			Network network = this.collection.subscription().networks().define(this.networkId)
 				.withRegion(this.region())
 				.withExistingResourceGroup(groupName)
 				.withAddressSpace(this.networkCidr)
@@ -58,7 +57,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 			this.isNetworkExisting = true;
 			return network;
 		} else {
-			return this.collection.azure().networks(this.networkId);
+			return this.collection.subscription().networks(this.networkId);
 		}
 	}
 

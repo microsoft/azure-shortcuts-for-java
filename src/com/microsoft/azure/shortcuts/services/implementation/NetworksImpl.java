@@ -72,7 +72,7 @@ public class NetworksImpl
 				+ "/*[local-name()='VirtualNetworkSite' and @name='%s']", name);
 		
 		// Get current network configuration
-		String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
+		String networkConfig = subscription.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
 		
 		// Correct for garbage prefix in XML returned by Azure
 		networkConfig = networkConfig.substring(networkConfig.indexOf('<'));
@@ -90,7 +90,7 @@ public class NetworksImpl
 	public List<String> names() {
 		try {
 			final ArrayList<VirtualNetworkSite> items = 
-				azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites();
+				subscription.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites();
 			ArrayList<String> names = new ArrayList<>();
 			for(VirtualNetworkSite item : items) {
 				names.add(item.getName());
@@ -111,7 +111,7 @@ public class NetworksImpl
 	private void updateNetworkConfig(String xml) throws Exception {
 		NetworkSetConfigurationParameters params = new NetworkSetConfigurationParameters();
 		params.setConfiguration(xml);
-		azure.networkManagementClient().getNetworksOperations().setConfiguration(params);
+		subscription.networkManagementClient().getNetworksOperations().setConfiguration(params);
 	}
 	
 	
@@ -251,7 +251,7 @@ public class NetworksImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.networks().delete(this.id);
+			subscription.networks().delete(this.id);
 		}
 
 
@@ -298,7 +298,7 @@ public class NetworksImpl
 				.replace("${subnets}", subnetsSection.toString());
 			
 			// Get current network configuration
-			String networkConfig = azure.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
+			String networkConfig = subscription.networkManagementClient().getNetworksOperations().getConfiguration().getConfiguration();
 			
 			// Correct for garbage prefix in XML returned by Azure
 			networkConfig = networkConfig.substring(networkConfig.indexOf('<'));
@@ -320,7 +320,7 @@ public class NetworksImpl
 
 		@Override
 		public NetworkImpl refresh() throws Exception {
-			ArrayList<VirtualNetworkSite> azureSites = azure.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites();
+			ArrayList<VirtualNetworkSite> azureSites = subscription.networkManagementClient().getNetworksOperations().list().getVirtualNetworkSites();
 			
 			for(VirtualNetworkSite s : azureSites) {
 				if(s.getName().equals(this.inner().getName())) {

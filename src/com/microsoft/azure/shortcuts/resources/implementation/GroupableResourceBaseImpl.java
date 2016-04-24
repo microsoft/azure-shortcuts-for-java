@@ -17,14 +17,12 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.common.implementation;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
-import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
-import com.microsoft.azure.shortcuts.resources.implementation.ResourcesImpl;
 
 
 public abstract class GroupableResourceBaseImpl<
@@ -65,13 +63,13 @@ public abstract class GroupableResourceBaseImpl<
 				this.groupName = this.name() + "group";
 			}
 			
-			group = this.collection.azure().resourceGroups().define(this.groupName)
+			group = this.collection.subscription().resourceGroups().define(this.groupName)
 				.withRegion(this.region())
 				.provision();
 			this.isExistingGroup = true;
 			return group;
 		} else {
-			return this.collection.azure().resourceGroups(this.groupName);
+			return this.collection.subscription().resourceGroups(this.groupName);
 		}
 	}
 	

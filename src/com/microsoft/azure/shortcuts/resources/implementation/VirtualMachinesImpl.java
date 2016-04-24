@@ -51,8 +51,6 @@ import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
-import com.microsoft.azure.shortcuts.resources.common.implementation.NetworkableGroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
 public class VirtualMachinesImpl
@@ -99,7 +97,7 @@ public class VirtualMachinesImpl
 	
 	@Override
 	public void delete(String groupName, String name) throws Exception {
-		azure.computeManagementClient().getVirtualMachinesOperations().delete(groupName, name);
+		subscription.computeManagementClient().getVirtualMachinesOperations().delete(groupName, name);
 	}
 
 	
@@ -110,15 +108,15 @@ public class VirtualMachinesImpl
 	@Override
 	protected List<com.microsoft.azure.management.compute.models.VirtualMachine> getNativeEntities(String groupName) throws Exception {
 		if(groupName != null) {
-			return azure.computeManagementClient().getVirtualMachinesOperations().list(groupName).getVirtualMachines();
+			return subscription.computeManagementClient().getVirtualMachinesOperations().list(groupName).getVirtualMachines();
 		} else {
-			return azure.computeManagementClient().getVirtualMachinesOperations().listAll(null).getVirtualMachines();
+			return subscription.computeManagementClient().getVirtualMachinesOperations().listAll(null).getVirtualMachines();
 		}
 	}
 	
 	@Override
 	protected com.microsoft.azure.management.compute.models.VirtualMachine getNativeEntity(String groupName, String name) throws Exception {
-		return azure.computeManagementClient().getVirtualMachinesOperations().get(groupName, name).getVirtualMachine();
+		return subscription.computeManagementClient().getVirtualMachinesOperations().get(groupName, name).getVirtualMachine();
 	}
 	
 	@Override 
@@ -477,30 +475,30 @@ public class VirtualMachinesImpl
 		 *******************************************************/
 		@Override
 		public void delete() throws Exception {
-			this.collection.azure().virtualMachines().delete(this.id());
+			this.collection.subscription().virtualMachines().delete(this.id());
 		}
 
 		@Override
 		public VirtualMachineImpl stop() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().powerOff(this.resourceGroup(), this.name());
+			this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().powerOff(this.resourceGroup(), this.name());
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl restart() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().restart(this.resourceGroup(), this.name());
+			this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().restart(this.resourceGroup(), this.name());
 			return this;
 		}
 
 		@Override
 		public VirtualMachineImpl deallocate() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().deallocate(this.resourceGroup(), this.name());
+			this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().deallocate(this.resourceGroup(), this.name());
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl start() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().start(this.resourceGroup(), this.name());
+			this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().start(this.resourceGroup(), this.name());
 			return this;
 		}
 		
@@ -510,13 +508,13 @@ public class VirtualMachinesImpl
 			params.setDestinationContainerName(containerName.toLowerCase());
 			params.setVirtualHardDiskNamePrefix(diskNamePrefix);
 			params.setOverwrite(overwrite);
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().capture(this.resourceGroup(), this.name(), params);
+			this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().capture(this.resourceGroup(), this.name(), params);
 			return this;
 		}
 		
 		@Override
 		public VirtualMachineImpl generalize() throws Exception {
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().generalize(this.resourceGroup(), this.name());
+			this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().generalize(this.resourceGroup(), this.name());
 			return this;
 		}
 		
@@ -562,7 +560,7 @@ public class VirtualMachinesImpl
 			URL diskBlob = new URL(container, "osDisk.vhd");
 			this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 
-			this.collection.azure().computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.resourceGroup(), this.inner());
+			this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.resourceGroup(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		
@@ -589,7 +587,7 @@ public class VirtualMachinesImpl
 					this.storageAccountId = this.name() + "store";
 				}
 				
-				StorageAccount storageAccount = azure.storageAccounts().define(this.storageAccountId)
+				StorageAccount storageAccount = subscription.storageAccounts().define(this.storageAccountId)
 					.withRegion(this.region())
 					.withExistingResourceGroup(groupName)
 					.provision();
@@ -597,7 +595,7 @@ public class VirtualMachinesImpl
 				return storageAccount;
 				
 			} else {
-				return this.collection.azure().storageAccounts(this.storageAccountId);
+				return this.collection.subscription().storageAccounts(this.storageAccountId);
 			}
 		}
 		
@@ -647,7 +645,7 @@ public class VirtualMachinesImpl
 					this.availabilitySetId = this.name() + "set";
 				}
 				
-				AvailabilitySet availabilitySet = azure.availabilitySets().define(this.availabilitySetId)
+				AvailabilitySet availabilitySet = subscription.availabilitySets().define(this.availabilitySetId)
 					.withRegion(this.region())
 					.withExistingResourceGroup(groupName)
 					.provision();
@@ -656,7 +654,7 @@ public class VirtualMachinesImpl
 			} else if(this.availabilitySetId == null) {
 				return null;
 			} else {
-				return this.collection.azure().availabilitySets(this.availabilitySetId);
+				return this.collection.subscription().availabilitySets(this.availabilitySetId);
 			}
 		}
 		
@@ -670,7 +668,7 @@ public class VirtualMachinesImpl
 					this.nicId = this.name() + "nic";
 				}
 				
-				NetworkInterface nic = azure.networkInterfaces().define(this.nicId)
+				NetworkInterface nic = subscription.networkInterfaces().define(this.nicId)
 					.withRegion(this.region())
 					.withExistingResourceGroup(groupName)
 					.withExistingNetwork(network)
@@ -681,7 +679,7 @@ public class VirtualMachinesImpl
 				this.isExistingPrimaryNIC = true;
 				return nic;
 			} else {
-				return this.collection.azure().networkInterfaces(this.nicId);
+				return this.collection.subscription().networkInterfaces(this.nicId);
 			}
 		}
 	}

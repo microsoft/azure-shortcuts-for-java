@@ -30,7 +30,6 @@ import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Offer;
 import com.microsoft.azure.shortcuts.resources.Publisher;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.common.implementation.ArmEntitiesImpl;
 
 // Implements logic for individual provider
 class PublisherImpl
@@ -69,10 +68,10 @@ class PublisherImpl
 		VirtualMachineImageListOffersParameters params = new VirtualMachineImageListOffersParameters();
 		params.setLocation(this.region().toString());
 		params.setPublisherName(this.name());
-		ArrayList<VirtualMachineImageResource> nativeItems = collection.azure().computeManagementClient().getVirtualMachineImagesOperations().listOffers(params).getResources();
+		ArrayList<VirtualMachineImageResource> nativeItems = collection.subscription().computeManagementClient().getVirtualMachineImagesOperations().listOffers(params).getResources();
 		TreeMap<String, Offer> offers = new TreeMap<>();
 		for(VirtualMachineImageResource nativeItem : nativeItems) {
-			offers.put(nativeItem.getId(), new OfferImpl(nativeItem.getName(), nativeItem, this, collection.azure()));
+			offers.put(nativeItem.getId(), new OfferImpl(nativeItem.getName(), nativeItem, this, collection.subscription()));
 		}
 		
 		return Collections.unmodifiableMap(offers);

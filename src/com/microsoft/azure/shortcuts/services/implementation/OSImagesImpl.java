@@ -78,7 +78,7 @@ public class OSImagesImpl
 	
 	// Helper to list OSImages in Azure
 	private ArrayList<VirtualMachineOSImage> getOSImages() throws Exception {
-		return azure.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();			
+		return subscription.computeManagementClient().getVirtualMachineOSImagesOperations().list().getImages();			
 	}
 	
 	// Helper to create an instance of Azure' native OS image class
@@ -205,7 +205,7 @@ public class OSImagesImpl
 
 		@Override
 		public OSImage refresh() throws Exception {
-			VirtualMachineOSImageGetResponse response = azure.computeManagementClient().getVirtualMachineOSImagesOperations().get(this.inner().getName());
+			VirtualMachineOSImageGetResponse response = subscription.computeManagementClient().getVirtualMachineOSImagesOperations().get(this.inner().getName());
 			this.inner().setCategory(response.getCategory());
 			this.inner().setDescription(response.getDescription());
 			this.inner().setEula(response.getEula());

@@ -17,14 +17,13 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.common.implementation;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
-import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public abstract class ArmEntitiesImpl extends EntitiesImpl<Subscription> {
 
-	protected ArmEntitiesImpl(Subscription azure) {
-		super(azure);
+	protected ArmEntitiesImpl(Subscription subscription) {
+		super(subscription);
 	}
 }

@@ -67,7 +67,7 @@ public class SizesImpl
 	 *******************************************************/
 	
 	private ArrayList<VirtualMachineSize> getNativeEntities(String region) throws Exception {
-		return azure.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
+		return subscription.computeManagementClient().getVirtualMachineSizesOperations().list(region).getVirtualMachineSizes();
 	}
 
 	

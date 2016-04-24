@@ -30,7 +30,6 @@ import com.microsoft.azure.management.compute.models.VirtualMachineImageResource
 import com.microsoft.azure.shortcuts.resources.Publisher;
 import com.microsoft.azure.shortcuts.resources.Publishers;
 import com.microsoft.azure.shortcuts.resources.Region;
-import com.microsoft.azure.shortcuts.resources.common.implementation.ArmEntitiesImpl;
 
 public class PublishersImpl
 	extends ArmEntitiesImpl
@@ -45,7 +44,7 @@ public class PublishersImpl
 	private ArrayList<VirtualMachineImageResource> getNativeEntities(String region) throws Exception {
 		VirtualMachineImageListPublishersParameters params = new VirtualMachineImageListPublishersParameters();
 		params.setLocation(region);
-		return this.azure().computeManagementClient().getVirtualMachineImagesOperations().listPublishers(params).getResources();
+		return this.subscription().computeManagementClient().getVirtualMachineImagesOperations().listPublishers(params).getResources();
 	}
 	
 	// Get the location from the resource id
@@ -83,7 +82,7 @@ public class PublishersImpl
 	public Publisher get(Region region, String name) throws Exception {
 		VirtualMachineImageListPublishersParameters params = new VirtualMachineImageListPublishersParameters();
 		params.setLocation(region.toString());
-		for(VirtualMachineImageResource nativeItem : azure.computeManagementClient().getVirtualMachineImagesOperations().listPublishers(params).getResources()) {
+		for(VirtualMachineImageResource nativeItem : subscription.computeManagementClient().getVirtualMachineImagesOperations().listPublishers(params).getResources()) {
 			if(nativeItem.getId().equalsIgnoreCase(name)) {
 				return PublisherImpl.wrap(nativeItem, this);
 			} else if(nativeItem.getName().equalsIgnoreCase(name)) {

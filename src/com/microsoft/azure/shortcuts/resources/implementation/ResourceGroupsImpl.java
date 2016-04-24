@@ -55,14 +55,14 @@ public class ResourceGroupsImpl
 	@Override
 	// Gets a specific resource group
 	public ResourceGroupImpl get(String name) throws Exception {
-		ResourceGroupExtended azureGroup = azure.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
+		ResourceGroupExtended azureGroup = subscription.resourceManagementClient().getResourceGroupsOperations().get(name).getResourceGroup();
 		return new ResourceGroupImpl(azureGroup, this);
 	}
 	
 	
 	@Override
 	public void delete(String name) throws Exception {
-		azure.resourceManagementClient().getResourceGroupsOperations().delete(name);
+		subscription.resourceManagementClient().getResourceGroupsOperations().delete(name);
 		//TODO: Apparently the effect of the deletion is not immediate - Azure SDK misleadingly returns from this synch call even though listing resource groups will still include this
 	}
 	
@@ -93,7 +93,7 @@ public class ResourceGroupsImpl
 	
 	// Helper to get the resource groups from Azure
 	private ArrayList<ResourceGroupExtended> getNativeEntities() throws Exception {
-		return this.azure.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();		
+		return this.subscription.resourceManagementClient().getResourceGroupsOperations().list(null).getResourceGroups();		
 	}
 	
 	
@@ -193,20 +193,20 @@ public class ResourceGroupsImpl
 			// Figure out the region, since the SDK requires on the params explicitly even though it cannot be changed
 			if(this.inner().getLocation() != null) {
 				params.setLocation(this.inner().getLocation());
-			} else if(null == (group = azure.resourceGroups().get(this.id))) {
+			} else if(null == (group = subscription.resourceGroups().get(this.id))) {
 				throw new Exception("Resource group not found");
 			} else {
 				params.setLocation(group.region());
 			}
 
-			this.collection.azure().resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
+			this.collection.subscription().resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
 			return this;
 		}
 
 		
 		@Override
 		public void delete() throws Exception {
-			this.collection.azure().resourceGroups().delete(this.id);
+			this.collection.subscription().resourceGroups().delete(this.id);
 		}
 
 		
@@ -216,14 +216,14 @@ public class ResourceGroupsImpl
 				new com.microsoft.azure.management.resources.models.ResourceGroup();
 			params.setLocation(this.inner().getLocation());
 			params.setTags(this.inner().getTags());
-			this.collection.azure().resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
+			this.collection.subscription().resourceManagementClient().getResourceGroupsOperations().createOrUpdate(this.id, params);
 			return this;
 		}
 
 		
 		@Override
 		public ResourceGroupImpl refresh() throws Exception {
-			this.setInner(this.collection.azure().resourceManagementClient().getResourceGroupsOperations().get(this.id).getResourceGroup());
+			this.setInner(this.collection.subscription().resourceManagementClient().getResourceGroupsOperations().get(this.id).getResourceGroup());
 			return this;
 		}
 	}

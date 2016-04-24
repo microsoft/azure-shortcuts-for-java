@@ -29,7 +29,6 @@ import com.microsoft.azure.management.resources.models.ProviderResourceType;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
-import com.microsoft.azure.shortcuts.resources.common.implementation.ArmEntitiesImpl;
 
 // Implements logic for individual provider
 class ProviderImpl
@@ -122,7 +121,7 @@ class ProviderImpl
 	@Override
 	public ProviderImpl refresh() throws Exception {
 		com.microsoft.azure.management.resources.models.Provider azureProvider = 
-			this.collection.azure().resourceManagementClient().getProvidersOperations().get(this.id).getProvider();
+			this.collection.subscription().resourceManagementClient().getProvidersOperations().get(this.id).getProvider();
 		this.setInner(azureProvider);
 		return this;
 	}

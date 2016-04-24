@@ -39,7 +39,7 @@ public class SizesImpl
 	@Override
 	public List<String> names(boolean supportingVM, boolean supportingCloudServices) {
 		try {
-			ArrayList<RoleSize> items = azure.managementClient().getRoleSizesOperations().list().getRoleSizes();
+			ArrayList<RoleSize> items = subscription.managementClient().getRoleSizesOperations().list().getRoleSizes();
 			ArrayList<String> names = new ArrayList<>();
 			for(RoleSize item : items) {
 				names.add(item.getName());

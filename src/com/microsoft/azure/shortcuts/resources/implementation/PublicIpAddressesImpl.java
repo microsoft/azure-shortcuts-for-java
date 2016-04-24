@@ -26,8 +26,6 @@ import com.microsoft.azure.management.network.models.PublicIpAddressDnsSettings;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class PublicIpAddressesImpl 
@@ -57,7 +55,7 @@ public class PublicIpAddressesImpl
 
 	@Override
 	public void delete(String groupName, String name) throws Exception {
-		azure.networkManagementClient().getPublicIpAddressesOperations().delete(groupName, name);
+		subscription.networkManagementClient().getPublicIpAddressesOperations().delete(groupName, name);
 	}
 
 
@@ -68,15 +66,15 @@ public class PublicIpAddressesImpl
 	@Override
 	protected List<com.microsoft.azure.management.network.models.PublicIpAddress> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
-			return this.azure.networkManagementClient().getPublicIpAddressesOperations().listAll().getPublicIpAddresses();
+			return this.subscription.networkManagementClient().getPublicIpAddressesOperations().listAll().getPublicIpAddresses();
 		} else {
-			return this.azure.networkManagementClient().getPublicIpAddressesOperations().list(resourceGroupName).getPublicIpAddresses();
+			return this.subscription.networkManagementClient().getPublicIpAddressesOperations().list(resourceGroupName).getPublicIpAddresses();
 		}
 	}
 	
 	@Override
 	protected com.microsoft.azure.management.network.models.PublicIpAddress getNativeEntity(String groupName, String name) throws Exception {
-		return azure.networkManagementClient().getPublicIpAddressesOperations().get(groupName, name).getPublicIpAddress();
+		return subscription.networkManagementClient().getPublicIpAddressesOperations().get(groupName, name).getPublicIpAddress();
 	}
 	
 	@Override
@@ -163,7 +161,7 @@ public class PublicIpAddressesImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.collection.azure().publicIpAddresses().delete(this.id());
+			this.collection.subscription().publicIpAddresses().delete(this.id());
 		}
 
 		@Override
@@ -171,7 +169,7 @@ public class PublicIpAddressesImpl
 			// Create a group as needed
 			ensureGroup();
 		
-			this.collection.azure().networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.collection.subscription().networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 		}
 		

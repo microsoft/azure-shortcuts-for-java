@@ -17,7 +17,7 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.common.implementation;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +27,6 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableRefreshableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
-import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 
 public abstract class ResourceBaseImpl<

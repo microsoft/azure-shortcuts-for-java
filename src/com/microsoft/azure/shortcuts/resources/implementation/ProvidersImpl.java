@@ -26,7 +26,6 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Providers;
-import com.microsoft.azure.shortcuts.resources.common.implementation.ArmEntitiesImpl;
 
 public class ProvidersImpl
 	extends ArmEntitiesImpl
@@ -40,7 +39,7 @@ public class ProvidersImpl
 	@Override
 	public Map<String, Provider> asMap() throws Exception {
 		HashMap<String, Provider> wrappers = new HashMap<>();
-		for(com.microsoft.azure.management.resources.models.Provider nativeItem : getNativeEntities(azure)) {
+		for(com.microsoft.azure.management.resources.models.Provider nativeItem : getNativeEntities(subscription)) {
 			ProviderImpl wrapper = ProviderImpl.wrap(nativeItem, this);
 			wrappers.put(nativeItem.getNamespace(), wrapper);
 		}
@@ -52,7 +51,7 @@ public class ProvidersImpl
 	@Override
 	public Provider get(String namespace) throws Exception {
 		com.microsoft.azure.management.resources.models.Provider azureProvider = 
-				azure.resourceManagementClient().getProvidersOperations().get(namespace).getProvider();
+				subscription.resourceManagementClient().getProvidersOperations().get(namespace).getProvider();
 
 		return ProviderImpl.wrap(azureProvider, this);
 	}

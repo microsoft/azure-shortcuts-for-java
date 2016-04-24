@@ -74,7 +74,7 @@ public class RegionsImpl
 	 ***************************************************/
 	
 	private List<Location> getAzureLocations() throws Exception {
-		return azure.managementClient().getLocationsOperations().list().getLocations();
+		return subscription.managementClient().getLocationsOperations().list().getLocations();
 	}
 	
 	private RegionImpl createRegion(String name) {
@@ -133,7 +133,7 @@ public class RegionsImpl
 		
 		@Override
 		public Region refresh() throws Exception {
-			ArrayList<Location> azureLocations = azure.managementClient().getLocationsOperations().list().getLocations();
+			ArrayList<Location> azureLocations = subscription.managementClient().getLocationsOperations().list().getLocations();
 			for(Location azureLocation : azureLocations) {
 				if(azureLocation.getName().equals(this.inner().getName())) {
 					this.setInner(azureLocation);

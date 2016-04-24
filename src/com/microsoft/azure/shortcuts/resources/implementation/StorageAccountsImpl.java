@@ -28,8 +28,6 @@ import com.microsoft.azure.management.storage.models.StorageAccountCreateParamet
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class StorageAccountsImpl 
@@ -52,7 +50,7 @@ public class StorageAccountsImpl
 	
 	@Override
 	public void delete(String groupName, String name) throws Exception {
-		azure.storageManagementClient().getStorageAccountsOperations().delete(groupName, name);
+		subscription.storageManagementClient().getStorageAccountsOperations().delete(groupName, name);
 	}
 
 
@@ -63,15 +61,15 @@ public class StorageAccountsImpl
 	@Override
 	protected List<com.microsoft.azure.management.storage.models.StorageAccount> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
-			return this.azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
+			return this.subscription.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
 		} else {
-			return this.azure.storageManagementClient().getStorageAccountsOperations().listByResourceGroup(resourceGroupName).getStorageAccounts();
+			return this.subscription.storageManagementClient().getStorageAccountsOperations().listByResourceGroup(resourceGroupName).getStorageAccounts();
 		}
 	}
 	
 	@Override
 	protected com.microsoft.azure.management.storage.models.StorageAccount getNativeEntity(String groupName, String name) throws Exception {
-		return azure.storageManagementClient().getStorageAccountsOperations().getProperties(groupName, name).getStorageAccount();		
+		return subscription.storageManagementClient().getStorageAccountsOperations().getProperties(groupName, name).getStorageAccount();		
 	}
 	
 	@Override
@@ -147,7 +145,7 @@ public class StorageAccountsImpl
 			params.setAccountType(this.accountType());
 			params.setTags(this.inner().getTags());
 
-			this.collection.azure().storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
+			this.collection.subscription().storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
 			return get(this.groupName, this.name());
 		}
 
@@ -163,7 +161,7 @@ public class StorageAccountsImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.storageAccounts().delete(this.id());
+			subscription.storageAccounts().delete(this.id());
 		}
 	}
 }

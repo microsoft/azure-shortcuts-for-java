@@ -150,13 +150,13 @@ public class VirtualMachinesImpl
 	
 	@Override
 	public List<String> names() throws Exception {
-		Set<String> serviceNames = azure.cloudServices().asMap().keySet();
+		Set<String> serviceNames = subscription.cloudServices().asMap().keySet();
 		ArrayList<String> vms = new ArrayList<String>();
 		
 		// Find all virtual machine roles within cloud services 
 		for(String serviceName : serviceNames) {
 			try {
-				DeploymentGetResponse deployment = azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
+				DeploymentGetResponse deployment = subscription.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
 				for(Role role : deployment.getRoles()) {
 					if(role.getRoleType().equalsIgnoreCase(VirtualMachineRoleType.PersistentVMRole.toString())) {
 						vms.add(serviceName + "." + role.getRoleName());
@@ -183,10 +183,10 @@ public class VirtualMachinesImpl
 		String deploymentName = VirtualMachineId.deploymentFromId(vmId);
 		if(null == deploymentName) {
 			// If no deployment name given, assume Production slot
-			return azure.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
+			return subscription.computeManagementClient().getDeploymentsOperations().getBySlot(serviceName, DeploymentSlot.Production);
 		} else {
 			// If deployment name given, use it
-			return azure.computeManagementClient().getDeploymentsOperations().getByName(serviceName, deploymentName);
+			return subscription.computeManagementClient().getDeploymentsOperations().getByName(serviceName, deploymentName);
 		}
 	}
 	
@@ -627,7 +627,7 @@ public class VirtualMachinesImpl
 		
 		@Override
 		public void delete() throws Exception {
-			azure.virtualMachines().delete(this.id);
+			subscription.virtualMachines().delete(this.id);
 		}
 		
 
@@ -636,12 +636,12 @@ public class VirtualMachinesImpl
 			// Get affinity group and region from existing resources
 			if(this.cloudService() != null && this.isExistingCloudService) {
 				// Get from existing cloud service
-				final CloudService cloudService = azure.cloudServices().get(this.cloudService());
+				final CloudService cloudService = subscription.cloudServices().get(this.cloudService());
 				this.affinityGroup = cloudService.affinityGroup();
 				this.region = cloudService.region();
 			} else if(this.azureDeployment.getVirtualNetworkName() != null) {
 				// Get from network
-				final Network network = azure.networks().get(this.azureDeployment.getVirtualNetworkName());
+				final Network network = subscription.networks().get(this.azureDeployment.getVirtualNetworkName());
 				this.affinityGroup = network.affinityGroup();
 				this.region = network.region();
 				
@@ -654,14 +654,14 @@ public class VirtualMachinesImpl
 			// Create storage account if not specified
 			if(this.storageAccountName == null) {
 				final String storeName = "store" + System.currentTimeMillis();
-				azure.storageAccounts().define(storeName)
+				subscription.storageAccounts().define(storeName)
 					.withRegion(this.region)
 					.provision();
 				this.storageAccountName = storeName;
 			}
 
 			// Determine URL and verify location of VHD blob to use
-			StorageAccount act = azure.storageAccounts().get(this.storageAccountName);
+			StorageAccount act = subscription.storageAccounts().get(this.storageAccountName);
 			if(!this.region.equalsIgnoreCase(act.region())) {
 				throw new Exception("Storage account is not in the same region.");
 			}
@@ -703,7 +703,7 @@ public class VirtualMachinesImpl
 			// Determine if to create a new cloud service deployment or add to existing
 			if(this.isExistingCloudService) {
 				// Get existing deployment from production
-				final String deploymentName = azure.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudService(), DeploymentSlot.Production).getName();
+				final String deploymentName = subscription.computeManagementClient().getDeploymentsOperations().getBySlot(this.cloudService(), DeploymentSlot.Production).getName();
 				
 				// Deploy into existing cloud service
 				final VirtualMachineCreateParameters vmCreateParams = new VirtualMachineCreateParameters();
@@ -712,12 +712,12 @@ public class VirtualMachinesImpl
 				vmCreateParams.setConfigurationSets(this.azureRole.getConfigurationSets());
 				vmCreateParams.setOSVirtualHardDisk(osDisk);
 				vmCreateParams.setProvisionGuestAgent(this.hasGuestAgent());	
-				azure.computeManagementClient().getVirtualMachinesOperations().create(this.cloudService(), deploymentName, vmCreateParams);
+				subscription.computeManagementClient().getVirtualMachinesOperations().create(this.cloudService(), deploymentName, vmCreateParams);
 			
 			} else {
 				// Create a new cloud service using the same name as the VM
 				if(this.cloudServiceDefinition == null) {
-					CloudService.DefinitionBlank cloudServiceBlank = azure.cloudServices().define(this.cloudService());
+					CloudService.DefinitionBlank cloudServiceBlank = subscription.cloudServices().define(this.cloudService());
 					this.cloudServiceDefinition = (this.affinityGroup != null) 
 						? cloudServiceBlank.withAffinityGroup(this.affinityGroup) 
 						: cloudServiceBlank.withRegion(this.region);
@@ -740,7 +740,7 @@ public class VirtualMachinesImpl
 				vmCreateParams.setName(this.deployment());
 				vmCreateParams.setVirtualNetworkName(this.network());
 
-				azure.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);				
+				subscription.computeManagementClient().getVirtualMachinesOperations().createDeployment(this.cloudService(), vmCreateParams);				
 			}
 			
 			return this;
@@ -760,7 +760,7 @@ public class VirtualMachinesImpl
 			//		this.cloudService(), this.deployment(), this.roleName());
 			
 			// Get service-level data
-			CloudService service = azure.cloudServices().get(this.cloudService());
+			CloudService service = subscription.cloudServices().get(this.cloudService());
 			this.affinityGroup = service.affinityGroup();
 			this.region = service.region();
 			

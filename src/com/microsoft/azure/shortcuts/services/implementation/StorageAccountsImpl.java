@@ -66,7 +66,7 @@ public class StorageAccountsImpl
 	
 	@Override
 	public void delete(String accountName) throws Exception {
-		azure.storageManagementClient().getStorageAccountsOperations().delete(accountName);
+		subscription.storageManagementClient().getStorageAccountsOperations().delete(accountName);
 	}
 	
 	
@@ -104,7 +104,7 @@ public class StorageAccountsImpl
 	
 	// List native storage accounts
 	private ArrayList<com.microsoft.windowsazure.management.storage.models.StorageAccount> getAzureStorageAccounts() throws Exception {
-		return azure.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
+		return subscription.storageManagementClient().getStorageAccountsOperations().list().getStorageAccounts();
 	}
 	
 
@@ -236,7 +236,7 @@ public class StorageAccountsImpl
 			params.setDescription(this.description());
 			params.setLabel((this.label() == null) ? this.id() : this.label());
 			params.setAccountType((this.type()== null) ? StorageAccountTypes.STANDARD_LRS : this.type());
-			azure.storageManagementClient().getStorageAccountsOperations().create(params);
+			subscription.storageManagementClient().getStorageAccountsOperations().create(params);
 			return this;
 		}
 		
@@ -247,20 +247,20 @@ public class StorageAccountsImpl
 			params.setAccountType(this.type());
 			params.setDescription(this.description());
 			params.setLabel(this.label());
-			azure.storageManagementClient().getStorageAccountsOperations().update(this.id().toLowerCase(), params);
+			subscription.storageManagementClient().getStorageAccountsOperations().update(this.id().toLowerCase(), params);
 			return this;
 		}
 
 		
 		@Override
 		public void delete() throws Exception {
-			azure.storageAccounts().delete(this.id);
+			subscription.storageAccounts().delete(this.id);
 		}
 
 		
 		@Override
 		public StorageAccountImpl refresh() throws Exception {
-			StorageAccountGetResponse response = azure.storageManagementClient().getStorageAccountsOperations().get(this.inner().getName());
+			StorageAccountGetResponse response = subscription.storageManagementClient().getStorageAccountsOperations().get(this.inner().getName());
 			StorageAccountProperties newProperties =  response.getStorageAccount().getProperties();
 			this.inner().setProperties(newProperties);
 			return this;

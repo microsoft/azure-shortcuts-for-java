@@ -17,11 +17,10 @@
 * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH 
 * THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-package com.microsoft.azure.shortcuts.resources.common.implementation;
+package com.microsoft.azure.shortcuts.resources.implementation;
 
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
-import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public abstract class PublicIpGroupableResourceBaseImpl<
 		T, 
@@ -56,7 +55,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 				this.publicIpAddressDns = this.name().toLowerCase();
 			}
 			
-			PublicIpAddress pip = this.collection.azure().publicIpAddresses().define(this.publicIpAddressDns)
+			PublicIpAddress pip = this.collection.subscription().publicIpAddresses().define(this.publicIpAddressDns)
 				.withRegion(this.region())
 				.withExistingResourceGroup(this.groupName)
 				.withLeafDomainLabel(this.publicIpAddressDns)
@@ -65,7 +64,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 			this.publicIpAddressId = pip.id();
 			return pip;
 		} else if(this.publicIpAddressId != null) {
-			return this.collection.azure().publicIpAddresses(this.publicIpAddressId);
+			return this.collection.subscription().publicIpAddresses(this.publicIpAddressId);
 		} else {
 			return null;
 		}

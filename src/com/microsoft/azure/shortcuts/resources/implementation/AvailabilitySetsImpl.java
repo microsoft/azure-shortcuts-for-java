@@ -27,8 +27,6 @@ import com.microsoft.azure.management.compute.models.VirtualMachineReference;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class AvailabilitySetsImpl 
@@ -44,7 +42,7 @@ public class AvailabilitySetsImpl
 	
 	@Override
 	public void delete(String groupName, String name) throws Exception {
-		azure.computeManagementClient().getAvailabilitySetsOperations().delete(groupName, name);
+		subscription.computeManagementClient().getAvailabilitySetsOperations().delete(groupName, name);
 	}
 	
 	@Override
@@ -62,12 +60,12 @@ public class AvailabilitySetsImpl
 	@Override
 	protected ArrayList<com.microsoft.azure.management.compute.models.AvailabilitySet> getNativeEntities(String resourceGroupName) throws Exception {
 		// TODO What if null?
-		return this.azure.computeManagementClient().getAvailabilitySetsOperations().list(resourceGroupName).getAvailabilitySets();
+		return this.subscription.computeManagementClient().getAvailabilitySetsOperations().list(resourceGroupName).getAvailabilitySets();
 	}
 	
 	@Override
 	protected com.microsoft.azure.management.compute.models.AvailabilitySet getNativeEntity(String groupName, String name) throws Exception {
-		return azure.computeManagementClient().getAvailabilitySetsOperations().get(groupName, name).getAvailabilitySet();
+		return subscription.computeManagementClient().getAvailabilitySetsOperations().get(groupName, name).getAvailabilitySet();
 	}
 	
 	@Override
@@ -120,7 +118,7 @@ public class AvailabilitySetsImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.availabilitySets().delete(this.id());
+			subscription.availabilitySets().delete(this.id());
 		}
 
 		@Override
@@ -135,7 +133,7 @@ public class AvailabilitySetsImpl
 		@Override
 		public AvailabilitySet provision() throws Exception {
 			ensureGroup(); // Create group if needed
-			this.collection.azure().computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
+			this.collection.subscription().computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
 			return get(this.groupName, this.name());
 		}
 	}

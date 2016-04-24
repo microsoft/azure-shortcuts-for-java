@@ -29,7 +29,6 @@ import com.microsoft.azure.management.resources.models.ResourceListParameters;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Provider;
 import com.microsoft.azure.shortcuts.resources.Provider.ResourceType;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
 import com.microsoft.azure.shortcuts.resources.Resource;
 import com.microsoft.azure.shortcuts.resources.Resources;
 import com.microsoft.windowsazure.core.ResourceIdentity;
@@ -120,7 +119,7 @@ public class ResourcesImpl
 		identity.setResourceType(type);
 		
 		// Find latest API version
-		final Provider p = azure.providers().get(provider);
+		final Provider p = subscription.providers().get(provider);
 		ResourceType t = p.resourceTypes(type);
 		if(t == null) {
 			return identity;
@@ -148,7 +147,7 @@ public class ResourcesImpl
 	
 	// Returns a resource based on its group and identity object
 	private Resource get(String group, ResourceIdentity identity) throws Exception {
-		GenericResourceExtended azureResource= azure.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
+		GenericResourceExtended azureResource= subscription.resourceManagementClient().getResourcesOperations().get(group, identity).getResource();
 		ResourceImpl resource = new ResourceImpl(azureResource, this);
 		return resource;
 	}
@@ -156,7 +155,7 @@ public class ResourcesImpl
 	
 	@Override
 	public void delete(String id) throws Exception {
-		azure.resourceManagementClient().getResourcesOperations().delete(
+		subscription.resourceManagementClient().getResourcesOperations().delete(
 			RESOURCE_ID.GROUP.from(id), 
 			createResourceIdentity(id));
 	}
@@ -164,7 +163,7 @@ public class ResourcesImpl
 	
 	@Override
 	public void delete(String name, String type, String provider, String group) throws Exception {
-		azure.resourceManagementClient().getResourcesOperations().delete(
+		subscription.resourceManagementClient().getResourcesOperations().delete(
 			group, 
 			createResourceIdentity(name, type, provider));
 	}
@@ -195,7 +194,7 @@ public class ResourcesImpl
 	private ArrayList<GenericResourceExtended> getNativeEntities(String groupName) throws Exception {
 		ResourceListParameters params = new ResourceListParameters(); 
 		params.setResourceGroupName(groupName);
-		return azure.resourceManagementClient().getResourcesOperations().list(params).getResources();
+		return subscription.resourceManagementClient().getResourcesOperations().list(params).getResources();
 	}
 	
 
@@ -239,7 +238,7 @@ public class ResourcesImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.collection.azure().resources().delete(this.id);
+			this.collection.subscription().resources().delete(this.id);
 		}
 		
 
@@ -253,7 +252,7 @@ public class ResourcesImpl
 		
 		// Refreshes the resource based on the group and identity information
 		private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
-			this.setInner(this.collection.azure().resourceManagementClient().getResourcesOperations().get(group, identity).getResource());
+			this.setInner(this.collection.subscription().resourceManagementClient().getResourcesOperations().get(group, identity).getResource());
 			return this;
 		}
 	}

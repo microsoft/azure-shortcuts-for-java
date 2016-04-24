@@ -34,8 +34,6 @@ import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourceBaseImpl;
-import com.microsoft.azure.shortcuts.resources.common.implementation.GroupableResourcesBaseImpl;
 
 
 public class NetworksImpl 
@@ -72,7 +70,7 @@ public class NetworksImpl
 
 	@Override
 	public void delete(String groupName, String name) throws Exception {
-		azure.networkManagementClient().getVirtualNetworksOperations().delete(groupName, name);
+		subscription.networkManagementClient().getVirtualNetworksOperations().delete(groupName, name);
 	}
 
 
@@ -83,15 +81,15 @@ public class NetworksImpl
 	@Override
 	protected List<VirtualNetwork> getNativeEntities(String resourceGroupName) throws Exception {
 		if(resourceGroupName == null) {
-			return this.azure.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
+			return this.subscription.networkManagementClient().getVirtualNetworksOperations().listAll().getVirtualNetworks();
 		} else {
-			return this.azure.networkManagementClient().getVirtualNetworksOperations().list(resourceGroupName).getVirtualNetworks();
+			return this.subscription.networkManagementClient().getVirtualNetworksOperations().list(resourceGroupName).getVirtualNetworks();
 		}
 	}
 	
 	@Override
 	protected VirtualNetwork getNativeEntity(String groupName, String name) throws Exception {
-		return azure.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
+		return subscription.networkManagementClient().getVirtualNetworksOperations().get(groupName, name).getVirtualNetwork();
 	}
 	
 	@Override 
@@ -196,7 +194,7 @@ public class NetworksImpl
 
 		@Override
 		public void delete() throws Exception {
-			this.collection.azure().networks().delete(this.id());
+			this.collection.subscription().networks().delete(this.id());
 		}
 
 		@Override
@@ -214,7 +212,7 @@ public class NetworksImpl
 				this.withSubnet("subnet1", this.addressSpaces().get(0));
 			}
 			
-			this.collection.azure().networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+			this.collection.subscription().networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
 			return get(this.groupName, this.name());
 			
 		}

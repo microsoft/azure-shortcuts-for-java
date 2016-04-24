@@ -54,7 +54,7 @@ public class CloudServicesImpl
 	
 	@Override
 	public void delete(String name) throws Exception {
-		azure.computeManagementClient().getHostedServicesOperations().delete(name);
+		subscription.computeManagementClient().getHostedServicesOperations().delete(name);
 	}
 	
 	
@@ -94,7 +94,7 @@ public class CloudServicesImpl
 	
 	// Helper to return list of hosted services
 	private ArrayList<HostedService> getHostedServices() throws Exception {
-		return this.azure.computeManagementClient().getHostedServicesOperations().list().getHostedServices();
+		return this.subscription.computeManagementClient().getHostedServicesOperations().list().getHostedServices();
 	}
 	
 	
@@ -204,7 +204,7 @@ public class CloudServicesImpl
 
 		@Override
 		public void delete() throws Exception {
-			azure.cloudServices().delete(this.id);
+			subscription.cloudServices().delete(this.id);
 		}
 		
 		
@@ -218,7 +218,7 @@ public class CloudServicesImpl
 			params.setServiceName(this.id());
 			params.setReverseDnsFqdn(this.reverseDnsFqdn());
 
-			azure.computeManagementClient().getHostedServicesOperations().create(params);			
+			subscription.computeManagementClient().getHostedServicesOperations().create(params);			
 			return this;
 		}
 
@@ -229,14 +229,14 @@ public class CloudServicesImpl
 			params.setDescription(this.description());
 			params.setLabel(this.label());
 			params.setReverseDnsFqdn(this.reverseDnsFqdn());
-			azure.computeManagementClient().getHostedServicesOperations().update(this.id, params);
+			subscription.computeManagementClient().getHostedServicesOperations().update(this.id, params);
 			return this;
 		}
 
 
 		@Override
 		public CloudServiceImpl refresh() throws Exception {
-			HostedServiceProperties props = azure.computeManagementClient().getHostedServicesOperations().get(this.id()).getProperties();
+			HostedServiceProperties props = subscription.computeManagementClient().getHostedServicesOperations().get(this.id()).getProperties();
 			this.inner().getProperties().setDateCreated(props.getDateCreated());
 			this.inner().getProperties().setDateLastModified(props.getDateLastModified());
 			return this

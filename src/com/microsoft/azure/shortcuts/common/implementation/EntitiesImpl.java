@@ -20,12 +20,12 @@
 package com.microsoft.azure.shortcuts.common.implementation;
 
 public abstract class EntitiesImpl<T> {
-	final protected T azure;
-	protected EntitiesImpl(T azure) {
-		this.azure = azure;
+	final protected T subscription;
+	protected EntitiesImpl(T subscription) {
+		this.subscription = subscription;
 	}
 	
-	public T azure() {
-		return this.azure;
+	public T subscription() {
+		return this.subscription;
 	}
 }
