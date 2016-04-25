@@ -19,12 +19,8 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
 
-import com.microsoft.azure.management.storage.models.AccountType;
-import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 
@@ -33,7 +29,7 @@ public class StorageAccountsImpl
 	extends GroupableResourcesBaseImpl<
 		StorageAccount, 
 		com.microsoft.azure.management.storage.models.StorageAccount,
-		StorageAccountsImpl.StorageAccountImpl>
+		StorageAccountImpl>
 	implements StorageAccounts {
 	
 	StorageAccountsImpl(Subscription subscription) {
@@ -74,96 +70,5 @@ public class StorageAccountsImpl
 	@Override
 	protected StorageAccountImpl wrap(com.microsoft.azure.management.storage.models.StorageAccount nativeItem) {
 		return new StorageAccountImpl(nativeItem, this);
-	}
-	
-	
-	/***************************************************************
-	 * Implements logic for individual resource group
-	 ***************************************************************/
-	class StorageAccountImpl 
-		extends 
-			GroupableResourceBaseImpl<
-				StorageAccount, 
-				com.microsoft.azure.management.storage.models.StorageAccount,
-				StorageAccountImpl,
-				StorageAccountsImpl>
-		implements
-			StorageAccount,
-			StorageAccount.Definition {
-		
-		private StorageAccountImpl(
-				com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, 
-				StorageAccountsImpl collection) {
-			super(azureStorageAccount.getId(), azureStorageAccount, collection);
-		}
-
-
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/
-		
-		@Override
-		public URL primaryBlobEndpoint() {
-			try {
-				return this.inner().getPrimaryEndpoints().getBlob().toURL();
-			} catch (MalformedURLException e) {
-				return null;
-			}
-		}
-		
-		@Override
-		public AccountType accountType() {
-			return this.inner().getAccountType();
-		}
-		
-		
-		/**************************************************************
-		 * Setters (fluent interface)
-		 **************************************************************/
-		
-		@Override
-		public StorageAccountImpl withAccountType(AccountType type) {
-			this.inner().setAccountType(type);
-			return this;
-		}
-
-		
-		/************************************************************
-		 * Verbs
-		 ************************************************************/
-
-		@Override
-		public StorageAccount provision() throws Exception {
-			// Create group if needed
-			ensureGroup();
-
-			// Assume default account type if needed
-			if(this.accountType() == null) {
-				this.withAccountType(AccountType.StandardLRS);
-			}
-			
-			StorageAccountCreateParameters params = new StorageAccountCreateParameters();
-			params.setLocation(this.region());
-			params.setAccountType(this.accountType());
-			params.setTags(this.inner().getTags());
-
-			this.collection.subscription().storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
-			return get(this.groupName, this.name());
-		}
-
-
-		@Override
-		public StorageAccountImpl refresh() throws Exception {
-			this.setInner(getNativeEntity(
-				ResourcesImpl.groupFromResourceId(this.id()), 
-				ResourcesImpl.nameFromResourceId(this.id())));
-			return this;
-		}
-
-
-		@Override
-		public void delete() throws Exception {
-			subscription.storageAccounts().delete(this.id());
-		}
-	}
+	}	
 }
