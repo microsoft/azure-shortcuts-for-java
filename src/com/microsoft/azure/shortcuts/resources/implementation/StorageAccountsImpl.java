@@ -25,7 +25,6 @@ import java.util.List;
 
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.StorageAccountCreateParameters;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.StorageAccounts;
 
@@ -86,12 +85,15 @@ public class StorageAccountsImpl
 			GroupableResourceBaseImpl<
 				StorageAccount, 
 				com.microsoft.azure.management.storage.models.StorageAccount,
-				StorageAccountImpl>
+				StorageAccountImpl,
+				StorageAccountsImpl>
 		implements
 			StorageAccount,
 			StorageAccount.Definition {
 		
-		private StorageAccountImpl(com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, EntitiesImpl<Subscription> collection) {
+		private StorageAccountImpl(
+				com.microsoft.azure.management.storage.models.StorageAccount azureStorageAccount, 
+				StorageAccountsImpl collection) {
 			super(azureStorageAccount.getId(), azureStorageAccount, collection);
 		}
 

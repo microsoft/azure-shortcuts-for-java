@@ -25,11 +25,12 @@ import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 public abstract class PublicIpGroupableResourceBaseImpl<
 		T, 
 		I extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
-		TI extends PublicIpGroupableResourceBaseImpl<T, I, TI>>
+		TI extends PublicIpGroupableResourceBaseImpl<T, I, TI, COLLECTIONIMPL>,
+		COLLECTIONIMPL extends EntitiesImpl<Subscription>>
 	extends
-		GroupableResourceBaseImpl<T, I, TI> {
+		GroupableResourceBaseImpl<T, I, TI, COLLECTIONIMPL> {
 
-	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject, EntitiesImpl<Subscription> collection) {
+	protected PublicIpGroupableResourceBaseImpl(String id, I innerObject, COLLECTIONIMPL collection) {
 		super(id, innerObject, collection);
 	}
 	

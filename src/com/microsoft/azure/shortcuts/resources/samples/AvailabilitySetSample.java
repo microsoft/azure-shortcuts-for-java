@@ -41,7 +41,6 @@ public class AvailabilitySetSample {
     
 
     public static void test(Subscription subscription) throws Exception {
-    	String existingGroupName = "javasampleresourcegroup1";
     	String newAvailabilitySetName = "marcinsas";
     	AvailabilitySet availabilitySet;
     	
@@ -56,8 +55,9 @@ public class AvailabilitySetSample {
     	printAvailabilitySet(availabilitySet);
 
     	// Listing availability sets in a specific resource group
-    	Map<String, AvailabilitySet> availabilitySets = subscription.availabilitySets().asMap(existingGroupName);
-    	System.out.println(String.format("Availability set ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(availabilitySets.keySet(), ",\n\t")));
+    	Map<String, AvailabilitySet> availabilitySets = subscription.availabilitySets().asMap(availabilitySet.resourceGroup());
+    	System.out.println(String.format("Availability set ids in group '%s': \n\t%s", 
+    			availabilitySet.resourceGroup(), StringUtils.join(availabilitySets.keySet(), ",\n\t")));
     	
     	// Delete availability set
     	availabilitySet.delete();
@@ -66,7 +66,9 @@ public class AvailabilitySetSample {
     	subscription.resourceGroups().delete(availabilitySet.resourceGroup());
     	
     	// Create a new group
-    	ResourceGroup group = subscription.resourceGroups().define("marcinstestgroup").withRegion(Region.US_WEST).provision();
+    	ResourceGroup group = subscription.resourceGroups().define("marcinstestgroup")
+    			.withRegion(Region.US_WEST)
+    			.provision();
     	
     	// Create an availability set in an existing group
     	availabilitySet = subscription.availabilitySets().define(newAvailabilitySetName + "2")

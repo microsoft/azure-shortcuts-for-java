@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.microsoft.azure.management.network.models.SecurityRule;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroups;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityRule;
@@ -86,13 +85,14 @@ public class NetworkSecurityGroupsImpl
 			GroupableResourceBaseImpl<
 				NetworkSecurityGroup, 
 				com.microsoft.azure.management.network.models.NetworkSecurityGroup,
-				NetworkSecurityGroupImpl>
+				NetworkSecurityGroupImpl,
+				NetworkSecurityGroupsImpl>
 		implements
 			NetworkSecurityGroup,
 			NetworkSecurityGroup.Definition {
 		
 		private NetworkSecurityGroupImpl(com.microsoft.azure.management.network.models.NetworkSecurityGroup azureItem, 
-				EntitiesImpl<Subscription> collection) {
+				NetworkSecurityGroupsImpl collection) {
 			super(azureItem.getName(), azureItem, collection);
 		}
 

@@ -20,11 +20,7 @@
 package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
-import com.microsoft.azure.management.compute.models.VirtualMachineReference;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySets;
 
@@ -33,7 +29,7 @@ public class AvailabilitySetsImpl
 	extends GroupableResourcesBaseImpl<
 		AvailabilitySet,
 		com.microsoft.azure.management.compute.models.AvailabilitySet,
-		AvailabilitySetsImpl.AvailabilitySetImpl>
+		AvailabilitySetImpl>
 	implements AvailabilitySets {
 	
 	AvailabilitySetsImpl(Subscription subscription) {
@@ -64,77 +60,12 @@ public class AvailabilitySetsImpl
 	}
 	
 	@Override
-	protected com.microsoft.azure.management.compute.models.AvailabilitySet getNativeEntity(String groupName, String name) throws Exception {
+	com.microsoft.azure.management.compute.models.AvailabilitySet getNativeEntity(String groupName, String name) throws Exception {
 		return subscription.computeManagementClient().getAvailabilitySetsOperations().get(groupName, name).getAvailabilitySet();
 	}
 	
 	@Override
 	protected AvailabilitySetImpl wrap(com.microsoft.azure.management.compute.models.AvailabilitySet nativeItem) {
 		return new AvailabilitySetImpl(nativeItem, this);
-	}
-	
-	
-	/***************************************************************
-	 * Implements logic for individual resource group
-	 ***************************************************************/
-	class AvailabilitySetImpl 
-		extends 
-			GroupableResourceBaseImpl<
-				AvailabilitySet, 
-				com.microsoft.azure.management.compute.models.AvailabilitySet,
-				AvailabilitySetImpl>
-		implements
-			AvailabilitySet,
-			AvailabilitySet.Definition {
-		
-		private AvailabilitySetImpl(com.microsoft.azure.management.compute.models.AvailabilitySet azureAvailabilitySet, EntitiesImpl<Subscription> collection) {
-			super(azureAvailabilitySet.getId(), azureAvailabilitySet, collection);
-		}
-
-
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/
-		
-		@Override
-		public List<String> virtualMachineIds() {
-			ArrayList<String> ids = new ArrayList<>();
-			for(VirtualMachineReference vm : this.inner().getVirtualMachinesReferences()) {
-				ids.add(vm.getReferenceUri());
-			}
-			
-			return Collections.unmodifiableList(ids);
-		}
-		
-		
-		/**************************************************************
-		 * Setters (fluent interface)
-		 **************************************************************/
-
-		
-		/************************************************************
-		 * Verbs
-		 ************************************************************/
-
-		@Override
-		public void delete() throws Exception {
-			subscription.availabilitySets().delete(this.id());
-		}
-
-		@Override
-		public AvailabilitySetImpl refresh() throws Exception {
-			this.setInner(getNativeEntity(
-				ResourcesImpl.groupFromResourceId(this.id()), 
-				ResourcesImpl.nameFromResourceId(this.id())));
-			return this;
-		}
-
-
-		@Override
-		public AvailabilitySet provision() throws Exception {
-			ensureGroup(); // Create group if needed
-			this.collection.subscription().computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
-			return get(this.groupName, this.name());
-		}
-	}
+	}	
 }

@@ -99,7 +99,7 @@ public class VirtualMachinesSample {
     	printVM(vm);
     	
     	// Getting a specific virtual machine using its group and name
-    	vm = subscription.virtualMachines(groupName, vm.computerName());
+    	vm = subscription.virtualMachines(vm.resourceGroup(), vm.name());
     	printVM(vm);
     	
     	// Restart the VM

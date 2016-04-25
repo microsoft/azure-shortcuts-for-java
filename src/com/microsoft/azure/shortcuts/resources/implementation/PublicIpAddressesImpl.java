@@ -23,7 +23,6 @@ import java.util.List;
 
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.PublicIpAddressDnsSettings;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddresses;
 
@@ -91,12 +90,15 @@ public class PublicIpAddressesImpl
 			GroupableResourceBaseImpl<
 				PublicIpAddress, 
 				com.microsoft.azure.management.network.models.PublicIpAddress,
-				PublicIpAddressImpl>
+				PublicIpAddressImpl,
+				PublicIpAddressesImpl>
 		implements
 			PublicIpAddress,
 			PublicIpAddress.Definition {
 		
-		private PublicIpAddressImpl(com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, EntitiesImpl<Subscription> collection) {
+		private PublicIpAddressImpl(
+				com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, 
+				PublicIpAddressesImpl collection) {
 			super(azurePublicIpAddress.getName(), azurePublicIpAddress, collection);
 		}
 

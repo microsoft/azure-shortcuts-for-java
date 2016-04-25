@@ -28,13 +28,14 @@ import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
 public abstract class GroupableResourceBaseImpl<
 		WRAPPER, 
 		INNER extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
-		WRAPPERIMPL extends GroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>>
+		WRAPPERIMPL extends GroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL, COLLECTIONIMPL>,
+		COLLECTIONIMPL extends EntitiesImpl<Subscription>>
 	extends
-		ResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>
+		ResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL, COLLECTIONIMPL>
 	implements 
 		GroupResourceBase {
 
-	protected GroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Subscription> collection) {
+	protected GroupableResourceBaseImpl(String id, INNER innerObject, COLLECTIONIMPL collection) {
 		super(id, innerObject, collection);
 	}
 

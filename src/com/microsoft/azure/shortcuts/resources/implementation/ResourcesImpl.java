@@ -204,11 +204,12 @@ public class ResourcesImpl
 			GroupableResourceBaseImpl<
 				Resource, 
 				GenericResourceExtended,
-				ResourceImpl>
+				ResourceImpl,
+				ResourcesImpl>
 		implements 
 			Resource {
 		
-		private ResourceImpl(GenericResourceExtended azureResource, EntitiesImpl<Subscription> collection) {
+		private ResourceImpl(GenericResourceExtended azureResource, ResourcesImpl collection) {
 			super(azureResource.getId(), azureResource, collection);
 		}
 

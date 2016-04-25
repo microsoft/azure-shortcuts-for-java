@@ -28,7 +28,6 @@ import java.util.TreeMap;
 import com.microsoft.azure.management.network.models.IpAllocationMethod;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.management.network.models.ResourceId;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.NetworkInterfaces;
@@ -97,12 +96,15 @@ public class NetworkInterfacesImpl
 			NetworkableGroupableResourceBaseImpl<
 				NetworkInterface, 
 				com.microsoft.azure.management.network.models.NetworkInterface,
-				NetworkInterfaceImpl>
+				NetworkInterfaceImpl,
+				NetworkInterfacesImpl>
 		implements
 			NetworkInterface,
 			NetworkInterface.Definition {
 		
-		private NetworkInterfaceImpl(com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, EntitiesImpl<Subscription> collection) {
+		private NetworkInterfaceImpl(
+				com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, 
+				NetworkInterfacesImpl collection) {
 			super(azureNetworkInterface.getName(), azureNetworkInterface, collection);
 		}
 

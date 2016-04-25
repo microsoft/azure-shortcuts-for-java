@@ -26,11 +26,12 @@ import com.microsoft.azure.shortcuts.resources.Network;
 public abstract class NetworkableGroupableResourceBaseImpl<
 		WRAPPER, 
 		INNER extends com.microsoft.windowsazure.core.ResourceBaseExtended, 
-		WRAPPERIMPL extends NetworkableGroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>>
+		WRAPPERIMPL extends NetworkableGroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL, COLLECTIONIMPL>,
+		COLLECTIONIMPL extends EntitiesImpl<Subscription>>
 	extends
-		PublicIpGroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL> {
+		PublicIpGroupableResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL, COLLECTIONIMPL> {
 
-	protected NetworkableGroupableResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Subscription> collection) {
+	protected NetworkableGroupableResourceBaseImpl(String id, INNER innerObject, COLLECTIONIMPL collection) {
 		super(id, innerObject, collection);
 	}
 	

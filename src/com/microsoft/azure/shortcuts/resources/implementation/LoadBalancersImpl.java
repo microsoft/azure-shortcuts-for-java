@@ -23,7 +23,6 @@ import java.util.List;
 
 import com.microsoft.azure.management.network.models.FrontendIpConfiguration;
 import com.microsoft.azure.management.network.models.ResourceId;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.LoadBalancer;
 import com.microsoft.azure.shortcuts.resources.LoadBalancers;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
@@ -85,12 +84,13 @@ public class LoadBalancersImpl
 			PublicIpGroupableResourceBaseImpl<
 				LoadBalancer, 
 				com.microsoft.azure.management.network.models.LoadBalancer,
-				LoadBalancerImpl>
+				LoadBalancerImpl,
+				LoadBalancersImpl>
 		implements
 			LoadBalancer,
 			LoadBalancer.Definition {
 		
-		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, EntitiesImpl<Subscription> collection) {
+		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, LoadBalancersImpl collection) {
 			super(nativeItem.getName(), nativeItem, collection);
 		}
 

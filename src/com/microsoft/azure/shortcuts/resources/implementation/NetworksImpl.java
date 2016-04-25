@@ -30,7 +30,6 @@ import java.util.TreeMap;
 import com.microsoft.azure.management.network.models.AddressSpace;
 import com.microsoft.azure.management.network.models.DhcpOptions;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Networks;
@@ -106,12 +105,13 @@ public class NetworksImpl
 			GroupableResourceBaseImpl<
 				Network, 
 				VirtualNetwork,
-				NetworkImpl>
+				NetworkImpl,
+				NetworksImpl>
 		implements
 			Network,
 			Network.Definition {
 		
-		private NetworkImpl(VirtualNetwork azureVirtualNetwork, EntitiesImpl<Subscription> collection) {
+		private NetworkImpl(VirtualNetwork azureVirtualNetwork, NetworksImpl collection) {
 			super(azureVirtualNetwork.getName(), azureVirtualNetwork, collection);
 		}
 

@@ -32,15 +32,16 @@ import com.microsoft.azure.shortcuts.resources.common.ResourceBase;
 public abstract class ResourceBaseImpl<
 		WRAPPER, 
 		INNER extends com.microsoft.windowsazure.core.ResourceBaseExtended,
-		WRAPPERIMPL extends ResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL>>
+		WRAPPERIMPL extends ResourceBaseImpl<WRAPPER, INNER, WRAPPERIMPL, COLLECTIONIMPL>,
+		COLLECTIONIMPL extends EntitiesImpl<Subscription>> 
 	extends 
 		IndexableRefreshableWrapperImpl<WRAPPER, INNER>
 	implements 
 		ResourceBase {
 
-	protected final EntitiesImpl<Subscription> collection;
+	protected final COLLECTIONIMPL collection;
 	
-	protected ResourceBaseImpl(String id, INNER innerObject, EntitiesImpl<Subscription> collection) {
+	protected ResourceBaseImpl(String id, INNER innerObject, COLLECTIONIMPL collection) {
 		super(id, innerObject);
 		this.collection = collection;
 	}

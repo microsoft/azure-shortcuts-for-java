@@ -42,7 +42,6 @@ import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
 import com.microsoft.azure.management.compute.models.VirtualMachineCaptureParameters;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
-import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.ResourceGroup;
 import com.microsoft.azure.shortcuts.resources.Network;
@@ -133,7 +132,8 @@ public class VirtualMachinesImpl
 			NetworkableGroupableResourceBaseImpl<
 				VirtualMachine, 
 				com.microsoft.azure.management.compute.models.VirtualMachine,
-				VirtualMachineImpl>
+				VirtualMachineImpl,
+				VirtualMachinesImpl>
 		implements 
 			VirtualMachine,
 			VirtualMachine.Definition {
@@ -147,7 +147,7 @@ public class VirtualMachinesImpl
 		private boolean isExistingPrimaryNIC;
 		private String nicId;
 		
-		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM, EntitiesImpl<Subscription> collection) {
+		private VirtualMachineImpl(com.microsoft.azure.management.compute.models.VirtualMachine azureVM, VirtualMachinesImpl collection) {
 			super(azureVM.getId(), azureVM, collection);
 		}
 
