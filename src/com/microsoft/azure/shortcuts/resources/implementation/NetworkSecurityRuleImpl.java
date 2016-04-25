@@ -19,11 +19,9 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
-import com.microsoft.azure.management.network.models.SecurityRule;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityRule;
 import com.microsoft.azure.shortcuts.resources.Protocol;
-import com.microsoft.azure.shortcuts.resources.implementation.NetworkSecurityGroupsImpl.NetworkSecurityGroupImpl;
 
 /***************************************************************
  * Implements logic for individual NSG
@@ -34,7 +32,7 @@ class NetworkSecurityRuleImpl implements
 		
 	private final com.microsoft.azure.management.network.models.SecurityRule nativeItem;
 	private final NetworkSecurityGroupImpl nsg;
-	private NetworkSecurityRuleImpl(
+	NetworkSecurityRuleImpl(
 			com.microsoft.azure.management.network.models.SecurityRule nativeItem,
 			NetworkSecurityGroupImpl nsg) {
 		this.nativeItem = nativeItem;
@@ -194,9 +192,5 @@ class NetworkSecurityRuleImpl implements
 	private NetworkSecurityRuleImpl withPermission(Permission permission) {
 		this.nativeItem.setAccess(permission.toString());
 		return this;
-	}
-	
-	static NetworkSecurityRuleImpl wrap(SecurityRule nativeItem, NetworkSecurityGroupImpl nsg) {
-		return new NetworkSecurityRuleImpl(nativeItem, nsg);
 	}
 }

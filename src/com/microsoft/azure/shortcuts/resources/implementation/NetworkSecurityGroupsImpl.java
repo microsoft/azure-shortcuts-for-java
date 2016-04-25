@@ -25,13 +25,12 @@ import java.util.List;
 import com.microsoft.azure.management.network.models.SecurityRule;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroups;
-import com.microsoft.azure.shortcuts.resources.NetworkSecurityRule;
 
 public class NetworkSecurityGroupsImpl 
 	extends GroupableResourcesBaseImpl<
 		NetworkSecurityGroup, 
 		com.microsoft.azure.management.network.models.NetworkSecurityGroup,
-		NetworkSecurityGroupsImpl.NetworkSecurityGroupImpl>
+		NetworkSecurityGroupImpl>
 	implements NetworkSecurityGroups {
 		
 	NetworkSecurityGroupsImpl(Subscription subscription) {
@@ -72,71 +71,8 @@ public class NetworkSecurityGroupsImpl
 	}
 	
 	@Override
-	protected NetworkSecurityGroupImpl wrap(com.microsoft.azure.management.network.models.NetworkSecurityGroup nativeItem) {
+	protected NetworkSecurityGroupImpl wrap(
+			com.microsoft.azure.management.network.models.NetworkSecurityGroup nativeItem) {
 		return new NetworkSecurityGroupImpl(nativeItem, this);
-	}
-	
-	
-	/***************************************************************
-	 * Implements logic for individual NSG
-	 ***************************************************************/
-	class NetworkSecurityGroupImpl 
-		extends 
-			GroupableResourceBaseImpl<
-				NetworkSecurityGroup, 
-				com.microsoft.azure.management.network.models.NetworkSecurityGroup,
-				NetworkSecurityGroupImpl,
-				NetworkSecurityGroupsImpl>
-		implements
-			NetworkSecurityGroup,
-			NetworkSecurityGroup.Definition {
-		
-		private NetworkSecurityGroupImpl(com.microsoft.azure.management.network.models.NetworkSecurityGroup azureItem, 
-				NetworkSecurityGroupsImpl collection) {
-			super(azureItem.getName(), azureItem, collection);
-		}
-
-
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/
-
-		/**************************************************************
-		 * Setters (fluent interface)
-		 **************************************************************/
-
-		/************************************************************
-		 * Verbs
-		 ************************************************************/
-
-		@Override
-		public void delete() throws Exception {
-			this.collection.subscription().networkSecurityGroups().delete(this.id());
-		}
-
-		@Override
-		public NetworkSecurityGroup provision() throws Exception {
-			// Create a group as needed
-			ensureGroup();
-		
-			this.collection.subscription().networkManagementClient().getNetworkSecurityGroupsOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-			return get(this.groupName, this.name());
-		}
-		
-		@Override
-		public NetworkSecurityGroup refresh() throws Exception {
-			this.setInner(getNativeEntity(
-					ResourcesImpl.groupFromResourceId(this.id()), 
-					ResourcesImpl.nameFromResourceId(this.id())));
-			return this;
-		}
-
-		@Override
-		public NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> withNewRule(String name) {
-			SecurityRule nativeItem = new SecurityRule();
-			nativeItem.setName(name);
-			nativeItem.setPriority(100);
-			return NetworkSecurityRuleImpl.wrap(nativeItem, this);
-		}
 	}
 }
