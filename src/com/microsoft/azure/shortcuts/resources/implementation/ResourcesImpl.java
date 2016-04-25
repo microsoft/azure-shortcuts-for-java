@@ -44,7 +44,7 @@ public class ResourcesImpl
 	
 
 	// Indexes to the parts in the resource id
-	private enum RESOURCE_ID {
+	enum RESOURCE_ID {
 		// Assumes this format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/{resourceProviderNamespace}/{resourceType}/{resourceName}
 		SUBSCRIPTION(2),
 		GROUP(4),
@@ -195,66 +195,5 @@ public class ResourcesImpl
 		ResourceListParameters params = new ResourceListParameters(); 
 		params.setResourceGroupName(groupName);
 		return subscription.resourceManagementClient().getResourcesOperations().list(params).getResources();
-	}
-	
-
-	// Implements the individual resource logic
-	private class ResourceImpl 
-		extends
-			GroupableResourceBaseImpl<
-				Resource, 
-				GenericResourceExtended,
-				ResourceImpl,
-				ResourcesImpl>
-		implements 
-			Resource {
-		
-		private ResourceImpl(GenericResourceExtended azureResource, ResourcesImpl collection) {
-			super(azureResource.getId(), azureResource, collection);
-		}
-
-		
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/
-
-		@Override
-		public String provider() throws Exception {
-			return RESOURCE_ID.PROVIDER.from(this.inner().getId());
-		}
-
-		@Override
-		public String properties() throws Exception {
-			return this.inner().getProperties();
-		}
-
-		@Override
-		public String provisioningState() throws Exception {
-			return this.inner().getProvisioningState();
-		}
-		
-		/************************************************************
-		 * Verbs
-		 ************************************************************/
-
-		@Override
-		public void delete() throws Exception {
-			this.collection.subscription().resources().delete(this.id);
-		}
-		
-
-		@Override
-		public ResourceImpl refresh() throws Exception {
-			return refresh(
-				RESOURCE_ID.GROUP.from(this.id),
-				createResourceIdentity(this.id));
-		}
-		
-		
-		// Refreshes the resource based on the group and identity information
-		private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
-			this.setInner(this.collection.subscription().resourceManagementClient().getResourcesOperations().get(group, identity).getResource());
-			return this;
-		}
 	}
 }
