@@ -31,7 +31,7 @@ public class PublicIpAddressesImpl
 	extends GroupableResourcesBaseImpl<
 		PublicIpAddress, 
 		com.microsoft.azure.management.network.models.PublicIpAddress,
-		PublicIpAddressesImpl.PublicIpAddressImpl>
+		PublicIpAddressImpl>
 	implements PublicIpAddresses {
 		
 	PublicIpAddressesImpl(Subscription subscription) {
@@ -79,108 +79,5 @@ public class PublicIpAddressesImpl
 	@Override
 	protected PublicIpAddressImpl wrap(com.microsoft.azure.management.network.models.PublicIpAddress nativeItem) {
 		return new PublicIpAddressImpl(nativeItem, this);
-	}
-	
-	
-	/***************************************************************
-	 * Implements logic for individual resource group
-	 ***************************************************************/
-	class PublicIpAddressImpl 
-		extends 
-			GroupableResourceBaseImpl<
-				PublicIpAddress, 
-				com.microsoft.azure.management.network.models.PublicIpAddress,
-				PublicIpAddressImpl,
-				PublicIpAddressesImpl>
-		implements
-			PublicIpAddress,
-			PublicIpAddress.Definition {
-		
-		private PublicIpAddressImpl(
-				com.microsoft.azure.management.network.models.PublicIpAddress azurePublicIpAddress, 
-				PublicIpAddressesImpl collection) {
-			super(azurePublicIpAddress.getName(), azurePublicIpAddress, collection);
-		}
-
-
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/
-
-		@Override
-		public String ipAddress() {
-			return this.inner().getIpAddress();
-		}
-		
-		@Override
-		public String leafDomainLabel() {
-			if(this.inner().getDnsSettings() == null) {
-				return null;
-			} else {
-				return this.inner().getDnsSettings().getDomainNameLabel();
-			}
-		}
-
-		
-		/**************************************************************
-		 * Setters (fluent interface)
-		 **************************************************************/
-
-		@Override
-		public PublicIpAddressImpl withStaticIp() {
-			this.inner().setPublicIpAllocationMethod(IpAllocationMethod.STATIC);
-			return this;
-		}
-
-		@Override
-		public PublicIpAddressImpl withDynamicIp() {
-			this.inner().setPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
-			return this;
-		}
-
-		@Override
-		public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
-			PublicIpAddressDnsSettings dnsSettings;
-			if(dnsName == null) {
-				this.inner().setDnsSettings(null);
-				return this;
-			} else if(null == (dnsSettings = this.inner().getDnsSettings())) {
-				dnsSettings = new PublicIpAddressDnsSettings();
-			}
-			dnsSettings.setDomainNameLabel(dnsName);
-			return this;
-		}
-
-		@Override
-		public DefinitionProvisionable withoutLeafDomainLabel() {
-			return this.withLeafDomainLabel(null);
-		}
-		
-		
-		/************************************************************
-		 * Verbs
-		 ************************************************************/
-
-		@Override
-		public void delete() throws Exception {
-			this.collection.subscription().publicIpAddresses().delete(this.id());
-		}
-
-		@Override
-		public PublicIpAddress provision() throws Exception {
-			// Create a group as needed
-			ensureGroup();
-		
-			this.collection.subscription().networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-			return get(this.groupName, this.name());
-		}
-		
-		@Override
-		public PublicIpAddressImpl refresh() throws Exception {
-			this.setInner(getNativeEntity(
-					ResourcesImpl.groupFromResourceId(this.id()), 
-					ResourcesImpl.nameFromResourceId(this.id())));
-			return this;
-		}
 	}
 }

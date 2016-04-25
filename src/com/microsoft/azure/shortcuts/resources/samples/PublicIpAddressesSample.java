@@ -40,8 +40,7 @@ public class PublicIpAddressesSample {
     
 
     public static void test(Subscription subscription) throws Exception {
-    	String existingGroupName = "javasampleresourcegroup1";
-    	String newPublicIpAddressName = "testPIP";
+    	String newPublicIpAddressName = "pip" + String.valueOf(System.currentTimeMillis());
     	
     	// Listing all public IP addresses
     	Map<String, PublicIpAddress> pips = subscription.publicIpAddresses().asMap();
@@ -65,15 +64,16 @@ public class PublicIpAddressesSample {
     	// More detailed PIP definition
     	PublicIpAddress pip = subscription.publicIpAddresses().define(newPublicIpAddressName + "2")
     		.withRegion(Region.US_WEST)
-    		.withExistingResourceGroup(existingGroupName)
+    		.withExistingResourceGroup(pipMinimal.resourceGroup())
     		.withLeafDomainLabel("hellomarcins")
     		.withStaticIp()
     		.withTag("hello", "world")
     		.provision();
     	    	
     	// Listing PIPs in a specific resource group
-    	pips = subscription.publicIpAddresses().asMap(existingGroupName);
-    	System.out.println(String.format("PIP ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(pips.keySet(), ",\n\t")));
+    	pips = subscription.publicIpAddresses().asMap(pipMinimal.resourceGroup());
+    	System.out.println(String.format("PIP ids in group '%s': \n\t%s", 
+    		pipMinimal.resourceGroup(), StringUtils.join(pips.keySet(), ",\n\t")));
     	
     	// Get info about a specific PIP using its resource ID
     	pip = subscription.publicIpAddresses(pip.resourceGroup(), pip.name());
@@ -97,7 +97,7 @@ public class PublicIpAddressesSample {
     		.append(String.format("\tRegion: %s\n", pip.region()))
     		.append(String.format("\tIP Address: %s\n", pip.ipAddress()))
     		.append(String.format("\tLeaf domain label: %s\n", pip.leafDomainLabel()))
-    		.append(String.format("\tFQDN: %s\n", pip.inner().getDnsSettings().getFqdn()))
+    		.append(String.format("\tFQDN: %s\n", ((pip.inner().getDnsSettings()!=null) ? pip.inner().getDnsSettings().getFqdn() : "(none)")))
     		;
     	
     	System.out.println(output.toString());
