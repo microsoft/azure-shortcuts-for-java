@@ -577,7 +577,7 @@ With network security rules and tags:
 NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-name>")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<group-name>")
-	.withNewRule("rule1")
+	.defineRule("rule1")
     	.allowInbound()
     	.fromAnyAddress()
     	.fromPort(80)
@@ -585,7 +585,7 @@ NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-nam
     	.toPort(80)
     	.withProtocol(Protocol.TCP)
     	.attach()
-    .withNewRule("rule2")
+    .defineRule("rule2")
     	.denyOutbound()
     	.fromAnyAddress()
     	.fromAnyPort()
@@ -593,7 +593,8 @@ NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-nam
     	.toAnyPort()
     	.withProtocol(Protocol.UDP)
     	.attach()
-    .provision();```
+    .provision();
+```
 
 #### Listing network security groups
 

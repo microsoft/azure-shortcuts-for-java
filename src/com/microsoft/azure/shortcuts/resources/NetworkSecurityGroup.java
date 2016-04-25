@@ -55,6 +55,6 @@ public interface NetworkSecurityGroup extends
 	public interface DefinitionProvisionable extends 
 		Provisionable<NetworkSecurityGroup>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
-		NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> withNewRule(String name);
+		NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> defineRule(String name);
 	}
 }

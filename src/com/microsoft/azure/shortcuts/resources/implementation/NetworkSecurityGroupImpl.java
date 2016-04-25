@@ -75,7 +75,7 @@ class NetworkSecurityGroupImpl
 	}
 	
 	@Override
-	public NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> withNewRule(String name) {
+	public NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> defineRule(String name) {
 		SecurityRule nativeItem = new SecurityRule();
 		nativeItem.setName(name);
 		nativeItem.setPriority(100);
