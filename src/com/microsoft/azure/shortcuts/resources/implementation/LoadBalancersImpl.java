@@ -21,17 +21,14 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import java.util.List;
 
-import com.microsoft.azure.management.network.models.FrontendIpConfiguration;
-import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.LoadBalancer;
 import com.microsoft.azure.shortcuts.resources.LoadBalancers;
-import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 
 public class LoadBalancersImpl 
 	extends GroupableResourcesBaseImpl<
 		LoadBalancer, 
 		com.microsoft.azure.management.network.models.LoadBalancer,
-		LoadBalancersImpl.LoadBalancerImpl>
+		LoadBalancerImpl>
 	implements LoadBalancers {
 	
 	LoadBalancersImpl(Subscription subscription) {
@@ -73,70 +70,5 @@ public class LoadBalancersImpl
 	@Override 
 	protected LoadBalancerImpl wrap(com.microsoft.azure.management.network.models.LoadBalancer nativeItem) {
 		return new LoadBalancerImpl(nativeItem, this);
-	}
-	
-	
-	/***************************************************************
-	 * Implements logic for individual resource group
-	 ***************************************************************/
-	class LoadBalancerImpl 
-		extends 
-			PublicIpGroupableResourceBaseImpl<
-				LoadBalancer, 
-				com.microsoft.azure.management.network.models.LoadBalancer,
-				LoadBalancerImpl,
-				LoadBalancersImpl>
-		implements
-			LoadBalancer,
-			LoadBalancer.Definition {
-		
-		private LoadBalancerImpl(com.microsoft.azure.management.network.models.LoadBalancer nativeItem, LoadBalancersImpl collection) {
-			super(nativeItem.getName(), nativeItem, collection);
-		}
-
-
-		/***********************************************************
-		 * Getters
-		 ***********************************************************/
-
-		
-		/**************************************************************
-		 * Setters (fluent interface)
-		 **************************************************************/
-
-		/************************************************************
-		 * Verbs
-		 ************************************************************/
-
-		@Override
-		public void delete() throws Exception {
-			this.collection.subscription().loadBalancers().delete(this.id());
-		}
-
-		@Override
-		public LoadBalancer provision() throws Exception {
-			// Create a group as needed
-			ensureGroup();
-			
-			// Create public IP as needed and associate with the first IP config
-			PublicIpAddress pip = ensurePublicIpAddress();
-			ResourceId r  = new ResourceId();
-			r.setId(pip.id());
-			FrontendIpConfiguration ipConfig = new FrontendIpConfiguration();
-			this.inner().getFrontendIpConfigurations().add(ipConfig);
-			ipConfig.setPublicIpAddress(r);
-			ipConfig.setName(this.name());
-			
-			this.collection.subscription().networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-			return get(this.groupName, this.name());
-		}
-		
-		@Override
-		public LoadBalancerImpl refresh() throws Exception {
-			this.setInner(getNativeEntity(
-					ResourcesImpl.groupFromResourceId(this.id()), 
-					ResourcesImpl.nameFromResourceId(this.id())));
-			return this;
-		}
-	}
+	}	
 }
