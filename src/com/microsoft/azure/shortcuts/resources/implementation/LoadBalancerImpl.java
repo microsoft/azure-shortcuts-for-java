@@ -57,7 +57,7 @@ class LoadBalancerImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().loadBalancers().delete(this.id());
+		this.subscription().loadBalancers().delete(this.id());
 	}
 	
 	@Override
@@ -74,9 +74,8 @@ class LoadBalancerImpl
 		ipConfig.setPublicIpAddress(r);
 		ipConfig.setName(this.name());
 		
-		Subscription subscription = this.collection.subscription();
-		subscription.networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-		return subscription.loadBalancers().get(this.groupName, this.name());
+		this.subscription().networkManagementClient().getLoadBalancersOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+		return this.subscription().loadBalancers().get(this.groupName, this.name());
 	}
 	
 	@Override

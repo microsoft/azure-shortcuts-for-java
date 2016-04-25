@@ -125,7 +125,7 @@ class NetworkImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().networks().delete(this.id());
+		this.subscription().networks().delete(this.id());
 	}
 	
 	@Override
@@ -143,10 +143,8 @@ class NetworkImpl
 			this.withSubnet("subnet1", this.addressSpaces().get(0));
 		}
 		
-		Subscription subscription = this.collection.subscription();
-		subscription.networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-		return subscription.networks().get(this.groupName, this.name());
-		
+		this.subscription().networkManagementClient().getVirtualNetworksOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+		return this.subscription().networks().get(this.groupName, this.name());	
 	}
 	
 	@Override

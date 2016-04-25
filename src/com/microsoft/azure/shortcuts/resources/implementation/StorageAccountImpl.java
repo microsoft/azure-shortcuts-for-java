@@ -93,9 +93,8 @@ class StorageAccountImpl
 		params.setAccountType(this.accountType());
 		params.setTags(this.inner().getTags());
 	
-		Subscription subscription = this.collection.subscription();
-		subscription.storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
-		return subscription.storageAccounts().get(this.groupName, this.name());
+		this.subscription().storageManagementClient().getStorageAccountsOperations().create(this.groupName, this.name(), params);
+		return this.subscription().storageAccounts().get(this.groupName, this.name());
 	}
 	
 	
@@ -110,6 +109,6 @@ class StorageAccountImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().storageAccounts().delete(this.id());
+		this.subscription().storageAccounts().delete(this.id());
 	}
 }

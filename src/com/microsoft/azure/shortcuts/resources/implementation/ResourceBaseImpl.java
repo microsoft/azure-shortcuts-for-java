@@ -49,6 +49,10 @@ public abstract class ResourceBaseImpl<
 	/*******************************************
 	 * Getters
 	 *******************************************/
+	@Override
+	public Subscription subscription() {
+		return this.collection.subscription();
+	}
 	
 	@Override
 	public String region() {

@@ -69,7 +69,7 @@ class NetworkInterfaceImpl
 				if(pipId == null) {
 					continue;
 				} else {
-					PublicIpAddress pip = this.collection.subscription().publicIpAddresses(pipId.getId());
+					PublicIpAddress pip = this.subscription().publicIpAddresses(pipId.getId());
 					pips.put(pip.id(), pip);						
 				}
 			}
@@ -92,7 +92,7 @@ class NetworkInterfaceImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().networkInterfaces().delete(this.id());
+		this.subscription().networkInterfaces().delete(this.id());
 	}
 	
 	@Override
@@ -123,9 +123,8 @@ class NetworkInterfaceImpl
 			ipConfig.setPublicIpAddress(r);
 		}
 		
-		Subscription subscription = this.collection.subscription();
-		subscription.networkManagementClient().getNetworkInterfacesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-		return subscription.networkInterfaces().get(this.groupName, this.name());
+		this.subscription().networkManagementClient().getNetworkInterfacesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+		return this.subscription().networkInterfaces().get(this.groupName, this.name());
 	}
 	
 	@Override

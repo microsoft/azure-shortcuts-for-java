@@ -63,7 +63,7 @@ class ResourceImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().resources().delete(this.id);
+		this.subscription().resources().delete(this.id);
 	}
 	
 	
@@ -77,7 +77,7 @@ class ResourceImpl
 	
 	// Refreshes the resource based on the group and identity information
 	private ResourceImpl refresh(String group, ResourceIdentity identity) throws Exception {
-		this.setInner(this.collection.subscription().resourceManagementClient().getResourcesOperations().get(group, identity).getResource());
+		this.setInner(this.subscription().resourceManagementClient().getResourcesOperations().get(group, identity).getResource());
 		return this;
 	}
 }

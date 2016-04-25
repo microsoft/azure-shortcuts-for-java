@@ -23,6 +23,7 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.resources.Region;
+import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public interface ResourceBase extends 
 	Indexable {
@@ -31,6 +32,7 @@ public interface ResourceBase extends
 	public String name();
 	public String region();
 	public Map<String, String> tags();
+	public Subscription subscription();
 	
 	/**
 	 * A resource definition allowing a region be selected for the resource

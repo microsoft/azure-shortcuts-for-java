@@ -398,30 +398,30 @@ class VirtualMachineImpl
 	 *******************************************************/
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().virtualMachines().delete(this.id());
+		this.subscription().virtualMachines().delete(this.id());
 	}
 	
 	@Override
 	public VirtualMachineImpl stop() throws Exception {
-		this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().powerOff(this.resourceGroup(), this.name());
+		this.subscription().computeManagementClient().getVirtualMachinesOperations().powerOff(this.resourceGroup(), this.name());
 		return this;
 	}
 	
 	@Override
 	public VirtualMachineImpl restart() throws Exception {
-		this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().restart(this.resourceGroup(), this.name());
+		this.subscription().computeManagementClient().getVirtualMachinesOperations().restart(this.resourceGroup(), this.name());
 		return this;
 	}
 	
 	@Override
 	public VirtualMachineImpl deallocate() throws Exception {
-		this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().deallocate(this.resourceGroup(), this.name());
+		this.subscription().computeManagementClient().getVirtualMachinesOperations().deallocate(this.resourceGroup(), this.name());
 		return this;
 	}
 	
 	@Override
 	public VirtualMachineImpl start() throws Exception {
-		this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().start(this.resourceGroup(), this.name());
+		this.subscription().computeManagementClient().getVirtualMachinesOperations().start(this.resourceGroup(), this.name());
 		return this;
 	}
 	
@@ -431,13 +431,13 @@ class VirtualMachineImpl
 		params.setDestinationContainerName(containerName.toLowerCase());
 		params.setVirtualHardDiskNamePrefix(diskNamePrefix);
 		params.setOverwrite(overwrite);
-		this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().capture(this.resourceGroup(), this.name(), params);
+		this.subscription().computeManagementClient().getVirtualMachinesOperations().capture(this.resourceGroup(), this.name(), params);
 		return this;
 	}
 	
 	@Override
 	public VirtualMachineImpl generalize() throws Exception {
-		this.collection.subscription().computeManagementClient().getVirtualMachinesOperations().generalize(this.resourceGroup(), this.name());
+		this.subscription().computeManagementClient().getVirtualMachinesOperations().generalize(this.resourceGroup(), this.name());
 		return this;
 	}
 	
@@ -483,7 +483,7 @@ class VirtualMachineImpl
 		URL diskBlob = new URL(container, "osDisk.vhd");
 		this.inner().getStorageProfile().getOSDisk().getVirtualHardDisk().setUri(diskBlob.toString());
 	
-		final Subscription subscription = this.collection.subscription();
+		final Subscription subscription = this.subscription();
 		subscription.computeManagementClient().getVirtualMachinesOperations().createOrUpdate(this.resourceGroup(), this.inner());
 		return subscription.virtualMachines().get(this.groupName, this.name());
 	}
@@ -511,7 +511,7 @@ class VirtualMachineImpl
 				this.storageAccountId = this.name() + "store";
 			}
 			
-			StorageAccount storageAccount = this.collection.subscription().storageAccounts().define(this.storageAccountId)
+			StorageAccount storageAccount = this.subscription().storageAccounts().define(this.storageAccountId)
 				.withRegion(this.region())
 				.withExistingResourceGroup(groupName)
 				.provision();
@@ -519,7 +519,7 @@ class VirtualMachineImpl
 			return storageAccount;
 			
 		} else {
-			return this.collection.subscription().storageAccounts(this.storageAccountId);
+			return this.subscription().storageAccounts(this.storageAccountId);
 		}
 	}
 	
@@ -569,7 +569,7 @@ class VirtualMachineImpl
 				this.availabilitySetId = this.name() + "set";
 			}
 			
-			AvailabilitySet availabilitySet = this.collection.subscription().availabilitySets().define(this.availabilitySetId)
+			AvailabilitySet availabilitySet = this.subscription().availabilitySets().define(this.availabilitySetId)
 				.withRegion(this.region())
 				.withExistingResourceGroup(groupName)
 				.provision();
@@ -578,7 +578,7 @@ class VirtualMachineImpl
 		} else if(this.availabilitySetId == null) {
 			return null;
 		} else {
-			return this.collection.subscription().availabilitySets(this.availabilitySetId);
+			return this.subscription().availabilitySets(this.availabilitySetId);
 		}
 	}
 	
@@ -592,7 +592,7 @@ class VirtualMachineImpl
 				this.nicId = this.name() + "nic";
 			}
 			
-			NetworkInterface nic = this.collection.subscription().networkInterfaces().define(this.nicId)
+			NetworkInterface nic = this.subscription().networkInterfaces().define(this.nicId)
 				.withRegion(this.region())
 				.withExistingResourceGroup(groupName)
 				.withExistingNetwork(network)
@@ -603,7 +603,7 @@ class VirtualMachineImpl
 			this.isExistingPrimaryNIC = true;
 			return nic;
 		} else {
-			return this.collection.subscription().networkInterfaces(this.nicId);
+			return this.subscription().networkInterfaces(this.nicId);
 		}
 	}
 }

@@ -54,7 +54,7 @@ class NetworkSecurityGroupImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().networkSecurityGroups().delete(this.id());
+		this.subscription().networkSecurityGroups().delete(this.id());
 	}
 	
 	@Override
@@ -62,9 +62,8 @@ class NetworkSecurityGroupImpl
 		// Create a group as needed
 		ensureGroup();
 	
-		Subscription subscription = this.collection.subscription();
-		subscription.networkManagementClient().getNetworkSecurityGroupsOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-		return subscription.networkSecurityGroups().get(this.groupName, this.name());
+		this.subscription().networkManagementClient().getNetworkSecurityGroupsOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+		return this.subscription().networkSecurityGroups().get(this.groupName, this.name());
 	}
 	
 	@Override

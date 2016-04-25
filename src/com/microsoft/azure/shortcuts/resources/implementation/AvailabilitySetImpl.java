@@ -70,7 +70,7 @@ class AvailabilitySetImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().availabilitySets().delete(this.id());
+		this.subscription().availabilitySets().delete(this.id());
 	}
 	
 	@Override
@@ -85,9 +85,8 @@ class AvailabilitySetImpl
 	@Override
 	public AvailabilitySet provision() throws Exception {
 		ensureGroup(); // Create group if needed
-		Subscription subscription = this.collection.subscription();
-		subscription.computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
-		return subscription.availabilitySets().get(this.groupName, this.name());
+		this.subscription().computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
+		return this.subscription().availabilitySets().get(this.groupName, this.name());
 	}
 }
 

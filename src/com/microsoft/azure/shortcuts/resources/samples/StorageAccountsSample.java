@@ -92,7 +92,6 @@ public class StorageAccountsSample {
     	
     	// Delete the groups
     	resourceGroup.delete();
-    	
     }
     
     

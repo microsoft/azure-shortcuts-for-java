@@ -101,7 +101,7 @@ class PublicIpAddressImpl
 	
 	@Override
 	public void delete() throws Exception {
-		this.collection.subscription().publicIpAddresses().delete(this.id());
+		this.subscription().publicIpAddresses().delete(this.id());
 	}
 	
 	@Override
@@ -109,9 +109,8 @@ class PublicIpAddressImpl
 		// Create a group as needed
 		ensureGroup();
 	
-		Subscription subscription = this.collection.subscription();
-		subscription.networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
-		return subscription.publicIpAddresses().get(this.groupName, this.name());
+		this.subscription().networkManagementClient().getPublicIpAddressesOperations().createOrUpdate(this.groupName, this.name(), this.inner());
+		return this.subscription().publicIpAddresses().get(this.groupName, this.name());
 	}
 	
 	@Override
