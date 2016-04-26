@@ -19,7 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
-import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
+import com.microsoft.azure.management.network.models.SecurityRule;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityRule;
 import com.microsoft.azure.shortcuts.resources.Protocol;
@@ -29,17 +29,15 @@ import com.microsoft.azure.shortcuts.resources.Protocol;
  ***************************************************************/
 class NetworkSecurityRuleImpl 
 	extends
-		IndexableWrapperImpl<com.microsoft.azure.management.network.models.SecurityRule>
+		ChildResourceImpl<SecurityRule, NetworkSecurityGroupImpl>
 	implements
 		NetworkSecurityRule,
 		NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionProvisionable> {
 
-	private final NetworkSecurityGroupImpl nsg;
 	NetworkSecurityRuleImpl(
-			com.microsoft.azure.management.network.models.SecurityRule nativeItem,
+			SecurityRule nativeItem,
 			NetworkSecurityGroupImpl nsg) {
-		super(nativeItem.getName(), nativeItem);
-		this.nsg = nsg;
+		super(nativeItem.getName(), nativeItem, nsg);
 	}
 
 	/***********************************************************
@@ -180,8 +178,8 @@ class NetworkSecurityRuleImpl
 
 	@Override
 	public NetworkSecurityGroupImpl attach() throws Exception {
-		nsg.inner().getSecurityRules().add(this.inner());
-		return nsg;
+		this.parent().inner().getSecurityRules().add(this.inner());
+		return this.parent();
 	}
 			
 	/*********************************************************
