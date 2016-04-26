@@ -19,7 +19,6 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
-import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.Subnet;
 
@@ -28,18 +27,15 @@ import com.microsoft.azure.shortcuts.resources.Subnet;
  ***************************************************************/
 class SubnetImpl 
 	extends
-		IndexableWrapperImpl<com.microsoft.azure.management.network.models.Subnet>
+		ChildResourceImpl<com.microsoft.azure.management.network.models.Subnet, NetworkImpl>
 	implements
 		Subnet,
 		Subnet.Definition<Network.DefinitionProvisionable> {
 
-	private final NetworkImpl network;
-	
 	SubnetImpl(
 			com.microsoft.azure.management.network.models.Subnet nativeItem,
 			NetworkImpl network) {
-		super(nativeItem.getName(), nativeItem);
-		this.network = network;
+		super(nativeItem.getName(), nativeItem, network);
 	}
 
 	/***********************************************************
@@ -70,8 +66,8 @@ class SubnetImpl
 
 	@Override
 	public NetworkImpl attach() throws Exception {
-		this.network.inner().getSubnets().add(this.inner());
-		return network;
+		this.parent().inner().getSubnets().add(this.inner());
+		return this.parent();
 	}
 			
 	/*********************************************************
