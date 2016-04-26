@@ -363,12 +363,27 @@ Network network = subscription.networks().define("<new-network-name>")
 ```
 With multiple, explicitly defined subnets and an existing resource group:
 ```java
-subscription.networks().define(newNetworkName + "2")
+subscription.networks().define("<new-network-name>")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<existing-resource-group-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
+    .provision();
+```
+With multiple, explicitly defined subnets using the granular child resource definition approach:
+```
+network = subscription.networks().define("<new-network-name>")
+	.withRegion(Region.US_WEST)
+   	.withExistingResourceGroup(groupName)
+    .withAddressSpace("10.0.0.0/28")
+    .defineSubnet("subnetA")
+    	.withAddressPrefix("10.0.0.0/29")
+    	.attach()
+    .defineSubnet("subnetB")
+    	.withAddressPrefix("10.0.0.8/29")
+    	.attach()
+    .withTag("hello", "world")
     .provision();
 ```
 

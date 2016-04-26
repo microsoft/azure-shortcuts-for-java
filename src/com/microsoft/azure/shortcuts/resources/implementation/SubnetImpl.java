@@ -30,8 +30,7 @@ class SubnetImpl
 		ChildResourceImpl<com.microsoft.azure.management.network.models.Subnet, NetworkImpl>
 	implements
 		Subnet,
-		Subnet.Definition<Network.DefinitionProvisionable> {
-
+		Subnet.Definition<Network.DefinitionProvisionableWithSubnet> {
 	SubnetImpl(
 			com.microsoft.azure.management.network.models.Subnet nativeItem,
 			NetworkImpl network) {
@@ -60,6 +59,13 @@ class SubnetImpl
 	 * Setters (fluent interface)
 	 **************************************************************/
 
+	@Override
+	public SubnetImpl withAddressPrefix(String cidr) {
+		this.inner().setAddressPrefix(cidr);
+		return this;
+	}
+
+
 	/************************************************************
 	 * Verbs
 	 ************************************************************/
@@ -69,7 +75,7 @@ class SubnetImpl
 		this.parent().inner().getSubnets().add(this.inner());
 		return this.parent();
 	}
-			
+
 	/*********************************************************
 	 * Helpers
 	 *********************************************************/

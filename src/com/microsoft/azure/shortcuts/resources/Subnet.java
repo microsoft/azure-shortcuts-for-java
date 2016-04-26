@@ -31,7 +31,9 @@ public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.managemen
 		DefinitionBlank<PARENT>,
 		DefinitionAttachable<PARENT> {}
 		
-	public interface DefinitionBlank<PARENT> {}
+	public interface DefinitionBlank<PARENT> {
+		DefinitionAttachable<PARENT> withAddressPrefix(String cidr);
+	}
 	
 	public interface DefinitionAttachable<PARENT> extends Attachable<PARENT> {
 	}

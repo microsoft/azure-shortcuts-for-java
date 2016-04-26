@@ -66,6 +66,7 @@ public interface Network extends
 	public interface DefinitionWithSubnet {
 		DefinitionProvisionableWithSubnet withSubnet(String name, String cidr);
 		DefinitionProvisionableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
+		Subnet.Definition<DefinitionProvisionableWithSubnet> defineSubnet(String name);
 	}
 
 	/**

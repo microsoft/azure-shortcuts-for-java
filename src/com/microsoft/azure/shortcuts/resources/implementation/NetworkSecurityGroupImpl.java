@@ -21,7 +21,6 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import com.microsoft.azure.management.network.models.SecurityRule;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
-import com.microsoft.azure.shortcuts.resources.NetworkSecurityRule;
 
 class NetworkSecurityGroupImpl 
 	extends 
@@ -75,7 +74,7 @@ class NetworkSecurityGroupImpl
 	}
 	
 	@Override
-	public NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> defineRule(String name) {
+	public NetworkSecurityRuleImpl defineRule(String name) {
 		SecurityRule nativeItem = new SecurityRule();
 		nativeItem.setName(name);
 		nativeItem.setPriority(100);

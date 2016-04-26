@@ -154,4 +154,12 @@ class NetworkImpl
 				ResourcesImpl.nameFromResourceId(this.id())));
 		return this;
 	}
+
+
+	@Override
+	public SubnetImpl defineSubnet(String name) {
+		com.microsoft.azure.management.network.models.Subnet nativeItem = new com.microsoft.azure.management.network.models.Subnet();
+		nativeItem.setName(name);
+		return new SubnetImpl(nativeItem, this);
+	}
 }

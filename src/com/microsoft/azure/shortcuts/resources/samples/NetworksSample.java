@@ -40,7 +40,6 @@ public class NetworksSample {
             e.printStackTrace();
         }
     }
-    
 
     public static void test(Subscription subscription) throws Exception {
     	Network network;
@@ -92,6 +91,20 @@ public class NetworksSample {
     	// Delete the network
     	network.delete();
     	
+    	// Create a network with 2 subnets created the child-resource way
+    	network = subscription.networks().define(newNetworkName + "3")
+    		.withRegion(Region.US_WEST)
+    		.withExistingResourceGroup(groupName)
+    		.withAddressSpace("10.0.0.0/28")
+    		.defineSubnet("subnetA")
+    			.withAddressPrefix("10.0.0.0/29")
+    			.attach()
+    		.defineSubnet("subnetB")
+    			.withAddressPrefix("10.0.0.8/29")
+    			.attach()
+    		.withTag("hello", "world")
+    		.provision();
+    		
     	// Delete the group
     	group.delete();
     }
