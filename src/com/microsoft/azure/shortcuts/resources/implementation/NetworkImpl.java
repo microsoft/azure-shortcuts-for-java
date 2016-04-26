@@ -28,8 +28,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
-import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.Subnet;
 
 class NetworkImpl 
 	extends 
@@ -69,8 +69,8 @@ class NetworkImpl
 	public Map<String, Subnet> subnets() {
 		TreeMap<String, Subnet> wrappers = new TreeMap<>();
 		for(com.microsoft.azure.management.network.models.Subnet nativeObject : this.inner().getSubnets()) {
-			SubnetImpl wrapper = new SubnetImpl(nativeObject.getName(), nativeObject);
-			wrappers.put(wrapper.id(), new SubnetImpl(nativeObject.getName(), nativeObject));
+			SubnetImpl wrapper = new SubnetImpl(nativeObject, this);
+			wrappers.put(wrapper.id(), wrapper);
 		}
 		return Collections.unmodifiableMap(wrappers);
 	}
@@ -153,32 +153,5 @@ class NetworkImpl
 				ResourcesImpl.groupFromResourceId(this.id()), 
 				ResourcesImpl.nameFromResourceId(this.id())));
 		return this;
-	}
-	
-	
-	/*****************************************************
-	 * Implements Subnet wrapper
-	 *****************************************************/
-	private class SubnetImpl
-		extends IndexableWrapperImpl<com.microsoft.azure.management.network.models.Subnet>
-		implements Subnet {
-	
-		protected SubnetImpl(String name, com.microsoft.azure.management.network.models.Subnet innerObject) {
-			super(name, innerObject);
-		}
-	
-		@Override
-		public String addressPrefix() {
-			return this.inner().getAddressPrefix();
-		}
-	
-		@Override
-		public String networkSecurityGroup() {
-			if(this.inner().getNetworkSecurityGroup() != null) {
-				return this.inner().getNetworkSecurityGroup().getId();
-			} else {
-				return null;
-			}
-		}	
 	}
 }

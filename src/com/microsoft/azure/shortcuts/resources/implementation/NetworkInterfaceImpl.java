@@ -28,6 +28,7 @@ import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
+import com.microsoft.azure.shortcuts.resources.Subnet;
 
 class NetworkInterfaceImpl 
 	extends 
@@ -104,7 +105,7 @@ class NetworkInterfaceImpl
 		Network network = ensureNetwork();
 		
 		// Ensure subnet
-		Network.Subnet subnet = ensureSubnet(network);
+		Subnet subnet = ensureSubnet(network);
 		
 		// Set the subnet on the primary (first) IP configuration
 		NetworkInterfaceIpConfiguration ipConfig = getPrimaryIpConfiguration();

@@ -29,7 +29,7 @@ import com.microsoft.azure.shortcuts.resources.Protocol;
 class NetworkSecurityRuleImpl implements
 	NetworkSecurityRule,
 	NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionProvisionable> {
-		
+
 	private final com.microsoft.azure.management.network.models.SecurityRule nativeItem;
 	private final NetworkSecurityGroupImpl nsg;
 	NetworkSecurityRuleImpl(

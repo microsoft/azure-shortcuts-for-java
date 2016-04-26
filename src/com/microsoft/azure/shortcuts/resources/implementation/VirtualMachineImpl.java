@@ -46,6 +46,7 @@ import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
+import com.microsoft.azure.shortcuts.resources.Subnet;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 
 class VirtualMachineImpl
@@ -454,7 +455,7 @@ class VirtualMachineImpl
 		Network network = ensureNetwork();
 		
 		// Ensure subnet
-		Network.Subnet subnet = ensureSubnet(network);
+		Subnet subnet = ensureSubnet(network);
 		
 		// Ensure public IP address
 		PublicIpAddress pip = ensurePublicIpAddress();
@@ -584,7 +585,7 @@ class VirtualMachineImpl
 	
 	
 	// Gets or creates if needed the specified network interface
-	private NetworkInterface ensureNetworkInterface(String groupName, Network network, Network.Subnet subnet, PublicIpAddress pip) throws Exception {
+	private NetworkInterface ensureNetworkInterface(String groupName, Network network, Subnet subnet, PublicIpAddress pip) throws Exception {
 		if(!this.isExistingPrimaryNIC) {
 			// Create a new NIC
 			if(this.nicId == null) {

@@ -27,6 +27,7 @@ import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
+import com.microsoft.azure.shortcuts.resources.Subnet;
 
 public interface DefinitionCombos {
 	
@@ -228,7 +229,7 @@ public interface DefinitionCombos {
 		 * @param subnet An existing subnet
 		 * @return The next stage of the resource definition
 		 */
-		R withNewNetworkInterface(String name, Network.Subnet subnet);
+		R withNewNetworkInterface(String name, Subnet subnet);
 		
 		/**
 		 * Creates a new network interface to associate with this resource as its primary NIC, in the same region and group, 
@@ -236,7 +237,7 @@ public interface DefinitionCombos {
 		 * @param subnet
 		 * @return The next stage of the resource definition
 		 */
-		R withNewNetworkInterface(Network.Subnet subnet);
+		R withNewNetworkInterface(Subnet subnet);
 		
 		/**
 		 * Creates a network interface to associate with this resource as its primary NIC, in the same region and group, 

@@ -25,8 +25,8 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.shortcuts.resources.ResourceGroup;
+import com.microsoft.azure.shortcuts.resources.Subnet;
 import com.microsoft.azure.shortcuts.resources.Network;
-import com.microsoft.azure.shortcuts.resources.Network.Subnet;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 

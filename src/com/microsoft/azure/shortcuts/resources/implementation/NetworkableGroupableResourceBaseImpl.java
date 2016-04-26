@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.implementation.EntitiesImpl;
 import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.Subnet;
 
 public abstract class NetworkableGroupableResourceBaseImpl<
 		WRAPPER, 
@@ -63,7 +64,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 	}
 
 	
-	final protected Network.Subnet ensureSubnet(Network network) throws Exception {
+	final protected Subnet ensureSubnet(Network network) throws Exception {
 		if(network == null) {
 			return null;
 		} else if(this.subnetId != null) {
