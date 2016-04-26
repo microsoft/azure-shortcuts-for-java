@@ -19,6 +19,7 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
+import com.microsoft.azure.shortcuts.common.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityRule;
 import com.microsoft.azure.shortcuts.resources.Protocol;
@@ -26,16 +27,18 @@ import com.microsoft.azure.shortcuts.resources.Protocol;
 /***************************************************************
  * Implements logic for individual NSG
  ***************************************************************/
-class NetworkSecurityRuleImpl implements
-	NetworkSecurityRule,
-	NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionProvisionable> {
+class NetworkSecurityRuleImpl 
+	extends
+		IndexableWrapperImpl<com.microsoft.azure.management.network.models.SecurityRule>
+	implements
+		NetworkSecurityRule,
+		NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionProvisionable> {
 
-	private final com.microsoft.azure.management.network.models.SecurityRule nativeItem;
 	private final NetworkSecurityGroupImpl nsg;
 	NetworkSecurityRuleImpl(
 			com.microsoft.azure.management.network.models.SecurityRule nativeItem,
 			NetworkSecurityGroupImpl nsg) {
-		this.nativeItem = nativeItem;
+		super(nativeItem.getName(), nativeItem);
 		this.nsg = nsg;
 	}
 
@@ -97,7 +100,7 @@ class NetworkSecurityRuleImpl implements
 
 	@Override
 	public NetworkSecurityRuleImpl withProtocol(Protocol protocol) {
-		this.nativeItem.setProtocol(protocol.toString());
+		this.inner().setProtocol(protocol.toString());
 		return this;
 	}
 
@@ -108,7 +111,7 @@ class NetworkSecurityRuleImpl implements
 		
 	@Override
 	public NetworkSecurityRuleImpl fromAddress(String cidr) {
-		this.nativeItem.setSourceAddressPrefix(cidr);
+		this.inner().setSourceAddressPrefix(cidr);
 		return this;
 	}
 
@@ -119,55 +122,55 @@ class NetworkSecurityRuleImpl implements
 
 	@Override
 	public NetworkSecurityRuleImpl fromPort(int port) {
-		this.nativeItem.setSourcePortRange(String.valueOf(port));
+		this.inner().setSourcePortRange(String.valueOf(port));
 		return this;
 	}
 
 	@Override
 	public NetworkSecurityRuleImpl fromAnyPort() {
-		this.nativeItem.setSourcePortRange("*");
+		this.inner().setSourcePortRange("*");
 		return this;
 	}
 
 	@Override
 	public NetworkSecurityRuleImpl fromPortRange(int from, int to) {
-		this.nativeItem.setSourcePortRange(String.valueOf(from) + "-" + String.valueOf(to));
+		this.inner().setSourcePortRange(String.valueOf(from) + "-" + String.valueOf(to));
 		return this;
 	}
 		
 	@Override
 	public NetworkSecurityRuleImpl withPriority(int priority) {
-		this.nativeItem.setPriority(priority);
+		this.inner().setPriority(priority);
 		return this;
 	}
 
 	@Override
 	public NetworkSecurityRuleImpl toAddress(String cidr) {
-		this.nativeItem.setDestinationAddressPrefix(cidr);
+		this.inner().setDestinationAddressPrefix(cidr);
 		return this;
 	}
 	
 	@Override
 	public NetworkSecurityRuleImpl toAnyAddress() {
-		this.nativeItem.setDestinationAddressPrefix("*");
+		this.inner().setDestinationAddressPrefix("*");
 		return this;
 	}
 
 	@Override
 	public NetworkSecurityRuleImpl toPort(int port) {
-		this.nativeItem.setDestinationPortRange(String.valueOf(port));
+		this.inner().setDestinationPortRange(String.valueOf(port));
 		return this;
 	}
 	
 	@Override
 	public NetworkSecurityRuleImpl toAnyPort() {
-		this.nativeItem.setDestinationPortRange("*");
+		this.inner().setDestinationPortRange("*");
 		return this;
 	}
 
 	@Override
 	public NetworkSecurityRuleImpl toPortRange(int from, int to) {
-		this.nativeItem.setDestinationPortRange(String.valueOf(from) + "-" + String.valueOf(to));
+		this.inner().setDestinationPortRange(String.valueOf(from) + "-" + String.valueOf(to));
 		return this;
 	}
 			
@@ -177,7 +180,7 @@ class NetworkSecurityRuleImpl implements
 
 	@Override
 	public NetworkSecurityGroupImpl attach() throws Exception {
-		nsg.inner().getSecurityRules().add(this.nativeItem);
+		nsg.inner().getSecurityRules().add(this.inner());
 		return nsg;
 	}
 			
@@ -185,12 +188,12 @@ class NetworkSecurityRuleImpl implements
 	 * Helpers
 	 *********************************************************/
 	private NetworkSecurityRuleImpl withDirection(Direction direction) {
-		this.nativeItem.setDirection(direction.toString());
+		this.inner().setDirection(direction.toString());
 		return this;
 	}
 		
 	private NetworkSecurityRuleImpl withPermission(Permission permission) {
-		this.nativeItem.setAccess(permission.toString());
+		this.inner().setAccess(permission.toString());
 		return this;
 	}
 }

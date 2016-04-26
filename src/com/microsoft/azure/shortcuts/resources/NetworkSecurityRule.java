@@ -22,8 +22,10 @@ package com.microsoft.azure.shortcuts.resources;
 import com.microsoft.azure.management.network.models.SecurityRuleAccess;
 import com.microsoft.azure.management.network.models.SecurityRuleDirection;
 import com.microsoft.azure.shortcuts.common.Attachable;
+import com.microsoft.azure.shortcuts.common.Indexable;
+import com.microsoft.azure.shortcuts.common.Wrapper;
 
-public interface NetworkSecurityRule {
+public interface NetworkSecurityRule extends Indexable, Wrapper<com.microsoft.azure.management.network.models.SecurityRule> {
 	
 	/**
 	 * The possible directions of the network traffic supported by a network security rule
