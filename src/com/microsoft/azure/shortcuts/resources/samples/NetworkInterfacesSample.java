@@ -27,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfiguration;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
+import com.microsoft.azure.shortcuts.resources.Protocol;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Region;
 import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
@@ -43,9 +45,11 @@ public class NetworkInterfacesSample {
     
 
     public static void test(Subscription subscription) throws Exception {
-    	String newNetworkInterfaceName = "testnic";
-    	String newNetworkName = "myvnet";
-    	String newGroupName = "testgroup";
+    	String suffix = String.valueOf(System.currentTimeMillis());
+    	String newNetworkInterfaceName = "nic" + suffix;
+    	String newNetworkName = "vnet" + suffix;
+    	String newGroupName = "rg" + suffix;
+    	String newNSGName = "nsg" + suffix;
     	
     	// Listing all network interfaces
     	Map<String, NetworkInterface> nics = subscription.networkInterfaces().asMap();
@@ -81,6 +85,20 @@ public class NetworkInterfacesSample {
     		.withSubnet("subnet2", "10.0.0.8/29")
     		.provision();
     	
+    	// Create a NSG to test the NIC with
+    	NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define(newNSGName)
+    		.withRegion(Region.US_WEST)
+    		.withExistingResourceGroup(newGroupName)
+    		.defineRule("httpIn")
+    			.allowOutbound()
+    			.fromAnyAddress()
+    			.fromPort(80)
+    			.toAnyAddress()
+    			.toAnyPort()
+    			.withProtocol(Protocol.TCP)
+    			.attach()
+    		.provision();
+    	
     	// More detailed NIC definition
     	NetworkInterface nic = subscription.networkInterfaces().define(newNetworkInterfaceName + "2")
     		.withRegion(Region.US_WEST)
@@ -89,6 +107,7 @@ public class NetworkInterfacesSample {
     		.withSubnet("subnet1")
     		.withPrivateIpAddressStatic("10.0.0.5")
     		.withNewPublicIpAddress()
+    		.withExistingNetworkSecurityGroup(nsg)
     		.withTag("hello", "world")
     		.provision();
     		

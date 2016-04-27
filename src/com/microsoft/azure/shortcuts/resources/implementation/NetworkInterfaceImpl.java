@@ -27,6 +27,7 @@ import com.microsoft.azure.management.network.models.NetworkInterfaceIpConfigura
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.Subnet;
 
@@ -41,6 +42,9 @@ class NetworkInterfaceImpl
 		NetworkInterface,
 		NetworkInterface.Definition {
 	
+	private boolean isExistingNSG;
+	private String nsgId;
+	
 	NetworkInterfaceImpl(
 			com.microsoft.azure.management.network.models.NetworkInterface azureNetworkInterface, 
 			NetworkInterfacesImpl collection) {
@@ -54,6 +58,27 @@ class NetworkInterfaceImpl
 	private NetworkInterfaceIpConfiguration getPrimaryIpConfiguration() {
 		// TODO: in the future, Azure will support multiple ipConfigs on a NIC, but currently it doesn't, so the first one can be assumed to be the primary
 		return this.inner().getIpConfigurations().get(0); 
+	}
+	
+	private NetworkSecurityGroup ensureNSG() throws Exception {
+		if(!this.isExistingNSG) {
+			// Create a new availability set
+			if(this.nsgId == null) {
+				// Generate a name if needed
+				this.nsgId = this.name() + "set";
+			}
+			
+			NetworkSecurityGroup nsg = this.subscription().networkSecurityGroups().define(this.nsgId)
+				.withRegion(this.region())
+				.withExistingResourceGroup(this.groupName)
+				.provision();
+			this.isExistingNSG = true;
+			return nsg;
+		} else if(this.nsgId == null) {
+			return null;
+		} else {
+			return this.subscription().networkSecurityGroups(this.nsgId);
+		}
 	}
 	
 	
@@ -84,6 +109,28 @@ class NetworkInterfaceImpl
 	 * Setters (fluent interface)
 	 **************************************************************/
 	
+	@Override
+	public DefinitionProvisionable withExistingNetworkSecurityGroup(String id) {
+		this.isExistingNSG = true;
+		this.nsgId = id;
+		ResourceId resourceId = new ResourceId();
+		resourceId.setId(id);
+		this.inner().setNetworkSecurityGroup(resourceId);
+		return this;
+	}
+
+
+	@Override
+	public DefinitionProvisionable withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
+		return this.withExistingNetworkSecurityGroup(nsg.id());
+	}
+
+
+	@Override
+	public DefinitionProvisionable withExistingNetworkSecurityGroup(
+			com.microsoft.azure.management.network.models.NetworkInterface nsg) {
+		return this.withExistingNetworkSecurityGroup(nsg.getId());
+	}
 	
 	
 	
@@ -122,6 +169,12 @@ class NetworkInterfaceImpl
 			ResourceId r = new ResourceId();
 			r.setId(pip.id());
 			ipConfig.setPublicIpAddress(r);
+		}
+		
+		// Ensure network security group
+		NetworkSecurityGroup nsg = ensureNSG();
+		if(nsg != null) {
+			this.withExistingNetworkSecurityGroup(nsg);
 		}
 		
 		this.subscription().networkManagementClient().getNetworkInterfacesOperations().createOrUpdate(this.groupName, this.name(), this.inner());

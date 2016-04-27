@@ -25,6 +25,7 @@ import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.resources.AvailabilitySet;
 import com.microsoft.azure.shortcuts.resources.Network;
 import com.microsoft.azure.shortcuts.resources.NetworkInterface;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.PublicIpAddress;
 import com.microsoft.azure.shortcuts.resources.StorageAccount;
 import com.microsoft.azure.shortcuts.resources.Subnet;
@@ -309,4 +310,13 @@ public interface DefinitionCombos {
 		R withPrivateIpAddressStatic(String staticPrivateIpAddress);
 	}
 
+	
+	/**
+	 * A resource definition allowing to associate it with a network security group
+	 */
+	public interface WithNetworkSecurityGroup<R> {
+		R withExistingNetworkSecurityGroup(String id);
+		R withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
+		R withExistingNetworkSecurityGroup(com.microsoft.azure.management.network.models.NetworkInterface nsg);
+	}
 }

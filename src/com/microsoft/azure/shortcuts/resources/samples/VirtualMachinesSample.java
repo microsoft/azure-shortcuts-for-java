@@ -20,6 +20,7 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
+import java.net.URI;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -58,6 +59,7 @@ public class VirtualMachinesSample {
     		.withSize(Size.Type.BASIC_A1)
     		.withNewStorageAccount()
     		.withNewDataDisk(100)
+    		//.withExistingAvailabilitySet(new URI("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinsrg123/providers/Microsoft.Compute/availabilitySets/marcinsas123"))
     		//.withExistingDataDisk("https://vm1455045717874store.blob.core.windows.net/vm1455045717874/disk0.vhd")
     		.provision();
     

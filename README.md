@@ -451,15 +451,16 @@ NetworkInterface nicMinimal = subscription.networkInterfaces().define(newNetwork
     .withoutPublicIpAddress()
     .provision();
 ```
-Creating a network interface with a new resource group, dynamic private IP and a new, dynamically allocated public IP with a leaf domain label automatically generated based on the name of the NIC:
+Creating a network interface with a new resource group, dynamic private IP and a new, dynamically allocated public IP with a leaf domain label automatically generated based on the name of the NIC, and associating with an existing network security group:
 ```java
 NetworkInterface nic = subscription.networkInterfaces().define("<new-nic-name>")
-	.withRegion(Region.US_WEST)
-    .withExistingResourceGroup("<existing-group-name>")
-    .withExistingNetwork(network)
+    .withRegion(Region.US_WEST)
+    .withExistingResourceGroup("<new-group-name>")
+    .withExistingNetwork("<existing-network-id>")
     .withSubnet("subnet1")
     .withPrivateIpAddressStatic("10.0.0.5")
     .withNewPublicIpAddress()
+    .withExistingNetworkSecurityGroup("<existing-nsg-id>")
     .withTag("hello", "world")
     .provision();
 ```

@@ -58,7 +58,7 @@ public class AvailabilitySetSample {
     	Map<String, AvailabilitySet> availabilitySets = subscription.availabilitySets().asMap(availabilitySet.resourceGroup());
     	System.out.println(String.format("Availability set ids in group '%s': \n\t%s", 
     			availabilitySet.resourceGroup(), StringUtils.join(availabilitySets.keySet(), ",\n\t")));
-    	
+    		
     	// Delete availability set
     	availabilitySet.delete();
     	

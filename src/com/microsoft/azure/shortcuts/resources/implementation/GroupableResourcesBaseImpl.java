@@ -26,7 +26,8 @@ import java.util.Map;
 
 import com.microsoft.windowsazure.core.ResourceBaseExtended;
 
-public abstract class GroupableResourcesBaseImpl<WRAPPER, 
+public abstract class GroupableResourcesBaseImpl<
+		WRAPPER, 
 		INNER extends ResourceBaseExtended,
 		WRAPPERIMPL extends WRAPPER> extends ArmEntitiesImpl {
 	protected GroupableResourcesBaseImpl(Subscription subscription) {
