@@ -314,11 +314,18 @@ public interface DefinitionCombos {
 	/**
 	 * A resource definition allowing to associate it with a network security group
 	 */
-	public interface WithNetworkSecurityGroup<R> {
-		R withExistingNetworkSecurityGroup(String id);
-		R withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
-		R withExistingNetworkSecurityGroup(com.microsoft.azure.management.network.models.NetworkInterface nsg);
+	public interface WithNewNetworkSecurityGroup<R> {
 		R withNewNetworkSecurityGroup();
 		R withNewNetworkSecurityGroup(String name);
 	}
+
+	/**
+	 * A resource definition allowing to associate it with a network security group
+	 */
+	public interface WithExistingNetworkSecurityGroup<R> {
+		R withExistingNetworkSecurityGroup(String id);
+		R withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
+		R withExistingNetworkSecurityGroup(com.microsoft.azure.management.network.models.NetworkSecurityGroup nsg);
+	}
+
 }

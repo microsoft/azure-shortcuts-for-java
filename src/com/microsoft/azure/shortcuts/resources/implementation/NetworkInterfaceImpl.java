@@ -128,7 +128,7 @@ class NetworkInterfaceImpl
 
 	@Override
 	public DefinitionProvisionable withExistingNetworkSecurityGroup(
-			com.microsoft.azure.management.network.models.NetworkInterface nsg) {
+			com.microsoft.azure.management.network.models.NetworkSecurityGroup nsg) {
 		return this.withExistingNetworkSecurityGroup(nsg.getId());
 	}
 	

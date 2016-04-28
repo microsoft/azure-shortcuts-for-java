@@ -88,7 +88,8 @@ public interface NetworkInterface extends
 	 */
 	public interface DefinitionProvisionable extends 
 		Provisionable<NetworkInterface>,
-		DefinitionCombos.WithNetworkSecurityGroup<DefinitionProvisionable>,
+		DefinitionCombos.WithExistingNetworkSecurityGroup<DefinitionProvisionable>,
+		DefinitionCombos.WithNewNetworkSecurityGroup<DefinitionProvisionable>,
 		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
 	}
 }

@@ -22,6 +22,7 @@ package com.microsoft.azure.shortcuts.resources;
 import com.microsoft.azure.shortcuts.common.Attachable;
 import com.microsoft.azure.shortcuts.common.Indexable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
+import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
 
 public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.management.network.models.Subnet> {
 	public String addressPrefix();
@@ -35,9 +36,8 @@ public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.managemen
 		DefinitionAttachable<PARENT> withAddressPrefix(String cidr);
 	}
 	
-	public interface DefinitionAttachable<PARENT> extends Attachable<PARENT> {
-		DefinitionAttachable<PARENT> withExistingNetworkSecurityGroup(String nsgId);
-		DefinitionAttachable<PARENT> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
-		DefinitionAttachable<PARENT> withExistingNetworkSecurityGroup(com.microsoft.azure.management.network.models.NetworkSecurityGroup nsg);
+	public interface DefinitionAttachable<PARENT> extends 
+		Attachable<PARENT>,
+		DefinitionCombos.WithExistingNetworkSecurityGroup<DefinitionAttachable<PARENT>> { 
 	}
 }
