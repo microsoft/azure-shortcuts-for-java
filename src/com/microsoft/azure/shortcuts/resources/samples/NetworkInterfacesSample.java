@@ -110,7 +110,18 @@ public class NetworkInterfacesSample {
     		.withExistingNetworkSecurityGroup(nsg)
     		.withTag("hello", "world")
     		.provision();
-    		
+    	
+    	// NIC with new NSG
+    	nic = subscription.networkInterfaces().define(newNetworkInterfaceName + "3")
+    		.withRegion(Region.US_WEST)
+    		.withExistingResourceGroup(newGroupName)
+    		.withExistingNetwork(network)
+    		.withSubnet("subnet1")
+    		.withPrivateIpAddressDynamic()
+    		.withNewPublicIpAddress()
+    		.withNewNetworkSecurityGroup()
+    		.provision();
+    	
     	// Get info about a specific NIC using its resource ID
     	nic = subscription.networkInterfaces(nic.resourceGroup(), nic.name());
     	printNetworkInterface(nic);

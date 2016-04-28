@@ -65,7 +65,7 @@ class NetworkInterfaceImpl
 			// Create a new availability set
 			if(this.nsgId == null) {
 				// Generate a name if needed
-				this.nsgId = this.name() + "set";
+				this.nsgId = this.name() + "nsg";
 			}
 			
 			NetworkSecurityGroup nsg = this.subscription().networkSecurityGroups().define(this.nsgId)
@@ -186,6 +186,18 @@ class NetworkInterfaceImpl
 		this.setInner(this.collection.getNativeEntity(
 			ResourcesImpl.groupFromResourceId(this.id()), 
 			ResourcesImpl.nameFromResourceId(this.id())));
+		return this;
+	}
+
+	@Override
+	public DefinitionProvisionable withNewNetworkSecurityGroup() {
+		return this.withNewNetworkSecurityGroup((String)null);
+	}
+
+	@Override
+	public DefinitionProvisionable withNewNetworkSecurityGroup(String name) {
+		this.isExistingNSG = false;
+		this.nsgId = name;
 		return this;
 	}
 }

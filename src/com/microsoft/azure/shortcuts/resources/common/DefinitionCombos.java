@@ -318,5 +318,7 @@ public interface DefinitionCombos {
 		R withExistingNetworkSecurityGroup(String id);
 		R withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
 		R withExistingNetworkSecurityGroup(com.microsoft.azure.management.network.models.NetworkInterface nsg);
+		R withNewNetworkSecurityGroup();
+		R withNewNetworkSecurityGroup(String name);
 	}
 }

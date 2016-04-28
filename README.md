@@ -611,6 +611,7 @@ NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-nam
     	.attach()
     .provision();
 ```
+To associate or create an NSG while creating a network interface, see the [Network Interfaces](#network-interfaces) section - the `.withExistingNetworkSecurityGroup()` and `.withNewNetworkSecurityGroup()` methods.
 
 #### Listing network security groups
 
