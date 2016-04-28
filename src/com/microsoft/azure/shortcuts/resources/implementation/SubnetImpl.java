@@ -19,7 +19,10 @@
 */
 package com.microsoft.azure.shortcuts.resources.implementation;
 
+import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.Network;
+import com.microsoft.azure.shortcuts.resources.Network.DefinitionProvisionableWithSubnet;
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.Subnet;
 
 /***************************************************************
@@ -65,6 +68,26 @@ class SubnetImpl
 		return this;
 	}
 
+	@Override
+	public SubnetImpl withExistingNetworkSecurityGroup(String nsgId) {
+		ResourceId resourceId = new ResourceId();
+		resourceId.setId(nsgId);
+		this.inner().setNetworkSecurityGroup(resourceId);
+		return this;
+	}
+
+	@Override
+	public SubnetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
+		return this.withExistingNetworkSecurityGroup(nsg.id());
+	}
+
+
+	@Override
+	public DefinitionAttachable<DefinitionProvisionableWithSubnet> withExistingNetworkSecurityGroup(
+			com.microsoft.azure.management.network.models.NetworkSecurityGroup nsg) {
+		return this.withExistingNetworkSecurityGroup(nsg.getId());
+	}
+
 
 	/************************************************************
 	 * Verbs
@@ -75,7 +98,6 @@ class SubnetImpl
 		this.parent().inner().getSubnets().add(this.inner());
 		return this.parent();
 	}
-
 	/*********************************************************
 	 * Helpers
 	 *********************************************************/

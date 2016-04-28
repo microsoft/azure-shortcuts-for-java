@@ -42,18 +42,58 @@ public class NetworksSample {
     }
 
     public static void test(Subscription subscription) throws Exception {
-    	Network network;
-    	String groupName = "vnettestgroup";
-    	String newNetworkName = "marcinsvnetx";
+    	testProvisionMinimal(subscription);
+    	testProvisionWithSubnets(subscription);
+    	testProvisionWithNSG(subscription);
+    }
+    
+    
+    private static void testProvisionWithNSG(Subscription subscription) throws Exception {
+    	String suffix = String.valueOf(System.currentTimeMillis());
+    	String newNetworkName = "net" + suffix;
+    	String existingNsgName = "nsg" + suffix;
+    	String existingGroupName = "rg" + suffix;
     	
-    	// Create a new network with a default subnet in a new default resource group
-    	network = subscription.networks().define(newNetworkName)
+    	// Create an NSG
+    	subscription.networkSecurityGroups().define(existingNsgName)
+    		.withRegion(Region.US_WEST)
+    		.withNewResourceGroup(existingGroupName)
+    		.provision();
+    			
+    	// Create a network with 2 subnets created the child-resource way, assigning an NSG
+    	Network network = subscription.networks().define(newNetworkName)
+    		.withRegion(Region.US_WEST)
+    		.withExistingResourceGroup(existingGroupName)
+    		.withAddressSpace("10.0.0.0/28")
+    		.defineSubnet("subnetA")
+    			.withAddressPrefix("10.0.0.0/29")
+    			.withExistingNetworkSecurityGroup(existingNsgName)
+    			.attach()
+    		.defineSubnet("subnetB")
+    			.withAddressPrefix("10.0.0.8/29")
+    			.attach()
+    		.withTag("hello", "world")
+    		.provision();
+    	
+    	printNetwork(network);
+    	
+    	// Delete the group
+    	subscription.resourceGroups().delete(existingGroupName);
+    	
+    }
+    
+	// Create a new network with a default subnet in a new default resource group
+    private static void testProvisionMinimal(Subscription subscription) throws Exception {
+    	String suffix = String.valueOf(System.currentTimeMillis());
+    	String newNetworkName = "net" + suffix;
+    	
+    	Network network = subscription.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
     		.withAddressSpace("10.0.0.0/28")
     		.provision();
     	
-    	// Get info about a specific network using its group and name
+    	// Get info about a specific network using its id
     	network = subscription.networks(network.id());
     	printNetwork(network);
 
@@ -61,22 +101,27 @@ public class NetworksSample {
     	Map<String, Network> networks = subscription.networks().asMap();
     	System.out.println(String.format("Network ids: \n\t%s", StringUtils.join(networks.keySet(), ",\n\t")));
     	
-    	// Get info about a specific network using its resource ID
-    	network = subscription.networks(network.resourceGroup(), network.name());
-    	printNetwork(network);
-    	
-    	// Delete the network
+    	// Clean up
+    	String groupName = network.resourceGroup();
     	subscription.networks().delete(network.id());
+    	subscription.resourceGroups().delete(groupName);
+    }
+
+    
+	// Create a new network with two subnets, in an existing resource group
+    private static void testProvisionWithSubnets(Subscription subscription) throws Exception {
+    	String suffix = String.valueOf(System.currentTimeMillis());
+    	String existingGroupName = "rg" + suffix;
+    	String newNetworkName = "net" + suffix;
     	
     	// Create a test group
-    	ResourceGroup group = subscription.resourceGroups().define(groupName)
+    	ResourceGroup group = subscription.resourceGroups().define(existingGroupName)
     		.withRegion(Region.US_WEST)
     		.provision();
     	
-    	// Create a new network with two subnets, in an existing resource group
-    	network = subscription.networks().define(newNetworkName + "2")
+    	Network network = subscription.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
-    		.withExistingResourceGroup(groupName)
+    		.withExistingResourceGroup(existingGroupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("Foo", "10.0.0.0/29")
     		.withSubnet("Bar", "10.0.0.8/29")
@@ -85,27 +130,11 @@ public class NetworksSample {
     	printNetwork(network);
 
     	// Listing networks in a specific resource group
-    	networks = subscription.networks().asMap(groupName);
-    	System.out.println(String.format("Network ids in group '%s': \n\t%s", groupName, StringUtils.join(networks.keySet(), ",\n\t")));
+    	Map<String, Network> networks = subscription.networks().asMap(existingGroupName);
+    	System.out.println(String.format("Network ids in group '%s': \n\t%s", existingGroupName, StringUtils.join(networks.keySet(), ",\n\t")));
     	
-    	// Delete the network
+    	// Clean up
     	network.delete();
-    	
-    	// Create a network with 2 subnets created the child-resource way
-    	network = subscription.networks().define(newNetworkName + "3")
-    		.withRegion(Region.US_WEST)
-    		.withExistingResourceGroup(groupName)
-    		.withAddressSpace("10.0.0.0/28")
-    		.defineSubnet("subnetA")
-    			.withAddressPrefix("10.0.0.0/29")
-    			.attach()
-    		.defineSubnet("subnetB")
-    			.withAddressPrefix("10.0.0.8/29")
-    			.attach()
-    		.withTag("hello", "world")
-    		.provision();
-    		
-    	// Delete the group
     	group.delete();
     }
     

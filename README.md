@@ -371,19 +371,19 @@ subscription.networks().define("<new-network-name>")
     .withSubnet("Bar", "10.0.0.8/29")
     .provision();
 ```
-With multiple, explicitly defined subnets using the granular child resource definition approach:
+With multiple, explicitly defined subnets and associating an existing network security group with one of them, using the granular child resource definition approach:
 ```
-network = subscription.networks().define("<new-network-name>")
-	.withRegion(Region.US_WEST)
-   	.withExistingResourceGroup(groupName)
+Network network = subscription.networks().define(newNetworkName)
+    .withRegion(Region.US_WEST)
+    .withExistingResourceGroup(existingGroupName)
     .withAddressSpace("10.0.0.0/28")
     .defineSubnet("subnetA")
     	.withAddressPrefix("10.0.0.0/29")
+    	.withExistingNetworkSecurityGroup(existingNsgName)
     	.attach()
     .defineSubnet("subnetB")
     	.withAddressPrefix("10.0.0.8/29")
     	.attach()
-    .withTag("hello", "world")
     .provision();
 ```
 
@@ -612,6 +612,8 @@ NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-nam
     .provision();
 ```
 To associate or create an NSG while creating a network interface, see the [Network Interfaces](#network-interfaces) section - the `.withExistingNetworkSecurityGroup()` and `.withNewNetworkSecurityGroup()` methods.
+
+To associate an NSG with a subnet while creating a virtual network, see the [Virtual Networks](#virtual-networks) section - the `.withExistingNetworkSecurityGroup()` method.
 
 #### Listing network security groups
 

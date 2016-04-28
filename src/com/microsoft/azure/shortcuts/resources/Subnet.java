@@ -36,5 +36,8 @@ public interface Subnet extends Indexable, Wrapper<com.microsoft.azure.managemen
 	}
 	
 	public interface DefinitionAttachable<PARENT> extends Attachable<PARENT> {
+		DefinitionAttachable<PARENT> withExistingNetworkSecurityGroup(String nsgId);
+		DefinitionAttachable<PARENT> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
+		DefinitionAttachable<PARENT> withExistingNetworkSecurityGroup(com.microsoft.azure.management.network.models.NetworkSecurityGroup nsg);
 	}
 }
