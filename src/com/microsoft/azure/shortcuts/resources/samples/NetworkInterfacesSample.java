@@ -43,52 +43,65 @@ public class NetworkInterfacesSample {
         }
     }
     
-
+    
     public static void test(Subscription subscription) throws Exception {
+    	testProvisionMinimal(subscription);
+    	testProvisionWithExistingNetworkAndNSG(subscription);
+    	testProvisionWithNewNSG(subscription);
+    }
+    
+    
+    // Tests minimal NIC creation
+    public static void testProvisionMinimal(Subscription subscription) throws Exception {
     	String suffix = String.valueOf(System.currentTimeMillis());
-    	String newNetworkInterfaceName = "nic" + suffix;
-    	String newNetworkName = "vnet" + suffix;
-    	String newGroupName = "rg" + suffix;
-    	String newNSGName = "nsg" + suffix;
-    	
+    	String newNICName = "nic" + suffix;
+    	NetworkInterface nic = subscription.networkInterfaces().define(newNICName)
+        	.withRegion(Region.US_WEST)
+        	.withNewResourceGroup()
+        	.withNewNetwork("10.0.0.0/28")
+        	.withPrivateIpAddressDynamic()
+        	.withoutPublicIpAddress()
+        	.provision();
+
+    	String newGroupName = nic.resourceGroup();
+    	nic = subscription.networkInterfaces().get(nic.id());
+    	printNetworkInterface(nic);
+
     	// Listing all network interfaces
     	Map<String, NetworkInterface> nics = subscription.networkInterfaces().asMap();
     	System.out.println("Network interfaces:");
-    	for(NetworkInterface nic : nics.values()) {
-    		printNetworkInterface(nic);
+    	for(NetworkInterface n : nics.values()) {
+    		printNetworkInterface(n);
     	}
     	
-    	// Create a new network interface in a new default resource group
-    	NetworkInterface nicMinimal = subscription.networkInterfaces().define(newNetworkInterfaceName)
-    		.withRegion(Region.US_WEST)
-    		.withNewResourceGroup(newGroupName)
-    		.withNewNetwork("10.0.0.0/28")
-    		.withPrivateIpAddressDynamic()
-    		.withoutPublicIpAddress()
-    		.provision();
-    	
-    	// Get info about a specific network interface using its group and name
-    	nicMinimal = subscription.networkInterfaces(nicMinimal.id());
-    	nicMinimal = subscription.networkInterfaces().get(nicMinimal.id());
-    	printNetworkInterface(nicMinimal);
-
     	// Listing network interfaces in a specific resource group
     	nics = subscription.networkInterfaces().asMap(newGroupName);
     	System.out.println(String.format("Network interface ids in group '%s': \n\t%s", newGroupName, StringUtils.join(nics.keySet(), ",\n\t")));
 
+    	nic.delete();
+    }
+    
+    // Tests NIC creation with existing Vnet and NSG
+    public static void testProvisionWithExistingNetworkAndNSG(Subscription subscription) throws Exception {
+    	String suffix = String.valueOf(System.currentTimeMillis());
+    	String existingNetworkName = "net" + suffix;
+    	String existingGroupName = "rg" + suffix;
+    	String existingNSGName = "nsg" + suffix;
+    	String newNicName = "nic" + suffix;
+    	
     	// Create a virtual network to test the network interface with
-    	Network network = subscription.networks().define(newNetworkName)
+    	Network network = subscription.networks().define(existingNetworkName)
     		.withRegion(Region.US_WEST)
-    		.withExistingResourceGroup(newGroupName)
+    		.withNewResourceGroup(existingGroupName)
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("subnet1", "10.0.0.0/29") 
     		.withSubnet("subnet2", "10.0.0.8/29")
     		.provision();
     	
     	// Create a NSG to test the NIC with
-    	NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define(newNSGName)
+    	NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define(existingNSGName)
     		.withRegion(Region.US_WEST)
-    		.withExistingResourceGroup(newGroupName)
+    		.withExistingResourceGroup(existingGroupName)
     		.defineRule("httpIn")
     			.allowOutbound()
     			.fromAnyAddress()
@@ -100,9 +113,9 @@ public class NetworkInterfacesSample {
     		.provision();
     	
     	// More detailed NIC definition
-    	NetworkInterface nic = subscription.networkInterfaces().define(newNetworkInterfaceName + "2")
+    	NetworkInterface nic = subscription.networkInterfaces().define(newNicName)
     		.withRegion(Region.US_WEST)
-    		.withExistingResourceGroup(newGroupName)
+    		.withExistingResourceGroup(existingGroupName)
     		.withExistingNetwork(network)
     		.withSubnet("subnet1")
     		.withPrivateIpAddressStatic("10.0.0.5")
@@ -111,12 +124,22 @@ public class NetworkInterfacesSample {
     		.withTag("hello", "world")
     		.provision();
     	
+    	printNetworkInterface(nic);
+
+    	subscription.resourceGroups(existingGroupName).delete();
+    	
+    }
+    
+    
+    public static void testProvisionWithNewNSG(Subscription subscription) throws Exception {
+    	String suffix = String.valueOf(System.currentTimeMillis());
+    	String newNicName = "nic" + suffix;
+    	
     	// NIC with new NSG
-    	nic = subscription.networkInterfaces().define(newNetworkInterfaceName + "3")
+    	NetworkInterface nic = subscription.networkInterfaces().define(newNicName)
     		.withRegion(Region.US_WEST)
-    		.withExistingResourceGroup(newGroupName)
-    		.withExistingNetwork(network)
-    		.withSubnet("subnet1")
+    		.withNewResourceGroup()
+    		.withNewNetwork("10.0.0.0/29")
     		.withPrivateIpAddressDynamic()
     		.withNewPublicIpAddress()
     		.withNewNetworkSecurityGroup()
@@ -125,18 +148,12 @@ public class NetworkInterfacesSample {
     	// Get info about a specific NIC using its resource ID
     	nic = subscription.networkInterfaces(nic.resourceGroup(), nic.name());
     	printNetworkInterface(nic);
-    	
-    	// Delete the NIC
-    	nicMinimal.delete();
+
+    	// Clean up
     	nic.delete();
-    	
-    	// Delete the virtual network
-    	network.delete();
-    	
-    	// Delete the auto-created group
-    	subscription.resourceGroups(newGroupName).delete();
+    	subscription.resourceGroups(nic.resourceGroup()).delete();
     }
-    
+
     
     private static void printNetworkInterface(NetworkInterface nic) throws Exception {
     	StringBuilder output = new StringBuilder();
