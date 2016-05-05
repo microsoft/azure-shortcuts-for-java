@@ -209,10 +209,7 @@ VirtualMachine.DefinitionProvisionable vmProvisionable = subscription.virtualMac
     .withNewPublicIpAddress("vm" + deploymentId)
     .withAdminUsername("shortcuts")
     .withAdminPassword("Abcd.1234")
-    .withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
-    .withSize(Size.Type.BASIC_A1)
-    .withNewStorageAccount()
-    .withNewDataDisk(100);
+    .withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1");
 ```
 
 At this stage, additional settings can be specified that are optional before `provision()` is invoked. 

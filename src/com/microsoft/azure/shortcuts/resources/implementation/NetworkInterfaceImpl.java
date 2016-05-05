@@ -62,7 +62,7 @@ class NetworkInterfaceImpl
 	
 	private NetworkSecurityGroup ensureNSG() throws Exception {
 		if(!this.isExistingNSG) {
-			// Create a new availability set
+			// Create a new NSG
 			if(this.nsgId == null) {
 				// Generate a name if needed
 				this.nsgId = this.name() + "nsg";
