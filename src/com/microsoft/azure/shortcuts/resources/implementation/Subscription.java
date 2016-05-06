@@ -301,7 +301,7 @@ public class Subscription {
     private static Configuration getConfigurationFromAuthXml(File authFile, String subscriptionId) throws Exception {
     	Document xmlDoc = Utils.loadXml(authFile);
     	Element root = xmlDoc.getDocumentElement();    	
-    	if(!root.getTagName().equals("azureShortcutsAuth")) {
+    	if(!root.getTagName().equals("azureAuth")) {
     		return null;
     	} 
     	

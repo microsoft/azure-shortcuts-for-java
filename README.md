@@ -141,7 +141,7 @@ Subscription subscription = Subscription.authenticate(authFilePath, subscription
 > :warning: **NOTE**: Active Directory auth for ARM currently requires a lot of inputs and token management logic. To simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:
 
 ```xml
-<azureShortcutsAuth>
+<azureAuth>
 	<subscription 
 		id="<subscription id>" 
 		tenant="<tenant id>" 
@@ -151,7 +151,7 @@ Subscription subscription = Subscription.authenticate(authFilePath, subscription
 		baseURL="https://management.azure.com/"
 		authURL="https://login.windows.net/"
 		/>
-</azureShortcutsAuth>
+</azureAuth>
 ```
 
 You can just save a file with these contents and use it as your "auth-file" in the example above.
