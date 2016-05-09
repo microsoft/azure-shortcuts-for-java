@@ -20,7 +20,6 @@
 
 package com.microsoft.azure.shortcuts.resources.samples;
 
-import java.net.URI;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +33,7 @@ import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 public class VirtualMachinesSample {
     public static void main(String[] args) {
         try {
-            Subscription subscription = Subscription.authenticate("my.azureauth");
+            Subscription subscription = Subscription.authenticate("my.azureauthprop");
             test(subscription);
         } catch (Exception e) {
             e.printStackTrace();

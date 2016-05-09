@@ -3,4 +3,5 @@
 *.publishsettings
 *.azureauth
 *.prefs
+*.azureauthprop
 /target/

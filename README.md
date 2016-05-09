@@ -138,7 +138,10 @@ String subscriptionId = "<subscription-GUID>";
 Subscription subscription = Subscription.authenticate(authFilePath, subscriptionId);
 ```
 
-> :warning: **NOTE**: Active Directory auth for ARM currently requires a lot of inputs and token management logic. To simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like XML file in the following format:
+> :warning: **NOTE**: Active Directory auth for ARM currently requires a lot of inputs and token management logic. To simplify matters, the above constructor assumes you have set up a service principal for your application and can put the required inputs into this experimental PublishSettings-like files in the following formats.
+
+
+#### XML-based authentication file format:
 
 ```xml
 <azureAuth>
@@ -154,7 +157,19 @@ Subscription subscription = Subscription.authenticate(authFilePath, subscription
 </azureAuth>
 ```
 
-You can just save a file with these contents and use it as your "auth-file" in the example above.
+#### Properties-based authentication file format:
+
+```ini
+id=########-####-####-####-############
+tenant=########-####-####-####-############
+client=########-####-####-####-############
+key=########
+managementURI=https\://management.core.windows.net/
+baseURL=https\://management.azure.com/
+authURL=https\://login.windows.net/
+```
+
+You can just save a file with these contents, replacing the placeholders with the appropriate settings, and use it as your "auth-file" in the example above.
 
 
 ### Virtual Machines

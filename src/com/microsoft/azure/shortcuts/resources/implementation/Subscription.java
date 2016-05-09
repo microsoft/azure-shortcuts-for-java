@@ -60,15 +60,45 @@ import com.microsoft.windowsazure.management.configuration.ManagementConfigurati
 import com.microsoft.windowsazure.management.configuration.PublishSettingsLoader;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 
+import javax.naming.ServiceUnavailableException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class Subscription {
+	
+	private enum AuthSettings {
+		SUBSCRIPTION_ID("id"),
+		TENANT_ID("tenant"),
+		CLIENT_ID("client"),
+		CLIENT_KEY("key"),
+		MANAGEMENT_URI("managementURI"),
+		BASE_URL("baseURL"),
+		AUTH_URL("authURL")
+		;
+		
+		private final String name;
+		private AuthSettings(String name) {
+			this.name = name;
+		}
+		
+		@Override
+		public String toString() {
+			return this.name;
+		}
+	}
+	
     public static String MANAGEMENT_URI = "https://management.core.windows.net/";
     public static String ARM_URL = "https://management.azure.com/";
     public static String ARM_AAD_URL = "https://login.windows.net/";
@@ -136,7 +166,7 @@ public class Subscription {
     // Returns an appropriate authenticated configuration based on the supplied file, automatically detecting if the file is a
     // PublishSettings file or an Azure shortcuts authentication file
     private static Configuration getConfigFromFile(String authFilePath, String subscriptionId) throws Exception {
-    	Configuration config = getConfigurationFromAuthXml(new File(authFilePath), subscriptionId);
+    	Configuration config = configurationFromFile(new File(authFilePath), subscriptionId);
     	if(config != null) {
     		return config;
     	} else {
@@ -285,29 +315,56 @@ public class Subscription {
     	return this.storageAccounts().get(group, name);
     }
     
-    // Returns an ARM authenticated configuration based on the provided Azure shortcuts authentication file
-    // The assumed schema of the file is:
-    // <azureShortcutsAuth>
-    //   <subscription 
-    //		id="<subscription-id>" 
-    //		tenant="<tenant-id>"
-    //		client="<client-id>"
-    //		key="<client-key>"
-    //		managementURI="<management-URI>"
-    //		baseURL="<base-ARM-URL>"
-    //		authURL="<active-directory-login-url>"
-    //	 />
-    // </azureShortcutsAuth>
-    private static Configuration getConfigurationFromAuthXml(File authFile, String subscriptionId) throws Exception {
-    	Document xmlDoc = Utils.loadXml(authFile);
-    	Element root = xmlDoc.getDocumentElement();    	
-    	if(!root.getTagName().equals("azureAuth")) {
-    		return null;
-    	} 
+    
+    /**
+     * Get credentials from XML
+     * returns An ARM authenticated configuration based on the provided Azure authentication file in XML
+     * The assumed schema of the file is:
+     * <azureShortcutsAuth>
+     * <subscription 
+     * 		id="<subscription-id>" 
+     * 		tenant="<tenant-id>"
+     * 		client="<client-id>"
+     * 		key="<client-key>"
+     * 		managementURI="<management-URI>"
+     * 		baseURL="<base-ARM-URL>"
+     * 		authURL="<active-directory-login-url>"
+     * />
+     * </azureShortcutsAuth>
+     * @throws ParserConfigurationException 
+     * @throws IOException 
+     * @throws InterruptedException 
+     * @throws ExecutionException 
+     * @throws URISyntaxException 
+     * @throws ServiceUnavailableException 
+     * @throws SAXException 
+     */
+    private static Configuration configurationFromXml(File authFile, String subscriptionId) 
+    	throws 
+    		ParserConfigurationException, 
+    		ServiceUnavailableException, 
+    		URISyntaxException, 
+    		ExecutionException, 
+    		InterruptedException, 
+    		IOException, 
+    		SAXException {
     	
+    	Element root;
+    	Document xmlDoc;
+    	
+    	try {
+    		xmlDoc = Utils.loadXml(authFile);
+    		root = xmlDoc.getDocumentElement();
+    		if(!root.getTagName().equals("azureAuth")) {
+    			throw new ParserConfigurationException("The XML authentication file is not valid.");
+    		} 
+    	} catch(SAXParseException e) {
+    		return null; // Not an XML file
+    	}
+
     	NodeList subscriptions = root.getElementsByTagName("subscription");
     	if(subscriptions.getLength() == 0) {
-    		throw new ParserConfigurationException("No subscriptions found");
+    		throw new ParserConfigurationException("No subscriptions found.");
     	}
 
     	Element subscription = null;
@@ -331,16 +388,81 @@ public class Subscription {
 		}
 		
 		// Extract service principal information
-		subscriptionId = subscription.getAttribute("id");
-		String tenantId = subscription.getAttribute("tenant");
-		String clientId = subscription.getAttribute("client");
-		String clientKey = subscription.getAttribute("key");
-		String managementUri = subscription.getAttribute("managementURI");
-		String baseUrl = subscription.getAttribute("baseURL");
-		String authUrl = subscription.getAttribute("authURL");
-		return createConfiguration(subscriptionId, tenantId, clientId, clientKey, managementUri, baseUrl, authUrl);
+		subscriptionId = subscription.getAttribute(AuthSettings.SUBSCRIPTION_ID.toString());
+		String tenantId = subscription.getAttribute(AuthSettings.TENANT_ID.toString());
+		String clientId = subscription.getAttribute(AuthSettings.CLIENT_ID.toString());
+		String clientKey = subscription.getAttribute(AuthSettings.CLIENT_KEY.toString());
+		String managementUri = subscription.getAttribute(AuthSettings.MANAGEMENT_URI.toString());
+		String baseUrl = subscription.getAttribute(AuthSettings.BASE_URL.toString());
+		String authUrl = subscription.getAttribute(AuthSettings.AUTH_URL.toString());
+		return createConfiguration(subscriptionId, tenantId, clientId, clientKey, managementUri, baseUrl, authUrl);    	
     }
     
+    
+    /**
+     * @param authFile The file containing the credentials, either as XML or as properties
+     * @param subscriptionId The desired subscription id, if any
+     * @return The Configuration object 
+     * @throws IOException 
+     * @throws SAXException 
+     * @throws InterruptedException 
+     * @throws ExecutionException 
+     * @throws URISyntaxException 
+     * @throws ServiceUnavailableException 
+     * @throws ParserConfigurationException 
+     */
+    private static Configuration configurationFromFile(File authFile, String subscriptionId) 
+    		throws 
+    			SAXException, 
+    			IOException, 
+    			ServiceUnavailableException, 
+    			URISyntaxException, 
+    			ExecutionException, 
+    			InterruptedException, 
+    			ParserConfigurationException {
+    	Configuration config;
+    	config = configurationFromXml(authFile, subscriptionId);
+    	
+    	if(config != null) {
+    		return config;
+    	} else {
+    		return configurationFromProperties(authFile, subscriptionId);
+    	}    	
+    }
+    
+    /**
+     * @param The file containing the credentials as a Java properties file
+     * @param subscriptionId The desired subscription, if any
+     * @return The Configuration object
+     * @throws IOException 
+     * @throws InterruptedException 
+     * @throws ExecutionException 
+     * @throws URISyntaxException 
+     * @throws ServiceUnavailableException 
+     */
+    private static Configuration configurationFromProperties(File authFile, String subscriptionId) 
+    	throws 
+    		IOException, 
+    		ServiceUnavailableException, 
+    		URISyntaxException, 
+    		ExecutionException, 
+    		InterruptedException {
+    	FileInputStream authFileStream = new FileInputStream(authFile);
+    	Properties authSettings = new Properties();
+    	authSettings.load(authFileStream);
+    	authFileStream.close();
+    	if(subscriptionId == null) {
+    		// Read subscription from file if not provided
+    		subscriptionId = authSettings.getProperty(AuthSettings.SUBSCRIPTION_ID.toString());
+    	}
+    	String tenantId = authSettings.getProperty(AuthSettings.TENANT_ID.toString());
+    	String clientId = authSettings.getProperty(AuthSettings.CLIENT_ID.toString());
+    	String clientKey = authSettings.getProperty(AuthSettings.CLIENT_KEY.toString());
+    	String mgmtUri = authSettings.getProperty(AuthSettings.MANAGEMENT_URI.toString());
+    	String authUrl = authSettings.getProperty(AuthSettings.AUTH_URL.toString());
+    	String baseUrl = authSettings.getProperty(AuthSettings.BASE_URL.toString());
+    	return createConfiguration(subscriptionId, tenantId, clientId, clientKey, mgmtUri, baseUrl, authUrl); 
+    }
     
     // Returns the compute management client, creating if needed
     ComputeManagementClient computeManagementClient() {
@@ -390,10 +512,16 @@ public class Subscription {
 			String clientKey,
 			String managementUri,
 			String baseUrl,
-			String authUrl) throws Exception {
+			String authUrl) 
+				throws 
+					URISyntaxException, 
+					ServiceUnavailableException, 
+					ExecutionException, 
+					InterruptedException, 
+					IOException {
 		
 		if(subscriptionId == null) {
-			throw new Exception("Missing subscription");
+			throw new IllegalArgumentException("Missing subscription");
 		}
 		
 		if(baseUrl == null) {
