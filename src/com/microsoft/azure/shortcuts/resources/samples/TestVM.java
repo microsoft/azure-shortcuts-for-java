@@ -21,6 +21,12 @@
 package com.microsoft.azure.shortcuts.resources.samples;
 
 
+import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
+import com.microsoft.azure.shortcuts.resources.Protocol;
+import com.microsoft.azure.shortcuts.resources.Region;
+import com.microsoft.azure.shortcuts.resources.Size;
+import com.microsoft.azure.shortcuts.resources.StorageAccount;
+import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.implementation.Subscription;
 
 public class TestVM {
@@ -36,6 +42,7 @@ public class TestVM {
 
         	
         	
+         	
         	
         } catch (Exception e) {
             e.printStackTrace();

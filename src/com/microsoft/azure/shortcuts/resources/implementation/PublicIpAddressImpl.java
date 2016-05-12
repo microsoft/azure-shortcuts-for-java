@@ -84,6 +84,7 @@ class PublicIpAddressImpl
 			return this;
 		} else if(null == (dnsSettings = this.inner().getDnsSettings())) {
 			dnsSettings = new PublicIpAddressDnsSettings();
+			this.inner().setDnsSettings(dnsSettings);
 		}
 		dnsSettings.setDomainNameLabel(dnsName);
 		return this;
