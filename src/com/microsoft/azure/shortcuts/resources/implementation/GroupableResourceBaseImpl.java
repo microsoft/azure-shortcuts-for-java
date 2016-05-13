@@ -66,7 +66,7 @@ public abstract class GroupableResourceBaseImpl<
 			
 			group = this.collection.subscription().resourceGroups().define(this.groupName)
 				.withRegion(this.region())
-				.provision();
+				.create();
 			this.isExistingGroup = true;
 			return group;
 		} else {
@@ -98,8 +98,8 @@ public abstract class GroupableResourceBaseImpl<
 		return this.withNewResourceGroup((String)null);
 	}
 	
-	public final WRAPPERIMPL withNewResourceGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception {
-		return withExistingResourceGroup(groupDefinition.provision());
+	public final WRAPPERIMPL withNewResourceGroup(ResourceGroup.DefinitionCreatable groupDefinition) throws Exception {
+		return withExistingResourceGroup(groupDefinition.create());
 	}
 	
 	public final WRAPPERIMPL withExistingResourceGroup(ResourceGroup group) {

@@ -283,8 +283,8 @@ class VirtualMachineImpl
 	}
 	
 	@Override
-	public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionProvisionable definition) throws Exception {
-		return this.withExistingStorageAccount(definition.provision());
+	public VirtualMachineImpl withNewStorageAccount(StorageAccount.DefinitionCreatable definition) throws Exception {
+		return this.withExistingStorageAccount(definition.create());
 	}
 	
 	@Override
@@ -334,8 +334,8 @@ class VirtualMachineImpl
 	}
 	
 	@Override
-	public VirtualMachineImpl withNewAvailabilitySet(com.microsoft.azure.shortcuts.resources.AvailabilitySet.DefinitionProvisionable definition) throws Exception {
-		return this.withExistingAvailabilitySet(definition.provision());
+	public VirtualMachineImpl withNewAvailabilitySet(com.microsoft.azure.shortcuts.resources.AvailabilitySet.DefinitionCreatable definition) throws Exception {
+		return this.withExistingAvailabilitySet(definition.create());
 	}
 	
 	@Override
@@ -369,7 +369,7 @@ class VirtualMachineImpl
 	
 	
 	@Override
-	public DefinitionProvisionable withNewDataDisk(int diskSizeGB) {
+	public DefinitionCreatable withNewDataDisk(int diskSizeGB) {
 		DataDisk disk = new DataDisk();
 		this.inner().getStorageProfile().getDataDisks().add(disk);
 		disk.setCreateOption(DiskCreateOptionTypes.EMPTY);
@@ -378,12 +378,12 @@ class VirtualMachineImpl
 	}
 	
 	@Override
-	public DefinitionProvisionable withExistingDataDisk(URI vhdUri) {
+	public DefinitionCreatable withExistingDataDisk(URI vhdUri) {
 		return this.withExistingDataDisk(vhdUri.toString());
 	}
 	
 	@Override
-	public DefinitionProvisionable withExistingDataDisk(String vhdUri) {
+	public DefinitionCreatable withExistingDataDisk(String vhdUri) {
 		DataDisk disk = new DataDisk();
 		this.inner().getStorageProfile().getDataDisks().add(disk);
 		disk.setCreateOption(DiskCreateOptionTypes.ATTACH);
@@ -444,7 +444,7 @@ class VirtualMachineImpl
 	
 	
 	@Override
-	public VirtualMachine provision() throws Exception {
+	public VirtualMachine create() throws Exception {
 		// Ensure group
 		ResourceGroup group = this.ensureGroup();
 		
@@ -515,7 +515,7 @@ class VirtualMachineImpl
 			StorageAccount storageAccount = this.subscription().storageAccounts().define(this.storageAccountId)
 				.withRegion(this.region())
 				.withExistingResourceGroup(groupName)
-				.provision();
+				.create();
 			this.isExistingStorageAccount = true;
 			return storageAccount;
 			
@@ -573,7 +573,7 @@ class VirtualMachineImpl
 			AvailabilitySet availabilitySet = this.subscription().availabilitySets().define(this.availabilitySetId)
 				.withRegion(this.region())
 				.withExistingResourceGroup(groupName)
-				.provision();
+				.create();
 			this.isExistingAvailabilitySet = true;
 			return availabilitySet;
 		} else if(this.availabilitySetId == null) {
@@ -600,7 +600,7 @@ class VirtualMachineImpl
 				.withSubnet(subnet.id())
 				.withPrivateIpAddressStatic(this.privateIpAddress)
 				.withExistingPublicIpAddress(pip)
-				.provision();
+				.create();
 			this.isExistingPrimaryNIC = true;
 			return nic;
 		} else {

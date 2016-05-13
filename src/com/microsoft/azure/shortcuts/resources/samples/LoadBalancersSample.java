@@ -49,7 +49,7 @@ public class LoadBalancersSample {
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup(groupName)
     		.withNewPublicIpAddress("marcinstest2")
-    		.provision();
+    		.create();
     	
     	// Get info about a specific lb using its group and name
     	lb = subscription.loadBalancers(lb.id());
@@ -75,7 +75,7 @@ public class LoadBalancersSample {
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(groupName)
     		.withNewPublicIpAddress("marcinstest3")
-    		.provision();
+    		.create();
     	
     	printLB(lb);
 

@@ -228,7 +228,7 @@ public class StorageAccountsImpl
 		 ************************************************************/
 
 		@Override
-		public StorageAccountImpl provision() throws Exception {
+		public StorageAccountImpl create() throws Exception {
 			final StorageAccountCreateParameters params = new StorageAccountCreateParameters();
 			params.setName(this.inner().getName().toLowerCase());
 			params.setLocation(this.region());

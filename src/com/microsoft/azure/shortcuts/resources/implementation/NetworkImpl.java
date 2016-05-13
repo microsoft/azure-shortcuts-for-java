@@ -129,7 +129,7 @@ class NetworkImpl
 	}
 	
 	@Override
-	public Network provision() throws Exception {
+	public Network create() throws Exception {
 		// Create a group as needed
 		ensureGroup();
 	

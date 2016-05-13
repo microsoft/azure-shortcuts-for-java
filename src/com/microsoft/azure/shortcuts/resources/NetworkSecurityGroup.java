@@ -20,7 +20,7 @@
 package com.microsoft.azure.shortcuts.resources;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
@@ -34,7 +34,7 @@ public interface NetworkSecurityGroup extends
 	public interface Definition extends
 		DefinitionBlank,
 		DefinitionWithGroup,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 	
 	
 	/**
@@ -47,14 +47,14 @@ public interface NetworkSecurityGroup extends
 	 * An NSG definition allowing to specify the resource group to include it in.
 	 */
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionCreatable> {}
 	
 	/**
 	 * An NSG definition with sufficient attributes specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
-		Provisionable<NetworkSecurityGroup>,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
-		NetworkSecurityRule.DefinitionBlank<DefinitionProvisionable> defineRule(String name);
+	public interface DefinitionCreatable extends 
+		Creatable<NetworkSecurityGroup>,
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable> {
+		NetworkSecurityRule.DefinitionBlank<DefinitionCreatable> defineRule(String name);
 	}
 }

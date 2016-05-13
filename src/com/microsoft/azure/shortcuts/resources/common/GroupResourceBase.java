@@ -72,6 +72,6 @@ public interface GroupResourceBase extends
 		 * @param groupDefinition A provisionable definition for a new resource group
 		 * @return The next stage of the resource definition
 		 */
-		T withNewResourceGroup(ResourceGroup.DefinitionProvisionable groupDefinition) throws Exception;
+		T withNewResourceGroup(ResourceGroup.DefinitionCreatable groupDefinition) throws Exception;
 	}
 }

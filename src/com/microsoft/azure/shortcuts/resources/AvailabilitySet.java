@@ -22,7 +22,7 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
@@ -41,18 +41,18 @@ public interface AvailabilitySet extends
 	public interface Definition extends
 		DefinitionBlank,
 		DefinitionWithGroup,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 	
 	public interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> {
 	}
 	
 	public interface DefinitionWithGroup extends 
-		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionCreatable> {}
 	
-	public interface DefinitionProvisionable extends 
-		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
-		Provisionable<AvailabilitySet> {	
+	public interface DefinitionCreatable extends 
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionCreatable>,
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable>,
+		Creatable<AvailabilitySet> {	
 	}
 }

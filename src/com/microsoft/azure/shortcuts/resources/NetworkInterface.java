@@ -22,7 +22,7 @@ package com.microsoft.azure.shortcuts.resources;
 import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
@@ -43,7 +43,7 @@ public interface NetworkInterface extends
 		DefinitionWithSubnet,
 		DefinitionWithPrivateIp,
 		DefinitionWithPublicIpAddress,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 		
 	/**
 	 * A new blank network interface definition
@@ -81,15 +81,15 @@ public interface NetworkInterface extends
 	 * A network interface definition allowing to associate it with a public IP address
 	 */
 	public interface DefinitionWithPublicIpAddress extends 
-		DefinitionCombos.WithPublicIpAddress<DefinitionProvisionable> { }	
+		DefinitionCombos.WithPublicIpAddress<DefinitionCreatable> { }	
 	
 	/**
 	 * A network interface definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
-		Provisionable<NetworkInterface>,
-		DefinitionCombos.WithExistingNetworkSecurityGroup<DefinitionProvisionable>,
-		DefinitionCombos.WithNewNetworkSecurityGroup<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
+	public interface DefinitionCreatable extends 
+		Creatable<NetworkInterface>,
+		DefinitionCombos.WithExistingNetworkSecurityGroup<DefinitionCreatable>,
+		DefinitionCombos.WithNewNetworkSecurityGroup<DefinitionCreatable>,
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable> {
 	}
 }

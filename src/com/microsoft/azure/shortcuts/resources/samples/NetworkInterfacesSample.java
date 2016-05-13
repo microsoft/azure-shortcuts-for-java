@@ -61,7 +61,7 @@ public class NetworkInterfacesSample {
         	.withNewNetwork("10.0.0.0/28")
         	.withPrivateIpAddressDynamic()
         	.withoutPublicIpAddress()
-        	.provision();
+        	.create();
 
     	String newGroupName = nic.resourceGroup();
     	nic = subscription.networkInterfaces().get(nic.id());
@@ -96,7 +96,7 @@ public class NetworkInterfacesSample {
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("subnet1", "10.0.0.0/29") 
     		.withSubnet("subnet2", "10.0.0.8/29")
-    		.provision();
+    		.create();
     	
     	// Create a NSG to test the NIC with
     	NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define(existingNSGName)
@@ -110,7 +110,7 @@ public class NetworkInterfacesSample {
     			.toAnyPort()
     			.withProtocol(Protocol.TCP)
     			.attach()
-    		.provision();
+    		.create();
     	
     	// More detailed NIC definition
     	NetworkInterface nic = subscription.networkInterfaces().define(newNicName)
@@ -122,7 +122,7 @@ public class NetworkInterfacesSample {
     		.withNewPublicIpAddress()
     		.withExistingNetworkSecurityGroup(nsg)
     		.withTag("hello", "world")
-    		.provision();
+    		.create();
     	
     	printNetworkInterface(nic);
 
@@ -143,7 +143,7 @@ public class NetworkInterfacesSample {
     		.withPrivateIpAddressDynamic()
     		.withNewPublicIpAddress()
     		.withNewNetworkSecurityGroup()
-    		.provision();
+    		.create();
     	
     	// Get info about a specific NIC using its resource ID
     	nic = subscription.networkInterfaces(nic.resourceGroup(), nic.name());

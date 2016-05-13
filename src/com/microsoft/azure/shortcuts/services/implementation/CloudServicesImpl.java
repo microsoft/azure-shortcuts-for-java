@@ -209,7 +209,7 @@ public class CloudServicesImpl
 		
 		
 		@Override
-		public CloudServiceImpl provision() throws Exception {
+		public CloudServiceImpl create() throws Exception {
 			final HostedServiceCreateParameters params = new HostedServiceCreateParameters();
 			params.setAffinityGroup(this.affinityGroup());
 			params.setDescription(this.description());

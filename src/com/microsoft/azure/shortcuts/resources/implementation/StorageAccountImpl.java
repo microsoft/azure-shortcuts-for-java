@@ -79,7 +79,7 @@ class StorageAccountImpl
 	 ************************************************************/
 	
 	@Override
-	public StorageAccount provision() throws Exception {
+	public StorageAccount create() throws Exception {
 		// Create group if needed
 		ensureGroup();
 	

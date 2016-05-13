@@ -54,7 +54,7 @@ public class NetworkSecurityGroupsSample {
     	NetworkSecurityGroup nsgMinimal = subscription.networkSecurityGroups().define(newNetworkSecurityGroupName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
-    		.provision();
+    		.create();
     	
     	// Get info about a specific NSG using its group and name
     	nsgMinimal = subscription.networkSecurityGroups(nsgMinimal.id());
@@ -82,7 +82,7 @@ public class NetworkSecurityGroupsSample {
     			.toAnyPort()
     			.withProtocol(Protocol.UDP)
     			.attach()
-    		.provision();
+    		.create();
     		    	
     	// Listing NSGs in a specific resource group
     	nsgs = subscription.networkSecurityGroups().asMap(groupNameCreated);

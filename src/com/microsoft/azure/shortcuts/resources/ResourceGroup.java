@@ -24,7 +24,7 @@ import java.util.Map;
 import com.microsoft.azure.management.resources.models.ResourceGroupExtended;
 import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Indexable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -44,25 +44,25 @@ public interface ResourceGroup extends
 	
 	public interface Definition extends
 		DefinitionBlank,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 	
 	/**
 	 * A new blank resource group definition
 	 */
 	public interface DefinitionBlank {
-		DefinitionProvisionable withRegion(String regionName);
-		DefinitionProvisionable withRegion(Region region);
+		DefinitionCreatable withRegion(String regionName);
+		DefinitionCreatable withRegion(Region region);
 	}
 	
 	
 	/**
 	 * A new resource group definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
-		Provisionable<ResourceGroup> {
+	public interface DefinitionCreatable extends 
+		Creatable<ResourceGroup> {
 		
-		DefinitionProvisionable withTags(Map<String, String> tags);
-		DefinitionProvisionable withTag(String key, String value);
+		DefinitionCreatable withTags(Map<String, String> tags);
+		DefinitionCreatable withTag(String key, String value);
 	}
 	
 	

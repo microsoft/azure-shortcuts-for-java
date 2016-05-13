@@ -20,7 +20,7 @@
 package com.microsoft.azure.shortcuts.resources;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
@@ -42,7 +42,7 @@ public interface PublicIpAddress extends
 		DefinitionWithGroup,
 		DefinitionWithIpAddress,
 		DefinitionWithLeafDomainLabel,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 		
 	/**
 	 * A new blank public IP address definition
@@ -54,7 +54,7 @@ public interface PublicIpAddress extends
 	 * A public IP address definition allowing to specify the resource group to include it in.
 	 */
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionCreatable> {}
 	
 	/**
 	 * A public IP address definition allowing to specify the IP address allocation method and a static IP address, if needed
@@ -65,13 +65,13 @@ public interface PublicIpAddress extends
 		 * after the provisioning process is complete from ipAddress().
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withStaticIp();
+		DefinitionCreatable withStaticIp();
 		
 		/**
 		 * Enables dynamic IP address allocation.
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withDynamicIp();
+		DefinitionCreatable withDynamicIp();
 	}
 
 	/**
@@ -84,21 +84,21 @@ public interface PublicIpAddress extends
 		 * @param dnsName The leaf domain label to use. This must follow the required naming convention for leaf domain names.
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withLeafDomainLabel(String dnsName);
+		DefinitionCreatable withLeafDomainLabel(String dnsName);
 		
 		/**
 		 * Ensures that no leaf domain label will be used. This means that this public IP address will not be associated with a domain name.
 		 * @return The next stage of the public IP address definition
 		 */
-		DefinitionProvisionable withoutLeafDomainLabel();
+		DefinitionCreatable withoutLeafDomainLabel();
 	}
 	
 	/**
 	 * A public IP address definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
-		Provisionable<PublicIpAddress>,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
+	public interface DefinitionCreatable extends 
+		Creatable<PublicIpAddress>,
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable>,
 		DefinitionWithLeafDomainLabel,
 		DefinitionWithIpAddress {
 	}

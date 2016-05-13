@@ -141,7 +141,7 @@ class ResourceGroupImpl
 	
 	
 	@Override
-	public ResourceGroupImpl provision() throws Exception {
+	public ResourceGroupImpl create() throws Exception {
 		com.microsoft.azure.management.resources.models.ResourceGroup params = 
 			new com.microsoft.azure.management.resources.models.ResourceGroup();
 		params.setLocation(this.inner().getLocation());

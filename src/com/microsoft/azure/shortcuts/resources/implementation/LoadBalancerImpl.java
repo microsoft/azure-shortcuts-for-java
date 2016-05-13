@@ -61,7 +61,7 @@ class LoadBalancerImpl
 	}
 	
 	@Override
-	public LoadBalancer provision() throws Exception {
+	public LoadBalancer create() throws Exception {
 		// Create a group as needed
 		ensureGroup();
 		

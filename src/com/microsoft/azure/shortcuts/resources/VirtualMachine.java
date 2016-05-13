@@ -28,7 +28,7 @@ import com.microsoft.azure.management.compute.models.ImageReference;
 import com.microsoft.azure.management.compute.models.NetworkInterfaceReference;
 import com.microsoft.azure.management.compute.models.VirtualMachineExtension;
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
@@ -108,7 +108,7 @@ public interface VirtualMachine extends
 		DefinitionWithAdminUsername,
 		DefinitionWithAdminPassword,
 		DefinitionWithImage,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 	
 	/**
 	 * A new blank virtual machine definition requiring the first set of input parameters to be specified
@@ -183,8 +183,8 @@ public interface VirtualMachine extends
 	 * A virtual machine definition allowing the selection of a base image for the virtual machine
 	 */
 	public interface DefinitionWithImage {
-		DefinitionProvisionable withLatestImage(String publisher, String offer, String sku);
-		DefinitionProvisionable withImage(String publisher, String offer, String sku, String version);
+		DefinitionCreatable withLatestImage(String publisher, String offer, String sku);
+		DefinitionCreatable withImage(String publisher, String offer, String sku, String version);
 	}
 	
 	
@@ -226,19 +226,19 @@ public interface VirtualMachine extends
 	 * A virtual machine definition with sufficient inputs to provision a new virtual machine in the cloud, 
 	 * but exposing additional optional inputs to specify
 	 */
-	public interface DefinitionProvisionable extends
-		DefinitionCombos.WithStorageAccount<DefinitionProvisionable>,
-		DefinitionWithSize<DefinitionProvisionable>,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
-		DefinitionCombos.WithAvailabilitySet<DefinitionProvisionable>,
-		DefinitionWithDataDisk<DefinitionProvisionable>,
-		Provisionable<VirtualMachine> {
+	public interface DefinitionCreatable extends
+		DefinitionCombos.WithStorageAccount<DefinitionCreatable>,
+		DefinitionWithSize<DefinitionCreatable>,
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable>,
+		DefinitionCombos.WithAvailabilitySet<DefinitionCreatable>,
+		DefinitionWithDataDisk<DefinitionCreatable>,
+		Creatable<VirtualMachine> {
 		
 		/**
 		 * @param computerName The computer name for the virtual machine
 		 * @return A definition of the virtual machine with sufficient inputs to be provisioned
 		 */
-		DefinitionProvisionable withComputerName(String computerName);
+		DefinitionCreatable withComputerName(String computerName);
 	}
 	
 	public interface UpdateBlank {

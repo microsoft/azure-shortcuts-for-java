@@ -60,7 +60,7 @@ public class VirtualMachinesSample {
     		.withNewDataDisk(100)
     		//.withExistingAvailabilitySet(new URI("/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/marcinsrg123/providers/Microsoft.Compute/availabilitySets/marcinsas123"))
     		//.withExistingDataDisk("https://vm1455045717874store.blob.core.windows.net/vm1455045717874/disk0.vhd")
-    		.provision();
+    		.create();
     
     	printVM(vmWin);
     	
@@ -80,7 +80,7 @@ public class VirtualMachinesSample {
     		.withAdminPassword("Abcd.1234")
     		.withLatestImage("Canonical", "UbuntuServer", "14.04.3-LTS")
     		.withSize(Size.Type.BASIC_A1)
-    		.provision();
+    		.create();
     	    	
     	// Listing vms in a specific group
     	Map<String, VirtualMachine> vmsInGroup = subscription.virtualMachines().asMap(groupName);

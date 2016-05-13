@@ -20,7 +20,7 @@
 package com.microsoft.azure.shortcuts.resources;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.DefinitionCombos;
@@ -40,7 +40,7 @@ public interface LoadBalancer extends
 		DefinitionBlank,
 		DefinitionWithGroup,
 		DefinitionWithFrontEnd,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 	
 	public interface DefinitionBlank extends 
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
@@ -52,15 +52,15 @@ public interface LoadBalancer extends
 	 * A load balancer definition allowing to specify a front end IP address
 	 */
 	public interface DefinitionWithFrontEnd extends
-		DefinitionCombos.WithPublicIpAddress<DefinitionProvisionable> {
+		DefinitionCombos.WithPublicIpAddress<DefinitionCreatable> {
 	}
 	
 	/**
 	 * A load balancer definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
 	
-	public interface DefinitionProvisionable extends 
-		Provisionable<LoadBalancer>,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
+	public interface DefinitionCreatable extends 
+		Creatable<LoadBalancer>,
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable> {
 	}
 }

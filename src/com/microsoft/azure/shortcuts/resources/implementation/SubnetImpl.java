@@ -21,7 +21,7 @@ package com.microsoft.azure.shortcuts.resources.implementation;
 
 import com.microsoft.azure.management.network.models.ResourceId;
 import com.microsoft.azure.shortcuts.resources.Network;
-import com.microsoft.azure.shortcuts.resources.Network.DefinitionProvisionableWithSubnet;
+import com.microsoft.azure.shortcuts.resources.Network.DefinitionCreatableWithSubnet;
 import com.microsoft.azure.shortcuts.resources.NetworkSecurityGroup;
 import com.microsoft.azure.shortcuts.resources.Subnet;
 
@@ -33,7 +33,7 @@ class SubnetImpl
 		ChildResourceImpl<com.microsoft.azure.management.network.models.Subnet, NetworkImpl>
 	implements
 		Subnet,
-		Subnet.Definition<Network.DefinitionProvisionableWithSubnet> {
+		Subnet.Definition<Network.DefinitionCreatableWithSubnet> {
 	SubnetImpl(
 			com.microsoft.azure.management.network.models.Subnet nativeItem,
 			NetworkImpl network) {
@@ -83,7 +83,7 @@ class SubnetImpl
 
 
 	@Override
-	public DefinitionAttachable<DefinitionProvisionableWithSubnet> withExistingNetworkSecurityGroup(
+	public DefinitionAttachable<DefinitionCreatableWithSubnet> withExistingNetworkSecurityGroup(
 			com.microsoft.azure.management.network.models.NetworkSecurityGroup nsg) {
 		return this.withExistingNetworkSecurityGroup(nsg.getId());
 	}

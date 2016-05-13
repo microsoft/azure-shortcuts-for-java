@@ -632,7 +632,7 @@ public class VirtualMachinesImpl
 		
 
 		@Override
-		public VirtualMachineImpl provision() throws Exception {
+		public VirtualMachineImpl create() throws Exception {
 			// Get affinity group and region from existing resources
 			if(this.cloudService() != null && this.isExistingCloudService) {
 				// Get from existing cloud service
@@ -656,7 +656,7 @@ public class VirtualMachinesImpl
 				final String storeName = "store" + System.currentTimeMillis();
 				subscription.storageAccounts().define(storeName)
 					.withRegion(this.region)
-					.provision();
+					.create();
 				this.storageAccountName = storeName;
 			}
 
@@ -723,7 +723,7 @@ public class VirtualMachinesImpl
 						: cloudServiceBlank.withRegion(this.region);
 				}
 				
-				this.cloudServiceDefinition.provision();
+				this.cloudServiceDefinition.create();
 				
 				// Prepare role definition
 				this.azureRole.setOSVirtualHardDisk(osDisk);

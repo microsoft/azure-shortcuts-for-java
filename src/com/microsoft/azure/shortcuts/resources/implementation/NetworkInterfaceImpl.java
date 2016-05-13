@@ -71,7 +71,7 @@ class NetworkInterfaceImpl
 			NetworkSecurityGroup nsg = this.subscription().networkSecurityGroups().define(this.nsgId)
 				.withRegion(this.region())
 				.withExistingResourceGroup(this.groupName)
-				.provision();
+				.create();
 			this.isExistingNSG = true;
 			return nsg;
 		} else if(this.nsgId == null) {
@@ -110,7 +110,7 @@ class NetworkInterfaceImpl
 	 **************************************************************/
 	
 	@Override
-	public DefinitionProvisionable withExistingNetworkSecurityGroup(String id) {
+	public DefinitionCreatable withExistingNetworkSecurityGroup(String id) {
 		this.isExistingNSG = true;
 		this.nsgId = id;
 		ResourceId resourceId = new ResourceId();
@@ -121,13 +121,13 @@ class NetworkInterfaceImpl
 
 
 	@Override
-	public DefinitionProvisionable withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
+	public DefinitionCreatable withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
 		return this.withExistingNetworkSecurityGroup(nsg.id());
 	}
 
 
 	@Override
-	public DefinitionProvisionable withExistingNetworkSecurityGroup(
+	public DefinitionCreatable withExistingNetworkSecurityGroup(
 			com.microsoft.azure.management.network.models.NetworkSecurityGroup nsg) {
 		return this.withExistingNetworkSecurityGroup(nsg.getId());
 	}
@@ -144,7 +144,7 @@ class NetworkInterfaceImpl
 	}
 	
 	@Override
-	public NetworkInterface provision() throws Exception {
+	public NetworkInterface create() throws Exception {
 		// Create a group as needed
 		ensureGroup();
 	
@@ -190,12 +190,12 @@ class NetworkInterfaceImpl
 	}
 
 	@Override
-	public DefinitionProvisionable withNewNetworkSecurityGroup() {
+	public DefinitionCreatable withNewNetworkSecurityGroup() {
 		return this.withNewNetworkSecurityGroup((String)null);
 	}
 
 	@Override
-	public DefinitionProvisionable withNewNetworkSecurityGroup(String name) {
+	public DefinitionCreatable withNewNetworkSecurityGroup(String name) {
 		this.isExistingNSG = false;
 		this.nsgId = name;
 		return this;

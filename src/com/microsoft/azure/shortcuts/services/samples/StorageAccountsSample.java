@@ -50,7 +50,7 @@ public class StorageAccountsSample {
 		// Create a new storage account
 		azure.storageAccounts().define(accountName)
 			.withRegion("West US")
-			.provision();
+			.create();
 
 		// List storage accounts
 		Map<String, StorageAccount> storageAccounts = azure.storageAccounts().asMap();

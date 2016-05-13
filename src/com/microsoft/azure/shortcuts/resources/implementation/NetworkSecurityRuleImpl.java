@@ -32,7 +32,7 @@ class NetworkSecurityRuleImpl
 		ChildResourceImpl<SecurityRule, NetworkSecurityGroupImpl>
 	implements
 		NetworkSecurityRule,
-		NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionProvisionable> {
+		NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionCreatable> {
 
 	NetworkSecurityRuleImpl(
 			SecurityRule nativeItem,

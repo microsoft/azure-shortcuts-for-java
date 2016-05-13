@@ -23,7 +23,7 @@ import java.util.Calendar;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Indexable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -95,7 +95,7 @@ public interface CloudService extends
 		DefinitionWithDescription<DefinitionProvisionable>,
 		DefinitionWithLabel<DefinitionProvisionable>,
 		DefinitionWithReverseDnsFqdn<DefinitionProvisionable>,
-		Provisionable<UpdateBlank> {
+		Creatable<UpdateBlank> {
 	}
 
 	/**

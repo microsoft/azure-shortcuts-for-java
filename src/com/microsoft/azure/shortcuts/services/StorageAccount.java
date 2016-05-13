@@ -25,7 +25,7 @@ import java.util.List;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Indexable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -95,7 +95,7 @@ public interface StorageAccount extends
 		DefinitionWithType<DefinitionProvisionable>,
 		DefinitionWithLabel<DefinitionProvisionable>,
 		DefinitionWithDescription<DefinitionProvisionable>,
-		Provisionable<UpdateBlank> {
+		Creatable<UpdateBlank> {
 	}
 	
 

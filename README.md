@@ -13,7 +13,7 @@ subscription.networks().define("mynetwork")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
-    .provision();
+    .create();
 ```
 
 The shortcuts library supports Azure's "modern" ARM (Azure Resource Model) model. The previous "classic" ASM (Azure Service Model) API is no longer maintained nor documented.
@@ -64,9 +64,9 @@ In more detail:
 
 1. start with the "collection" of those objects hanging off as a member of the `Subscription` client instance object (e.g. `subscription.networks()`), 
 2. then call `.define("name-of-the-new-entity")` on that collection. This starts the "definition". 
-3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withExistingResourceGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each such "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.provision()` among the possible choices.  This is how the equivalent of required constructor parameters are exposed.
+3. from that point on, use command chaining (i.e. '.' dots) to specify the various required and optional parameters. They all look like this: `.with*()` (e.g. `.withExistingResourceGroup("myresourcegroup")`). Note that due to the special way the shortcuts APi is designed, after each such "with"-setter, AutoComplete will only suggest the set of setters that are valid/required at that stage of the definition. This way, it will force you to continue specifying the suggested "with" setters until you see `.create()` among the possible choices.  This is how the equivalent of required constructor parameters are exposed.
 4. many resource types in Azure (e.g. virtual machines) require other associated resources (e.g. a resource group, a storage account) to be already present. The `.with*` setters often enable you to either select an existing related resource, i.e. `.withExisting*()`, or to request a new such resource to be created on the fly in a shortcut way, i.e. `.withNew*()`. When created on the fly, the associated resource is created in the same region and resource group and by default uses a derived name.
-5. when `.provision()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional. Some of those setters are optional because Azure allows them to be so, and others are optional because the shortcuts assume some sort of a default, but Azure still requires them. Calling `.provision()` is what completes the definition and starts the actual provisioning process in the cloud. 
+5. when `.create()` becomes available among the AutoComplete choices, it means you have reached a stage in the entity definition where all the other parameters ("with"-setters) are optional. Some of those setters are optional because Azure allows them to be so, and others are optional because the shortcuts assume some sort of a default, but Azure still requires them. Calling `.create()` is what completes the definition and starts the actual creation process in the cloud. 
  
 ### Updating existing entities
 
@@ -76,7 +76,7 @@ Updates to existing entities are also done in a "builder pattern/fluent interfac
 2. command-chain the needed `.with*()` settings (usually all optional)
 3. and finish off with a call to `.apply()`
 
-In essence, the above is the shortcuts API's take on the "builder pattern + fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`.define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.provision()`** or **`.apply()`**.
+In essence, the above is the shortcuts API's take on the "builder pattern + fluent interface + factory pattern + extra smarts" combo in action. It's just that instead of the more traditional `.create()` or `new` naming, the shortcuts use **`.define()`** or **`.update()`** for creating/updating objects. And instead of the more conventional `.build()`, the shortcuts use **`.create()`** or **`.apply()`**.
 
 > :warning: TODO The Update functionality is only beginning to be implemented in the shortcuts
 
@@ -192,14 +192,14 @@ VirtualMachine vmWin = subscription.virtualMachines().define("<vm-name>")
     .withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1")
     .withSize(Size.Type.BASIC_A1)
     .withNewStorageAccount()
-    .provision();
+    .create();
 ```		
 
-As a shortcut, this approach combines the provisioning or selection of the related required resources into one statement. 
+As a shortcut, this approach combines the creation or selection of the related required resources into one statement. 
 
-For example, a new resource group can be provisioned for the virtual machine (`.withNewResourceGroup(...)`) or an existing one can be selected (`.withExistingResourceGroup(...)`). 
+For example, a new resource group can be created for the virtual machine (`.withNewResourceGroup(...)`) or an existing one can be selected (`.withExistingResourceGroup(...)`). 
 
-Similarly, a new virtual network can be provisioned (`.withNewNetwork(...)`) or an existing one can be used (`.withExistingNetwork(...)`).
+Similarly, a new virtual network can be created (`.withNewNetwork(...)`) or an existing one can be used (`.withExistingNetwork(...)`).
 
 The private IP within the virtual network can be either dynamically allocated (`.withPrivateIpDynamic()`) or statically (`.withPrivateIpStatic("<private-ip-address>")`).
 
@@ -209,11 +209,11 @@ If specifying the IP addresses and the network explicitly like in the above exam
 
 Creating a virtual machine requires a storage account to keep the VHD in. A new storage account can be requested (`.withNewStorageAccount()`) or an existing one (`.withExistingStorageAccount()`).
 
-Any such related resource that is created in the process of provisioning a virtual machine will be provisioned in the same resource group and region as the virtual machine.
+Any such related resource that is created in the process of creating a virtual machine will be created in the same resource group and region as the virtual machine.
 
 ##### Optional settings
 
-A number of settings are optional so they can be specified at the provisionable stage of the virtual machine definition, i.e. at the stage at which `.provision()` is available among the members. For example, the above example can rewritten to separate the provisionable stage from the required stages:
+A number of settings are optional so they can be specified at the creatable stage of the virtual machine definition, i.e. at the stage at which `.create()` is available among the members. For example, the above example can rewritten to separate the creatable stage from the required stages:
 
 ```java
 VirtualMachine.DefinitionProvisionable vmProvisionable = subscription.virtualMachines().define("vm" + deploymentId)
@@ -227,11 +227,11 @@ VirtualMachine.DefinitionProvisionable vmProvisionable = subscription.virtualMac
     .withLatestImage("MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1");
 ```
 
-At this stage, additional settings can be specified that are optional before `provision()` is invoked. 
+At this stage, additional settings can be specified that are optional before `create()` is invoked. 
 
 ###### Attaching data disks
 
-Based on the earlier provisionable definition, the following code attaches 2 **new** empty data disks to the virtual machine definition. Their logical unit number (LUN) is set automatically based on the order of attachment:
+Based on the earlier creatable definition, the following code attaches 2 **new** empty data disks to the virtual machine definition. Their logical unit number (LUN) is set automatically based on the order of attachment:
 
 ```java
 vmProvisionable
@@ -248,7 +248,7 @@ vmProvisionable = vmProvisionable
 
 ###### Selecting availability set
 
-Based on the earlier provisionable definition, the following code specifies a new availability set to be created for this virtual machine to be associated with:
+Based on the earlier creatable definition, the following code specifies a new availability set to be created for this virtual machine to be associated with:
 
 ```java
 vmProvisionable = vmProvisionable
@@ -371,7 +371,7 @@ Network network = subscription.networks().define("<new-network-name>")
 	.withRegion(Region.US_WEST)
 	.withNewResourceGroup()
 	.withAddressSpace("10.0.0.0/28")
-	.provision();
+	.create();
 ```
 With multiple, explicitly defined subnets and an existing resource group:
 ```java
@@ -381,7 +381,7 @@ subscription.networks().define("<new-network-name>")
     .withAddressSpace("10.0.0.0/28")
     .withSubnet("Foo", "10.0.0.0/29")
     .withSubnet("Bar", "10.0.0.8/29")
-    .provision();
+    .create();
 ```
 With multiple, explicitly defined subnets and associating an existing network security group with one of them, using the granular child resource definition approach:
 ```
@@ -396,7 +396,7 @@ Network network = subscription.networks().define(newNetworkName)
     .defineSubnet("subnetB")
     	.withAddressPrefix("10.0.0.8/29")
     	.attach()
-    .provision();
+    .create();
 ```
 
 #### Listing virtual networks 
@@ -461,7 +461,7 @@ NetworkInterface nicMinimal = subscription.networkInterfaces().define(newNetwork
     .withNewNetwork("10.0.0.0/28")
     .withPrivateIpAddressDynamic()
     .withoutPublicIpAddress()
-    .provision();
+    .create();
 ```
 Creating a network interface with a new resource group, dynamic private IP and a new, dynamically allocated public IP with a leaf domain label automatically generated based on the name of the NIC, and associating with an existing network security group:
 ```java
@@ -474,7 +474,7 @@ NetworkInterface nic = subscription.networkInterfaces().define("<new-nic-name>")
     .withNewPublicIpAddress()
     .withExistingNetworkSecurityGroup("<existing-nsg-id>")
     .withTag("hello", "world")
-    .provision();
+    .create();
 ```
 
 #### Listing network interfaces
@@ -531,7 +531,7 @@ Providing minimal inputs will result in a public IP address for which a resource
 PublicIpAddress pipMinimal = subscription.publicIpAddresses().define("<new-public-address-name>")
 	.withRegion(Region.US_WEST)
    	.withNewResourceGroup()
-    .provision();
+    .create();
 ```
 With static IP allocation, an explicitly defined leaf domain label and a tag:
 ```java
@@ -541,7 +541,7 @@ PublicIpAddress pip = subscription.publicIpAddresses().define(newPublicIpAddress
     .withLeafDomainLabel("hellomarcins")
     .withStaticIp()
     .withTag("hello", "world")
-    .provision();
+    .create();
 ```
 
 #### Listing public IP addresses
@@ -598,7 +598,7 @@ Providing minimal inputs will result in a network security group for which a res
 NetworkSecurityGroup nsgMinimal = subscription.networkSecurityGroups().define("<network-security-group-name>")
 	.withRegion(Region.US_WEST)
 	.withNewResourceGroup()
-	.provision();
+	.create();
 ```
 With network security rules and tags:
 ```java
@@ -621,7 +621,7 @@ NetworkSecurityGroup nsg = subscription.networkSecurityGroups().define("<nsg-nam
     	.toAnyPort()
     	.withProtocol(Protocol.UDP)
     	.attach()
-    .provision();
+    .create();
 ```
 To associate or create an NSG while creating a network interface, see the [Network Interfaces](#network-interfaces) section - the `.withExistingNetworkSecurityGroup()` and `.withNewNetworkSecurityGroup()` methods.
 
@@ -681,7 +681,7 @@ With the required minimum set of input parameters:
 StorageAccount storageAccount = subscription.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withNewResourceGroup()
-    .provision();
+    .create();
 ```
 In an existing resource group:
 ```java
@@ -689,7 +689,7 @@ subscription.storageAccounts().define("<new-storage-account-name>")
     .withRegion(Region.US_WEST)
     .withAccountType(AccountType.StandardLRS)
     .withExistingResourceGroup("<existing-resource-group-name>")
-    .provision();
+    .create();
 ```
 
 #### Listing storage accounts in a subscription
@@ -769,7 +769,7 @@ Region[] regions = Region.values();
 subscription.resourceGroups().define("myResourceGroup")
 	.withRegion(Region.US_WEST)
 	.withTag("hello", "world")
-    .provision();
+    .create();
 ```
 
 #### Listing resource groups
@@ -914,7 +914,7 @@ With minimum inputs, in its own new default resource group:
 subscription.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
     .witgGroupNew()
-    .provision();
+    .create();
 ```
 Within an existing resource group, and setting a tag:
 ```java
@@ -922,7 +922,7 @@ subscription.availabilitySets().define("myavailabilityset")
     .withRegion(Region.US_WEST)
     .withExistingResourceGroup("<existing-resource-group-name>")
     .withTag("hello", "world")
-    .provision();
+    .create();
 ```
 
 #### Listing availability sets

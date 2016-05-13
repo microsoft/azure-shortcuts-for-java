@@ -24,7 +24,7 @@ import java.net.URL;
 import com.microsoft.azure.management.storage.models.AccountType;
 import com.microsoft.azure.management.storage.models.CustomDomain;
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -50,7 +50,7 @@ public interface StorageAccount extends
 	public interface Definition extends
 		DefinitionBlank,
 		DefinitionWithGroup,
-		DefinitionProvisionable {}
+		DefinitionCreatable {}
 		
 	/**
 	 * A new blank storage account definition
@@ -62,20 +62,20 @@ public interface StorageAccount extends
 	 * A new storage account definition allowing to specifiy the resource group to put it in
 	 */
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionCreatable> {}
 	
 	/**
 	 * A new storage account definition with sufficient input parameters specified already to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable>,
-		Provisionable<StorageAccount> {
+	public interface DefinitionCreatable extends 
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable>,
+		Creatable<StorageAccount> {
 		
 		/**
 		 * @param type The type of the storage account
 		 * @return A storage account definition with sufficient required inputs to be provisioned in the cloud
 		 */
-	    DefinitionProvisionable withAccountType(AccountType type);   
+	    DefinitionCreatable withAccountType(AccountType type);   
 	}
 	
 	

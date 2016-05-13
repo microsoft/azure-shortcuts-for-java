@@ -52,7 +52,7 @@ public class CloudServicesSample {
 		// Create a new cloud service
 		azure.cloudServices().define(serviceName)
 			.withRegion("West US")
-			.provision();
+			.create();
 
 		// List cloud service names
 		Set<String> cloudServiceNames = azure.cloudServices().asMap().keySet();

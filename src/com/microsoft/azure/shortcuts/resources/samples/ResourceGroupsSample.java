@@ -57,7 +57,7 @@ public class ResourceGroupsSample {
     	subscription.resourceGroups().define(groupName)
     		.withRegion(Region.US_WEST)
     		.withTag("hello", "world")
-    		.provision();
+    		.create();
     	    	
     	// Read a specific resource group
 		ResourceGroup resourceGroup = subscription.resourceGroups(groupName);

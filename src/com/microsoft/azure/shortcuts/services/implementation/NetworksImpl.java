@@ -256,7 +256,7 @@ public class NetworksImpl
 
 
 		@Override
-		public NetworkImpl provision() throws Exception {
+		public NetworkImpl create() throws Exception {
 			// If no subnets specified, create a default subnet containing the first CIDR of the network
 			if(this.inner().getSubnets().size() == 0) {
 				com.microsoft.windowsazure.management.network.models.NetworkListResponse.Subnet azureSubnet = 

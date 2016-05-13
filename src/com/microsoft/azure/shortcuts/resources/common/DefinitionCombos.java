@@ -64,7 +64,7 @@ public interface DefinitionCombos {
 		 * @param networkDefinition A provisionable definition of a virtual network
 		 * @return The next stage of the resource definition
 		 */
-		R withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception;
+		R withNewNetwork(Network.DefinitionCreatable networkDefinition) throws Exception;
 		
 		/**
 		 * Creates a new virtual network to associate with this resource, in the same resource group and region, 
@@ -135,7 +135,7 @@ public interface DefinitionCombos {
 		 * @param definition A provisionable definition of a storage account
 		 * @return The next stage of the resource definition
 		 */
-		R withNewStorageAccount(StorageAccount.DefinitionProvisionable definition) throws Exception;
+		R withNewStorageAccount(StorageAccount.DefinitionCreatable definition) throws Exception;
 	}
 
 
@@ -190,7 +190,7 @@ public interface DefinitionCombos {
 		 * @param definition A provisionable definition for a new availability set
 		 * @return The next stage of the resource definition
 		 */
-		R withNewAvailabilitySet(AvailabilitySet.DefinitionProvisionable definition) throws Exception;
+		R withNewAvailabilitySet(AvailabilitySet.DefinitionCreatable definition) throws Exception;
 	}
 
 	/**

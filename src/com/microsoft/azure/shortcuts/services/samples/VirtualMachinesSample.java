@@ -61,7 +61,7 @@ public class VirtualMachinesSample {
 			.withLinuxImage("b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB")
 			.withHostName(vmName)
 			.withTcpEndpoint(22)
-			.provision();
+			.create();
 
 		// Add a Windows VM to the same service deployment
 		final String vmNameWin = "wm" + timeStamp;
@@ -72,7 +72,7 @@ public class VirtualMachinesSample {
 			.withAdminPassword("Abcd.1234")
 			.withWindowsImage("3a50f22b388a4ff7ab41029918570fa6__Windows-Server-2012-Essentials-20140715-enus")
 			.withTcpEndpoint(3389)
-			.provision();
+			.create();
 		
 		// Create a new network
 		final String network = "net" + timeStamp;
@@ -82,7 +82,7 @@ public class VirtualMachinesSample {
 			.withAddressSpace("10.0.0.0/28")
 			.withSubnet("Foo", "10.0.0.0/29")
 			.withSubnet("Bar", "10.0.0.8/29")
-			.provision();
+			.create();
 					
 		// Create a Linux VM in that network
 		final String vmName2 = "vl" + timeStamp;
@@ -96,7 +96,7 @@ public class VirtualMachinesSample {
 			.withLinuxImage("b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu-12_04_5_LTS-amd64-server-20150413-en-us-30GB")
 			.withTcpEndpoint(22)
 			.withSubnet("Foo")
-			.provision();
+			.create();
 
 		// List virtual machines
 		vmNames = azure.virtualMachines().names();

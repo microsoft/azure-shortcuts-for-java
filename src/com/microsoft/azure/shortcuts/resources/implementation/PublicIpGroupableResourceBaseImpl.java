@@ -60,7 +60,7 @@ public abstract class PublicIpGroupableResourceBaseImpl<
 				.withRegion(this.region())
 				.withExistingResourceGroup(this.groupName)
 				.withLeafDomainLabel(this.publicIpAddressDns)
-				.provision();
+				.create();
 			this.isPublicIpAddressExisting = true;
 			this.publicIpAddressId = pip.id();
 			return pip;

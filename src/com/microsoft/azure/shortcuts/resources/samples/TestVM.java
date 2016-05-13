@@ -36,13 +36,12 @@ public class TestVM {
 
             // Use image: "MicrosoftWindowsServer", "WindowsServer", "2008-R2-SP1"
 
-        	final Subscription subscription = Subscription.authenticate("my.azureauth");
+        	final Subscription azure = Subscription.authenticate("my.azureauth");
 
         	//TODO: Write some Java here!
 
+
         	
-        	
-         	
         	
         } catch (Exception e) {
             e.printStackTrace();

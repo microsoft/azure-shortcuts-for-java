@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.network.models.VirtualNetwork;
 import com.microsoft.azure.shortcuts.common.Deletable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
 import com.microsoft.azure.shortcuts.resources.common.GroupResourceBase;
@@ -47,8 +47,8 @@ public interface Network extends
 		DefinitionWithSubnet,
 		DefinitionWithAddressSpace,
 		DefinitionWithDnsServer,
-		DefinitionProvisionable,
-		DefinitionProvisionableWithSubnet {}
+		DefinitionCreatable,
+		DefinitionCreatableWithSubnet {}
 	
 	/**
 	 * A new blank virtual network definition
@@ -57,44 +57,44 @@ public interface Network extends
 		GroupResourceBase.DefinitionWithRegion<DefinitionWithGroup> { }
 	
 	public interface DefinitionWithGroup extends
-		GroupResourceBase.DefinitionWithResourceGroup<DefinitionProvisionable> {}
+		GroupResourceBase.DefinitionWithResourceGroup<DefinitionCreatable> {}
 		
 	
 	/**
 	 * A virtual network definition expecting at least one subnet to be specified
 	 */
 	public interface DefinitionWithSubnet {
-		DefinitionProvisionableWithSubnet withSubnet(String name, String cidr);
-		DefinitionProvisionableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
-		Subnet.Definition<DefinitionProvisionableWithSubnet> defineSubnet(String name);
+		DefinitionCreatableWithSubnet withSubnet(String name, String cidr);
+		DefinitionCreatableWithSubnet withSubnets(Map<String, String> nameCidrPairs);
+		Subnet.Definition<DefinitionCreatableWithSubnet> defineSubnet(String name);
 	}
 
 	/**
 	 * A virtual network definition expecting the network's address space to be specified
 	 */
 	public interface DefinitionWithAddressSpace {
-		DefinitionProvisionableWithSubnet withAddressSpace(String cidr);
+		DefinitionCreatableWithSubnet withAddressSpace(String cidr);
 	}
 	
 	/**
 	 * A virtual network definition expecting the IP address of an existing DNS server to be associated with the network 
 	 */
 	public interface DefinitionWithDnsServer {
-		DefinitionProvisionable withDnsServer(String ipAddress);
+		DefinitionCreatable withDnsServer(String ipAddress);
 	}
 	
 	/**
 	 * A new virtual network definition with sufficient input parameters specified to be provisioned in the cloud
 	 */
-	public interface DefinitionProvisionable extends 
-		Provisionable<Network>,
+	public interface DefinitionCreatable extends 
+		Creatable<Network>,
 		DefinitionWithAddressSpace,
 		DefinitionWithDnsServer,
-		GroupResourceBase.DefinitionWithTags<DefinitionProvisionable> {
+		GroupResourceBase.DefinitionWithTags<DefinitionCreatable> {
 	}
 	
-	public interface DefinitionProvisionableWithSubnet extends 
-		DefinitionProvisionable,
+	public interface DefinitionCreatableWithSubnet extends 
+		DefinitionCreatable,
 		DefinitionWithSubnet { 
 	}
 }

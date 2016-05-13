@@ -55,7 +55,7 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 				.withRegion(this.region())
 				.withExistingResourceGroup(groupName)
 				.withAddressSpace(this.networkCidr)
-				.provision();
+				.create();
 			this.isNetworkExisting = true;
 			return network;
 		} else {
@@ -102,8 +102,8 @@ public abstract class NetworkableGroupableResourceBaseImpl<
 		return (WRAPPERIMPL) this;
 	}
 
-	final public WRAPPERIMPL withNewNetwork(Network.DefinitionProvisionable networkDefinition) throws Exception {
-		return this.withExistingNetwork(networkDefinition.provision());
+	final public WRAPPERIMPL withNewNetwork(Network.DefinitionCreatable networkDefinition) throws Exception {
+		return this.withExistingNetwork(networkDefinition.create());
 	}
 
 	final public WRAPPERIMPL withNewNetwork(String addressSpace) {

@@ -53,7 +53,7 @@ public class PublicIpAddressesSample {
     	PublicIpAddress pipMinimal = subscription.publicIpAddresses().define(newPublicIpAddressName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
-    		.provision();
+    		.create();
     	
     	// Get info about a specific PIP using its group and name
     	pipMinimal = subscription.publicIpAddresses(pipMinimal.id());
@@ -68,7 +68,7 @@ public class PublicIpAddressesSample {
     		.withLeafDomainLabel("hellomarcins")
     		.withStaticIp()
     		.withTag("hello", "world")
-    		.provision();
+    		.create();
     	    	
     	// Listing PIPs in a specific resource group
     	pips = subscription.publicIpAddresses().asMap(pipMinimal.resourceGroup());

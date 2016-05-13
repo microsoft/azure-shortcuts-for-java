@@ -49,7 +49,7 @@ public class StorageAccountsSample {
     	StorageAccount storageAccount = subscription.storageAccounts().define(newStorageAccountName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
-    		.provision();
+    		.create();
 
     	printStorageAccount(storageAccount);
     	
@@ -76,14 +76,14 @@ public class StorageAccountsSample {
     	// Provision a test group
     	ResourceGroup resourceGroup = subscription.resourceGroups().define(newGroupName)
     		.withRegion(Region.US_WEST)
-    		.provision();
+    		.create();
     	
     	// Provision a new storage account in an existing resource group
     	storageAccount = subscription.storageAccounts().define(newStorageAccountName)
     		.withRegion(Region.US_WEST)
     		.withExistingResourceGroup(newGroupName)
     		.withAccountType(AccountType.StandardLRS)
-    		.provision();
+    		.create();
     	
     	printStorageAccount(storageAccount);
     	

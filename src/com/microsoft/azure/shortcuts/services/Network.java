@@ -24,7 +24,7 @@ import java.util.Map;
 
 import com.microsoft.azure.shortcuts.common.Deletable;
 import com.microsoft.azure.shortcuts.common.Indexable;
-import com.microsoft.azure.shortcuts.common.Provisionable;
+import com.microsoft.azure.shortcuts.common.Creatable;
 import com.microsoft.azure.shortcuts.common.Refreshable;
 import com.microsoft.azure.shortcuts.common.Updatable;
 import com.microsoft.azure.shortcuts.common.Wrapper;
@@ -74,7 +74,7 @@ public interface Network extends
 	 */
 	public interface DefinitionProvisionable extends 
 		DefinitionWithSubnet<DefinitionProvisionable>,
-		Provisionable<UpdateBlank> {
+		Creatable<UpdateBlank> {
 	}
 	
 	/**

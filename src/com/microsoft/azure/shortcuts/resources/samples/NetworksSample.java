@@ -58,7 +58,7 @@ public class NetworksSample {
     	subscription.networkSecurityGroups().define(existingNsgName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup(existingGroupName)
-    		.provision();
+    		.create();
     			
     	// Create a network with 2 subnets created the child-resource way, assigning an NSG
     	Network network = subscription.networks().define(newNetworkName)
@@ -73,7 +73,7 @@ public class NetworksSample {
     			.withAddressPrefix("10.0.0.8/29")
     			.attach()
     		.withTag("hello", "world")
-    		.provision();
+    		.create();
     	
     	printNetwork(network);
     	
@@ -91,7 +91,7 @@ public class NetworksSample {
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
     		.withAddressSpace("10.0.0.0/28")
-    		.provision();
+    		.create();
     	
     	// Get info about a specific network using its id
     	network = subscription.networks(network.id());
@@ -117,7 +117,7 @@ public class NetworksSample {
     	// Create a test group
     	ResourceGroup group = subscription.resourceGroups().define(existingGroupName)
     		.withRegion(Region.US_WEST)
-    		.provision();
+    		.create();
     	
     	Network network = subscription.networks().define(newNetworkName)
     		.withRegion(Region.US_WEST)
@@ -125,7 +125,7 @@ public class NetworksSample {
     		.withAddressSpace("10.0.0.0/28")
     		.withSubnet("Foo", "10.0.0.0/29")
     		.withSubnet("Bar", "10.0.0.8/29")
-    		.provision();
+    		.create();
     	
     	printNetwork(network);
 

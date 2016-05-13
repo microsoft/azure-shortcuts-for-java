@@ -57,7 +57,7 @@ class NetworkSecurityGroupImpl
 	}
 	
 	@Override
-	public NetworkSecurityGroup provision() throws Exception {
+	public NetworkSecurityGroup create() throws Exception {
 		// Create a group as needed
 		ensureGroup();
 	

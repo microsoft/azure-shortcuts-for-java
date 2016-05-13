@@ -83,7 +83,7 @@ class AvailabilitySetImpl
 	
 	
 	@Override
-	public AvailabilitySet provision() throws Exception {
+	public AvailabilitySet create() throws Exception {
 		ensureGroup(); // Create group if needed
 		this.subscription().computeManagementClient().getAvailabilitySetsOperations().createOrUpdate(this.groupName, this.inner());
 		return this.subscription().availabilitySets().get(this.groupName, this.name());

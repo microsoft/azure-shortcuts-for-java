@@ -48,7 +48,7 @@ public class AvailabilitySetSample {
     	availabilitySet = subscription.availabilitySets().define(newAvailabilitySetName)
     		.withRegion(Region.US_WEST)
     		.withNewResourceGroup()
-    		.provision();
+    		.create();
     	
     	// Get info about a specific availability set using its group and name
     	availabilitySet = subscription.availabilitySets(availabilitySet.id());
@@ -68,7 +68,7 @@ public class AvailabilitySetSample {
     	// Create a new group
     	ResourceGroup group = subscription.resourceGroups().define("marcinstestgroup")
     			.withRegion(Region.US_WEST)
-    			.provision();
+    			.create();
     	
     	// Create an availability set in an existing group
     	availabilitySet = subscription.availabilitySets().define(newAvailabilitySetName + "2")
@@ -76,7 +76,7 @@ public class AvailabilitySetSample {
     		.withExistingResourceGroup(group)
     		.withTag("hello", "world")
     		.withoutTag("hello")
-    		.provision();
+    		.create();
     	
     	// Get an existing availability set based onb group and name
     	availabilitySet = subscription.availabilitySets(availabilitySet.resourceGroup(), availabilitySet.name());

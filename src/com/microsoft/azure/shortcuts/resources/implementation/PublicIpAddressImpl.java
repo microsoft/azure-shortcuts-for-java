@@ -91,7 +91,7 @@ class PublicIpAddressImpl
 	}
 	
 	@Override
-	public DefinitionProvisionable withoutLeafDomainLabel() {
+	public PublicIpAddressImpl withoutLeafDomainLabel() {
 		return this.withLeafDomainLabel(null);
 	}
 	
@@ -106,7 +106,7 @@ class PublicIpAddressImpl
 	}
 	
 	@Override
-	public PublicIpAddress provision() throws Exception {
+	public PublicIpAddress create() throws Exception {
 		// Create a group as needed
 		ensureGroup();
 	

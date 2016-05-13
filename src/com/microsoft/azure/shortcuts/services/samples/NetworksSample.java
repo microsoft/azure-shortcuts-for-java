@@ -55,7 +55,7 @@ public class NetworksSample {
 			.withAddressSpace("10.0.0.0/28")
 			.withSubnet("Foo", "10.0.0.0/29")
 			.withSubnet("Bar", "10.0.0.8/29")
-			.provision();
+			.create();
 
 		// List the virtual networks
 		List<String> virtualNetworkNames = azure.networks().names();
@@ -75,7 +75,7 @@ public class NetworksSample {
 		azure.networks().define(networkName)
 			.withRegion("West US")
 			.withAddressSpace("10.0.0.0/29")
-			.provision();
+			.create();
 
 		// List the virtual networks
 		virtualNetworkNames = azure.networks().names();
