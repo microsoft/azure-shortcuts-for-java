@@ -32,6 +32,7 @@ import com.microsoft.azure.management.compute.models.OSDisk;
 import com.microsoft.azure.management.compute.models.OSProfile;
 import com.microsoft.azure.management.compute.models.StorageProfile;
 import com.microsoft.azure.management.compute.models.VirtualHardDisk;
+import com.microsoft.azure.shortcuts.resources.Size;
 import com.microsoft.azure.shortcuts.resources.VirtualMachine;
 import com.microsoft.azure.shortcuts.resources.VirtualMachines;
 
@@ -74,6 +75,8 @@ public class VirtualMachinesImpl
 		azureVM.setNetworkProfile(networkProfile);
 		networkProfile.setNetworkInterfaces(new ArrayList<NetworkInterfaceReference>());
 		
+		// Default size
+		azureVM.getHardwareProfile().setVirtualMachineSize(Size.Type.BASIC_A1.toString());
 		return wrap(azureVM);
 	}
 	
