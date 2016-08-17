@@ -2,7 +2,7 @@
 
 The goal of this project is to provide a radically simplified Java API for Azure. It follows a flavor of modern API design patterns (builder, fluent) optimized for readability, writeability and succinctness.
 
-> :warning: **NOTE**: this is currently an experimental labs project/work in progress.
+> :warning: **NOTE**: this was an experimental labs project, which developed the API design approach that the actual [Azure Libraries for Java](https://github.com/azure/azure-sdk-for-java/) (a.k.a. Azure SDK for Java) have now started to follow, as of version 1.0 beta 2. Starting with that version, the Azure Libraries for Java have caught up with and surpassed the "shortcuts" prototype, so if you are looking for the latest and greatest implementation and evolution of the ideas originally prototyped in this "shortcuts" project, you can now go directly to the [Azure Libraries for Java](https://github.com/azure/azure-sdk-for-java/).
 
 Here's an example for creating a virtual network, which is very representative of the approach followed by the shortcuts:
 
